@@ -1,9 +1,10 @@
-# Contributing a MiniApp
+# Contributing a MiniApp to Logica
 
-This repository accepts games as independent Kotlin Multiplatform MiniApp
-modules. The scaffold creates reviewable source; it does not authorize a game
-to ship. Discovery, review, merge and production allowlisting are separate
-steps.
+Logica is a single Kotlin Multiplatform super-app with a curated catalog of
+short, local-first MiniApp sessions. Contributions are independent Kotlin
+Multiplatform modules. The scaffold creates reviewable source; it does not
+authorize a game to ship. Discovery, review, merge and production allowlisting
+are separate steps.
 
 The stable policy is recorded in
 [ADR-0001](docs/adr/0001-miniapp-contribution-and-shipping.md). AI agents must
@@ -22,6 +23,11 @@ Before creating source, prepare the fields from
 - storage values and requested host capabilities;
 - code, art, audio, font, license and AI provenance;
 - deterministic acceptance scenarios and known limitations.
+
+Keep the catalog-facing description short and useful even though the launcher
+card currently renders only the icon, title and Play action. The manifest
+description remains required metadata and may be used by accessibility or a
+future details surface.
 
 Original mechanics are welcome. Existing or licensed intellectual property
 requires an approved proposal issue and verifiable rights evidence before
@@ -82,6 +88,20 @@ Do not depend on feature modules, application modules, another game/sample,
 native ad adapters, platform audio APIs or raw Multiplatform Settings. Do not
 add catalog cards, host controls, Replay actions or a second navigation host.
 
+### Defer final icon work
+
+The game icon is a final-stage asset, not a scaffold prerequisite. First make
+the game functional, adaptive, accessible, persistent and verifiable on CI.
+When the UI is stable, prepare an icon brief and use the approved
+[QuiverAI](https://app.quiver.ai/) SVG workflow. Review the SVG and convert it
+with [Valkyrie](https://github.com/ComposeGears/Valkyrie). A Gemini Flash-class
+model may help with a bounded SVG-to-Android-XML conversion, but the output
+still needs human review and Valkyrie validation. Do not add a new generation
+model, MCP integration or runtime dependency as part of a normal MiniApp
+contribution. Record prompt/brief, source URL, license, tool/version, date and
+hash in provenance. Open-source generators are allowed only after a separate
+maintainer evaluation of output quality, license and reproducibility.
+
 ## 4. Verify before review
 
 Run the generated module gate:
@@ -103,6 +123,8 @@ Before requesting review, confirm:
 - important actions have accessibility semantics;
 - visible text and resources have a localization path;
 - provenance and license evidence are included;
+- icon work is either explicitly deferred or includes the complete Quiver/
+  Valkyrie provenance record;
 - the change is explicitly marked **NOT ALLOWLISTED**.
 
 ## 5. Shipping decision

@@ -2,8 +2,9 @@
 
 <img src="picture/app_icon.png" width="180" alt="App icon" />
 
-A Kotlin Multiplatform MiniApp catalog for Android and iOS. The production
-bundle currently includes Block Blast and 2048; additional games and apps are
+A Kotlin Multiplatform super-app for Android and iOS: one lightweight host,
+one catalog, and short local-first game sessions. The production bundle
+currently includes Block Blast and 2048; additional games and apps are
 independent Gradle modules reviewed and allowlisted at build time.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue.svg)
@@ -42,6 +43,10 @@ independent Gradle modules reviewed and allowlisted at build time.
 - 📊 Firebase Analytics & Crashlytics
 - 🧱 Compile-time MiniApp plugin framework with a uniform catalog and host frame
 - 🔌 Contributor games discovered locally and shipped only through reviewable allowlisting
+
+The catalog is intentionally compact: cards show the game icon, title and Play
+action. Full descriptions remain in each `MiniAppManifest` for metadata,
+accessibility and future detail surfaces, but are not repeated in the launcher.
 
 ## Tech Stack
 
@@ -165,6 +170,24 @@ typed host capabilities. Root owns Catalog/Running navigation, Back,
 Settings/Review, visibility and stale-callback protection. The common frame
 owns catalog cards, toolbar controls and ad containers; Replay is intentionally
 not part of the initial plugin API.
+
+### Asset and icon timing
+
+Do not spend the beginning of a MiniApp implementation on its product or game
+icon. Build and review rules, persistence, lifecycle, compact/wide UI,
+accessibility and CI first. Add the final icon only after that surface is
+stable. The approved workflow is to write an icon brief, generate/review an
+SVG with [QuiverAI](https://app.quiver.ai/), and convert the approved SVG with
+[Valkyrie](https://github.com/ComposeGears/Valkyrie) to Compose/Android vector
+resources. A Gemini Flash-class model may assist a bounded SVG-to-Android-XML
+conversion, but the result still requires human review, Valkyrie validation
+and provenance. Record the source, license, tool/version, brief, date and hash
+in the MiniApp provenance file. Experimental open SVG models are research
+inputs, not build or runtime dependencies; evaluate their license and
+reproducibility before adopting one.
+
+For a broader, evidence-based review of the super-app architecture and CI,
+use the [architecture audit agent prompt](docs/miniapp/super-app-architecture-audit-prompt.md).
 
 Use the session-bound `MiniAppStorage` from `MiniAppSessionContext` for new
 persistence. Games supply only local snake-case names; the host owns physical

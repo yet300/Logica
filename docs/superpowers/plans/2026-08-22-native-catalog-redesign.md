@@ -234,11 +234,11 @@ internal fun MiniAppListItemCard(
 )
 ```
 
-Use `Card` as the root, `combinedClickable(onClick = onDetails,
-onLongClick = { menuExpanded = true })`, and exactly one `ListItem` with icon,
-headline, supporting text, and trailing Play. Anchor a `DropdownMenu` to the card
-with only Play and Details entries. Close the menu before invoking callbacks.
-Do not add Share.
+Use `Card` as the root and exactly one `ListItem` with icon, headline and
+trailing Play. The launcher card is intentionally compact and does not render
+`MiniAppManifest.description`; retain that manifest field for metadata,
+accessibility and a future details surface. Do not add Share or inert card
+actions.
 
 - [ ] **Step 4: Add localized catalog strings**
 

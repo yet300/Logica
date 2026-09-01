@@ -43,14 +43,6 @@ internal fun MiniAppListItemCard(
                     overflow = TextOverflow.Ellipsis,
                 )
             },
-            supportingContent = {
-                Text(
-                    text = stringResource(manifest.description),
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
             leadingContent = {
                 Image(
                     painter = painterResource(manifest.icon),

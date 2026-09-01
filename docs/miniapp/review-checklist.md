@@ -11,6 +11,8 @@ means that evidence is attached to the change or can be reproduced locally.
 - [ ] Art, audio, fonts, references and licenses are recorded.
 - [ ] Existing or licensed IP has an approved proposal issue and rights evidence.
 - [ ] AI tools, prompts and generated-source disclosure are included where applicable.
+- [ ] Product/game icon work is deferred until the final UI stage, or its
+      Quiver/Valkyrie provenance is complete.
 
 ## Architecture
 
@@ -41,6 +43,8 @@ means that evidence is attached to the change or can be reproduced locally.
 - [ ] Reduced-motion behavior is supported for meaningful animations.
 - [ ] User-visible strings are Compose resources and have a localization path.
 - [ ] The plugin does not create inert catalog actions or duplicate host chrome.
+- [ ] Catalog-facing metadata is complete even though the compact launcher card
+      intentionally omits the description.
 
 ## Audio and performance
 
