@@ -187,7 +187,7 @@ inputs, not build or runtime dependencies; evaluate their license and
 reproducibility before adopting one.
 
 For a broader, evidence-based review of the super-app architecture and CI,
-use the [architecture audit agent prompt](docs/miniapp/super-app-architecture-audit-prompt.md).
+use the [architecture audit agent prompt](docs/miniapp/super-app-architecture-audit-agent.md).
 
 Use the session-bound `MiniAppStorage` from `MiniAppSessionContext` for new
 persistence. Games supply only local snake-case names; the host owns physical

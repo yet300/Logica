@@ -83,5 +83,5 @@ and [human contributor guide](../../CONTRIBUTING_MINIAPP.md) are normative
 references when this protocol is incomplete.
 
 For a repository-wide architecture, product-model and CI/CD review, use the
-[super-app architecture audit prompt](super-app-architecture-audit-prompt.md)
+[super-app architecture audit prompt](super-app-architecture-audit-agent.md)
 before proposing cross-module changes.
