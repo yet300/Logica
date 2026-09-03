@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Mainokset auttavat meitä parantamaan peliä ja pitämään kaikki ominaisuudet ilmaisina. Jos poistat ne käytöstä, elvytykset pysyvät ilmaisina — ja voit edelleen tukea Logicaa GitHub-tähdellä tai lahjoituksella.</string>
     <string name="keep_ads">Pidä mainokset</string>
     <string name="disable_ads_anyway">Poista silti käytöstä</string>
+    <string name="cd_settings">Asetukset</string>
     <string name="cd_back">Takaisin</string>
+    <string name="miniapp_unavailable">%1$s ei ole saatavilla</string>
+    <string name="back_to_catalog">Takaisin luetteloon</string>
     <string name="exit">Poistu</string>
     <string name="review_prompt_title">Pidätkö Logicasta?</string>
     <string name="review_prompt_body">Arviosi auttaa muita palapelipelaajia löytämään pelin.</string>
     <string name="review_prompt_leave_feedback">Jätä palaute</string>
     <string name="review_prompt_dont_show">Älä näytä uudelleen</string>
+    <string name="delete_game_data">Poista kaikki pelitiedot</string>
+    <string name="delete_game_data_subtitle">Poista edistyminen ja tulokset jokaisesta pelistä</string>
+    <string name="clear_game_data_title">Poistetaanko pelitiedot?</string>
+    <string name="clear_game_data_body">Tämä poistaa pysyvästi tallennetut pelit, pisteet, opastusosiot ja muun edistymisen kaikista asennetuista peleistä.</string>
+    <string name="clear_game_data_preferences_kept">Sovelluksen asetuksia, tietosuoja-asetuksia, mainossuostumusta ja arvosteluasetuksia ei poisteta.</string>
+    <string name="clear_game_data_action">Poista pelitiedot</string>
+    <string name="clearing_game_data">Poistetaan pelitietoja…</string>
+    <string name="game_data_cleared">Kaikki pelitiedot poistettiin.</string>
+    <string name="game_data_clear_failed">Joitakin pelitietoja ei voitu poistaa. Voit yrittää uudelleen kyseisille peleille:</string>
+    <string name="retry">Yritä uudelleen</string>
+    <string name="done">Valmis</string>
+    <string name="cancel">Peruuta</string>
 </resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">मैचिंग टाइल्स को स्लाइड करें और बोर्ड को 2048 की ओर आकार दें।</string>
+    <string name="score">अंक</string>
+    <string name="best">श्रेष्ठ</string>
+    <string name="new_best">नया सर्वश्रेष्ठ</string>
+    <string name="undo">पूर्ववत</string>
+    <string name="restart">पुनः आरंभ करें</string>
+    <string name="continue_game">जारी रखना</string>
+    <string name="new_game">नया खेल</string>
+    <string name="victory">विजय</string>
+    <string name="game_over">खेल खत्म</string>
+    <string name="cancel">रद्द करना</string>
+    <string name="loading_game">गेम लोड हो रहा है</string>
+    <string name="games_won">खेल जीता गया</string>
+    <string name="successful_moves">सफल चाल</string>
+    <string name="total_merges">कुल विलय</string>
+    <string name="highest_tile">उच्चतम टाइल</string>
+    <string name="restart_confirmation_title">पुनः खेल प्रारंभ करें?</string>
+    <string name="restart_confirmation_body">%2$sके बाद आपका स्कोर %1$sहै। पुनः प्रारंभ करने से एक नया गेम प्रारंभ होता है.</string>
+    <string name="progress_not_saved">प्रगति को बचाया नहीं जा सका</string>
+    <string name="new_game_not_saved">नया गेम सहेजा नहीं जा सका</string>
+    <string name="score_description">स्कोर, %1$s</string>
+    <string name="best_description">सर्वोत्तम, %1$s</string>
+    <string name="best_new_description">सर्वोत्तम, नया सर्वोत्तम, %1$s</string>
+    <string name="undo_description">पूर्ववत</string>
+    <string name="restart_description">पुनः आरंभ करें</string>
+    <string name="crown_description">सर्वोत्तम स्कोर</string>
+    <string name="announcement_move">स्कोर %1$sसे बढ़ गया।</string>
+    <string name="announcement_move_merge">स्कोर %1$sसे बढ़ गया। सबसे बड़ा मर्ज %2$s.</string>
+    <string name="announcement_new_best">नया सर्वोत्तम स्कोर %1$s।</string>
+    <string name="announcement_victory">2048 पहुंच गया.</string>
+    <string name="announcement_game_over">खेल खत्म।</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d गेम</item>
+        <item quantity="other">%1$d गेम</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d चाल</item>
+        <item quantity="other">%1$d चालें</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d मर्ज</item>
+        <item quantity="other">%1$d विलय</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d उपयोग पूर्ववत करें</item>
+        <item quantity="other">%1$d उपयोग पूर्ववत करें</item>
+    </plurals>
+    <string name="board_empty_cell">खाली</string>
+    <string name="board_row_summary">पंक्ति %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">तख़्ता। %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">बढ़ाना</string>
+    <string name="move_down">नीचे की ओर</string>
+    <string name="move_left">बाएं खिसको</string>
+    <string name="move_right">सही कदम</string>
+</resources>

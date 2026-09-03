@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048年</string>
+    <string name="miniapp_description">一致するタイルをスライドさせて、2048 に向かってボードの形を整えます。</string>
+    <string name="score">スコア</string>
+    <string name="best">最高</string>
+    <string name="new_best">新しいベスト</string>
+    <string name="undo">元に戻す</string>
+    <string name="restart">再起動</string>
+    <string name="continue_game">続く</string>
+    <string name="new_game">新しいゲーム</string>
+    <string name="victory">勝利</string>
+    <string name="game_over">ゲームオーバー</string>
+    <string name="cancel">キャンセル</string>
+    <string name="loading_game">ゲームをロード中</string>
+    <string name="games_won">勝った試合</string>
+    <string name="successful_moves">成功した動き</string>
+    <string name="total_merges">合計マージ数</string>
+    <string name="highest_tile">最も高いタイル</string>
+    <string name="restart_confirmation_title">ゲームを再開しますか?</string>
+    <string name="restart_confirmation_body">%2$s後のスコアは %1$sです。再起動すると新しいゲームが始まります。</string>
+    <string name="progress_not_saved">進行状況を保存できませんでした</string>
+    <string name="new_game_not_saved">新しいゲームを保存できませんでした</string>
+    <string name="score_description">スコア、%1$s</string>
+    <string name="best_description">よろしくお願いします、%1$s</string>
+    <string name="best_new_description">ベスト、新しいベスト、%1$s</string>
+    <string name="undo_description">元に戻す</string>
+    <string name="restart_description">再起動</string>
+    <string name="crown_description">ベストスコア</string>
+    <string name="announcement_move">スコアは %1$s増加しました。</string>
+    <string name="announcement_move_merge">スコアは %1$s増加しました。最大のマージ %2$s。</string>
+    <string name="announcement_new_best">新しいベストスコア %1$s。</string>
+    <string name="announcement_victory">2048年に到達しました。</string>
+    <string name="announcement_game_over">ゲームオーバー。</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d ゲーム</item>
+        <item quantity="other">%1$d ゲーム</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d 移動</item>
+        <item quantity="other">%1$d 移動</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d マージ</item>
+        <item quantity="other">%1$d 個のマージ</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d 使用を元に戻す</item>
+        <item quantity="other">%1$d の使用を元に戻す</item>
+    </plurals>
+    <string name="board_empty_cell">空の</string>
+    <string name="board_row_summary">行 %1$d: %2$s、%3$s、%4$s、%5$s</string>
+    <string name="board_summary">ボード。 %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">上に移動</string>
+    <string name="move_down">下に移動</string>
+    <string name="move_left">左に移動</string>
+    <string name="move_right">右に移動</string>
+</resources>

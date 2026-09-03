@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Жарнама оюнду жакшыртууга жана бардык мүмкүнчүлүктөрдү акысыз сактоого жардам берет. Аны өчүрсөңүз да, кайра жандануу акысыз бойдон калат — Logica'ны GitHub'дагы жылдыз же кайрымдуулук менен колдой аласыз.</string>
     <string name="keep_ads">Жарнаманы калтыруу</string>
     <string name="disable_ads_anyway">Баары бир өчүрүү</string>
+    <string name="cd_settings">Орнотуулар</string>
     <string name="cd_back">Артка</string>
+    <string name="miniapp_unavailable">%1$s жеткиликсиз</string>
+    <string name="back_to_catalog">Каталогго кайтуу</string>
     <string name="exit">Чыгуу</string>
     <string name="review_prompt_title">Logica жакты беби?</string>
     <string name="review_prompt_body">Сиздин баа берүүңүз башка табышмак ойноочуларга оюнду табууга жардам берет.</string>
     <string name="review_prompt_leave_feedback">Пикир калтыруу</string>
     <string name="review_prompt_dont_show">Кайра көрсөтпөө</string>
+    <string name="delete_game_data">Бардык оюн дайындарын өчүрүү</string>
+    <string name="delete_game_data_subtitle">Бардык оюндардан прогрессти жана натыйжаларды өчүрүү</string>
+    <string name="clear_game_data_title">Оюн дайындары өчүрүлсүнбү?</string>
+    <string name="clear_game_data_body">Бул орнотулган бардык оюндардан сакталган оюндарды, упайларды, нускамаларды жана башка прогрессти биротоло өчүрөт.</string>
+    <string name="clear_game_data_preferences_kept">Колдонмонун орнотуулары, купуялык тандоолору, жарнама макулдугу жана пикир жөндөөлөрү өчүрүлбөйт.</string>
+    <string name="clear_game_data_action">Оюн дайындарын өчүрүү</string>
+    <string name="clearing_game_data">Оюн дайындары өчүрүлүүдө…</string>
+    <string name="game_data_cleared">Бардык оюн дайындары өчүрүлдү.</string>
+    <string name="game_data_clear_failed">Кээ бир оюн дайындарын өчүрүү мүмкүн болгон жок. Тиешелүү оюндар үчүн кайра аракет кылсаңыз болот:</string>
+    <string name="retry">Кайталоо</string>
+    <string name="done">Даяр</string>
+    <string name="cancel">Жокко чыгаруу</string>
 </resources>

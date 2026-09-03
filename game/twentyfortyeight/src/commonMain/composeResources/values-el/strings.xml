@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Σύρετε τα αντίστοιχα πλακάκια και διαμορφώστε τον πίνακα προς το 2048.</string>
+    <string name="score">Σκορ</string>
+    <string name="best">Καλύτερος</string>
+    <string name="new_best">νέο καλύτερο</string>
+    <string name="undo">Ξεκάνω</string>
+    <string name="restart">Επανεκκίνηση</string>
+    <string name="continue_game">Συνεχίζω</string>
+    <string name="new_game">Νέο παιχνίδι</string>
+    <string name="victory">Νίκη</string>
+    <string name="game_over">Το παιχνίδι τελείωσε</string>
+    <string name="cancel">Ματαίωση</string>
+    <string name="loading_game">Φόρτωση παιχνιδιού</string>
+    <string name="games_won">Κερδισμένα παιχνίδια</string>
+    <string name="successful_moves">Επιτυχημένες κινήσεις</string>
+    <string name="total_merges">Συνολικές συγχωνεύσεις</string>
+    <string name="highest_tile">Το ψηλότερο πλακάκι</string>
+    <string name="restart_confirmation_title">Επανεκκίνηση του παιχνιδιού;</string>
+    <string name="restart_confirmation_body">Η βαθμολογία σας είναι %1$sμετά το %2$s. Η επανεκκίνηση ξεκινά ένα νέο παιχνίδι.</string>
+    <string name="progress_not_saved">Δεν ήταν δυνατή η αποθήκευση της προόδου</string>
+    <string name="new_game_not_saved">Δεν ήταν δυνατή η αποθήκευση ενός νέου παιχνιδιού</string>
+    <string name="score_description">Βαθμολογία, %1$s</string>
+    <string name="best_description">Καλύτερο, %1$s</string>
+    <string name="best_new_description">Καλύτερο, νέο καλύτερο, %1$s</string>
+    <string name="undo_description">Ξεκάνω</string>
+    <string name="restart_description">Επανεκκίνηση</string>
+    <string name="crown_description">Καλύτερο σκορ</string>
+    <string name="announcement_move">Η βαθμολογία αυξήθηκε κατά %1$s.</string>
+    <string name="announcement_move_merge">Η βαθμολογία αυξήθηκε κατά %1$s. Μεγαλύτερη συγχώνευση %2$s.</string>
+    <string name="announcement_new_best">Νέα καλύτερη βαθμολογία %1$s.</string>
+    <string name="announcement_victory">έφτασε το 2048.</string>
+    <string name="announcement_game_over">Το παιχνίδι τελείωσε.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d παιχνίδι</item>
+        <item quantity="other">%1$d παιχνίδια</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d κίνηση</item>
+        <item quantity="other">%1$d κινήσεις</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d συγχώνευση</item>
+        <item quantity="other">%1$d συγχωνεύσεις</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Αναίρεση χρήσης</item>
+        <item quantity="other">%1$d Αναίρεση χρήσεων</item>
+    </plurals>
+    <string name="board_empty_cell">αδειάζω</string>
+    <string name="board_row_summary">Σειρά %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Επιτροπή. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Μετακινηθείτε προς τα πάνω</string>
+    <string name="move_down">Μετακίνηση προς τα κάτω</string>
+    <string name="move_left">Μετακίνηση αριστερά</string>
+    <string name="move_right">Μετακινηθείτε δεξιά</string>
+</resources>

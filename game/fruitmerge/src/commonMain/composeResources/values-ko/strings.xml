@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">과일을 떨어뜨리고 합쳐서 유쾌한 과일 타워를 만드세요.</string>
+    <string name="score">점수</string>
+    <string name="best_score">최고 점수</string>
+    <string name="next_fruit">다음</string>
+    <string name="clear_with_count">지우기 · %1$d</string>
+    <string name="clear_with_ad">지우기 · 광고</string>
+    <string name="shake_with_count">흔들기 · %1$d</string>
+    <string name="shake_with_ad">흔들기 · 광고</string>
+    <string name="cancel">취소</string>
+    <string name="new_game">새 게임</string>
+    <string name="game_over">과일 타워 가득 참</string>
+    <string name="game_over_supporting">과일이 위험선 위에 머물렀습니다. 다시 시작하여 더 큰 수박을 만들어보세요.</string>
+    <string name="largest_fruit">가장 큰 과일</string>
+    <string name="tutorial_skip">건너뛰기</string>
+    <string name="tutorial_tap">아무 곳이나 탭하여 과일을 떨어뜨리세요</string>
+    <string name="tutorial_drag">옆으로 드래그한 후 놓아 떨어뜨릴 위치를 선택하세요</string>
+    <string name="loading_game">Fruit Merge 로드 중</string>
+    <string name="drop_hint">상단을 따라 이동한 후 놓아서 떨어뜨리세요</string>
+    <string name="clear_hint">제거할 과일 하나를 선택하세요</string>
+    <string name="danger_line">위험선</string>
+    <string name="board_description">Fruit Merge 보드. 점수 %1$d. 용기 안에 과일 %2$d개.</string>
+    <string name="fruit_description">%1$s 과일</string>
+    <string name="ad_disclosure">광고</string>
+    <string name="blueberry">블루베리</string>
+    <string name="raspberry">라즈베리</string>
+    <string name="strawberry">딸기</string>
+    <string name="lime">라임</string>
+    <string name="mandarin">귤</string>
+    <string name="apple">사과</string>
+    <string name="pear">배</string>
+    <string name="peach">복숭아</string>
+    <string name="pineapple">파인애플</string>
+    <string name="watermelon">수박</string>
+</resources>

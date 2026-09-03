@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Реклама ба мо барои беҳтар кардани бозӣ ва ройгон нигоҳ доштани ҳамаи имкониятҳо кумак мекунад. Агар онро хомӯш кунед, эҳё ройгон мемонад — ва шумо метавонед Logica-ро бо ситора дар GitHub ё хайрия дастгирӣ кунед.</string>
     <string name="keep_ads">Рекламаро нигоҳ доред</string>
     <string name="disable_ads_anyway">Ба ҳар ҳол хомӯш кунед</string>
+    <string name="cd_settings">Танзимот</string>
     <string name="cd_back">Қафо</string>
+    <string name="miniapp_unavailable">%1$s дастнорас аст</string>
+    <string name="back_to_catalog">Бозгашт ба каталог</string>
     <string name="exit">Баромад</string>
     <string name="review_prompt_title">Logica-ро дӯст медоред?</string>
     <string name="review_prompt_body">Баҳои шумо ба бозигарони дигари муаммо кӯмак мекунад, ки бозиро пайдо кунанд.</string>
     <string name="review_prompt_leave_feedback">Фикр гузоштан</string>
     <string name="review_prompt_dont_show">Дигар нишон надиҳед</string>
+    <string name="delete_game_data">Ҳама маълумоти бозиро тоза кардан</string>
+    <string name="delete_game_data_subtitle">Пешрафт ва натиҷаҳоро аз ҳар як бозӣ нест кардан</string>
+    <string name="clear_game_data_title">Маълумоти бозӣ нест карда шавад?</string>
+    <string name="clear_game_data_body">Ин амал бозиҳои захирашуда, холҳо, дастурҳо ва дигар пешрафтро аз ҳамаи бозиҳои насбшуда ба таври доимӣ нест мекунад.</string>
+    <string name="clear_game_data_preferences_kept">Танзимоти барнома, интихоби махфият, розигии таблиғ ва танзимоти тақризҳо нест карда намешаванд.</string>
+    <string name="clear_game_data_action">Тоза кардани маълумоти бозӣ</string>
+    <string name="clearing_game_data">Маълумоти бозӣ нест шуда истодааст…</string>
+    <string name="game_data_cleared">Ҳама маълумоти бозӣ нест карда шуд.</string>
+    <string name="game_data_clear_failed">Баъзе маълумоти бозӣ нест карда нашуд. Шумо метавонед барои бозиҳои дахлдор дубора кӯшиш кунед:</string>
+    <string name="retry">Такрор кардан</string>
+    <string name="done">Тайёр</string>
+    <string name="cancel">Бекор кардан</string>
 </resources>

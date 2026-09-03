@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Liu'uta vastaavia laattoja ja muotoile taulua kohti 2048:aa.</string>
+    <string name="score">Pisteet</string>
+    <string name="best">Parhaat</string>
+    <string name="new_best">uusi paras</string>
+    <string name="undo">Kumoa</string>
+    <string name="restart">Käynnistä uudelleen</string>
+    <string name="continue_game">Jatkaa</string>
+    <string name="new_game">Uusi peli</string>
+    <string name="victory">Voitto</string>
+    <string name="game_over">Peli ohi</string>
+    <string name="cancel">Peruuttaa</string>
+    <string name="loading_game">Ladataan peliä</string>
+    <string name="games_won">Pelit voitettu</string>
+    <string name="successful_moves">Onnistuneet liikkeet</string>
+    <string name="total_merges">Yhdistelmät yhteensä</string>
+    <string name="highest_tile">Korkein laatta</string>
+    <string name="restart_confirmation_title">Aloitetaanko peli uudelleen?</string>
+    <string name="restart_confirmation_body">Pistemääräsi on %1$s%2$själkeen. Uudelleenkäynnistys aloittaa uuden pelin.</string>
+    <string name="progress_not_saved">Edistystä ei voitu tallentaa</string>
+    <string name="new_game_not_saved">Uutta peliä ei voitu tallentaa</string>
+    <string name="score_description">Pisteet, %1$s</string>
+    <string name="best_description">Parasta, %1$s</string>
+    <string name="best_new_description">Paras, uusi paras, %1$s</string>
+    <string name="undo_description">Kumoa</string>
+    <string name="restart_description">Käynnistä uudelleen</string>
+    <string name="crown_description">Paras pistemäärä</string>
+    <string name="announcement_move">Pisteet kasvoivat %1$s.</string>
+    <string name="announcement_move_merge">Pisteet kasvoivat %1$s. Suurin yhdistäminen %2$s.</string>
+    <string name="announcement_new_best">Uusi paras tulos %1$s.</string>
+    <string name="announcement_victory">2048 saavutettu.</string>
+    <string name="announcement_game_over">Peli ohi.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d peli</item>
+        <item quantity="other">%1$d peliä</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d siirto</item>
+        <item quantity="other">%1$d liikettä</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d yhdistäminen</item>
+        <item quantity="other">%1$d merges</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Kumoa käyttö</item>
+        <item quantity="other">%1$d Kumoa käyttöä</item>
+    </plurals>
+    <string name="board_empty_cell">tyhjä</string>
+    <string name="board_row_summary">Rivi %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">hallitus. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Siirrä ylös</string>
+    <string name="move_down">Siirry alas</string>
+    <string name="move_left">Siirrä vasemmalle</string>
+    <string name="move_right">Move right</string>
+</resources>

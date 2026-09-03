@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Advertenties helpen ons het spel te verbeteren en alle functies gratis te houden. Als je ze uitschakelt, blijven herlevingen gratis — en je kunt Logica nog steeds steunen met een GitHub-ster of een donatie.</string>
     <string name="keep_ads">Advertenties behouden</string>
     <string name="disable_ads_anyway">Toch uitschakelen</string>
+    <string name="cd_settings">Instellingen</string>
     <string name="cd_back">Terug</string>
+    <string name="miniapp_unavailable">%1$s is niet beschikbaar</string>
+    <string name="back_to_catalog">Terug naar catalogus</string>
     <string name="exit">Afsluiten</string>
     <string name="review_prompt_title">Geniet je van Logica?</string>
     <string name="review_prompt_body">Jouw beoordeling helpt meer puzzelspelers het spel te vinden.</string>
     <string name="review_prompt_leave_feedback">Feedback achterlaten</string>
     <string name="review_prompt_dont_show">Niet meer tonen</string>
+    <string name="delete_game_data">Alle spelgegevens verwijderen</string>
+    <string name="delete_game_data_subtitle">Voortgang en resultaten uit elk spel verwijderen</string>
+    <string name="clear_game_data_title">Spelgegevens verwijderen?</string>
+    <string name="clear_game_data_body">Dit verwijdert opgeslagen spellen, scores, handleidingen en andere voortgang van elk geïnstalleerd spel permanent.</string>
+    <string name="clear_game_data_preferences_kept">Uw app-voorkeuren, privacykeuzes, advertentietoestemming en beoordelingsinstellingen worden niet verwijderd.</string>
+    <string name="clear_game_data_action">Spelgegevens verwijderen</string>
+    <string name="clearing_game_data">Spelgegevens worden verwijderd…</string>
+    <string name="game_data_cleared">Alle spelgegevens zijn verwijderd.</string>
+    <string name="game_data_clear_failed">Sommige spelgegevens konden niet worden verwijderd. U kunt het opnieuw proberen voor de betrokken spellen:</string>
+    <string name="retry">Opnieuw</string>
+    <string name="done">Klaar</string>
+    <string name="cancel">Annuleren</string>
 </resources>

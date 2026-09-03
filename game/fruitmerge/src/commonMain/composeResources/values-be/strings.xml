@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Скідвайце і аб'ядноўвайце садавіну, вырошчваючы цудоўную фруктовую вежу.</string>
+    <string name="score">Лік</string>
+    <string name="best_score">Рэкорд</string>
+    <string name="next_fruit">Далей</string>
+    <string name="clear_with_count">Ачысціць · %1$d</string>
+    <string name="clear_with_ad">Ачысціць · Рэклама</string>
+    <string name="shake_with_count">Патрэсці · %1$d</string>
+    <string name="shake_with_ad">Патрэсці · Рэклама</string>
+    <string name="cancel">Адмена</string>
+    <string name="new_game">Новая гульня</string>
+    <string name="game_over">Фруктовая вежа запоўнена</string>
+    <string name="game_over_supporting">Садавіна засталася вышэй за лінію небяспекі. Пачніце зноў і збярыце вялікі кавун.</string>
+    <string name="largest_fruit">Самая вялікая садавіна</string>
+    <string name="tutorial_skip">Прапусціць</string>
+    <string name="tutorial_tap">Націсніце ў любым месцы, каб скінуць садавіну</string>
+    <string name="tutorial_drag">Перацягніце ўбок і адпусціце, каб абраць месца</string>
+    <string name="loading_game">Загрузка Fruit Merge</string>
+    <string name="drop_hint">Перамяшчайце ўверсе і адпусціце, каб скінуць</string>
+    <string name="clear_hint">Абярыце садавіну для выдалення</string>
+    <string name="danger_line">Лінія небяспекі</string>
+    <string name="board_description">Дошка Fruit Merge. Лік %1$d. Садавіны ў ёмістасці: %2$d.</string>
+    <string name="fruit_description">Садавіна %1$s</string>
+    <string name="ad_disclosure">Рэклама</string>
+    <string name="blueberry">Чарніцы</string>
+    <string name="raspberry">Маліны</string>
+    <string name="strawberry">Суніцы</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарын</string>
+    <string name="apple">Яблык</string>
+    <string name="pear">Груша</string>
+    <string name="peach">Персік</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Кавун</string>
+</resources>

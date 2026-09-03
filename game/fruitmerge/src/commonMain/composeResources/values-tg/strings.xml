@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Меваҳоро партоед, муттаҳид кунед ва манораи меваи шодмонро созед.</string>
+    <string name="score">Холҳо</string>
+    <string name="best_score">Беҳтарин</string>
+    <string name="next_fruit">Баъдӣ</string>
+    <string name="clear_with_count">Тоза кардан · %1$d</string>
+    <string name="clear_with_ad">Тоза кардан · Таблиғ</string>
+    <string name="shake_with_count">Ҷунбондан · %1$d</string>
+    <string name="shake_with_ad">Ҷунбондан · Таблиғ</string>
+    <string name="cancel">Бекор кардан</string>
+    <string name="new_game">Бозии нав</string>
+    <string name="game_over">Манораи мева пур шуд</string>
+    <string name="game_over_supporting">Мева болотар аз хатти хатар монд. Аз нав оғоз кунед ва тарбузи калонтар созед.</string>
+    <string name="largest_fruit">Калонтарин мева</string>
+    <string name="tutorial_skip">Гузарондан</string>
+    <string name="tutorial_tap">Барои партофтани мева ба ҳар ҷое ламс кунед</string>
+    <string name="tutorial_drag">Ба паҳлӯ кашед ва барои интихоби ҷой раҳо кунед</string>
+    <string name="loading_game">Боркунии Fruit Merge</string>
+    <string name="drop_hint">Дар боло ҳаракат кунед ва барои партофтан раҳо кунед</string>
+    <string name="clear_hint">Як меваро барои нест кардан интихоб кунед</string>
+    <string name="danger_line">Хатти хатар</string>
+    <string name="board_description">Тахтаи Fruit Merge. Хол %1$d. %2$d мева дар зарф.</string>
+    <string name="fruit_description">Меваи %1$s</string>
+    <string name="ad_disclosure">Таблиғ</string>
+    <string name="blueberry">Сиёҳмева</string>
+    <string name="raspberry">Малина</string>
+    <string name="strawberry">Қулфинай</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарин</string>
+    <string name="apple">Себ</string>
+    <string name="pear">Нок</string>
+    <string name="peach">Шафтолу</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Тарбуз</string>
+</resources>

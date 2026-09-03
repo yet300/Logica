@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Meyvələri atın, birləşdirin və şən meyvə qülləsi qurun.</string>
+    <string name="score">Xal</string>
+    <string name="best_score">Rekord</string>
+    <string name="next_fruit">Növbəti</string>
+    <string name="clear_with_count">Təmizlə · %1$d</string>
+    <string name="clear_with_ad">Təmizlə · Reklam</string>
+    <string name="shake_with_count">Silkələ · %1$d</string>
+    <string name="shake_with_ad">Silkələ · Reklam</string>
+    <string name="cancel">Ləğv et</string>
+    <string name="new_game">Yeni oyun</string>
+    <string name="game_over">Meyvə qülləsi doldu</string>
+    <string name="game_over_supporting">Meyvə təhlükə xəttindən yuxarıda qaldı. Yenidən başlayın və daha böyük qarpız yetişdirin.</string>
+    <string name="largest_fruit">Ən böyük meyvə</string>
+    <string name="tutorial_skip">Ötür</string>
+    <string name="tutorial_tap">Meyvəni atmaq üçün istənilən yerə toxunun</string>
+    <string name="tutorial_drag">Yana sürüşdürün, sonra atmaq yerini seçmək üçün buraxın</string>
+    <string name="loading_game">Fruit Merge yüklənir</string>
+    <string name="drop_hint">Yuxarı boyunca sürüşdürün və atmaq üçün buraxın</string>
+    <string name="clear_hint">Silmək üçün bir meyvə seçin</string>
+    <string name="danger_line">Təhlükə xətti</string>
+    <string name="board_description">Fruit Merge lövhəsi. Xal %1$d. Qabda %2$d meyvə var.</string>
+    <string name="fruit_description">%1$s meyvəsi</string>
+    <string name="ad_disclosure">Reklam</string>
+    <string name="blueberry">Qaragilə</string>
+    <string name="raspberry">Moruq</string>
+    <string name="strawberry">Çiyələk</string>
+    <string name="lime">Laym</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Alma</string>
+    <string name="pear">Armud</string>
+    <string name="peach">Şaftalı</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Qarpız</string>
+</resources>

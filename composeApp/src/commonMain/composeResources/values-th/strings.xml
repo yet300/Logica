@@ -31,10 +31,25 @@
     <string name="disable_ads_body">โฆษณาช่วยให้เราปรับปรุงเกมและเปิดให้ใช้ทุกฟีเจอร์ได้ฟรี หากปิดโฆษณา การฟื้นคืนชีพจะยังคงฟรี — และคุณยังสนับสนุน Logica ได้ด้วยการติดดาวบน GitHub หรือบริจาค</string>
     <string name="keep_ads">เปิดโฆษณาไว้</string>
     <string name="disable_ads_anyway">ปิดต่อไป</string>
+    <string name="cd_settings">การตั้งค่า</string>
     <string name="cd_back">ย้อนกลับ</string>
+    <string name="miniapp_unavailable">%1$s ไม่พร้อมใช้งาน</string>
+    <string name="back_to_catalog">กลับไปยังแคตตาล็อก</string>
     <string name="exit">ออก</string>
     <string name="review_prompt_title">ชอบ Logica ไหม?</string>
     <string name="review_prompt_body">รีวิวของคุณช่วยให้ผู้เล่นปริศนาคนอื่นๆ ค้นหาเกมนี้ได้</string>
     <string name="review_prompt_leave_feedback">ให้ความคิดเห็น</string>
     <string name="review_prompt_dont_show">ไม่ต้องแสดงอีก</string>
+    <string name="delete_game_data">ลบข้อมูลเกมทั้งหมด</string>
+    <string name="delete_game_data_subtitle">ลบความคืบหน้าและผลลัพธ์จากทุกเกม</string>
+    <string name="clear_game_data_title">ลบข้อมูลเกมหรือไม่?</string>
+    <string name="clear_game_data_body">การดำเนินการนี้จะลบเกมที่บันทึกไว้ คะแนน บทช่วยสอน และความคืบหน้าอื่นๆ จากทุกเกมที่ติดตั้งอย่างถาวร</string>
+    <string name="clear_game_data_preferences_kept">การตั้งค่าแอป ตัวเลือกความเป็นส่วนตัว การยินยอมรับโฆษณา และการตั้งค่ารีวิวจะไม่ถูกลบ</string>
+    <string name="clear_game_data_action">ลบข้อมูลเกม</string>
+    <string name="clearing_game_data">กำลังลบข้อมูลเกม…</string>
+    <string name="game_data_cleared">ลบข้อมูลเกมทั้งหมดแล้ว</string>
+    <string name="game_data_clear_failed">ไม่สามารถลบข้อมูลบางส่วนได้ คุณสามารถลองใหม่อีกครั้งสำหรับเกมที่ได้รับผลกระทบ:</string>
+    <string name="retry">ลองอีกครั้ง</string>
+    <string name="done">เสร็จสิ้น</string>
+    <string name="cancel">ยกเลิก</string>
 </resources>

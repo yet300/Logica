@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Thả, hợp nhất và tạo nên tòa tháp trái cây vui nhộn.</string>
+    <string name="score">Điểm</string>
+    <string name="best_score">Kỷ lục</string>
+    <string name="next_fruit">Tiếp theo</string>
+    <string name="clear_with_count">Xóa · %1$d</string>
+    <string name="clear_with_ad">Xóa · Quảng cáo</string>
+    <string name="shake_with_count">Lắc · %1$d</string>
+    <string name="shake_with_ad">Lắc · Quảng cáo</string>
+    <string name="cancel">Hủy</string>
+    <string name="new_game">Trò chơi mới</string>
+    <string name="game_over">Tháp trái cây đã đầy</string>
+    <string name="game_over_supporting">Trái cây đã vượt qua vạch nguy hiểm. Hãy bắt đầu lại và tạo quả dưa hấu lớn hơn.</string>
+    <string name="largest_fruit">Trái cây lớn nhất</string>
+    <string name="tutorial_skip">Bỏ qua</string>
+    <string name="tutorial_tap">Chạm vào bất cứ đâu để thả trái cây</string>
+    <string name="tutorial_drag">Kéo sang bên rồi thả ra để chọn điểm rơi</string>
+    <string name="loading_game">Đang tải Fruit Merge</string>
+    <string name="drop_hint">Di chuyển dọc theo phía trên rồi thả để làm rơi</string>
+    <string name="clear_hint">Chọn một loại trái cây để xóa</string>
+    <string name="danger_line">Vạch nguy hiểm</string>
+    <string name="board_description">Bảng Fruit Merge. Điểm %1$d. %2$d trái cây trong hộp.</string>
+    <string name="fruit_description">Trái %1$s</string>
+    <string name="ad_disclosure">Quảng cáo</string>
+    <string name="blueberry">Việt quất</string>
+    <string name="raspberry">Mâm xôi</string>
+    <string name="strawberry">Dâu tây</string>
+    <string name="lime">Chanh xanh</string>
+    <string name="mandarin">Quýt</string>
+    <string name="apple">Táo</string>
+    <string name="pear">Lê</string>
+    <string name="peach">Đào</string>
+    <string name="pineapple">Dứa</string>
+    <string name="watermelon">Dưa hấu</string>
+</resources>

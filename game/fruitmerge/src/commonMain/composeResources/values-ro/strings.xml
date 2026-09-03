@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Aruncă, combină și construiește un turn vesel de fructe.</string>
+    <string name="score">Scor</string>
+    <string name="best_score">Cel mai bun</string>
+    <string name="next_fruit">Următorul</string>
+    <string name="clear_with_count">Șterge · %1$d</string>
+    <string name="clear_with_ad">Șterge · Reclamă</string>
+    <string name="shake_with_count">Scutură · %1$d</string>
+    <string name="shake_with_ad">Scutură · Reclamă</string>
+    <string name="cancel">Anulează</string>
+    <string name="new_game">Joc nou</string>
+    <string name="game_over">Turnul de fructe este plin</string>
+    <string name="game_over_supporting">Fructele au depășit linia de pericol. Începe din nou și creează un pepene mai mare.</string>
+    <string name="largest_fruit">Cel mai mare fruct</string>
+    <string name="tutorial_skip">Sari peste</string>
+    <string name="tutorial_tap">Atinge oriunde pentru a arunca fructul</string>
+    <string name="tutorial_drag">Trage în lateral și eliberează pentru a alege locul</string>
+    <string name="loading_game">Se încarcă Fruit Merge</string>
+    <string name="drop_hint">Mișcă în partea de sus și eliberează pentru a arunca</string>
+    <string name="clear_hint">Alege un fruct de eliminat</string>
+    <string name="danger_line">Linie de pericol</string>
+    <string name="board_description">Tabla Fruit Merge. Scor %1$d. %2$d fructe în recipient.</string>
+    <string name="fruit_description">Fruct %1$s</string>
+    <string name="ad_disclosure">Reclamă</string>
+    <string name="blueberry">Afină</string>
+    <string name="raspberry">Zmeură</string>
+    <string name="strawberry">Căpșună</string>
+    <string name="lime">Lămâie verde</string>
+    <string name="mandarin">Mandarină</string>
+    <string name="apple">Măr</string>
+    <string name="pear">Pară</string>
+    <string name="peach">Piersică</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Pepene verde</string>
+</resources>

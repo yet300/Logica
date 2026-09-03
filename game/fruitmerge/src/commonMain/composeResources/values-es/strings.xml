@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Suelta, combina y crea una alegre torre de frutas.</string>
+    <string name="score">Puntuación</string>
+    <string name="best_score">Récord</string>
+    <string name="next_fruit">Siguiente</string>
+    <string name="clear_with_count">Limpiar · %1$d</string>
+    <string name="clear_with_ad">Limpiar · Anuncio</string>
+    <string name="shake_with_count">Agitar · %1$d</string>
+    <string name="shake_with_ad">Agitar · Anuncio</string>
+    <string name="cancel">Cancelar</string>
+    <string name="new_game">Nueva partida</string>
+    <string name="game_over">Torre de frutas llena</string>
+    <string name="game_over_supporting">La fruta superó la línea de peligro. Empieza de nuevo y crea una sandía más grande.</string>
+    <string name="largest_fruit">Fruta más grande</string>
+    <string name="tutorial_skip">Saltar</string>
+    <string name="tutorial_tap">Toca en cualquier lugar para soltar la fruta</string>
+    <string name="tutorial_drag">Arrastra a los lados y suelta para elegir dónde caer</string>
+    <string name="loading_game">Cargando Fruit Merge</string>
+    <string name="drop_hint">Mueve por la parte superior y suelta para dejar caer</string>
+    <string name="clear_hint">Elige una fruta para eliminar</string>
+    <string name="danger_line">Línea de peligro</string>
+    <string name="board_description">Tablero de Fruit Merge. Puntuación %1$d. %2$d frutas en el contenedor.</string>
+    <string name="fruit_description">Fruta %1$s</string>
+    <string name="ad_disclosure">Publicidad</string>
+    <string name="blueberry">Arándano</string>
+    <string name="raspberry">Frambuesa</string>
+    <string name="strawberry">Fresa</string>
+    <string name="lime">Lima</string>
+    <string name="mandarin">Mandarina</string>
+    <string name="apple">Manzana</string>
+    <string name="pear">Pera</string>
+    <string name="peach">Melocotón</string>
+    <string name="pineapple">Piña</string>
+    <string name="watermelon">Sandía</string>
+</resources>

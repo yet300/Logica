@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Eşleşen parçaları kaydırın ve tahtayı 2048'e doğru şekillendirin.</string>
+    <string name="score">Gol</string>
+    <string name="best">En iyi</string>
+    <string name="new_best">yeni en iyi</string>
+    <string name="undo">Geri al</string>
+    <string name="restart">Tekrar başlat</string>
+    <string name="continue_game">Devam etmek</string>
+    <string name="new_game">Yeni oyun</string>
+    <string name="victory">Zafer</string>
+    <string name="game_over">Oyun bitti</string>
+    <string name="cancel">İptal etmek</string>
+    <string name="loading_game">Oyun yükleniyor</string>
+    <string name="games_won">Kazanılan oyunlar</string>
+    <string name="successful_moves">Başarılı hamleler</string>
+    <string name="total_merges">Toplam birleşmeler</string>
+    <string name="highest_tile">En yüksek döşeme</string>
+    <string name="restart_confirmation_title">Oyun yeniden başlatılsın mı?</string>
+    <string name="restart_confirmation_body">%2$s'dan sonra puanınız %1$s. Yeniden başlatmak yeni bir oyun başlatır.</string>
+    <string name="progress_not_saved">İlerleme kaydedilemedi</string>
+    <string name="new_game_not_saved">Yeni bir oyun kaydedilemedi</string>
+    <string name="score_description">Puan, %1$s</string>
+    <string name="best_description">En iyisi, %1$s</string>
+    <string name="best_new_description">En iyi, yeni en iyi, %1$s</string>
+    <string name="undo_description">Geri al</string>
+    <string name="restart_description">Tekrar başlat</string>
+    <string name="crown_description">En iyi skor</string>
+    <string name="announcement_move">Puan %1$sarttı.</string>
+    <string name="announcement_move_merge">Puan %1$sarttı. En büyük birleştirme %2$s.</string>
+    <string name="announcement_new_best">Yeni en iyi skor %1$s.</string>
+    <string name="announcement_victory">2048'e ulaşıldı.</string>
+    <string name="announcement_game_over">Oyun bitti.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d oyun</item>
+        <item quantity="other">%1$d oyun</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d hamle</item>
+        <item quantity="other">%1$d hamle</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d birleştirme</item>
+        <item quantity="other">%1$d birleşme</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Kullanımı geri al</item>
+        <item quantity="other">%1$d Geri alma kullanımı</item>
+    </plurals>
+    <string name="board_empty_cell">boş</string>
+    <string name="board_row_summary">Satır %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Pano. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Yukarı taşı</string>
+    <string name="move_down">Aşağı taşı</string>
+    <string name="move_left">Sola taşı</string>
+    <string name="move_right">Sağa hareket et</string>
+</resources>

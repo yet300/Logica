@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">הפילו, מזגו ובנו מגדל פירות עליז.</string>
+    <string name="score">ניקוד</string>
+    <string name="best_score">שיא</string>
+    <string name="next_fruit">הבא</string>
+    <string name="clear_with_count">נקה · %1$d</string>
+    <string name="clear_with_ad">נקה · מודעה</string>
+    <string name="shake_with_count">נער · %1$d</string>
+    <string name="shake_with_ad">נער · מודעה</string>
+    <string name="cancel">ביטול</string>
+    <string name="new_game">משחק חדש</string>
+    <string name="game_over">מגדל הפירות מלא</string>
+    <string name="game_over_supporting">הפירות נשארו מעל קו הסכנה. התחילו מחדש ובנו אבטיח גדול יותר.</string>
+    <string name="largest_fruit">הפרי הגדול ביותר</string>
+    <string name="tutorial_skip">דלג</string>
+    <string name="tutorial_tap">הקש בכל מקום כדי להפיל את הפרי</string>
+    <string name="tutorial_drag">גרור לצדדים ושחרר לבחירת נקודת הנפילה</string>
+    <string name="loading_game">טוען את Fruit Merge</string>
+    <string name="drop_hint">הזז לאורך החלק העליון ושחרר כדי להפיל</string>
+    <string name="clear_hint">בחר פרי אחד להסרה</string>
+    <string name="danger_line">קו סכנה</string>
+    <string name="board_description">לוח Fruit Merge. ניקוד %1$d. %2$d פירות במכל.</string>
+    <string name="fruit_description">פרי %1$s</string>
+    <string name="ad_disclosure">פרסומת</string>
+    <string name="blueberry">אוכמנית</string>
+    <string name="raspberry">פטל</string>
+    <string name="strawberry">תות</string>
+    <string name="lime">ליים</string>
+    <string name="mandarin">מנדרינה</string>
+    <string name="apple">תפוח</string>
+    <string name="pear">אגס</string>
+    <string name="peach">אפרסק</string>
+    <string name="pineapple">אננס</string>
+    <string name="watermelon">אבטיח</string>
+</resources>

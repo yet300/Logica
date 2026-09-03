@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Werbung hilft uns, das Spiel zu verbessern und alle Funktionen kostenlos anzubieten. Wenn du sie deaktivierst, bleiben Wiederbelebungen kostenlos — und du kannst Logica weiterhin mit einem GitHub-Stern oder einer Spende unterstützen.</string>
     <string name="keep_ads">Werbung beibehalten</string>
     <string name="disable_ads_anyway">Trotzdem deaktivieren</string>
+    <string name="cd_settings">Einstellungen</string>
     <string name="cd_back">Zurück</string>
+    <string name="miniapp_unavailable">%1$s ist nicht verfügbar</string>
+    <string name="back_to_catalog">Zurück zum Katalog</string>
     <string name="exit">Beenden</string>
     <string name="review_prompt_title">Gefällt dir Logica?</string>
     <string name="review_prompt_body">Deine Bewertung hilft anderen Puzzle-Spielern, das Spiel zu finden.</string>
     <string name="review_prompt_leave_feedback">Feedback hinterlassen</string>
     <string name="review_prompt_dont_show">Nicht mehr anzeigen</string>
+    <string name="delete_game_data">Alle Spieldaten löschen</string>
+    <string name="delete_game_data_subtitle">Fortschritt und Ergebnisse aus allen Spielen entfernen</string>
+    <string name="clear_game_data_title">Spieldaten löschen?</string>
+    <string name="clear_game_data_body">Dadurch werden gespeicherte Spiele, Punktestände, Tutorials und sonstiger Fortschritt aller installierten Spiele dauerhaft gelöscht.</string>
+    <string name="clear_game_data_preferences_kept">Ihre App-Einstellungen, Datenschutzauswahlen, Werbeeinwilligungen und Bewertungseinstellungen werden nicht gelöscht.</string>
+    <string name="clear_game_data_action">Spieldaten löschen</string>
+    <string name="clearing_game_data">Spieldaten werden gelöscht…</string>
+    <string name="game_data_cleared">Alle Spieldaten wurden gelöscht.</string>
+    <string name="game_data_clear_failed">Einige Spieldaten konnten nicht gelöscht werden. Sie können es für die betroffenen Spiele erneut versuchen:</string>
+    <string name="retry">Wiederholen</string>
+    <string name="done">Fertig</string>
+    <string name="cancel">Abbrechen</string>
 </resources>

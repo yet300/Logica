@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Släpp, slå ihop och bygg ett glatt frukttorn.</string>
+    <string name="score">Poäng</string>
+    <string name="best_score">Bästa</string>
+    <string name="next_fruit">Nästa</string>
+    <string name="clear_with_count">Rensa · %1$d</string>
+    <string name="clear_with_ad">Rensa · Annons</string>
+    <string name="shake_with_count">Skaka · %1$d</string>
+    <string name="shake_with_ad">Skaka · Annons</string>
+    <string name="cancel">Avbryt</string>
+    <string name="new_game">Nytt spel</string>
+    <string name="game_over">Frukttornet är fullt</string>
+    <string name="game_over_supporting">Frukten stannade över farolinjen. Börja om och skapa en större vattenmelon.</string>
+    <string name="largest_fruit">Största frukt</string>
+    <string name="tutorial_skip">Hoppa över</string>
+    <string name="tutorial_tap">Tryck var som helst för att släppa frukten</string>
+    <string name="tutorial_drag">Dra i sidled och släpp för att välja plats</string>
+    <string name="loading_game">Laddar Fruit Merge</string>
+    <string name="drop_hint">Flytta längs toppen och släpp för att släppa frukten</string>
+    <string name="clear_hint">Välj en frukt att ta bort</string>
+    <string name="danger_line">Farolinje</string>
+    <string name="board_description">Fruit Merge-bräde. Poäng %1$d. %2$d frukter i behållaren.</string>
+    <string name="fruit_description">%1$s-frukt</string>
+    <string name="ad_disclosure">Annons</string>
+    <string name="blueberry">Blåbär</string>
+    <string name="raspberry">Hallon</string>
+    <string name="strawberry">Jordgubbe</string>
+    <string name="lime">Lime</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Äpple</string>
+    <string name="pear">Päron</string>
+    <string name="peach">Persika</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Vattenmelon</string>
+</resources>

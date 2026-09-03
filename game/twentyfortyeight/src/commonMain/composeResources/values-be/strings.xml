@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048 год</string>
+    <string name="miniapp_description">Ссуньце адпаведныя пліткі і сфармуйце дошку ў бок 2048.</string>
+    <string name="score">Ацэнка</string>
+    <string name="best">Лепшы</string>
+    <string name="new_best">новы лепшы</string>
+    <string name="undo">Адмяніць</string>
+    <string name="restart">Перазапуск</string>
+    <string name="continue_game">Працягнуць</string>
+    <string name="new_game">Новая гульня</string>
+    <string name="victory">Перамога</string>
+    <string name="game_over">Гульня скончана</string>
+    <string name="cancel">Адмяніць</string>
+    <string name="loading_game">Загрузка гульні</string>
+    <string name="games_won">Гульні выйграныя</string>
+    <string name="successful_moves">Удалыя хады</string>
+    <string name="total_merges">Татальныя зліцці</string>
+    <string name="highest_tile">Самая высокая плітка</string>
+    <string name="restart_confirmation_title">Перазапусціць гульню?</string>
+    <string name="restart_confirmation_body">Ваш вынік %1$sпасля %2$s. Перазапуск пачынае новую гульню.</string>
+    <string name="progress_not_saved">Не ўдалося захаваць прагрэс</string>
+    <string name="new_game_not_saved">Не ўдалося захаваць новую гульню</string>
+    <string name="score_description">Ацэнка, %1$s</string>
+    <string name="best_description">Найлепшы, %1$s</string>
+    <string name="best_new_description">Best, new best, %1$s</string>
+    <string name="undo_description">Адмяніць</string>
+    <string name="restart_description">Перазапуск</string>
+    <string name="crown_description">Лепшы бал</string>
+    <string name="announcement_move">Ацэнка павялічана на %1$s.</string>
+    <string name="announcement_move_merge">Ацэнка павялічана на %1$s. Самае вялікае зліццё %2$s.</string>
+    <string name="announcement_new_best">Новы лепшы вынік %1$s.</string>
+    <string name="announcement_victory">2048 дасягнуты.</string>
+    <string name="announcement_game_over">Гульня скончана.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d гульня</item>
+        <item quantity="other">%1$d гульняў</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d ход</item>
+        <item quantity="other">%1$d ходаў</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d зліццё</item>
+        <item quantity="other">%1$d аб'ядноўваецца</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Адмяніць выкарыстанне</item>
+        <item quantity="other">%1$d выкарыстання адмены</item>
+    </plurals>
+    <string name="board_empty_cell">пусты</string>
+    <string name="board_row_summary">Радок %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">дошка. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Рухайцеся ўверх</string>
+    <string name="move_down">Рухайцеся ўніз</string>
+    <string name="move_left">Рух налева</string>
+    <string name="move_right">Рух направа</string>
+</resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">.2048 ﻩﺎﺠﺗﺎﺑ ﺔﺣﻮﻠﻟﺍ ﻞﻜﺷﻭ ﻖﺑﺎﻄﻤﻟﺍ ﻁﻼ﻿ﺒﻟﺍ ﻚﻳﺮﺤﺘﺑ ﻢﻗ</string>
+    <string name="score">ﺔﺠﻴﺘﻧ</string>
+    <string name="best">ﻞﻀﻓﺃ</string>
+    <string name="new_best">ﺪﻳﺪﺟ ﻞﻀﻓﺃ</string>
+    <string name="undo">ﻊﺟﺍﺮﺗ</string>
+    <string name="restart">ﻞﻴﻐﺸﺗ ﺓﺩﺎﻋﺇ</string>
+    <string name="continue_game">ﻞﻤﻜﻳ</string>
+    <string name="new_game">ﺓﺪﻳﺪﺟ ﺔﺒﻌﻟ</string>
+    <string name="victory">ﺭﺎﺼﺘﻧﺍ</string>
+    <string name="game_over">ﺔﺒﻌﻠﻟﺍ ﺖﻬﺘﻧﺍ</string>
+    <string name="cancel">ﻲﻐﻠﻳ</string>
+    <string name="loading_game">ﺔﺒﻌﻠﻟﺍ ﻞﻴﻤﺤﺗ ﺭٍﺎﺟ</string>
+    <string name="games_won">ﺏﺎﻌﻟﻷ﻿ﺍ ﺕﺯﺎﻓ</string>
+    <string name="successful_moves">ﺔﺤﺟﺎﻨﻟﺍ ﺕﺎﻛﺮﺤﺘﻟﺍ</string>
+    <string name="total_merges">ﺞﻣﺪﻟﺍ ﻲﻟﺎﻤﺟﺇ</string>
+    <string name="highest_tile">ﻁﻼ﻿ﺒﻟﺍ ﻰﻠﻋﺃ</string>
+    <string name="restart_confirmation_title">؟ﺔﺒﻌﻠﻟﺍ ﻞﻴﻐﺸﺗ ﺓﺩﺎﻋﺇ</string>
+    <string name="restart_confirmation_body">.ﺓﺪﻳﺪﺟ ﺔﺒﻌﻟ ﺃﺪﺒﺗ ﻞﻴﻐﺸﺘﻟﺍ ﺓﺩﺎﻋﺇ .s$%2$s ﺪﻌﺑ s$%1$s ﻲﻫ ﻚﺘﺠﻴﺘﻧ</string>
+    <string name="progress_not_saved">ﻡﺪﻘﺘﻟﺍ ﻆﻔﺣ ﻦﻜﻤﻳ ﻻ﻿</string>
+    <string name="new_game_not_saved">ﺓﺪﻳﺪﺟ ﺔﺒﻌﻟ ﻆﻔﺣ ﻦﻜﻤﻳ ﻻ﻿</string>
+    <string name="score_description">s$%1$s ﺔﺠﻴﺘﻨﻟﺍ</string>
+    <string name="best_description">s$%1$s ،ﻞﻀﻓﻷ﻿ﺍ</string>
+    <string name="best_new_description">s$%1$s ،ﺪﻳﺪﺠﻟﺍ ﻞﻀﻓﻷ﻿ﺍ ،ﻞﻀﻓﻷ﻿ﺍ</string>
+    <string name="undo_description">ﻊﺟﺍﺮﺗ</string>
+    <string name="restart_description">ﻞﻴﻐﺸﺗ ﺓﺩﺎﻋﺇ</string>
+    <string name="crown_description">ﺔﺠﻴﺘﻧ ﻞﻀﻓﺃ</string>
+    <string name="announcement_move">.s$%1$s ﺔﺒﺴﻨﺑ ﺔﺠﻴﺘﻨﻟﺍ ﺕﺩﺍﺯ</string>
+    <string name="announcement_move_merge">.s$%2$s ﺞﻣﺩ ﺔﻴﻠﻤﻋ ﺮﺒﻛﺃ .s$%1$s ﺔﺒﺴﻨﺑ ﺔﺠﻴﺘﻨﻟﺍ ﺕﺩﺍﺯ</string>
+    <string name="announcement_new_best">.s$%1$s ﺓﺪﻳﺪﺟ ﺔﺠﻴﺘﻧ ﻞﻀﻓﺃ</string>
+    <string name="announcement_victory">.2048 ﻰﻟﺇ ﻝﻮﺻﻮﻟﺍ ﻢﺗ</string>
+    <string name="announcement_game_over">.ﺔﺒﻌﻠﻟﺍ ﺖﻬﺘﻧﺍ</string>
+    <plurals name="games_count">
+        <item quantity="one">d$1% ﺔﺒﻌﻟ</item>
+        <item quantity="other">%1$d ﺔﺒﻌﻟ</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d ﺔﻛﺮﺣ</item>
+        <item quantity="other">%1$d ﺔﻛﺮﺣ</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d ﺞﻣﺩ</item>
+        <item quantity="other">d$1% ﺞﻣﺩ ﻢﺗ</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d ﻡﺍﺪﺨﺘﺳﻻ﻿ﺍ ﻦﻋ ﻊﺟﺍﺮﺗ</item>
+        <item quantity="other">%1$d ﺕﺎﻣﺍﺪﺨﺘﺳﻻ﻿ﺍ ﻦﻋ ﻊﺟﺍﺮﺗ</item>
+    </plurals>
+    <string name="board_empty_cell">ﻍﺭﺎﻓ</string>
+    <string name="board_row_summary">d: %2$s، %3$s، %4$s، %5$s$%1$s ﻒﺼﻟﺍ</string>
+    <string name="board_summary">%4$s%1$s .ﺓﺭﻮﺒﺳ$s; %2$s; %3$s;</string>
+    <string name="move_up">ﻰﻠﻋﻸ﻿ﻟ ﻙﺮﺤﺗ</string>
+    <string name="move_down">ﻞﻔﺳﻸ﻿ﻟ ﻙﺮﺤﺗ</string>
+    <string name="move_left">ﺭﺎﺴﻴﻠﻟ ﻙﺮﺤﺗ</string>
+    <string name="move_right">ﻦﻴﻤﻴﻠﻟ ﻙﺮﺤﺗ</string>
+</resources>

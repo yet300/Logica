@@ -31,10 +31,25 @@
     <string name="disable_ads_body">تساعدنا الإعلانات على تحسين اللعبة وإبقاء جميع الميزات متاحة مجانًا. إذا عطّلتها، فسيظل الإحياء مجانيًا — ويمكنك دعم Logica بوضع نجمة على GitHub أو بالتبرع.</string>
     <string name="keep_ads">الإبقاء على الإعلانات</string>
     <string name="disable_ads_anyway">التعطيل على أي حال</string>
+    <string name="cd_settings">الإعدادات</string>
     <string name="cd_back">رجوع</string>
+    <string name="miniapp_unavailable">%1$s غير متوفر</string>
+    <string name="back_to_catalog">العودة إلى الدليل</string>
     <string name="exit">خروج</string>
     <string name="review_prompt_title">هل تستمتع بـ Logica؟</string>
     <string name="review_prompt_body">تقييمك يساعد المزيد من لاعبي الألغاز في العثور على اللعبة.</string>
     <string name="review_prompt_leave_feedback">ترك تعليق</string>
     <string name="review_prompt_dont_show">عدم الإظهار مرة أخرى</string>
+    <string name="delete_game_data">حذف جميع بيانات اللعبة</string>
+    <string name="delete_game_data_subtitle">إزالة التقدم والنتائج من كل لعبة</string>
+    <string name="clear_game_data_title">هل تريد حذف بيانات اللعبة؟</string>
+    <string name="clear_game_data_body">سيؤدي هذا إلى حذف الألعاب المحفوظة والنتائج والبرامج التعليمية والتقدم الآخر نهائياً من كل لعبة مثبتة.</string>
+    <string name="clear_game_data_preferences_kept">لن يتم حذف تفضيلات التطبيق وخيارات الخصوصية والموافقة على الإعلانات وإعدادات التقييم.</string>
+    <string name="clear_game_data_action">حذف بيانات اللعبة</string>
+    <string name="clearing_game_data">جارٍ حذف بيانات اللعبة…</string>
+    <string name="game_data_cleared">تم حذف جميع بيانات اللعبة.</string>
+    <string name="game_data_clear_failed">تعذر حذف بعض بيانات اللعبة. يمكنك إعادة المحاولة للألعاب المتأثرة:</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="done">تم</string>
+    <string name="cancel">إلغاء</string>
 </resources>

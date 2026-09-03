@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Reclamele ne ajută să îmbunătățim jocul și să păstrăm toate funcțiile gratuite. Dacă le dezactivezi, reînvierile vor rămâne gratuite — iar Logica poate fi susținut cu o stea pe GitHub sau o donație.</string>
     <string name="keep_ads">Păstrează reclamele</string>
     <string name="disable_ads_anyway">Dezactivează oricum</string>
+    <string name="cd_settings">Setări</string>
     <string name="cd_back">Înapoi</string>
+    <string name="miniapp_unavailable">%1$s nu este disponibil</string>
+    <string name="back_to_catalog">Înapoi la catalog</string>
     <string name="exit">Ieșire</string>
     <string name="review_prompt_title">Îți place Logica?</string>
     <string name="review_prompt_body">Recenzia ta îi ajută pe mai mulți jucători de puzzle să găsească jocul.</string>
     <string name="review_prompt_leave_feedback">Lasă un feedback</string>
     <string name="review_prompt_dont_show">Nu mai afișa</string>
+    <string name="delete_game_data">Șterge toate datele jocurilor</string>
+    <string name="delete_game_data_subtitle">Elimină progresul și rezultatele din fiecare joc</string>
+    <string name="clear_game_data_title">Ștergeți datele jocurilor?</string>
+    <string name="clear_game_data_body">Aceasta va șterge definitiv jocurile salvate, scorurile, tutorialele și restul progresului din fiecare joc instalat.</string>
+    <string name="clear_game_data_preferences_kept">Preferințele din aplicație, opțiunile de confidențialitate, acordul pentru reclame și setările de recenzii nu vor fi șterse.</string>
+    <string name="clear_game_data_action">Șterge datele jocurilor</string>
+    <string name="clearing_game_data">Se șterg datele jocurilor…</string>
+    <string name="game_data_cleared">Toate datele jocurilor au fost șterse.</string>
+    <string name="game_data_clear_failed">Unele date ale jocurilor nu au putut fi șterse. Puteți reîncerca pentru jocurile afectate:</string>
+    <string name="retry">Reîncearcă</string>
+    <string name="done">Gata</string>
+    <string name="cancel">Anulează</string>
 </resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048 წ</string>
+    <string name="miniapp_description">გაასრიალეთ შესაბამისი ფილები და ჩამოაყალიბეთ დაფა 2048 წლისთვის.</string>
+    <string name="score">ქულა</string>
+    <string name="best">საუკეთესო</string>
+    <string name="new_best">ახალი საუკეთესო</string>
+    <string name="undo">გაუქმება</string>
+    <string name="restart">გადატვირთეთ</string>
+    <string name="continue_game">განაგრძეთ</string>
+    <string name="new_game">ახალი თამაში</string>
+    <string name="victory">გამარჯვება</string>
+    <string name="game_over">თამაში დასრულდა</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="loading_game">იტვირთება თამაში</string>
+    <string name="games_won">მოგებული თამაშები</string>
+    <string name="successful_moves">წარმატებული სვლები</string>
+    <string name="total_merges">სულ შერწყმა</string>
+    <string name="highest_tile">ყველაზე მაღალი ფილა</string>
+    <string name="restart_confirmation_title">თამაშის გადატვირთვა?</string>
+    <string name="restart_confirmation_body">თქვენი ქულაა %1$s%2$s-ის შემდეგ. ხელახლა იწყება ახალი თამაში.</string>
+    <string name="progress_not_saved">პროგრესის შენახვა ვერ მოხერხდა</string>
+    <string name="new_game_not_saved">ახალი თამაშის შენახვა ვერ მოხერხდა</string>
+    <string name="score_description">ქულა, %1$s</string>
+    <string name="best_description">საუკეთესო, %1$s</string>
+    <string name="best_new_description">საუკეთესო, ახალი საუკეთესო, %1$s</string>
+    <string name="undo_description">გაუქმება</string>
+    <string name="restart_description">გადატვირთეთ</string>
+    <string name="crown_description">საუკეთესო ქულა</string>
+    <string name="announcement_move">ქულა გაიზარდა %1$s-ით.</string>
+    <string name="announcement_move_merge">ქულა გაიზარდა %1$s-ით. ყველაზე დიდი შერწყმა %2$s.</string>
+    <string name="announcement_new_best">ახალი საუკეთესო ქულა %1$s.</string>
+    <string name="announcement_victory">მიაღწია 2048 წელს.</string>
+    <string name="announcement_game_over">თამაში დასრულდა.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d თამაში</item>
+        <item quantity="other">%1$d თამაში</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d გადაადგილება</item>
+        <item quantity="other">%1$d მოძრაობს</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d შერწყმა</item>
+        <item quantity="other">%1$d შერწყმა</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d გამოყენების გაუქმება</item>
+        <item quantity="other">%1$d გაუქმების გამოყენება</item>
+    </plurals>
+    <string name="board_empty_cell">ცარიელი</string>
+    <string name="board_row_summary">მწკრივი %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">გამგეობა. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">ზევით გადაადგილება</string>
+    <string name="move_down">ქვევით გადაადგილება</string>
+    <string name="move_left">მარცხნივ გადაადგილება</string>
+    <string name="move_right">გადაადგილება მარჯვნივ</string>
+</resources>

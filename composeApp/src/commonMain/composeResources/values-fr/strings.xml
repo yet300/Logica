@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Les publicités nous aident à améliorer le jeu et à garder toutes les fonctionnalités gratuites. Si vous les désactivez, les résurrections resteront gratuites — et vous pourrez toujours soutenir Logica avec une étoile GitHub ou un don.</string>
     <string name="keep_ads">Garder les publicités</string>
     <string name="disable_ads_anyway">Désactiver quand même</string>
+    <string name="cd_settings">Paramètres</string>
     <string name="cd_back">Retour</string>
+    <string name="miniapp_unavailable">%1$s n'est pas disponible</string>
+    <string name="back_to_catalog">Retour au catalogue</string>
     <string name="exit">Quitter</string>
     <string name="review_prompt_title">Vous aimez Logica ?</string>
     <string name="review_prompt_body">Votre avis aide d'autres joueurs de puzzles à trouver le jeu.</string>
     <string name="review_prompt_leave_feedback">Laisser un avis</string>
     <string name="review_prompt_dont_show">Ne plus afficher</string>
+    <string name="delete_game_data">Supprimer toutes les données de jeu</string>
+    <string name="delete_game_data_subtitle">Supprimer la progression et les scores de tous les jeux</string>
+    <string name="clear_game_data_title">Supprimer les données de jeu ?</string>
+    <string name="clear_game_data_body">Cette action supprime définitivement les parties sauvegardées, les scores, les didacticiels et toute autre progression de chaque jeu installé.</string>
+    <string name="clear_game_data_preferences_kept">Vos préférences d'application, choix de confidentialité, consentement publicitaire et paramètres d'avis ne seront pas supprimés.</string>
+    <string name="clear_game_data_action">Supprimer les données de jeu</string>
+    <string name="clearing_game_data">Suppression des données de jeu…</string>
+    <string name="game_data_cleared">Toutes les données de jeu ont été supprimées.</string>
+    <string name="game_data_clear_failed">Certaines données n'ont pas pu être supprimées. Vous pouvez réessayer pour les jeux concernés :</string>
+    <string name="retry">Réessayer</string>
+    <string name="done">Terminé</string>
+    <string name="cancel">Annuler</string>
 </resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Мөмөлөрдү таштап, бириктирип, сонун мөмө мунарасын куруңуз.</string>
+    <string name="score">Упай</string>
+    <string name="best_score">Мыкты</string>
+    <string name="next_fruit">Кийинки</string>
+    <string name="clear_with_count">Тазалоо · %1$d</string>
+    <string name="clear_with_ad">Тазалоо · Жарнама</string>
+    <string name="shake_with_count">Чайкоо · %1$d</string>
+    <string name="shake_with_ad">Чайкоо · Жарнама</string>
+    <string name="cancel">Жокко чыгаруу</string>
+    <string name="new_game">Жаңы оюн</string>
+    <string name="game_over">Мөмө мунарасы толду</string>
+    <string name="game_over_supporting">Мөмө коркунуч сызыгынан өйдө калды. Кайра баштап, чоңураак дарбыз жасаңыз.</string>
+    <string name="largest_fruit">Эң чоң мөмө</string>
+    <string name="tutorial_skip">Өткөрүп жиберүү</string>
+    <string name="tutorial_tap">Мөмөнү таштоо үчүн каалаган жерди басыңыз</string>
+    <string name="tutorial_drag">Капталына сүйрөп, таштоочу жерди тандоо үчүн коё бериңиз</string>
+    <string name="loading_game">Fruit Merge жүктөлүүдө</string>
+    <string name="drop_hint">Үстү жагы менен жылдырып, таштоо үчүн коё бериңиз</string>
+    <string name="clear_hint">Өчүрүү үчүн бир мөмөнү тандаңыз</string>
+    <string name="danger_line">Коркунуч сызыгы</string>
+    <string name="board_description">Fruit Merge тактасы. Упай %1$d. Идиште %2$d мөмө бар.</string>
+    <string name="fruit_description">%1$s мөмөсү</string>
+    <string name="ad_disclosure">Жарнама</string>
+    <string name="blueberry">Кара бүлдүркөн</string>
+    <string name="raspberry">Малина</string>
+    <string name="strawberry">Кулпунай</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарин</string>
+    <string name="apple">Алма</string>
+    <string name="pear">Алмурут</string>
+    <string name="peach">Шабдалы</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Дарбыз</string>
+</resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Skjut matchande brickor och forma brädan mot 2048.</string>
+    <string name="score">Göra</string>
+    <string name="best">Bäst</string>
+    <string name="new_best">nya bästa</string>
+    <string name="undo">Ångra</string>
+    <string name="restart">Starta om</string>
+    <string name="continue_game">Fortsätta</string>
+    <string name="new_game">Nytt spel</string>
+    <string name="victory">Seger</string>
+    <string name="game_over">Spelet slut</string>
+    <string name="cancel">Avboka</string>
+    <string name="loading_game">Laddar spel</string>
+    <string name="games_won">Spel som vunnits</string>
+    <string name="successful_moves">Framgångsrika drag</string>
+    <string name="total_merges">Totalt slår samman</string>
+    <string name="highest_tile">Högsta brickan</string>
+    <string name="restart_confirmation_title">Starta om spelet?</string>
+    <string name="restart_confirmation_body">Din poäng är %1$sefter %2$s. Omstart börjar ett nytt spel.</string>
+    <string name="progress_not_saved">Framsteg kunde inte sparas</string>
+    <string name="new_game_not_saved">Ett nytt spel kunde inte sparas</string>
+    <string name="score_description">Poäng, %1$s</string>
+    <string name="best_description">Bäst, %1$s</string>
+    <string name="best_new_description">Bästa, nya bästa, %1$s</string>
+    <string name="undo_description">Ångra</string>
+    <string name="restart_description">Starta om</string>
+    <string name="crown_description">Bästa poäng</string>
+    <string name="announcement_move">Poängen ökade med %1$s.</string>
+    <string name="announcement_move_merge">Poängen ökade med %1$s. Största sammanslagningen %2$s.</string>
+    <string name="announcement_new_best">Nytt bästa resultat %1$s.</string>
+    <string name="announcement_victory">2048 nått.</string>
+    <string name="announcement_game_over">Spelet slut.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d spel</item>
+        <item quantity="other">%1$d spel</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d drag</item>
+        <item quantity="other">%1$d drag</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d sammanfogning</item>
+        <item quantity="other">%1$d slås samman</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Ångra användning</item>
+        <item quantity="other">%1$d Ångra användningar</item>
+    </plurals>
+    <string name="board_empty_cell">tömma</string>
+    <string name="board_row_summary">Rad %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Styrelse. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Flytta upp</string>
+    <string name="move_down">Flytta ner</string>
+    <string name="move_left">Flytta vänster</string>
+    <string name="move_right">Flytta höger</string>
+</resources>

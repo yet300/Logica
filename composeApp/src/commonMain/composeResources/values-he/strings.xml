@@ -31,10 +31,25 @@
     <string name="disable_ads_body">הפרסומות עוזרות לנו לשפר את המשחק ולהשאיר את כל התכונות בחינם. אם תשביתו אותן, ההחייאות יישארו בחינם — ועדיין תוכלו לתמוך ב-Logica באמצעות כוכב ב-GitHub או תרומה.</string>
     <string name="keep_ads">להשאיר פרסומות</string>
     <string name="disable_ads_anyway">להשבית בכל זאת</string>
+    <string name="cd_settings">הגדרות</string>
     <string name="cd_back">חזור</string>
+    <string name="miniapp_unavailable">%1$s אינו זמין</string>
+    <string name="back_to_catalog">חזרה לקטלוג</string>
     <string name="exit">יציאה</string>
     <string name="review_prompt_title">נהנה מ-Logica?</string>
     <string name="review_prompt_body">הביקורת שלך עוזרת לשחקני פאזלים נוספים למצוא את המשחק.</string>
     <string name="review_prompt_leave_feedback">השאר משוב</string>
     <string name="review_prompt_dont_show">אל תציג שוב</string>
+    <string name="delete_game_data">מחיקת כל נתוני המשחקים</string>
+    <string name="delete_game_data_subtitle">הסרת התקדמות ותוצאות מכל המשחקים</string>
+    <string name="clear_game_data_title">למחוק את נתוni המשחקים?</string>
+    <string name="clear_game_data_body">פעולה זו תמחק לצמיתות משחקים שמורים, ניקודים, הדרכות והתקדמות נוספת מכל משחק מותקן.</string>
+    <string name="clear_game_data_preferences_kept">העדפות האפליקציה, בחירות הפרטיות, הסכמת הפרסום והגדרות הביקורות לא יימחקו.</string>
+    <string name="clear_game_data_action">מחק נתוני משחקים</string>
+    <string name="clearing_game_data">מוחק נתוני משחקים…</string>
+    <string name="game_data_cleared">כל נתוני המשחקים נמחקו.</string>
+    <string name="game_data_clear_failed">לא ניתן היה למחוק חלק מנתוני המשחקים. באפשרותך לנסות שוב עבור המשחקים המושפעים:</string>
+    <string name="retry">נסה שוב</string>
+    <string name="done">בוצע</string>
+    <string name="cancel">ביטול</string>
 </resources>

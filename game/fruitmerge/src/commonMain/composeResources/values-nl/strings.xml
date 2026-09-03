@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Laat vallen, voeg samen en bouw een vrolijke fruittoren.</string>
+    <string name="score">Score</string>
+    <string name="best_score">Beste</string>
+    <string name="next_fruit">Volgende</string>
+    <string name="clear_with_count">Wissen · %1$d</string>
+    <string name="clear_with_ad">Wissen · Advertentie</string>
+    <string name="shake_with_count">Schudden · %1$d</string>
+    <string name="shake_with_ad">Schudden · Advertentie</string>
+    <string name="cancel">Annuleren</string>
+    <string name="new_game">Nieuw spel</string>
+    <string name="game_over">Fruittoren vol</string>
+    <string name="game_over_supporting">Het fruit bleef boven de gevarenlijn. Begin opnieuw en maak een grotere watermeloen.</string>
+    <string name="largest_fruit">Grootste fruit</string>
+    <string name="tutorial_skip">Overslaan</string>
+    <string name="tutorial_tap">Tik ergens om het fruit te laten vallen</string>
+    <string name="tutorial_drag">Sleep zijwaarts en laat los om de valplek te kiezen</string>
+    <string name="loading_game">Fruit Merge laden</string>
+    <string name="drop_hint">Beweeg langs de bovenkant en laat los om te laten vallen</string>
+    <string name="clear_hint">Kies één vrucht om te verwijderen</string>
+    <string name="danger_line">Gevarenlijn</string>
+    <string name="board_description">Fruit Merge bord. Score %1$d. %2$d vruchten in de container.</string>
+    <string name="fruit_description">%1$s vrucht</string>
+    <string name="ad_disclosure">Advertentie</string>
+    <string name="blueberry">Bosbes</string>
+    <string name="raspberry">Framboos</string>
+    <string name="strawberry">Aardbei</string>
+    <string name="lime">Limoen</string>
+    <string name="mandarin">Mandarijn</string>
+    <string name="apple">Appel</string>
+    <string name="pear">Peer</string>
+    <string name="peach">Perzik</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Watermeloen</string>
+</resources>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Skyv matchende fliser og form brettet mot 2048.</string>
+    <string name="score">Score</string>
+    <string name="best">Beste</string>
+    <string name="new_best">nye beste</string>
+    <string name="undo">Angre</string>
+    <string name="restart">Start på nytt</string>
+    <string name="continue_game">Fortsette</string>
+    <string name="new_game">Nytt spill</string>
+    <string name="victory">Seier</string>
+    <string name="game_over">Spillet er over</string>
+    <string name="cancel">Kansellere</string>
+    <string name="loading_game">Laster spillet</string>
+    <string name="games_won">Spill vunnet</string>
+    <string name="successful_moves">Vellykkede trekk</string>
+    <string name="total_merges">Totalt fusjonerer</string>
+    <string name="highest_tile">Høyeste flis</string>
+    <string name="restart_confirmation_title">Starte spillet på nytt?</string>
+    <string name="restart_confirmation_body">Poengsummen din er %1$setter %2$s. Omstart starter et nytt spill.</string>
+    <string name="progress_not_saved">Fremdriften kunne ikke lagres</string>
+    <string name="new_game_not_saved">Et nytt spill kunne ikke lagres</string>
+    <string name="score_description">Poengsum, %1$s</string>
+    <string name="best_description">Best, %1$s</string>
+    <string name="best_new_description">Best, new best, %1$s</string>
+    <string name="undo_description">Angre</string>
+    <string name="restart_description">Start på nytt</string>
+    <string name="crown_description">Beste poengsum</string>
+    <string name="announcement_move">Poengsummen økt med %1$s.</string>
+    <string name="announcement_move_merge">Poengsummen økt med %1$s. Største sammenslåing %2$s.</string>
+    <string name="announcement_new_best">Ny beste poengsum %1$s.</string>
+    <string name="announcement_victory">2048 nådd.</string>
+    <string name="announcement_game_over">Spillet er over.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d spill</item>
+        <item quantity="other">%1$d spill</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d trekk</item>
+        <item quantity="other">%1$d trekk</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="other">%1$d fusjoner</item>
+        <item quantity="one">%1$d sammenslåing</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="other">%1$d Angre bruk</item>
+        <item quantity="one">%1$d Angre bruk</item>
+    </plurals>
+    <string name="board_empty_cell">tømme</string>
+    <string name="board_row_summary">Rad %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Borde. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Flytt opp</string>
+    <string name="move_down">Flytt ned</string>
+    <string name="move_left">Flytt til venstre</string>
+    <string name="move_right">Flytt til høyre</string>
+</resources>

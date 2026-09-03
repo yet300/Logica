@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Reklamy pomagają nam ulepszać grę i udostępniać wszystkie funkcje bezpłatnie. Jeśli je wyłączysz, wskrzeszenia nadal będą bezpłatne — a Logicę możesz wesprzeć gwiazdką na GitHubie lub darowizną.</string>
     <string name="keep_ads">Pozostaw reklamy</string>
     <string name="disable_ads_anyway">Mimo to wyłącz</string>
+    <string name="cd_settings">Ustawienia</string>
     <string name="cd_back">Wstecz</string>
+    <string name="miniapp_unavailable">%1$s jest niedostępna</string>
+    <string name="back_to_catalog">Wróć do katalogu</string>
     <string name="exit">Wyjdź</string>
     <string name="review_prompt_title">Podoba Ci się Logica?</string>
     <string name="review_prompt_body">Twoja recenzja pomaga innym graczom znaleźć tę grę.</string>
     <string name="review_prompt_leave_feedback">Zostaw opinię</string>
     <string name="review_prompt_dont_show">Nie pokazuj ponownie</string>
+    <string name="delete_game_data">Usuń wszystkie dane gier</string>
+    <string name="delete_game_data_subtitle">Usuń postępy i wyniki ze wszystkich gier</string>
+    <string name="clear_game_data_title">Usunąć dane gier?</string>
+    <string name="clear_game_data_body">Spowoduje to trwałe usunięcie zapisanych stanów gier, wyników, samouczków i innych postępów ze wszystkich zainstalowanych gier.</string>
+    <string name="clear_game_data_preferences_kept">Twoje preferencje aplikacji, wybory dotyczące prywatności, zgody na reklamy i ustawienia recenzji nie zostaną usunięte.</string>
+    <string name="clear_game_data_action">Usuń dane gier</string>
+    <string name="clearing_game_data">Usuwanie danych gier…</string>
+    <string name="game_data_cleared">Wszystkie dane gier zostały usunięte.</string>
+    <string name="game_data_clear_failed">Nie udało się usunąć niektórych danych gier. Możesz spróbować ponownie dla wybranych gier:</string>
+    <string name="retry">Ponów</string>
+    <string name="done">Gotowe</string>
+    <string name="cancel">Anuluj</string>
 </resources>

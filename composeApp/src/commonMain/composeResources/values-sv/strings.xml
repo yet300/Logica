@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Annonser hjälper oss att förbättra spelet och hålla alla funktioner gratis. Om du stänger av dem förblir återupplivningar gratis — och du kan fortfarande stödja Logica med en GitHub-stjärna eller en donation.</string>
     <string name="keep_ads">Behåll annonser</string>
     <string name="disable_ads_anyway">Inaktivera ändå</string>
+    <string name="cd_settings">Inställningar</string>
     <string name="cd_back">Bakåt</string>
+    <string name="miniapp_unavailable">%1$s är inte tillgänglig</string>
+    <string name="back_to_catalog">Tillbaka till katalogen</string>
     <string name="exit">Avsluta</string>
     <string name="review_prompt_title">Gillar du Logica?</string>
     <string name="review_prompt_body">Din recension hjälper fler pusselspelare att hitta spelet.</string>
     <string name="review_prompt_leave_feedback">Lämna feedback</string>
     <string name="review_prompt_dont_show">Visa inte igen</string>
+    <string name="delete_game_data">Radera alla speldata</string>
+    <string name="delete_game_data_subtitle">Ta bort framsteg och resultat från varje spel</string>
+    <string name="clear_game_data_title">Radera speldata?</string>
+    <string name="clear_game_data_body">Detta raderar sparade spel, poäng, handledningar och andra framsteg permanent från alla installerade spel.</string>
+    <string name="clear_game_data_preferences_kept">Dina appinställningar, sekretessval, reklammedgivande och recensionsinställningar raderas inte.</string>
+    <string name="clear_game_data_action">Radera speldata</string>
+    <string name="clearing_game_data">Raderar speldata…</string>
+    <string name="game_data_cleared">Alla speldata har raderats.</string>
+    <string name="game_data_clear_failed">Vissa speldata kunde inte raderas. Du kan försöka igen för de berörda spelen:</string>
+    <string name="retry">Försök igen</string>
+    <string name="done">Klar</string>
+    <string name="cancel">Avbryt</string>
 </resources>

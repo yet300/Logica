@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">フルーツを落として合体させ、にぎやかなフルーツタワーを作ろう。</string>
+    <string name="score">スコア</string>
+    <string name="best_score">ベスト</string>
+    <string name="next_fruit">次</string>
+    <string name="clear_with_count">消去 · %1$d</string>
+    <string name="clear_with_ad">消去 · 広告</string>
+    <string name="shake_with_count">シャッフル · %1$d</string>
+    <string name="shake_with_ad">シャッフル · 広告</string>
+    <string name="cancel">キャンセル</string>
+    <string name="new_game">新しいゲーム</string>
+    <string name="game_over">フルーツタワーがいっぱいです</string>
+    <string name="game_over_supporting">フルーツが危険ラインを超えました。もう一度挑戦して、さらに大きなスイカを作りましょう。</string>
+    <string name="largest_fruit">最大のフルーツ</string>
+    <string name="tutorial_skip">スキップ</string>
+    <string name="tutorial_tap">画面をタップしてフルーツを落とします</string>
+    <string name="tutorial_drag">左右にドラッグして指を離すと落とせます</string>
+    <string name="loading_game">Fruit Merge を読み込み中</string>
+    <string name="drop_hint">上部で位置を合わせて離すと落とせます</string>
+    <string name="clear_hint">削除するフルーツを1つ選択してください</string>
+    <string name="danger_line">危険ライン</string>
+    <string name="board_description">Fruit Merge ボード。スコア %1$d。コンテナ内に %2$d 個のフルーツ。</string>
+    <string name="fruit_description">%1$sのフルーツ</string>
+    <string name="ad_disclosure">広告</string>
+    <string name="blueberry">ブルーベリー</string>
+    <string name="raspberry">ラズベリー</string>
+    <string name="strawberry">イチゴ</string>
+    <string name="lime">ライム</string>
+    <string name="mandarin">みかん</string>
+    <string name="apple">リンゴ</string>
+    <string name="pear">洋ナシ</string>
+    <string name="peach">モモ</string>
+    <string name="pineapple">パイナップル</string>
+    <string name="watermelon">スイカ</string>
+</resources>

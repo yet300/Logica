@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Fai scorrere le tessere corrispondenti e modella il tabellone verso il 2048.</string>
+    <string name="score">Punto</string>
+    <string name="best">Migliore</string>
+    <string name="new_best">nuovo migliore</string>
+    <string name="undo">Disfare</string>
+    <string name="restart">Ricomincia</string>
+    <string name="continue_game">Continuare</string>
+    <string name="new_game">Nuovo gioco</string>
+    <string name="victory">Vittoria</string>
+    <string name="game_over">Game Over</string>
+    <string name="cancel">Cancellare</string>
+    <string name="loading_game">Caricamento del gioco</string>
+    <string name="games_won">Partite vinte</string>
+    <string name="successful_moves">Mosse riuscite</string>
+    <string name="total_merges">Fusioni totali</string>
+    <string name="highest_tile">Piastrella più alta</string>
+    <string name="restart_confirmation_title">Riavviare il gioco?</string>
+    <string name="restart_confirmation_body">Il tuo punteggio è %1$sdopo %2$s. Il riavvio inizia una nuova partita.</string>
+    <string name="progress_not_saved">Non è stato possibile salvare i progressi</string>
+    <string name="new_game_not_saved">Impossibile salvare una nuova partita</string>
+    <string name="score_description">Punteggio, %1$s</string>
+    <string name="best_description">Migliore, %1$s</string>
+    <string name="best_new_description">Migliore, nuovo migliore, %1$s</string>
+    <string name="undo_description">Disfare</string>
+    <string name="restart_description">Ricomincia</string>
+    <string name="crown_description">Miglior punteggio</string>
+    <string name="announcement_move">Il punteggio è aumentato di %1$s.</string>
+    <string name="announcement_move_merge">Il punteggio è aumentato di %1$s. Unione più grande %2$s.</string>
+    <string name="announcement_new_best">Nuovo miglior punteggio %1$s.</string>
+    <string name="announcement_victory">2048 raggiunto.</string>
+    <string name="announcement_game_over">Game Over.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d gioco</item>
+        <item quantity="other">%1$d giochi</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d mossa</item>
+        <item quantity="other">%1$d mosse</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d unisci</item>
+        <item quantity="other">%1$d si unisce</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Annulla utilizzo</item>
+        <item quantity="other">%1$d Annulla usi</item>
+    </plurals>
+    <string name="board_empty_cell">vuoto</string>
+    <string name="board_row_summary">Riga %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Asse. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Vai su</string>
+    <string name="move_down">Spostati giù</string>
+    <string name="move_left">Spostati a sinistra</string>
+    <string name="move_right">Muoviti a destra</string>
+</resources>

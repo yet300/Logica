@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">下落、合成，堆叠出欢乐的水果塔。</string>
+    <string name="score">得分</string>
+    <string name="best_score">最高分</string>
+    <string name="next_fruit">下一个</string>
+    <string name="clear_with_count">清除 · %1$d</string>
+    <string name="clear_with_ad">清除 · 广告</string>
+    <string name="shake_with_count">摇晃 · %1$d</string>
+    <string name="shake_with_ad">摇晃 · 广告</string>
+    <string name="cancel">取消</string>
+    <string name="new_game">新游戏</string>
+    <string name="game_over">水果塔已满</string>
+    <string name="game_over_supporting">水果超过了警戒线。重新开始并合成更大的西瓜吧。</string>
+    <string name="largest_fruit">最大水果</string>
+    <string name="tutorial_skip">跳过</string>
+    <string name="tutorial_tap">点击任意位置投下水果</string>
+    <string name="tutorial_drag">左右拖动并松开以选择投下位置</string>
+    <string name="loading_game">正在加载 Fruit Merge</string>
+    <string name="drop_hint">在顶部滑动并松开以投下</string>
+    <string name="clear_hint">选择一个要消除的水果</string>
+    <string name="danger_line">警戒线</string>
+    <string name="board_description">Fruit Merge 棋盘。得分 %1$d。容器内有 %2$d 个水果。</string>
+    <string name="fruit_description">%1$s水果</string>
+    <string name="ad_disclosure">广告</string>
+    <string name="blueberry">蓝莓</string>
+    <string name="raspberry">树莓</string>
+    <string name="strawberry">草莓</string>
+    <string name="lime">青柠</string>
+    <string name="mandarin">橘子</string>
+    <string name="apple">苹果</string>
+    <string name="pear">梨</string>
+    <string name="peach">桃子</string>
+    <string name="pineapple">菠萝</string>
+    <string name="watermelon">西瓜</string>
+</resources>

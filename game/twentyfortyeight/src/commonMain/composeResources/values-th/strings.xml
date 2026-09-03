@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">เลื่อนแผ่นจับคู่และจัดรูปร่างกระดานไปทางปี 2048</string>
+    <string name="score">คะแนน</string>
+    <string name="best">ดีที่สุด</string>
+    <string name="new_best">ใหม่ดีที่สุด</string>
+    <string name="undo">เลิกทำ</string>
+    <string name="restart">รีสตาร์ท</string>
+    <string name="continue_game">ดำเนินการต่อ</string>
+    <string name="new_game">เกมใหม่</string>
+    <string name="victory">ชัยชนะ</string>
+    <string name="game_over">จบเกม</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="loading_game">กำลังโหลดเกม</string>
+    <string name="games_won">เกมส์ชนะ</string>
+    <string name="successful_moves">การเคลื่อนไหวที่ประสบความสำเร็จ</string>
+    <string name="total_merges">รวมทั้งหมด</string>
+    <string name="highest_tile">กระเบื้องสูงสุด</string>
+    <string name="restart_confirmation_title">รีสตาร์ทเกม?</string>
+    <string name="restart_confirmation_body">คะแนนของคุณคือ %1$sหลัง %2$sการรีสตาร์ทจะเป็นการเริ่มเกมใหม่</string>
+    <string name="progress_not_saved">ไม่สามารถบันทึกความคืบหน้าได้</string>
+    <string name="new_game_not_saved">ไม่สามารถบันทึกเกมใหม่ได้</string>
+    <string name="score_description">คะแนน %1$s</string>
+    <string name="best_description">ดีที่สุด %1$s</string>
+    <string name="best_new_description">ดีที่สุด ใหม่ที่สุด %1$s</string>
+    <string name="undo_description">เลิกทำ</string>
+    <string name="restart_description">รีสตาร์ท</string>
+    <string name="crown_description">คะแนนที่ดีที่สุด</string>
+    <string name="announcement_move">คะแนนเพิ่มขึ้น %1$s</string>
+    <string name="announcement_move_merge">คะแนนเพิ่มขึ้น %1$sการรวม %2$sที่ใหญ่ที่สุด</string>
+    <string name="announcement_new_best">คะแนนที่ดีที่สุดใหม่ %1$s</string>
+    <string name="announcement_victory">ถึงปี 2048 แล้ว</string>
+    <string name="announcement_game_over">จบเกม</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d เกม</item>
+        <item quantity="other">%1$d เกม</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d ย้าย</item>
+        <item quantity="other">%1$d เคลื่อนไหว</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="other">%1$d ผสานกัน</item>
+        <item quantity="one">%1$d ผสาน</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="other">%1$d เลิกทำการใช้งาน</item>
+        <item quantity="one">%1$d เลิกทำการใช้งาน</item>
+    </plurals>
+    <string name="board_empty_cell">ว่างเปล่า</string>
+    <string name="board_row_summary">แถว %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">กระดาน. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">เลื่อนขึ้น</string>
+    <string name="move_down">เลื่อนลง</string>
+    <string name="move_left">เลื่อนไปทางซ้าย</string>
+    <string name="move_right">เลื่อนไปทางขวา</string>
+</resources>

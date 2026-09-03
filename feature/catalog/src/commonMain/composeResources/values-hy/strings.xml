@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Logica</string>
+    <string name="play">Խաղալ</string>
+    <string name="catalog_empty_title">Դեռ հավելվածներ չկան</string>
+</resources>

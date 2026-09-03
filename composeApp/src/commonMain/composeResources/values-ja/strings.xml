@@ -31,10 +31,25 @@
     <string name="disable_ads_body">広告はゲームの改善と、すべての機能の無料提供に役立っています。無効にしても復活は無料のままです。GitHubのスターや寄付でLogicaを応援することもできます。</string>
     <string name="keep_ads">広告を残す</string>
     <string name="disable_ads_anyway">無効にする</string>
+    <string name="cd_settings">設定</string>
     <string name="cd_back">戻る</string>
+    <string name="miniapp_unavailable">%1$s は利用できません</string>
+    <string name="back_to_catalog">カタログに戻る</string>
     <string name="exit">終了</string>
     <string name="review_prompt_title">Logicaを楽しんでいますか？</string>
     <string name="review_prompt_body">あなたのレビューは、より多くのパズルプレイヤーがこのゲームを見つけるのに役立ちます。</string>
     <string name="review_prompt_leave_feedback">フィードバックを残す</string>
     <string name="review_prompt_dont_show">今後表示しない</string>
+    <string name="delete_game_data">すべてのゲームデータを削除</string>
+    <string name="delete_game_data_subtitle">すべてのゲームから進行状況とスコアを削除</string>
+    <string name="clear_game_data_title">ゲームデータを削除しますか？</string>
+    <string name="clear_game_data_body">インストールされているすべてのゲームから、セーブデータ、スコア、チュートリアル、その他の進行状況が完全に削除されます。</string>
+    <string name="clear_game_data_preferences_kept">アプリの設定、プライバシー設定、広告の同意、レビュー設定は削除されません。</string>
+    <string name="clear_game_data_action">ゲームデータを削除</string>
+    <string name="clearing_game_data">ゲームデータを削除中…</string>
+    <string name="game_data_cleared">すべてのゲームデータが削除されました。</string>
+    <string name="game_data_clear_failed">一部のゲームデータを削除できませんでした。該当するゲームを再試行できます：</string>
+    <string name="retry">再試行</string>
+    <string name="done">完了</string>
+    <string name="cancel">キャンセル</string>
 </resources>

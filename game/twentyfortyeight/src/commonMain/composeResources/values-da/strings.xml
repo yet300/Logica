@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Skub matchende fliser og form brættet mod 2048.</string>
+    <string name="score">Score</string>
+    <string name="best">Bedst</string>
+    <string name="new_best">nye bedste</string>
+    <string name="undo">Fortryd</string>
+    <string name="restart">Restart</string>
+    <string name="continue_game">Fortsætte</string>
+    <string name="new_game">Nyt spil</string>
+    <string name="victory">Sejr</string>
+    <string name="game_over">Spillet er slut</string>
+    <string name="cancel">Ophæve</string>
+    <string name="loading_game">Indlæser spil</string>
+    <string name="games_won">Spil vundet</string>
+    <string name="successful_moves">Vellykkede træk</string>
+    <string name="total_merges">Total merges</string>
+    <string name="highest_tile">Højeste flise</string>
+    <string name="restart_confirmation_title">Genstarte spillet?</string>
+    <string name="restart_confirmation_body">Din score er %1$sefter %2$s. Genstart begynder et nyt spil.</string>
+    <string name="progress_not_saved">Fremskridt kunne ikke gemmes</string>
+    <string name="new_game_not_saved">Et nyt spil kunne ikke gemmes</string>
+    <string name="score_description">Resultat, %1$s</string>
+    <string name="best_description">Best, %1$s</string>
+    <string name="best_new_description">Bedste, nye bedste, %1$s</string>
+    <string name="undo_description">Fortryd</string>
+    <string name="restart_description">Genstart</string>
+    <string name="crown_description">Bedste score</string>
+    <string name="announcement_move">Score increased by %1$s.</string>
+    <string name="announcement_move_merge">Resultatet er steget med %1$s. Største fletning %2$s.</string>
+    <string name="announcement_new_best">Nyt bedste resultat %1$s.</string>
+    <string name="announcement_victory">2048 nået.</string>
+    <string name="announcement_game_over">Spillet er slut.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d spil</item>
+        <item quantity="other">%1$d spil</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d træk</item>
+        <item quantity="other">%1$d træk</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d fletning</item>
+        <item quantity="other">%1$d fletninger</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Fortryd brug</item>
+        <item quantity="other">%1$d Fortryd anvendelser</item>
+    </plurals>
+    <string name="board_empty_cell">tom</string>
+    <string name="board_row_summary">Række %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Bestyrelse. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Flyt op</string>
+    <string name="move_down">Flyt ned</string>
+    <string name="move_left">Flyt til venstre</string>
+    <string name="move_right">Flyt til højre</string>
+</resources>

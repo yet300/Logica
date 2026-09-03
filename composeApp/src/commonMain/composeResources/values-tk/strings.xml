@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Mahabat oýny ösdürmäge we ähli mümkinçilikleri mugt saklamaga kömek edýär. Ony öçürseňiz hem, gaýtadan janlanmak mugt galar — Logica-ny GitHub ýyldyzy ýa-da sadaka bilen goldap bilersiňiz.</string>
     <string name="keep_ads">Mahabaty sakla</string>
     <string name="disable_ads_anyway">Şonda-da öçür</string>
+    <string name="cd_settings">Sazlamalar</string>
     <string name="cd_back">Yza</string>
+    <string name="miniapp_unavailable">%1$s elýeterli däl</string>
+    <string name="back_to_catalog">Kataloga dolan</string>
     <string name="exit">Çykyş</string>
     <string name="review_prompt_title">Logica halaýarmy?</string>
     <string name="review_prompt_body">Siziň synlaryňyz has köp tapmaça oýunçylaryna oýny tapmaga kömek eder.</string>
     <string name="review_prompt_leave_feedback">Pikir galdyrmak</string>
     <string name="review_prompt_dont_show">Ýene görkezme</string>
+    <string name="delete_game_data">Ähli oýun maglumatlaryny poz</string>
+    <string name="delete_game_data_subtitle">Her oýundan ösüşi we netijeleri aýyryň</string>
+    <string name="clear_game_data_title">Oýun maglumatlary pozulsynmy?</string>
+    <string name="clear_game_data_body">Bu ähli gurlan oýunlardan ýazga alnan oýunlary, utuklary, gollanmalary we beýleki ösüşleri hemişelik pozar.</string>
+    <string name="clear_game_data_preferences_kept">Programma sazlamalaryňyz, gizlinlik saýlawlaryňyz, mahabat razylygyňyz we syn sazlamalaryňyz pozulmaz.</string>
+    <string name="clear_game_data_action">Oýun maglumatlaryny poz</string>
+    <string name="clearing_game_data">Oýun maglumatlary pozulýar…</string>
+    <string name="game_data_cleared">Ähli oýun maglumatlary pozuldy.</string>
+    <string name="game_data_clear_failed">Käbir oýun maglumatlary pozulyp bilinmedi. Täsir eden oýunlar üçin gaýtadan synanyşyp bilersiňiz:</string>
+    <string name="retry">Gaýtala</string>
+    <string name="done">Taýyn</string>
+    <string name="cancel">Ýatyr</string>
 </resources>

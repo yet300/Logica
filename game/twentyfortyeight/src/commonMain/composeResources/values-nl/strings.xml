@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Verschuif bijpassende tegels en vorm het bord richting 2048.</string>
+    <string name="score">Scoren</string>
+    <string name="best">Best</string>
+    <string name="new_best">nieuwe beste</string>
+    <string name="undo">Ongedaan maken</string>
+    <string name="restart">Opnieuw opstarten</string>
+    <string name="continue_game">Doorgaan</string>
+    <string name="new_game">Nieuw spel</string>
+    <string name="victory">Overwinning</string>
+    <string name="game_over">Spel voorbij</string>
+    <string name="cancel">Annuleren</string>
+    <string name="loading_game">Spel laden</string>
+    <string name="games_won">Gewonnen wedstrijden</string>
+    <string name="successful_moves">Succesvolle bewegingen</string>
+    <string name="total_merges">Totaal fusies</string>
+    <string name="highest_tile">Hoogste tegel</string>
+    <string name="restart_confirmation_title">Spel opnieuw starten?</string>
+    <string name="restart_confirmation_body">Je score is %1$sna %2$s. Door opnieuw te starten begint een nieuw spel.</string>
+    <string name="progress_not_saved">De vooruitgang kon niet worden opgeslagen</string>
+    <string name="new_game_not_saved">Een nieuw spel kon niet worden opgeslagen</string>
+    <string name="score_description">Score, %1$s</string>
+    <string name="best_description">Beste, %1$s</string>
+    <string name="best_new_description">Beste, nieuwe beste, %1$s</string>
+    <string name="undo_description">Ongedaan maken</string>
+    <string name="restart_description">Opnieuw opstarten</string>
+    <string name="crown_description">Beste score</string>
+    <string name="announcement_move">Score verhoogd met %1$s.</string>
+    <string name="announcement_move_merge">Score verhoogd met %1$s. Grootste samenvoeging %2$s.</string>
+    <string name="announcement_new_best">Nieuwe beste score %1$s.</string>
+    <string name="announcement_victory">2048 bereikt.</string>
+    <string name="announcement_game_over">Spel voorbij.</string>
+    <plurals name="games_count">
+        <item quantity="other">%1$d spellen</item>
+        <item quantity="one">%1$d spel</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d verplaatsing</item>
+        <item quantity="other">%1$d bewegingen</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="other">%1$d samengevoegd</item>
+        <item quantity="one">%1$d samenvoegen</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Gebruik ongedaan maken</item>
+        <item quantity="other">%1$d Gebruik ongedaan maken</item>
+    </plurals>
+    <string name="board_empty_cell">leeg</string>
+    <string name="board_row_summary">Rij %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Bord. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Ga omhoog</string>
+    <string name="move_down">Ga naar beneden</string>
+    <string name="move_left">Ga naar links</string>
+    <string name="move_right">Ga naar rechts</string>
+</resources>
