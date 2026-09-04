@@ -1,27 +1,27 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { COPY, LOCALES, localizedHeadlines, localizedLabels } from "./marketing-copy.mjs";
 
 const story = [
-  { id: "01-collection", layout: "hero", label: "LOGICA", headline: "A growing world\nof puzzles.", shot: "01-catalog.png" },
-  { id: "02-choice", layout: "device-bottom", label: "CHOOSE YOUR GAME", headline: "Choose your\nnext challenge.", shot: "01-catalog.png" },
-  { id: "03-blockblast", layout: "device-top", label: "BLOCK BLAST", headline: "Clear lines.\nFind your flow.", shot: "02-blockblast.png", inverted: true },
-  { id: "04-2048", layout: "hero", label: "2048", headline: "Merge numbers.\nThink ahead.", shot: "03-2048.png" },
-  { id: "05-fruitmerge", layout: "device-bottom", label: "FRUIT MERGE", headline: "Drop fruit.\nGrow bigger.", shot: "04-fruitmerge.png" },
-  { id: "06-collection", layout: "three-devices", label: "GROWING COLLECTION", headline: "Different games.\nOne thoughtful home.", shot: "02-blockblast.png", secondary: "03-2048.png", tertiary: "04-fruitmerge.png", inverted: true },
-  { id: "07-close", layout: "hero", label: "LOGICA", headline: "Your next\npuzzle awaits.", shot: "01-catalog.png" },
+  { id: "01-collection", layout: "hero", shot: "01-catalog.png" },
+  { id: "02-choice", layout: "device-bottom", shot: "01-catalog.png" },
+  { id: "03-blockblast", layout: "device-top", shot: "02-blockblast.png", inverted: true },
+  { id: "04-2048", layout: "hero", shot: "03-2048.png" },
+  { id: "05-fruitmerge", layout: "device-bottom", shot: "04-fruitmerge.png" },
+  { id: "06-collection", layout: "three-devices", shot: "02-blockblast.png", secondary: "03-2048.png", tertiary: "04-fruitmerge.png", inverted: true },
+  { id: "07-close", layout: "hero", shot: "01-catalog.png" },
 ];
 
-function localize(value) {
-  return { en: value };
-}
+const labels = localizedLabels();
+const headlines = localizedHeadlines();
 
 function buildDeck(basePath, device) {
-  return story.map((item) => ({
+  return story.map((item, index) => ({
     id: `${device}-${item.id}`,
     layout: item.layout,
-    label: localize(item.label),
-    headline: localize(item.headline),
+    label: labels[index],
+    headline: headlines[index],
     screenshot: `${basePath}${item.shot}`,
     ...(item.secondary ? { screenshotSecondary: `${basePath}${item.secondary}` } : {}),
     ...(item.tertiary ? { screenshotTertiary: `${basePath}${item.tertiary}` } : {}),
@@ -36,14 +36,14 @@ function buildDeck(basePath, device) {
   }));
 }
 
-const iphoneBase = "/screenshots/apple/iphone/{locale}/";
-const ipadBase = "/screenshots/apple/ipad/{locale}/";
+const iphoneBase = "/screenshots/apple/iphone/en/";
+const ipadBase = "/screenshots/apple/ipad/en/";
 const state = {
   schemaVersion: 2,
   appName: "Logica",
   themeId: "quiet-editorial",
   connectedCanvas: true,
-  locales: ["en"],
+  locales: LOCALES,
   locale: "en",
   device: "iphone",
   orientation: "portrait",
@@ -59,7 +59,9 @@ const state = {
         id: "feature-graphic-en",
         layout: "feature-graphic",
         label: {},
-        headline: localize("A growing world of puzzles."),
+        headline: Object.fromEntries(
+          LOCALES.map((locale) => [locale, COPY[locale].headlines[0].replace("\n", " ")]),
+        ),
         screenshot: "",
       },
     ],

@@ -4,6 +4,12 @@ import process from "node:process";
 
 const root = process.cwd();
 const state = JSON.parse(fs.readFileSync(path.join(root, "app-store-screenshots.json"), "utf8"));
+const expectedLocales = [
+  "ar", "az", "be", "bn", "da", "de", "el", "en", "es", "fi",
+  "fr", "he", "hi", "hu", "hy", "id", "it", "ja", "ka", "kk",
+  "ko", "ky", "nb", "nl", "pl", "pt", "ro", "ru", "sv", "tg",
+  "th", "tk", "tr", "uk", "uz", "vi", "zh",
+];
 const expectedHeadlines = [
   "A growing world\nof puzzles.",
   "Choose your\nnext challenge.",
@@ -32,7 +38,7 @@ assert(state.schemaVersion === 2, "schemaVersion must be 2");
 assert(state.appName === "Logica", "appName must be Logica");
 assert(state.themeId === "quiet-editorial", "Quiet Editorial theme must be active");
 assert(state.connectedCanvas === true, "new decks must use connected canvas");
-assert(JSON.stringify(state.locales) === JSON.stringify(["en"]), "only English is in scope");
+assert(JSON.stringify(state.locales) === JSON.stringify(expectedLocales), "all app locales must be in scope");
 assert(state.locale === "en", "active locale must be en");
 assert(state.appIcon === "/app-icon.png", "production icon path is required");
 

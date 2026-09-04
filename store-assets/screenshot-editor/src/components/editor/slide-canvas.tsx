@@ -26,6 +26,7 @@ import {
 import { toTextElementId } from "@/lib/elements";
 import { img } from "@/lib/image-cache";
 import { pickText, resolveScreenshot } from "@/lib/locale";
+import { directionForLocale } from "@/lib/store-locales";
 import {
   AndroidPhone,
   AndroidTabletL,
@@ -241,6 +242,7 @@ function Caption({
   const unit = Math.min(cW, cH);
   return (
     <div
+      dir={directionForLocale(locale)}
       style={{
         textAlign: align,
         position: "relative",
@@ -890,7 +892,7 @@ function FeatureGraphicCanvas({
             {(appName || "A").slice(0, 1).toUpperCase()}
           </div>
         )}
-        <div>
+        <div dir={directionForLocale(locale)}>
           <div style={{ fontSize: cW * 0.06, fontWeight: 900, lineHeight: 1.05 }}>{appName || "App"}</div>
           <EditableText
             value={pickText(slide.headline, locale)}
