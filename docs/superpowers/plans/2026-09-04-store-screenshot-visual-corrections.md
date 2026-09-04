@@ -4,7 +4,7 @@
 
 **Goal:** Improve Feature Graphic contrast, use heavier SF-style marketing typography, remove the Android camera treatment, and eliminate the Android screen-3 overlap.
 
-**Architecture:** Keep the existing screenshot editor and canonical deck state. Add a source-level visual contract check, change shared canvas presentation primitives, then store one Android-only transform in the deterministic seed state. Re-export only Android Phone and Feature Graphic, normalize them through the existing RGB verifier, and rebuild the contact sheet.
+**Architecture:** Keep the existing screenshot editor and canonical deck state. Add a source-level visual contract check, change shared canvas presentation primitives, then store one Android-only transform in the deterministic seed state. Re-export every deck because the typography primitive is shared, normalize all outputs through the existing RGB verifier, and rebuild the contact sheet.
 
 **Tech Stack:** Next.js 15, React, TypeScript, html-to-image, Playwright CLI, Pillow, Node.js verification scripts.
 
@@ -126,21 +126,23 @@ rtk git commit -m "design: refine store screenshot presentation"
 ### Task 4: Re-export and Verify Corrected Assets
 
 **Files:**
+- Replace: `store-assets/exports/en/iphone/**/*.png`
+- Replace: `store-assets/exports/en/ipad/**/*.png`
 - Replace: `store-assets/exports/en/android/1080x1920/*.png`
 - Replace: `store-assets/exports/en/feature-graphic/1024x500/01-feature-graphic.png`
 - Replace: `store-assets/review/contact-sheet.png`
 
-- [ ] **Step 1: Start the editor and inspect both corrected decks**
+- [ ] **Step 1: Start the editor and inspect all corrected decks**
 
 ```bash
 rtk bun dev
 ```
 
-Open `http://localhost:3000`, inspect Android screen 3 and Feature Graphic, and confirm the visual acceptance criteria before export.
+Open `http://localhost:3000`, inspect the heavier typography on iPhone and iPad plus Android screen 3 and Feature Graphic, and confirm the visual acceptance criteria before export.
 
-- [ ] **Step 2: Export Android Phone and Feature Graphic through Playwright**
+- [ ] **Step 2: Export iPhone, iPad, Android Phone, and Feature Graphic through Playwright**
 
-Save both downloaded ZIP files under a temporary directory, extract the seven Android PNGs and one Feature Graphic into their canonical export directories, and preserve their existing filenames.
+Save all four downloaded ZIP files under a temporary directory, extract all 50 PNGs into their canonical export directories, and preserve their existing filenames.
 
 - [ ] **Step 3: Normalize and verify all exports**
 
@@ -150,7 +152,7 @@ rtk python3 tools/store_screenshots/verify_exports.py --flatten \
   --contact-sheet store-assets/review/contact-sheet.png
 ```
 
-Expected: `Flattened 8; verified 50 opaque RGB PNGs`.
+Expected: `Flattened 50; verified 50 opaque RGB PNGs`.
 
 - [ ] **Step 4: Inspect corrected assets at original resolution**
 
@@ -159,7 +161,7 @@ Verify the orange banner, white text contrast, camera-less Android shell, heavie
 - [ ] **Step 5: Commit regenerated assets**
 
 ```bash
-rtk git add store-assets/exports/en/android store-assets/exports/en/feature-graphic store-assets/review/contact-sheet.png
+rtk git add store-assets/exports/en store-assets/review/contact-sheet.png
 rtk git commit -m "assets: refresh corrected store screenshots"
 ```
 
