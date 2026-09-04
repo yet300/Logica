@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "verify:project": "node scripts/verify-project.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
