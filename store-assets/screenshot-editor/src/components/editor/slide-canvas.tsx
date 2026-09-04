@@ -337,6 +337,7 @@ type LayoutRects = {
   caption?: Rect & { align?: "center" | "left" };
   device?: Rect;
   deviceSecondary?: Rect;
+  deviceTertiary?: Rect;
 };
 
 function getDefaultRects(
@@ -401,6 +402,31 @@ function getDefaultRects(
           height: (deviceW * 0.9) / frameAspect,
         },
       };
+    case "three-devices": {
+      const mosaicW = Math.min(smallW, cW * 0.48);
+      const mosaicH = mosaicW / frameAspect;
+      return {
+        caption: { x: cW * 0.08, y: cH * 0.055, width: capW, height: cH * 0.22, align: "center" },
+        deviceSecondary: {
+          x: -mosaicW * 0.18,
+          y: cH - mosaicH * 0.86,
+          width: mosaicW,
+          height: mosaicH,
+        },
+        device: {
+          x: (cW - mosaicW) / 2,
+          y: cH - mosaicH * 0.96,
+          width: mosaicW,
+          height: mosaicH,
+        },
+        deviceTertiary: {
+          x: cW - mosaicW * 0.82,
+          y: cH - mosaicH * 0.86,
+          width: mosaicW,
+          height: mosaicH,
+        },
+      };
+    }
     case "no-device":
       return {
         caption: {
@@ -486,6 +512,7 @@ export function getElementTransform(
 }
 
 function defaultElementZ(id: BuiltInElementId): number {
+  if (id === "deviceTertiary") return 1;
   if (id === "deviceSecondary") return 2;
   if (id === "device") return 3;
   return 4;
@@ -905,11 +932,13 @@ function SlideElements({
 }) {
   const screenshot = resolveScreenshot(slide.screenshot, locale);
   const screenshotSecondary = resolveScreenshot(slide.screenshotSecondary, locale);
+  const screenshotTertiary = resolveScreenshot(slide.screenshotTertiary, locale);
   const { cW, cH, Frame, frameAspect, defaults } = getSlideGeometry(slide, device, orientation);
   const inverted = !!slide.inverted;
   const captionRect = rectFor("caption", slide, defaults);
   const deviceRect = rectFor("device", slide, defaults);
   const secondaryRect = rectFor("deviceSecondary", slide, defaults);
+  const tertiaryRect = rectFor("deviceTertiary", slide, defaults);
 
   function toGlobal(rect: Rect): Rect {
     return { ...rect, x: rect.x + screenX };
@@ -968,10 +997,15 @@ function SlideElements({
     );
   }
 
-  function renderDevice(id: "device" | "deviceSecondary", rect: Rect, src: string, extraStyle?: React.CSSProperties) {
+  function renderDevice(
+    id: "device" | "deviceSecondary" | "deviceTertiary",
+    rect: Rect,
+    src: string,
+    extraStyle?: React.CSSProperties,
+  ) {
     const saved = slide.transforms?.[id];
     const rotation = saved?.rotation ?? 0;
-    const zIndex = saved?.zIndex ?? (id === "deviceSecondary" ? 2 : 3);
+    const zIndex = saved?.zIndex ?? defaultElementZ(id);
     return (
       <Movable
         rect={toGlobal(rect)}
@@ -1074,6 +1108,10 @@ function SlideElements({
 
   return (
     <>
+      {tertiaryRect &&
+        renderDevice("deviceTertiary", tertiaryRect, screenshotTertiary || screenshot, {
+          opacity: 0.82,
+        })}
       {secondaryRect &&
         renderDevice(
           "deviceSecondary",

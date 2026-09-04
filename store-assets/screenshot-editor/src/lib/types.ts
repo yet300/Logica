@@ -16,6 +16,7 @@ export type SlideLayout =
   | "device-bottom"    // headline top, device bottom-center
   | "device-top"       // device top, headline bottom (contrast)
   | "two-devices"      // back + front phones, headline above
+  | "three-devices"    // three layered devices in a collection mosaic
   | "no-device"        // big headline + decorative blob, no device
   | "split-landscape"  // landscape tablets only: caption left + device right
   | "feature-graphic"; // 1024×500 banner with icon + name + tagline
@@ -30,7 +31,7 @@ export type ElementTransform = {
   zIndex?: number;
 };
 
-export type BuiltInElementId = "caption" | "device" | "deviceSecondary";
+export type BuiltInElementId = "caption" | "device" | "deviceSecondary" | "deviceTertiary";
 export type TextElementId = `text:${string}`;
 export type ElementId = BuiltInElementId | TextElementId;
 
@@ -62,6 +63,7 @@ export type Slide = {
   headline: LocalizedText;    // multi-line; newlines are intentional, per locale
   screenshot: string;         // path under /screenshots/ — may contain {locale}
   screenshotSecondary?: string; // for two-devices layout — may contain {locale}
+  screenshotTertiary?: string; // for three-devices layout — may contain {locale}
   inverted?: boolean;         // dark background variant
   // Per-element overrides; when present, replaces layout default placement.
   transforms?: Partial<Record<BuiltInElementId, ElementTransform>>;
@@ -72,6 +74,7 @@ export type ThemeId =
   | "clean-light"
   | "dark-bold"
   | "warm-editorial"
+  | "quiet-editorial"
   | "ocean-fresh"
   | "bloom-roast";
 

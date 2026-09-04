@@ -60,6 +60,7 @@ const ELEMENT_LABEL: Record<BuiltInElementId, string> = {
   caption: "Headline",
   device: "Device",
   deviceSecondary: "Back device",
+  deviceTertiary: "Right device",
 };
 
 export function Inspector({
@@ -93,7 +94,12 @@ export function Inspector({
 
   React.useEffect(() => {
     if (device === "feature-graphic" && slide.layout !== "feature-graphic") {
-      onChange({ layout: "feature-graphic", transforms: undefined, screenshotSecondary: undefined });
+      onChange({
+        layout: "feature-graphic",
+        transforms: undefined,
+        screenshotSecondary: undefined,
+        screenshotTertiary: undefined,
+      });
     }
   }, [device, onChange, slide.layout]);
 
@@ -120,7 +126,13 @@ export function Inspector({
                 layout: next,
                 transforms: undefined,
                 screenshotSecondary:
-                  next === "two-devices" ? slide.screenshotSecondary || slide.screenshot : undefined,
+                  next === "two-devices" || next === "three-devices"
+                    ? slide.screenshotSecondary || slide.screenshot
+                    : undefined,
+                screenshotTertiary:
+                  next === "three-devices"
+                    ? slide.screenshotTertiary || slide.screenshotSecondary || slide.screenshot
+                    : undefined,
               });
             }}
           >
@@ -164,7 +176,9 @@ export function Inspector({
         {!isFeatureGraphic && !isNoDevice && (
           <div className="space-y-1.5">
             <Label className="text-xs">
-              {slide.layout === "two-devices" ? "Front device screenshot" : "Screenshot"}
+              {slide.layout === "two-devices" || slide.layout === "three-devices"
+                ? "Front device screenshot"
+                : "Screenshot"}
             </Label>
             <ScreenshotPicker
               label="Primary"
@@ -175,7 +189,7 @@ export function Inspector({
           </div>
         )}
 
-        {slide.layout === "two-devices" && (
+        {(slide.layout === "two-devices" || slide.layout === "three-devices") && (
           <div className="space-y-1.5">
             <Label className="text-xs">Back device screenshot</Label>
             <ScreenshotPicker
@@ -183,6 +197,18 @@ export function Inspector({
               value={slide.screenshotSecondary || ""}
               locale={locale}
               onChange={(v) => onChange({ screenshotSecondary: v })}
+            />
+          </div>
+        )}
+
+        {slide.layout === "three-devices" && (
+          <div className="space-y-1.5">
+            <Label className="text-xs">Right device screenshot</Label>
+            <ScreenshotPicker
+              label="Tertiary (right layer)"
+              value={slide.screenshotTertiary || ""}
+              locale={locale}
+              onChange={(v) => onChange({ screenshotTertiary: v })}
             />
           </div>
         )}
@@ -228,7 +254,10 @@ function ElementTransformControls({
 }) {
   const present: ElementId[] = ["caption"];
   if (slide.layout !== "no-device") present.push("device");
-  if (slide.layout === "two-devices") present.push("deviceSecondary");
+  if (slide.layout === "two-devices" || slide.layout === "three-devices") {
+    present.push("deviceSecondary");
+  }
+  if (slide.layout === "three-devices") present.push("deviceTertiary");
   for (const element of slide.textElements || []) present.push(toTextElementId(element.id));
 
   const transforms = slide.transforms || {};
