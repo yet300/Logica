@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT))
 from tools.store_screenshots.verify_exports import (
     EXPECTED,
     build_contact_sheet,
+    flatten_exports,
     verify_exports,
 )
 
@@ -52,6 +53,16 @@ class ExportVerifierTest(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "must be opaque RGB"):
                 verify_exports(root)
+
+    def test_flattens_opaque_rgba_exports(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.make_inventory(root)
+            target = root / "feature-graphic/1024x500/01-shot.png"
+            Image.new("RGBA", (1024, 500), (23, 23, 21, 255)).save(target)
+            self.assertEqual(flatten_exports(root), 1)
+            with Image.open(target) as image:
+                self.assertEqual(image.mode, "RGB")
 
     def test_accepts_complete_export_inventory(self):
         with TemporaryDirectory() as temp:

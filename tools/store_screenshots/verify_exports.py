@@ -23,6 +23,25 @@ PRIMARY = (
 )
 
 
+def flatten_exports(export_root: Path) -> int:
+    """Flatten browser-generated PNGs to store-safe opaque RGB in place."""
+    converted = 0
+    for relative in EXPECTED:
+        directory = Path(export_root) / relative
+        for file in sorted(directory.glob("*.png")) if directory.is_dir() else []:
+            with Image.open(file) as image:
+                if image.mode == "RGB" and "transparency" not in image.info:
+                    continue
+                flattened = Image.new("RGB", image.size, "#FFFFFF")
+                if "A" in image.getbands():
+                    flattened.paste(image.convert("RGBA"), mask=image.getchannel("A"))
+                else:
+                    flattened.paste(image.convert("RGB"))
+                flattened.save(file, "PNG", optimize=True)
+                converted += 1
+    return converted
+
+
 def verify_exports(export_root: Path) -> list[Path]:
     export_root = Path(export_root)
     verified = []
@@ -95,11 +114,18 @@ def main():
     parser = ArgumentParser()
     parser.add_argument("--export-root", type=Path, required=True)
     parser.add_argument("--contact-sheet", type=Path, required=True)
+    parser.add_argument(
+        "--flatten",
+        action="store_true",
+        help="flatten browser-generated RGBA PNGs to opaque RGB before verification",
+    )
     args = parser.parse_args()
+    converted = flatten_exports(args.export_root) if args.flatten else 0
     files = verify_exports(args.export_root)
     build_contact_sheet(args.export_root, args.contact_sheet)
     print(
-        f"Verified {len(files)} opaque RGB PNGs; contact sheet: {args.contact_sheet}"
+        f"Flattened {converted}; verified {len(files)} opaque RGB PNGs; "
+        f"contact sheet: {args.contact_sheet}"
     )
 
 
