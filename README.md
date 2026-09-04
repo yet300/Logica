@@ -23,11 +23,28 @@ independent Gradle modules reviewed and allowlisted at build time.
 
 ## Screenshots
 
+### iPhone
+
 <p>
-  <img src="picture/screen1_en.png" width="200" />
-  <img src="picture/screen2_en.png" width="200" />
-  <img src="picture/screen3_en.png" width="200" />
-  <img src="picture/screen4_en.png" width="200" />
+  <img src="store-assets/exports/en/iphone/1320x2868/01-hero.png" width="150" alt="Logica growing puzzle collection" />
+  <img src="store-assets/exports/en/iphone/1320x2868/02-device-bottom.png" width="150" alt="Choose your next challenge in Logica" />
+  <img src="store-assets/exports/en/iphone/1320x2868/03-device-top.png" width="150" alt="Block Blast gameplay" />
+  <img src="store-assets/exports/en/iphone/1320x2868/04-hero.png" width="150" alt="2048 gameplay" />
+  <img src="store-assets/exports/en/iphone/1320x2868/05-device-bottom.png" width="150" alt="Fruit Merge gameplay" />
+  <img src="store-assets/exports/en/iphone/1320x2868/06-three-devices.png" width="150" alt="Logica game collection" />
+  <img src="store-assets/exports/en/iphone/1320x2868/07-hero.png" width="150" alt="Your next puzzle awaits in Logica" />
+</p>
+
+### iPad
+
+<p>
+  <img src="store-assets/exports/en/ipad/2064x2752/01-hero.png" width="210" alt="Logica growing puzzle collection on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/02-device-bottom.png" width="210" alt="Choose your next challenge on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/03-device-top.png" width="210" alt="Block Blast gameplay on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/04-hero.png" width="210" alt="2048 gameplay on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/05-device-bottom.png" width="210" alt="Fruit Merge gameplay on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/06-three-devices.png" width="210" alt="Logica game collection on iPad" />
+  <img src="store-assets/exports/en/ipad/2064x2752/07-hero.png" width="210" alt="Your next puzzle awaits in Logica on iPad" />
 </p>
 
 ## Features
