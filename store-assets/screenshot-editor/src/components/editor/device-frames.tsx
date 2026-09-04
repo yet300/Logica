@@ -53,14 +53,17 @@ export function Phone({ src, alt = "", style, hideEmpty }: FrameProps) {
 export function AndroidPhone({ src, alt = "", style, hideEmpty }: FrameProps) {
   const resolved = img(src);
   return (
-    <div style={{ position: "relative", aspectRatio: "9 / 19.5", ...style }}>
+    <div
+      data-device-shell="camera-free"
+      style={{ position: "relative", aspectRatio: "9 / 19.5", ...style }}
+    >
       <div
         style={{
           width: "100%",
           height: "100%",
-          borderRadius: "8% / 4%",
-          background: "linear-gradient(160deg, #2a2a2e 0%, #18181b 100%)",
-          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08), 0 8px 40px rgba(0,0,0,0.55)",
+          borderRadius: "7% / 3.25%",
+          background: "#202023",
+          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.1), 0 8px 40px rgba(0,0,0,0.48)",
           position: "relative",
           overflow: "hidden",
         }}
@@ -68,25 +71,11 @@ export function AndroidPhone({ src, alt = "", style, hideEmpty }: FrameProps) {
         <div
           style={{
             position: "absolute",
-            top: "1.5%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "3%",
-            height: "1.4%",
-            borderRadius: "50%",
-            background: "#0d0d0f",
-            border: "1px solid rgba(255,255,255,0.06)",
-            zIndex: 20,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            left: "3.5%",
-            top: "2%",
-            width: "93%",
-            height: "96%",
-            borderRadius: "5.5% / 2.6%",
+            left: "1.8%",
+            top: "1.1%",
+            width: "96.4%",
+            height: "97.8%",
+            borderRadius: "5.6% / 2.65%",
             overflow: "hidden",
             background: "#000",
           }}

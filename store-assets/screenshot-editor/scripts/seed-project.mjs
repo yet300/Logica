@@ -26,6 +26,13 @@ function buildDeck(basePath, device) {
     ...(item.secondary ? { screenshotSecondary: `${basePath}${item.secondary}` } : {}),
     ...(item.tertiary ? { screenshotTertiary: `${basePath}${item.tertiary}` } : {}),
     ...(item.inverted ? { inverted: true } : {}),
+    ...(device === "android" && item.id === "03-blockblast"
+      ? {
+          transforms: {
+            device: { x: 252, y: -96, width: 576, height: 1248, zIndex: 3 },
+          },
+        }
+      : {}),
   }));
 }
 

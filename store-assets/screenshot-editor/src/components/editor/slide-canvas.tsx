@@ -41,6 +41,9 @@ type FrameComp = React.ComponentType<{
   hideEmpty?: boolean;
 }>;
 
+const MARKETING_FONT_FAMILY =
+  '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif';
+
 export function getCanvas(device: Device, orientation: Orientation) {
   const c = CANVAS[device];
   if ((device === "android-7" || device === "android-10") && orientation === "landscape") {
@@ -237,7 +240,14 @@ function Caption({
   // produce headlines so tall they overlap the device frame.
   const unit = Math.min(cW, cH);
   return (
-    <div style={{ textAlign: align, position: "relative", width: "100%" }}>
+    <div
+      style={{
+        textAlign: align,
+        position: "relative",
+        width: "100%",
+        fontFamily: MARKETING_FONT_FAMILY,
+      }}
+    >
       <EditableText
         value={pickText(slide.label, locale)}
         editable={editable}
@@ -246,7 +256,7 @@ function Caption({
         placeholder="LABEL"
         style={{
           fontSize: unit * 0.028,
-          fontWeight: 600,
+          fontWeight: 700,
           letterSpacing: unit * 0.0015,
           color: accent,
           textTransform: "uppercase",
@@ -263,8 +273,8 @@ function Caption({
         placeholder="Headline goes here"
         style={{
           fontSize: unit * 0.092,
-          fontWeight: 700,
-          lineHeight: 0.96,
+          fontWeight: 900,
+          lineHeight: 0.94,
           letterSpacing: -unit * 0.001,
           color: fg,
         }}
@@ -838,11 +848,12 @@ function FeatureGraphicCanvas({
         height: "100%",
         position: "relative",
         overflow: "hidden",
-        background: `linear-gradient(135deg, ${theme.bgAlt} 0%, ${shade(theme.bgAlt, -10)} 50%, ${theme.accent} 200%)`,
+        background: "linear-gradient(125deg, #862B18 0%, #A93B1E 52%, #C84E25 100%)",
         display: "flex",
         alignItems: "center",
         padding: `0 ${cW * 0.06}px`,
-        color: theme.fgAlt,
+        color: "#FFFFFF",
+        fontFamily: MARKETING_FONT_FAMILY,
       }}
     >
       <Blob cW={cW} color={theme.accent} x={70} y={20} size={50} opacity={0.45} />
@@ -880,7 +891,7 @@ function FeatureGraphicCanvas({
           </div>
         )}
         <div>
-          <div style={{ fontSize: cW * 0.06, fontWeight: 800, lineHeight: 1.05 }}>{appName || "App"}</div>
+          <div style={{ fontSize: cW * 0.06, fontWeight: 900, lineHeight: 1.05 }}>{appName || "App"}</div>
           <EditableText
             value={pickText(slide.headline, locale)}
             editable={editable}
@@ -888,7 +899,8 @@ function FeatureGraphicCanvas({
             onChange={edit?.onHeadlineChange}
             style={{
               fontSize: cW * 0.028,
-              color: "rgba(255,255,255,0.85)",
+              color: "#FFFFFF",
+              fontWeight: 700,
               marginTop: cW * 0.012,
               lineHeight: 1.25,
             }}

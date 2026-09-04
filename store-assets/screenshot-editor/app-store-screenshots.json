@@ -210,7 +210,16 @@
           "en": "Clear lines.\nFind your flow."
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/02-blockblast.png",
-        "inverted": true
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 252,
+            "y": -96,
+            "width": 576,
+            "height": 1248,
+            "zIndex": 3
+          }
+        }
       },
       {
         "id": "android-04-2048",
