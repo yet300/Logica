@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "appName": "My App",
-  "themeId": "clean-light",
+  "appName": "Logica",
+  "themeId": "quiet-editorial",
   "connectedCanvas": true,
   "locales": [
     "en"
@@ -9,361 +9,269 @@
   "locale": "en",
   "device": "iphone",
   "orientation": "portrait",
-  "appIcon": "",
+  "appIcon": "/app-icon.png",
   "slidesByDevice": {
     "iphone": [
       {
-        "id": "s_mppgoot8_1",
-        "layout": "device-bottom",
-        "label": {
-          "en": "FEATURE 01"
-        },
-        "headline": {
-          "en": "Your headline\nlives here."
-        },
-        "screenshot": "",
-        "transforms": {
-          "device": {
-            "x": -450.80914890045335,
-            "y": 955.2104098119215,
-            "width": 977,
-            "height": 1991,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
-      },
-      {
-        "id": "s_mppgoot8_2",
-        "layout": "two-devices",
-        "label": {
-          "en": "FEATURE 02"
-        },
-        "headline": {
-          "en": "Show two\nscreens at once."
-        },
-        "screenshot": "",
-        "screenshotSecondary": "",
-        "transforms": {
-          "deviceSecondary": {
-            "x": 688.4726540204801,
-            "y": 1027.8020089177937,
-            "width": 871.2,
-            "height": 1774.7929549902153,
-            "rotation": 9,
-            "zIndex": 2
-          },
-          "caption": {
-            "x": 112.3403055229146,
-            "y": 87.89358401880148,
-            "width": 1108.8,
-            "height": 803.0400000000001,
-            "rotation": 0,
-            "zIndex": 4
-          },
-          "device": {
-            "x": -499.3230870111943,
-            "y": 928.1034802753068,
-            "width": 912.27195389049,
-            "height": 1858.4640000000002,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
-      },
-      {
-        "id": "s_mppgoot8_3",
-        "layout": "device-top",
-        "label": {
-          "en": "FEATURE 03"
-        },
-        "headline": {
-          "en": "Flip the contrast\nfor visual rhythm."
-        },
-        "screenshot": "",
-        "inverted": true,
-        "transforms": {
-          "device": {
-            "x": 741.2739047128944,
-            "y": 899.4937720329012,
-            "width": 1013.6355043227666,
-            "height": 2064.96,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
-      },
-      {
-        "id": "s_mppgoot8_4",
-        "layout": "no-device",
-        "label": {
-          "en": "MORE"
-        },
-        "headline": {
-          "en": "And so\nmuch more."
-        },
-        "screenshot": "",
-        "transforms": {
-          "caption": {
-            "x": 190.97767332549847,
-            "y": 2159.762397179791,
-            "width": 1056,
-            "height": 860.4,
-            "rotation": 0,
-            "zIndex": 4
-          }
-        }
-      },
-      {
-        "id": "s_mpptmmaa_i",
-        "layout": "device-bottom",
-        "label": {
-          "en": "NEW"
-        },
-        "headline": {
-          "en": "Edit this\nheadline."
-        },
-        "screenshot": "",
-        "transforms": {
-          "device": {
-            "x": -517.4781516913463,
-            "y": 846.7845828437136,
-            "width": 1013.6355043227666,
-            "height": 2064.96,
-            "rotation": 0,
-            "zIndex": 3
-          },
-          "caption": {
-            "x": 103.91492361927885,
-            "y": 195.738472385429,
-            "width": 1108.8,
-            "height": 803.0400000000001,
-            "rotation": 0,
-            "zIndex": 4
-          }
-        }
-      },
-      {
-        "id": "s_mpptvxsc_i",
-        "layout": "device-bottom",
-        "label": {
-          "en": "NEW"
-        },
-        "headline": {
-          "en": "Edit this\nheadline."
-        },
-        "screenshot": ""
-      }
-    ],
-    "android": [
-      {
-        "id": "s_mppgoot8_5",
+        "id": "iphone-01-collection",
         "layout": "hero",
         "label": {
-          "en": "MEET YOUR APP"
+          "en": "LOGICA"
         },
         "headline": {
-          "en": "Sell one\nidea per slide."
+          "en": "A growing world\nof puzzles."
         },
-        "screenshot": "",
-        "transforms": {
-          "device": {
-            "x": 221.0133038940457,
-            "y": 677.042167580437,
-            "width": 678.5844380403457,
-            "height": 1470.266282420749,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
       },
       {
-        "id": "s_mppgoot8_6",
+        "id": "iphone-02-choice",
         "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "CHOOSE YOUR GAME"
         },
         "headline": {
-          "en": "Your headline\nlives here."
+          "en": "Choose your\nnext challenge."
         },
-        "screenshot": "",
-        "transforms": {
-          "device": {
-            "x": 191.68310412906385,
-            "y": 659.512330975256,
-            "width": 678.5844380403457,
-            "height": 1470.266282420749,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
       },
       {
-        "id": "s_mppgoot8_7",
-        "layout": "two-devices",
-        "label": {
-          "en": "FEATURE 02"
-        },
-        "headline": {
-          "en": "Show two\nscreens at once."
-        },
-        "screenshot": "",
-        "screenshotSecondary": "",
-        "transforms": {
-          "deviceSecondary": {
-            "x": 280.3938895417132,
-            "y": 525.2025777437636,
-            "width": 678.5844380403457,
-            "height": 1470.266282420749,
-            "rotation": 0,
-            "zIndex": 2
-          },
-          "device": {
-            "x": 143.75673196815296,
-            "y": 569.6411918847805,
-            "width": 610.7259942363112,
-            "height": 1323.239654178674,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
-      },
-      {
-        "id": "s_mppgoot8_8",
+        "id": "iphone-03-blockblast",
         "layout": "device-top",
         "label": {
-          "en": "FEATURE 03"
+          "en": "BLOCK BLAST"
         },
         "headline": {
-          "en": "Flip the contrast\nfor visual rhythm."
+          "en": "Clear lines.\nFind your flow."
         },
-        "screenshot": "",
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-blockblast.png",
         "inverted": true
       },
       {
-        "id": "s_mppgoot8_9",
-        "layout": "no-device",
+        "id": "iphone-04-2048",
+        "layout": "hero",
         "label": {
-          "en": "MORE"
+          "en": "2048"
         },
         "headline": {
-          "en": "And so\nmuch more."
+          "en": "Merge numbers.\nThink ahead."
         },
-        "screenshot": ""
+        "screenshot": "/screenshots/apple/iphone/{locale}/03-2048.png"
+      },
+      {
+        "id": "iphone-05-fruitmerge",
+        "layout": "device-bottom",
+        "label": {
+          "en": "FRUIT MERGE"
+        },
+        "headline": {
+          "en": "Drop fruit.\nGrow bigger."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/04-fruitmerge.png"
+      },
+      {
+        "id": "iphone-06-collection",
+        "layout": "three-devices",
+        "label": {
+          "en": "GROWING COLLECTION"
+        },
+        "headline": {
+          "en": "Different games.\nOne thoughtful home."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-blockblast.png",
+        "screenshotSecondary": "/screenshots/apple/iphone/{locale}/03-2048.png",
+        "screenshotTertiary": "/screenshots/apple/iphone/{locale}/04-fruitmerge.png",
+        "inverted": true
+      },
+      {
+        "id": "iphone-07-close",
+        "layout": "hero",
+        "label": {
+          "en": "LOGICA"
+        },
+        "headline": {
+          "en": "Your next\npuzzle awaits."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
       }
     ],
     "ipad": [
       {
-        "id": "s_mppgoot8_a",
+        "id": "ipad-01-collection",
         "layout": "hero",
         "label": {
-          "en": "MEET YOUR APP"
+          "en": "LOGICA"
         },
         "headline": {
-          "en": "Made for\nthe big screen."
+          "en": "A growing world\nof puzzles."
         },
-        "screenshot": "",
-        "transforms": {
-          "device": {
-            "x": 68.64736263219729,
-            "y": 818.7701245593419,
-            "width": 1525.7087999999999,
-            "height": 1981.4399999999998,
-            "rotation": 0,
-            "zIndex": 3
-          }
-        }
+        "screenshot": "/screenshots/apple/ipad/{locale}/01-catalog.png"
       },
       {
-        "id": "s_mppgoot8_b",
+        "id": "ipad-02-choice",
         "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "CHOOSE YOUR GAME"
         },
         "headline": {
-          "en": "Built for\nfocus."
+          "en": "Choose your\nnext challenge."
         },
-        "screenshot": ""
+        "screenshot": "/screenshots/apple/ipad/{locale}/01-catalog.png"
       },
       {
-        "id": "s_mppgoot8_c",
+        "id": "ipad-03-blockblast",
         "layout": "device-top",
         "label": {
-          "en": "FEATURE 02"
+          "en": "BLOCK BLAST"
         },
         "headline": {
-          "en": "Always within reach."
+          "en": "Clear lines.\nFind your flow."
         },
-        "screenshot": "",
+        "screenshot": "/screenshots/apple/ipad/{locale}/02-blockblast.png",
         "inverted": true
-      }
-    ],
-    "android-7": [
-      {
-        "id": "s_mppgoot8_d",
-        "layout": "hero",
-        "label": {
-          "en": "MEET YOUR APP"
-        },
-        "headline": {
-          "en": "Pocket-sized\npower."
-        },
-        "screenshot": ""
       },
       {
-        "id": "s_mppgoot8_e",
-        "layout": "split-landscape",
-        "label": {
-          "en": "FEATURE 01"
-        },
-        "headline": {
-          "en": "Wide canvas,\nbigger ideas."
-        },
-        "screenshot": ""
-      }
-    ],
-    "android-10": [
-      {
-        "id": "s_mppgoot8_f",
+        "id": "ipad-04-2048",
         "layout": "hero",
         "label": {
-          "en": "MEET YOUR APP"
+          "en": "2048"
         },
         "headline": {
-          "en": "Made for\nthe big screen."
+          "en": "Merge numbers.\nThink ahead."
         },
-        "screenshot": ""
+        "screenshot": "/screenshots/apple/ipad/{locale}/03-2048.png"
       },
       {
-        "id": "s_mppgoot8_g",
-        "layout": "split-landscape",
+        "id": "ipad-05-fruitmerge",
+        "layout": "device-bottom",
         "label": {
-          "en": "FEATURE 01"
+          "en": "FRUIT MERGE"
         },
         "headline": {
-          "en": "Wide canvas,\nbigger ideas."
+          "en": "Drop fruit.\nGrow bigger."
         },
-        "screenshot": ""
+        "screenshot": "/screenshots/apple/ipad/{locale}/04-fruitmerge.png"
+      },
+      {
+        "id": "ipad-06-collection",
+        "layout": "three-devices",
+        "label": {
+          "en": "GROWING COLLECTION"
+        },
+        "headline": {
+          "en": "Different games.\nOne thoughtful home."
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/02-blockblast.png",
+        "screenshotSecondary": "/screenshots/apple/ipad/{locale}/03-2048.png",
+        "screenshotTertiary": "/screenshots/apple/ipad/{locale}/04-fruitmerge.png",
+        "inverted": true
+      },
+      {
+        "id": "ipad-07-close",
+        "layout": "hero",
+        "label": {
+          "en": "LOGICA"
+        },
+        "headline": {
+          "en": "Your next\npuzzle awaits."
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/01-catalog.png"
       }
     ],
+    "android": [
+      {
+        "id": "android-01-collection",
+        "layout": "hero",
+        "label": {
+          "en": "LOGICA"
+        },
+        "headline": {
+          "en": "A growing world\nof puzzles."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
+      },
+      {
+        "id": "android-02-choice",
+        "layout": "device-bottom",
+        "label": {
+          "en": "CHOOSE YOUR GAME"
+        },
+        "headline": {
+          "en": "Choose your\nnext challenge."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
+      },
+      {
+        "id": "android-03-blockblast",
+        "layout": "device-top",
+        "label": {
+          "en": "BLOCK BLAST"
+        },
+        "headline": {
+          "en": "Clear lines.\nFind your flow."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-blockblast.png",
+        "inverted": true
+      },
+      {
+        "id": "android-04-2048",
+        "layout": "hero",
+        "label": {
+          "en": "2048"
+        },
+        "headline": {
+          "en": "Merge numbers.\nThink ahead."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/03-2048.png"
+      },
+      {
+        "id": "android-05-fruitmerge",
+        "layout": "device-bottom",
+        "label": {
+          "en": "FRUIT MERGE"
+        },
+        "headline": {
+          "en": "Drop fruit.\nGrow bigger."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/04-fruitmerge.png"
+      },
+      {
+        "id": "android-06-collection",
+        "layout": "three-devices",
+        "label": {
+          "en": "GROWING COLLECTION"
+        },
+        "headline": {
+          "en": "Different games.\nOne thoughtful home."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-blockblast.png",
+        "screenshotSecondary": "/screenshots/apple/iphone/{locale}/03-2048.png",
+        "screenshotTertiary": "/screenshots/apple/iphone/{locale}/04-fruitmerge.png",
+        "inverted": true
+      },
+      {
+        "id": "android-07-close",
+        "layout": "hero",
+        "label": {
+          "en": "LOGICA"
+        },
+        "headline": {
+          "en": "Your next\npuzzle awaits."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-catalog.png"
+      }
+    ],
+    "android-7": [],
+    "android-10": [],
     "feature-graphic": [
       {
-        "id": "s_mppgoot8_h",
+        "id": "feature-graphic-en",
         "layout": "feature-graphic",
         "label": {},
         "headline": {
-          "en": "Your tagline goes here."
+          "en": "A growing world of puzzles."
         },
         "screenshot": ""
       }
     ]
-  },
-  "crossScreenMockupsByDevice": {
-    "iphone": [],
-    "ipad": [],
-    "android": [],
-    "android-7": [],
-    "android-10": [],
-    "feature-graphic": []
   }
 }
