@@ -12,6 +12,19 @@ end
 # Android — Google Play internal track
 # ---------------------------------------------------------------------------
 platform :android do
+  desc "Stage one generated screenshot locale without uploading it"
+  lane :stage_store_assets do
+    locale = ENV["SCREENSHOT_LOCALE"] or UI.user_error!("SCREENSHOT_LOCALE env is not set")
+    export_root = ENV.fetch("SCREENSHOT_EXPORT_ROOT", "store-assets/ci-exports")
+    sh(
+      "python3",
+      "tools/store_screenshots/stage_fastlane.py",
+      "--input", export_root,
+      "--fastlane-root", "fastlane",
+      "--locale", locale,
+    )
+  end
+
   desc "Build signed AAB+APK and upload AAB to Google Play (internal track)"
   lane :release do
     # AAB for Play (Play only accepts bundles for new uploads).
