@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
@@ -43,6 +44,25 @@ class MetadataSummary:
     promotional_texts: int
     support_urls: int
     privacy_urls: int
+
+
+@dataclass(frozen=True)
+class AssetSummary:
+    locales: int
+    iphone_screenshots: int
+    ipad_screenshots: int
+    screenshots: int
+
+
+SCREENSHOT_FILENAMES = (
+    "01-hero.png",
+    "02-device-bottom.png",
+    "03-device-top.png",
+    "04-hero.png",
+    "05-device-bottom.png",
+    "06-three-devices.png",
+    "07-hero.png",
+)
 
 
 def app_store_locale(locale: str) -> str:
@@ -100,6 +120,54 @@ def validate_metadata(metadata_root: Path) -> MetadataSummary:
     return MetadataSummary(count, count, count, count, count, count, count, count)
 
 
+def stage_all_app_store_assets(
+    artifacts_root: Path,
+    metadata_root: Path,
+    screenshots_root: Path,
+) -> AssetSummary:
+    validate_metadata(metadata_root)
+    sources: dict[str, dict[str, list[Path]]] = {}
+    for locale, apple_locale in APP_STORE_LOCALES.items():
+        artifact = artifacts_root / f"store-screenshots-{locale}"
+        if not artifact.is_dir():
+            raise ValueError(f"Missing artifact for {locale}")
+        decks: dict[str, list[Path]] = {}
+        for device, size in (("iphone", "1320x2868"), ("ipad", "2064x2752")):
+            files = sorted((artifact / device / size).glob("*.png"))
+            if len(files) != 7:
+                raise ValueError(
+                    f"Expected 7 {device} screenshots for {locale}, found {len(files)}"
+                )
+            if tuple(path.name for path in files) != SCREENSHOT_FILENAMES:
+                raise ValueError(f"Unexpected {device} screenshot names for {locale}")
+            decks[device] = files
+        sources[apple_locale] = decks
+
+    if screenshots_root.exists():
+        shutil.rmtree(screenshots_root)
+    screenshots_root.mkdir(parents=True)
+    iphone_count = 0
+    ipad_count = 0
+    for apple_locale, decks in sources.items():
+        destination = screenshots_root / apple_locale
+        destination.mkdir()
+        for device, size in (("iphone", "1320x2868"), ("ipad", "2064x2752")):
+            for source in decks[device]:
+                slide, rest = source.name.split("-", 1)
+                shutil.copy2(source, destination / f"{slide}-{device}-{size}-{rest}")
+                if device == "iphone":
+                    iphone_count += 1
+                else:
+                    ipad_count += 1
+
+    return AssetSummary(
+        locales=len(sources),
+        iphone_screenshots=iphone_count,
+        ipad_screenshots=ipad_count,
+        screenshots=iphone_count + ipad_count,
+    )
+
+
 def _print_report(metadata_root: Path) -> None:
     validate_metadata(metadata_root)
     print("locale\tname\tsubtitle\tdescription\tkeywords\tpromotional")
@@ -118,8 +186,25 @@ def main(argv: Sequence[str] | None = None) -> int:
     for command in ("validate-metadata", "report"):
         command_parser = subparsers.add_parser(command)
         command_parser.add_argument("--metadata-root", type=Path, required=True)
+    stage_parser = subparsers.add_parser("stage")
+    stage_parser.add_argument("--artifacts-root", type=Path, required=True)
+    stage_parser.add_argument("--metadata-root", type=Path, required=True)
+    stage_parser.add_argument("--screenshots-root", type=Path, required=True)
     args = parser.parse_args(argv)
 
+    if args.command == "stage":
+        summary = stage_all_app_store_assets(
+            args.artifacts_root,
+            args.metadata_root,
+            args.screenshots_root,
+        )
+        print(
+            f"Staged {summary.locales} App Store locales: "
+            f"{summary.iphone_screenshots} iPhone screenshots, "
+            f"{summary.ipad_screenshots} iPad screenshots, "
+            f"{summary.screenshots} total."
+        )
+        return 0
     if args.command == "report":
         _print_report(args.metadata_root)
         return 0
