@@ -1,11 +1,14 @@
 import tempfile
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 
 from tools.store_screenshots.play_listing import (
     PLAY_STORE_LOCALES,
     TITLE,
     MetadataSummary,
+    main,
     play_store_locale,
     validate_metadata,
 )
@@ -66,6 +69,32 @@ class PlayMetadataValidationTest(unittest.TestCase):
             (root / "ka-GE").rmdir()
             with self.assertRaisesRegex(ValueError, "missing=.*ka-GE"):
                 validate_metadata(root)
+
+
+class PlayMetadataCliTest(unittest.TestCase):
+    def test_validate_metadata_command_prints_summary(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = create_complete_metadata(Path(temp))
+            output = StringIO()
+            with redirect_stdout(output):
+                result = main(["validate-metadata", "--metadata-root", str(root)])
+            self.assertEqual(result, 0)
+            self.assertEqual(
+                output.getvalue(),
+                "Validated 37 Play Store metadata locales: 37 titles, "
+                "37 short descriptions, 37 full descriptions.\n",
+            )
+
+    def test_report_command_prints_character_counts(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = create_complete_metadata(Path(temp))
+            output = StringIO()
+            with redirect_stdout(output):
+                result = main(["report", "--metadata-root", str(root)])
+            self.assertEqual(result, 0)
+            lines = output.getvalue().splitlines()
+            self.assertEqual(lines[0], "locale\ttitle\tshort\tfull")
+            self.assertIn("ka-GE\t21\t28\t47", lines)
 
     def test_rejects_extra_locale(self):
         with tempfile.TemporaryDirectory() as temp:

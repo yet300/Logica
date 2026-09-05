@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Sequence
 
 
 TITLE = "Logica — Block Puzzle"
@@ -71,3 +73,40 @@ def validate_metadata(metadata_root: Path) -> MetadataSummary:
 
     count = len(expected)
     return MetadataSummary(count, count, count, count)
+
+
+def _print_report(metadata_root: Path) -> None:
+    validate_metadata(metadata_root)
+    print("locale\ttitle\tshort\tfull")
+    for play_locale in sorted(PLAY_STORE_LOCALES.values()):
+        locale_root = metadata_root / play_locale
+        lengths = [
+            len(_read_metadata_file(locale_root, filename))
+            for filename in ("title.txt", "short_description.txt", "full_description.txt")
+        ]
+        print(f"{play_locale}\t{lengths[0]}\t{lengths[1]}\t{lengths[2]}")
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    for command in ("validate-metadata", "report"):
+        command_parser = subparsers.add_parser(command)
+        command_parser.add_argument("--metadata-root", type=Path, required=True)
+    args = parser.parse_args(argv)
+
+    if args.command == "report":
+        _print_report(args.metadata_root)
+        return 0
+
+    summary = validate_metadata(args.metadata_root)
+    print(
+        f"Validated {summary.locales} Play Store metadata locales: "
+        f"{summary.titles} titles, {summary.short_descriptions} short descriptions, "
+        f"{summary.full_descriptions} full descriptions."
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

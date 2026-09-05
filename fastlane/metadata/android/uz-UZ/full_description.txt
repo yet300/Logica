@@ -1,0 +1,21 @@
+Bitta ilova. Doim kengayib borayotgan boshqotirma o‘yinlari olami.
+
+Logica sokin va o‘ylashga undaydigan o‘yinlarni bir joyda jamlaydi. Tezkor sinovni boshlang, yangi strategiyani sinang va xohlagan payt o‘yinni almashtiring.
+
+O‘ZINGIZGA MOS O‘YNANG
+• Block Blast’da qatorlarni to‘ldirib, taxtani shakllantiring
+• 2048’da kataklarni birlashtirib, kattaroq sonlarga erishing
+• Fruit Merge fizika boshqotirmasida mevalarni tashlab, birlashtiring
+• To‘plam kengaygani sari yangi boshqotirmalarni kashf eting
+
+HAR QANDAY PAYT UCHUN
+• Boshlash oson bo‘lgan qisqa o‘yinlar
+• Oddiy boshqaruv va yoqimli javob
+• Shaxsiy rekordlar va saqlangan taraqqiyot
+• Istalgan joyda oflayn o‘ynang
+• Toza va sokin interfeys
+
+Bloklar, sonlar, birlashtirish yoki mantiqiy sinovlarni yoqtirsangiz, Logica har bir o‘yin uchun alohida ilovasiz o‘sib boruvchi to‘plamni taklif qiladi.
+
+O‘yinni tanlang va keyingi sevimli boshqotirmangizni toping.
+
