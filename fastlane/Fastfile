@@ -125,4 +125,65 @@ platform :ios do
       force: true,
     )
   end
+
+  desc "Build a signed IPA and upload it to App Store Connect/TestFlight"
+  lane :release do
+    %w[
+      APP_VERSION_NAME
+      APP_VERSION_CODE
+      APP_STORE_CONNECT_KEY_ID
+      APP_STORE_CONNECT_ISSUER_ID
+      APP_STORE_CONNECT_KEY_BASE64
+      IOS_PROVISIONING_PROFILE_NAME
+    ].each do |variable|
+      UI.user_error!("#{variable} env is not set") if ENV[variable].to_s.empty?
+    end
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_BASE64"],
+      is_key_content_base64: true,
+    )
+    profile_name = ENV["IOS_PROVISIONING_PROFILE_NAME"]
+
+    build_app(
+      project: "iosApp/iosApp.xcodeproj",
+      scheme: "iosApp",
+      configuration: "Release",
+      clean: true,
+      export_method: "app-store",
+      output_directory: "build/ios",
+      output_name: "Logica.ipa",
+      archive_path: "build/ios/Logica.xcarchive",
+      derived_data_path: "build/ios/DerivedData",
+      include_symbols: true,
+      xcargs: [
+        "MARKETING_VERSION=#{ENV['APP_VERSION_NAME']}",
+        "CURRENT_PROJECT_VERSION=#{ENV['APP_VERSION_CODE']}",
+        "DEVELOPMENT_TEAM=3KKQ642Q9H",
+        "PRODUCT_BUNDLE_IDENTIFIER=ge.yet3.blokblast.BlockBlast",
+        "CODE_SIGN_STYLE=Manual",
+        "CODE_SIGN_IDENTITY='Apple Distribution'",
+        "PROVISIONING_PROFILE_SPECIFIER='#{profile_name}'",
+      ].join(" "),
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual",
+        teamID: "3KKQ642Q9H",
+        provisioningProfiles: {
+          "ge.yet3.blokblast.BlockBlast" => profile_name,
+        },
+        uploadSymbols: true,
+      },
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      app_identifier: "ge.yet3.blokblast.BlockBlast",
+      ipa: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
+    )
+  end
 end

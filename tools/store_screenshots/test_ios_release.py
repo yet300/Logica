@@ -1,0 +1,79 @@
+import re
+import unittest
+from pathlib import Path
+
+
+class IosReleaseFastfileTest(unittest.TestCase):
+    def test_release_lane_builds_signed_ipa_and_uploads_only_to_testflight(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        lanes = re.findall(r"lane :release do(?P<body>.*?)\n  end", fastfile, re.DOTALL)
+        self.assertGreaterEqual(len(lanes), 2)
+        body = lanes[-1]
+        for variable in (
+            "APP_VERSION_NAME",
+            "APP_VERSION_CODE",
+            "APP_STORE_CONNECT_KEY_ID",
+            "APP_STORE_CONNECT_ISSUER_ID",
+            "APP_STORE_CONNECT_KEY_BASE64",
+            "IOS_PROVISIONING_PROFILE_NAME",
+        ):
+            self.assertIn(variable, body)
+        for setting in (
+            "build_app(",
+            'project: "iosApp/iosApp.xcodeproj"',
+            'scheme: "iosApp"',
+            'configuration: "Release"',
+            'export_method: "app-store"',
+            'output_directory: "build/ios"',
+            'output_name: "Logica.ipa"',
+            '"ge.yet3.blokblast.BlockBlast"',
+            '"3KKQ642Q9H"',
+            '"CODE_SIGN_IDENTITY=\'Apple Distribution\'"',
+            "upload_to_testflight(",
+            "skip_waiting_for_build_processing: true",
+            "distribute_external: false",
+        ):
+            self.assertIn(setting, body)
+        self.assertNotIn("submit_for_review", body)
+        self.assertNotIn("automatic_release", body)
+
+
+class IosReleaseWorkflowTest(unittest.TestCase):
+    def test_tag_workflow_builds_and_uploads_ios_artifacts_safely(self):
+        workflow = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
+        self.assertRegex(workflow, r"(?m)^  ios:\s*$")
+        self.assertIn("runs-on: macos-26", workflow)
+        self.assertIn("needs: version", workflow)
+        self.assertIn("APP_VERSION_NAME: ${{ needs.version.outputs.version_name }}", workflow)
+        self.assertIn("APP_VERSION_CODE: ${{ needs.version.outputs.version_code }}", workflow)
+        for secret in (
+            "APP_STORE_CONNECT_KEY_ID",
+            "APP_STORE_CONNECT_ISSUER_ID",
+            "APP_STORE_CONNECT_KEY_BASE64",
+            "IOS_DISTRIBUTION_CERTIFICATE_BASE64",
+            "IOS_DISTRIBUTION_CERTIFICATE_PASSWORD",
+            "IOS_PROVISIONING_PROFILE_BASE64",
+            "IOS_PROVISIONING_PROFILE_NAME",
+            "IOS_KEYCHAIN_PASSWORD",
+            "GOOGLE_SERVICE_INFO_PLIST_BASE64",
+        ):
+            self.assertIn(f"secrets.{secret}", workflow)
+        for behavior in (
+            "security create-keychain",
+            "security import",
+            "security set-key-partition-list",
+            "Provisioning Profiles",
+            "iosApp/iosApp/GoogleService-Info.plist",
+            "bundle exec fastlane ios release",
+            "build/ios/Logica.ipa",
+            "build/ios/Logica.app.dSYM.zip",
+            "retention-days: 14",
+            "if: always()",
+            "security delete-keychain",
+        ):
+            self.assertIn(behavior, workflow)
+        self.assertNotIn("submit_for_review", workflow)
+
+
+if __name__ == "__main__":
+    unittest.main()
