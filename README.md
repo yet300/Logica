@@ -47,6 +47,35 @@ independent Gradle modules reviewed and allowlisted at build time.
   <img src="store-assets/exports/en/ipad/2064x2752/07-hero.png" width="210" alt="Your next puzzle awaits in Logica on iPad" />
 </p>
 
+### ქართული — iPhone
+
+<p>
+  <img src="store-assets/exports/ka/iphone/1320x2868/01-hero.png" width="150" alt="Logica — თავსატეხების მზარდი სამყარო" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/02-device-bottom.png" width="150" alt="აირჩიე შემდეგი გამოწვევა Logica-ში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/03-device-top.png" width="150" alt="Block Blast-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/04-hero.png" width="150" alt="2048-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/05-device-bottom.png" width="150" alt="Fruit Merge-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/06-three-devices.png" width="150" alt="Logica-ს თამაშების კოლექცია" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/07-hero.png" width="150" alt="შემდეგი თავსატეხი გელოდება" />
+</p>
+
+### ქართული — iPad
+
+<p>
+  <img src="store-assets/exports/ka/ipad/2064x2752/01-hero.png" width="210" alt="Logica — თავსატეხების მზარდი სამყარო iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/02-device-bottom.png" width="210" alt="აირჩიე შემდეგი გამოწვევა iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/03-device-top.png" width="210" alt="Block Blast-ის თამაში iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/04-hero.png" width="210" alt="2048-ის თამაში iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/05-device-bottom.png" width="210" alt="Fruit Merge-ის თამაში iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/06-three-devices.png" width="210" alt="Logica-ს თამაშების კოლექცია iPad-ზე" />
+  <img src="store-assets/exports/ka/ipad/2064x2752/07-hero.png" width="210" alt="შემდეგი თავსატეხი გელოდება iPad-ზე" />
+</p>
+
+The screenshot editor contains marketing copy for all 37 application locales.
+English and Georgian galleries are kept in Git for this README; all complete
+store-size bundles are generated on demand by the manual **Store screenshots**
+GitHub Actions workflow and retained as artifacts for 14 days.
+
 ## Features
 
 - 🧩 Classic block-puzzle gameplay with smooth animations

@@ -19,6 +19,10 @@ const androidPhone = frames.slice(
 
 assert(canvas.includes('"SF Pro Display"'), "marketing canvas must use SF Pro Display");
 assert(canvas.includes("fontWeight: 900"), "marketing headline weight must be 900");
+assert(
+  canvas.includes("marketingHeadlineScale(headline)"),
+  "localized headlines must shrink to preserve the two-line composition",
+);
 assert(canvas.includes("#862B18") && canvas.includes("#C84E25"), "feature graphic needs the approved orange gradient");
 assert(canvas.includes('color: "#FFFFFF"'), "feature graphic text must be opaque white");
 assert(androidPhone.includes('data-device-shell="camera-free"'), "Android phone shell must be camera-free");

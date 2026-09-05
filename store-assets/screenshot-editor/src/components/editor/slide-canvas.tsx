@@ -212,6 +212,14 @@ function EditableText({
 
 // ---------- Caption (label + headline) ----------
 
+function marketingHeadlineScale(headline: string): number {
+  const longestLine = Math.max(
+    1,
+    ...headline.split("\n").map((line) => Array.from(line.trim()).length),
+  );
+  return Math.max(0.64, Math.min(1, 15 / longestLine));
+}
+
 function Caption({
   cW,
   cH,
@@ -237,6 +245,7 @@ function Caption({
 }) {
   const fg = inverted ? theme.fgAlt : theme.fg;
   const accent = theme.accent;
+  const headline = pickText(slide.headline, locale);
   // Scale typography off the *shorter* dimension so landscape layouts don't
   // produce headlines so tall they overlap the device frame.
   const unit = Math.min(cW, cH);
@@ -267,14 +276,14 @@ function Caption({
         }}
       />
       <EditableText
-        value={pickText(slide.headline, locale)}
+        value={headline}
         editable={editable}
         multiline
         onChange={edit?.onHeadlineChange}
         onFocus={onFocus}
         placeholder="Headline goes here"
         style={{
-          fontSize: unit * 0.092,
+          fontSize: unit * 0.092 * marketingHeadlineScale(headline),
           fontWeight: 900,
           lineHeight: 0.94,
           letterSpacing: -unit * 0.001,
