@@ -54,5 +54,10 @@ test("manual CI workflow retains locale artifacts without publishing", () => {
   assert.match(workflow, /locale:/);
   assert.match(workflow, /max-parallel: 4/);
   assert.match(workflow, /retention-days: 14/);
+  assert.match(workflow, /iphone\/1320x2868/);
+  assert.match(workflow, /ipad\/2064x2752/);
+  assert.match(workflow, /android\/1080x1920/);
+  assert.match(workflow, /feature-graphic\/1024x500/);
+  assert.doesNotMatch(workflow, /path:\s*store-assets\/ci-exports\/\$\{\{ matrix\.locale \}\}\s*$/m);
   assert.doesNotMatch(workflow, /upload_to_play_store|upload_to_app_store|PLAY_STORE_JSON_KEY/);
 });

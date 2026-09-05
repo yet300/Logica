@@ -39,6 +39,11 @@ DEVICE_SIZES = {
     "feature-graphic": ("1024x500",),
 }
 
+APPLE_REQUIRED_SIZES = {
+    "iphone": ("1320x2868",),
+    "ipad": ("2064x2752",),
+}
+
 
 def app_store_locale(locale: str) -> str | None:
     if locale not in APP_STORE_LOCALES:
@@ -53,9 +58,14 @@ def play_store_locale(locale: str) -> str:
         raise ValueError(f"Unsupported locale: {locale}") from error
 
 
-def expected_pngs(locale_root: Path) -> list[Path]:
+def canonical_pngs(locale_root: Path) -> list[Path]:
     expected: list[Path] = []
-    for device, sizes in DEVICE_SIZES.items():
+    canonical_sizes = {
+        **APPLE_REQUIRED_SIZES,
+        "android": ("1080x1920",),
+        "feature-graphic": ("1024x500",),
+    }
+    for device, sizes in canonical_sizes.items():
         slide_count = 1 if device == "feature-graphic" else 7
         for size in sizes:
             directory = locale_root / device / size
@@ -74,9 +84,9 @@ def replace_directory(destination: Path) -> None:
 
 def stage_locale(input_root: Path, fastlane_root: Path, locale: str) -> dict[str, int]:
     locale_root = input_root.resolve() / locale
-    source_pngs = expected_pngs(locale_root)
-    if len(source_pngs) != 50:
-        raise ValueError(f"Expected 50 PNGs for {locale}, found {len(source_pngs)}")
+    source_pngs = canonical_pngs(locale_root)
+    if len(source_pngs) != 22:
+        raise ValueError(f"Expected 22 canonical PNGs for {locale}, found {len(source_pngs)}")
 
     fastlane_root = fastlane_root.resolve()
     apple_code = app_store_locale(locale)
@@ -86,8 +96,8 @@ def stage_locale(input_root: Path, fastlane_root: Path, locale: str) -> dict[str
     if apple_code:
         apple_destination = fastlane_root / "screenshots" / apple_code
         replace_directory(apple_destination)
-        for device in ("iphone", "ipad"):
-            for size in DEVICE_SIZES[device]:
+        for device, sizes in APPLE_REQUIRED_SIZES.items():
+            for size in sizes:
                 for source in sorted((locale_root / device / size).glob("*.png")):
                     slide_prefix, rest = source.name.split("-", 1)
                     destination = apple_destination / f"{slide_prefix}-{device}-{size}-{rest}"

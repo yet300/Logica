@@ -103,6 +103,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: store-screenshots-${{ matrix.locale }}
-          path: store-assets/ci-exports/${{ matrix.locale }}
+          path: |
+            store-assets/ci-exports/${{ matrix.locale }}/manifest.json
+            store-assets/ci-exports/${{ matrix.locale }}/iphone/1320x2868
+            store-assets/ci-exports/${{ matrix.locale }}/ipad/2064x2752
+            store-assets/ci-exports/${{ matrix.locale }}/android/1080x1920
+            store-assets/ci-exports/${{ matrix.locale }}/feature-graphic/1024x500
           if-no-files-found: error
           retention-days: 14

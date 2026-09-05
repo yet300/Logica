@@ -36,6 +36,62 @@ Update the matching `screenshot` fields in `app-store-screenshots.json` to point
 
 The toolbar dropdown lists every Apple/Google-required size for the current device. Click **Export bundle** to download a zip. In Connected mode, each PNG is clipped from the connected canvas, so an element that straddles two screens appears split exactly where you placed it. In Isolated mode, each screen clips its own elements and legacy offscreen content cannot leak into neighboring exports.
 
+### Headless localized export
+
+The editor includes marketing copy for every locale shipped by the application.
+To generate and validate one complete 50-image bundle locally:
+
+```bash
+bun run build
+bun start -- -H 127.0.0.1 -p 3100
+bun run export:ci -- --locale ka --output ../../store-assets/ci-exports
+```
+
+The exporter downloads its managed Chromium browser by default. On macOS, an
+installed Chrome can be used with `SCREENSHOT_BROWSER_CHANNEL=chrome` if the
+Playwright browser is unavailable.
+
+The manual **Store screenshots** GitHub Actions workflow accepts either one
+locale code or `all`. It renders and validates all 50 size variants per locale,
+then retains the 22 canonical upload files: seven 6.9-inch iPhone screenshots,
+seven 13-inch iPad screenshots, seven Android phone screenshots, one Google Play
+feature graphic, and the timing manifest. Apple generates the smaller accepted
+device sizes from the highest-resolution uploads. Artifacts expire after 14
+days and the workflow never publishes to either store.
+
+```bash
+gh workflow run store-screenshots.yml -f locale=ka
+gh workflow run store-screenshots.yml -f locale=all
+```
+
+After downloading an artifact, stage its store-specific locale paths for
+Fastlane without committing generated bundles:
+
+```bash
+SCREENSHOT_LOCALE=ka \
+SCREENSHOT_EXPORT_ROOT=/path/to/downloaded/export \
+bundle exec fastlane android stage_store_assets
+```
+
+Georgian has no App Store Connect screenshot locale, so the staging command
+places Georgian assets only under Google Play metadata. Existing release lanes
+still skip screenshot and image upload; staging does not publish anything.
+
+### Measured runtime and storage
+
+Local release-build measurements on this machine were 35.1 seconds for English,
+35.3 seconds for Georgian, and 35.4 seconds for German per 50-image locale. At
+four parallel jobs, pure rendering of all 37 locales is about six minutes of
+wall time. Allow roughly 15–25 minutes for the cached GitHub Actions workflow,
+including runner setup, build, browser startup, validation, and upload; the
+first uncached run can take 20–30 minutes. Each run writes its actual job and
+render duration to the Actions summary, which is the authoritative measurement.
+
+Keeping every size for every locale would be roughly 850 MB. The workflow keeps
+only canonical artifacts, approximately 10 MB per locale or 370 MB for all 37,
+and removes them automatically after 14 days. Only the English visual-regression
+baseline and Georgian README gallery are stored permanently in Git.
+
 ## Customizing
 
 | Where | What |
