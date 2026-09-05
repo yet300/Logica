@@ -23,6 +23,7 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
 store-assets/ci-exports/
+fastlane/metadata/android/*/images/
 store-assets/exports/*
 !store-assets/exports/en/
 !store-assets/exports/en/**

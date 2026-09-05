@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
@@ -24,6 +25,16 @@ PLAY_STORE_LOCALES: dict[str, str] = {
     "zh": "zh-TW",
 }
 
+PHONE_SCREENSHOT_FILENAMES = (
+    "01-hero.png",
+    "02-device-bottom.png",
+    "03-device-top.png",
+    "04-hero.png",
+    "05-device-bottom.png",
+    "06-three-devices.png",
+    "07-hero.png",
+)
+
 
 @dataclass(frozen=True)
 class MetadataSummary:
@@ -31,6 +42,13 @@ class MetadataSummary:
     titles: int
     short_descriptions: int
     full_descriptions: int
+
+
+@dataclass(frozen=True)
+class AssetSummary:
+    locales: int
+    phone_screenshots: int
+    feature_graphics: int
 
 
 def play_store_locale(locale: str) -> str:
@@ -75,6 +93,43 @@ def validate_metadata(metadata_root: Path) -> MetadataSummary:
     return MetadataSummary(count, count, count, count)
 
 
+def stage_all_play_assets(
+    artifacts_root: Path,
+    metadata_root: Path,
+) -> AssetSummary:
+    validate_metadata(metadata_root)
+    sources: dict[str, tuple[list[Path], Path]] = {}
+    for locale, play_locale in PLAY_STORE_LOCALES.items():
+        artifact = artifacts_root / f"store-screenshots-{locale}"
+        if not artifact.is_dir():
+            raise ValueError(f"Missing artifact for {locale}")
+        phones = sorted((artifact / "android/1080x1920").glob("*.png"))
+        feature = artifact / "feature-graphic/1024x500/01-feature-graphic.png"
+        if len(phones) != 7:
+            raise ValueError(f"Expected 7 phone screenshots for {locale}, found {len(phones)}")
+        if tuple(path.name for path in phones) != PHONE_SCREENSHOT_FILENAMES:
+            raise ValueError(f"Unexpected phone screenshot names for {locale}")
+        if not feature.is_file():
+            raise ValueError(f"Missing feature graphic for {locale}")
+        sources[play_locale] = (phones, feature)
+
+    for play_locale, (phones, feature) in sources.items():
+        images_root = metadata_root / play_locale / "images"
+        if images_root.exists():
+            shutil.rmtree(images_root)
+        phone_destination = images_root / "phoneScreenshots"
+        phone_destination.mkdir(parents=True)
+        for source in phones:
+            shutil.copy2(source, phone_destination / source.name)
+        shutil.copy2(feature, images_root / "featureGraphic.png")
+
+    return AssetSummary(
+        locales=len(sources),
+        phone_screenshots=sum(len(phones) for phones, _ in sources.values()),
+        feature_graphics=len(sources),
+    )
+
+
 def _print_report(metadata_root: Path) -> None:
     validate_metadata(metadata_root)
     print("locale\ttitle\tshort\tfull")
@@ -93,8 +148,19 @@ def main(argv: Sequence[str] | None = None) -> int:
     for command in ("validate-metadata", "report"):
         command_parser = subparsers.add_parser(command)
         command_parser.add_argument("--metadata-root", type=Path, required=True)
+    stage_parser = subparsers.add_parser("stage")
+    stage_parser.add_argument("--artifacts-root", type=Path, required=True)
+    stage_parser.add_argument("--metadata-root", type=Path, required=True)
     args = parser.parse_args(argv)
 
+    if args.command == "stage":
+        summary = stage_all_play_assets(args.artifacts_root, args.metadata_root)
+        print(
+            f"Staged {summary.locales} Play Store locales: "
+            f"{summary.phone_screenshots} phone screenshots, "
+            f"{summary.feature_graphics} feature graphics."
+        )
+        return 0
     if args.command == "report":
         _print_report(args.metadata_root)
         return 0
