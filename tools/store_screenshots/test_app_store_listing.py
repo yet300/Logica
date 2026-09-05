@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import re
 from pathlib import Path
 
 from tools.store_screenshots.app_store_listing import (
@@ -203,6 +204,41 @@ class AppStoreAssetStagingTest(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "Unexpected iphone screenshot names for en"):
                 stage_all_app_store_assets(artifacts, metadata, root / "screenshots")
+
+
+class AppStoreFastfileTest(unittest.TestCase):
+    def test_draft_lane_uploads_metadata_and_screenshots_without_review(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        match = re.search(
+            r"lane :publish_app_store_listing_draft do(?P<body>.*?)\n  end",
+            fastfile,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(match)
+        body = match.group("body")
+        for variable in (
+            "APP_STORE_CONNECT_KEY_ID",
+            "APP_STORE_CONNECT_ISSUER_ID",
+            "APP_STORE_CONNECT_KEY_BASE64",
+        ):
+            self.assertIn(variable, body)
+        for setting in (
+            "app_store_connect_api_key(",
+            "is_key_content_base64: true",
+            'app_identifier: "ge.yet3.blokblast.BlockBlast"',
+            'metadata_path: "fastlane/metadata/ios"',
+            'screenshots_path: "fastlane/screenshots"',
+            "skip_binary_upload: true",
+            "skip_metadata: false",
+            "skip_screenshots: false",
+            "submit_for_review: false",
+            "automatic_release: false",
+            "overwrite_screenshots: true",
+            "force: true",
+        ):
+            self.assertIn(setting, body)
+        self.assertNotIn("submit_for_review: true", body)
+        self.assertNotIn("automatic_release: true", body)
 
 if __name__ == "__main__":
     unittest.main()
