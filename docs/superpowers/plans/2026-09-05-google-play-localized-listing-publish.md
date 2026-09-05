@@ -476,7 +476,7 @@ Require a `publish-play-draft` job with:
 
 ```yaml
 needs: [prepare, render]
-if: ${{ inputs.locale == 'all' && needs.render.result == 'success' }}
+if: ${{ inputs.locale == 'all' && needs.render.result == 'success' && github.ref == 'refs/heads/main' }}
 ```
 
 Require `actions/download-artifact@v5`, artifact pattern

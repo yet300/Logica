@@ -111,3 +111,52 @@ jobs:
             store-assets/ci-exports/${{ matrix.locale }}/feature-graphic/1024x500
           if-no-files-found: error
           retention-days: 14
+
+  publish-play-draft:
+    needs: [prepare, render]
+    if: ${{ inputs.locale == 'all' && needs.render.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: google-play-listing-draft
+      cancel-in-progress: false
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: "1"
+      FL_NUMBER_OF_THREADS: "4"
+      LC_ALL: C.UTF-8
+      PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Download every localized screenshot artifact
+        uses: actions/download-artifact@v5
+        with:
+          pattern: store-screenshots-*
+          path: store-assets/ci-artifacts
+          merge-multiple: false
+
+      - name: Validate metadata and stage Play Store images
+        run: >-
+          python3 tools/store_screenshots/play_listing.py stage
+          --artifacts-root store-assets/ci-artifacts
+          --metadata-root fastlane/metadata/android
+
+      - name: Upload listing changes without sending for review
+        run: bundle exec fastlane android publish_store_listing_draft
+
+      - name: Publish Play Store draft summary
+        run: |
+          echo "### Google Play listing draft" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Locales: 37" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Phone screenshots: 259" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Feature graphics: 37" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Review status: changes not sent for review" >> "$GITHUB_STEP_SUMMARY"

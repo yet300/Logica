@@ -47,7 +47,7 @@ test("command arguments have deterministic defaults", () => {
   });
 });
 
-test("manual CI workflow retains locale artifacts without publishing", () => {
+test("manual CI workflow publishes only a complete all-locale Play draft", () => {
   const workflowPath = path.resolve(process.cwd(), "../../.github/workflows/store-screenshots.yml");
   const workflow = fs.readFileSync(workflowPath, "utf8");
   assert.match(workflow, /workflow_dispatch:/);
@@ -59,5 +59,16 @@ test("manual CI workflow retains locale artifacts without publishing", () => {
   assert.match(workflow, /android\/1080x1920/);
   assert.match(workflow, /feature-graphic\/1024x500/);
   assert.doesNotMatch(workflow, /path:\s*store-assets\/ci-exports\/\$\{\{ matrix\.locale \}\}\s*$/m);
-  assert.doesNotMatch(workflow, /upload_to_play_store|upload_to_app_store|PLAY_STORE_JSON_KEY/);
+  assert.match(workflow, /publish-play-draft:/);
+  assert.match(workflow, /needs: \[prepare, render\]/);
+  assert.match(workflow, /inputs\.locale == 'all'/);
+  assert.match(workflow, /needs\.render\.result == 'success'/);
+  assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
+  assert.match(workflow, /actions\/download-artifact@v5/);
+  assert.match(workflow, /pattern: store-screenshots-\*/);
+  assert.match(workflow, /merge-multiple: false/);
+  assert.match(workflow, /play_listing\.py stage/);
+  assert.match(workflow, /bundle exec fastlane android publish_store_listing_draft/);
+  assert.match(workflow, /PLAY_STORE_JSON_KEY: \$\{\{ secrets\.PLAY_STORE_JSON_KEY \}\}/);
+  assert.doesNotMatch(workflow, /fastlane android release|upload_to_app_store/);
 });

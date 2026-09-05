@@ -100,15 +100,17 @@ color mode, and retaining canonical artifacts.
 A new `publish-play-draft` job:
 
 1. runs only when the workflow input is exactly `locale=all`;
-2. depends on every matrix render job succeeding;
-3. downloads all `store-screenshots-*` artifacts into isolated directories;
-4. stages seven Android phone screenshots and one feature graphic per locale
+2. runs only from `main`, so an arbitrary feature branch cannot receive the
+   Google Play credential and publish modified workflow code;
+3. depends on every matrix render job succeeding;
+4. downloads all `store-screenshots-*` artifacts into isolated directories;
+5. stages seven Android phone screenshots and one feature graphic per locale
    under the matching Fastlane metadata locale;
-5. validates the complete 37-locale metadata and image inventory;
-6. calls one Fastlane lane with the existing `PLAY_STORE_JSON_KEY` secret;
-7. uploads no APK or AAB and does not modify release tracks;
-8. commits the Google Play edit with `changes_not_sent_for_review: true`;
-9. writes the staged locale and asset counts to the Actions summary.
+6. validates the complete 37-locale metadata and image inventory;
+7. calls one Fastlane lane with the existing `PLAY_STORE_JSON_KEY` secret;
+8. uploads no APK or AAB and does not modify release tracks;
+9. commits the Google Play edit with `changes_not_sent_for_review: true`;
+10. writes the staged locale and asset counts to the Actions summary.
 
 The publish job is deliberately singular. Running one Supply edit avoids 37
 parallel jobs competing to replace the same listing's screenshots and metadata.
