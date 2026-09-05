@@ -47,7 +47,7 @@ test("command arguments have deterministic defaults", () => {
   });
 });
 
-test("manual CI workflow publishes only a complete all-locale Play draft", () => {
+test("manual CI workflow publishes complete all-locale store drafts", () => {
   const workflowPath = path.resolve(process.cwd(), "../../.github/workflows/store-screenshots.yml");
   const workflow = fs.readFileSync(workflowPath, "utf8");
   assert.match(workflow, /workflow_dispatch:/);
@@ -73,5 +73,19 @@ test("manual CI workflow publishes only a complete all-locale Play draft", () =>
   assert.match(workflow, /Locales: 34/);
   assert.match(workflow, /Phone screenshots: 238/);
   assert.match(workflow, /Feature graphics: 34/);
+  assert.match(workflow, /publish-app-store-draft:/);
+  assert.match(workflow, /runs-on: macos-26/);
+  assert.match(workflow, /group: app-store-listing-draft/);
+  assert.match(workflow, /app_store_listing\.py stage/);
+  assert.match(workflow, /--metadata-root fastlane\/metadata\/ios/);
+  assert.match(workflow, /--screenshots-root fastlane\/screenshots/);
+  assert.match(workflow, /bundle exec fastlane ios publish_app_store_listing_draft/);
+  assert.match(workflow, /APP_STORE_CONNECT_KEY_ID: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_ID \}\}/);
+  assert.match(workflow, /APP_STORE_CONNECT_ISSUER_ID: \$\{\{ secrets\.APP_STORE_CONNECT_ISSUER_ID \}\}/);
+  assert.match(workflow, /APP_STORE_CONNECT_KEY_BASE64: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_BASE64 \}\}/);
+  assert.match(workflow, /App Store locales: 28/);
+  assert.match(workflow, /iPhone screenshots: 196/);
+  assert.match(workflow, /iPad screenshots: 196/);
+  assert.match(workflow, /Total Apple screenshots: 392/);
   assert.doesNotMatch(workflow, /fastlane android release|upload_to_app_store/);
 });

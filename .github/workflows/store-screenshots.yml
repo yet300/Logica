@@ -160,3 +160,56 @@ jobs:
           echo "- Phone screenshots: 238" >> "$GITHUB_STEP_SUMMARY"
           echo "- Feature graphics: 34" >> "$GITHUB_STEP_SUMMARY"
           echo "- Review status: changes not sent for review" >> "$GITHUB_STEP_SUMMARY"
+
+  publish-app-store-draft:
+    needs: [prepare, render]
+    if: ${{ inputs.locale == 'all' && needs.render.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: macos-26
+    timeout-minutes: 45
+    concurrency:
+      group: app-store-listing-draft
+      cancel-in-progress: false
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: "1"
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      APP_STORE_CONNECT_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_KEY_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Download every localized screenshot artifact
+        uses: actions/download-artifact@v5
+        with:
+          pattern: store-screenshots-*
+          path: store-assets/ci-artifacts
+          merge-multiple: false
+
+      - name: Validate metadata and stage App Store screenshots
+        run: >-
+          python3 tools/store_screenshots/app_store_listing.py stage
+          --artifacts-root store-assets/ci-artifacts
+          --metadata-root fastlane/metadata/ios
+          --screenshots-root fastlane/screenshots
+
+      - name: Upload App Store listing without sending for review
+        run: bundle exec fastlane ios publish_app_store_listing_draft
+
+      - name: Publish App Store draft summary
+        run: |
+          echo "### App Store listing draft" >> "$GITHUB_STEP_SUMMARY"
+          echo "- App Store locales: 28" >> "$GITHUB_STEP_SUMMARY"
+          echo "- iPhone screenshots: 196" >> "$GITHUB_STEP_SUMMARY"
+          echo "- iPad screenshots: 196" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Total Apple screenshots: 392" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Review status: not submitted for review" >> "$GITHUB_STEP_SUMMARY"
