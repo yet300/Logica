@@ -403,6 +403,7 @@ skip_upload_images: false
 skip_upload_screenshots: false
 sync_image_upload: true
 changes_not_sent_for_review: true
+rescue_changes_not_sent_for_review: false
 ```
 
 Also reject `aab:`, `apk:`, and release-track mutation inside that lane.
@@ -437,6 +438,7 @@ lane :publish_store_listing_draft do
     skip_upload_screenshots: false,
     sync_image_upload: true,
     changes_not_sent_for_review: true,
+    rescue_changes_not_sent_for_review: false,
   )
 end
 ```

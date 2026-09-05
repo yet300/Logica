@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import re
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
@@ -273,6 +274,34 @@ class RepositoryIgnoreContractTest(unittest.TestCase):
         gitignore = Path(".gitignore").read_text(encoding="utf-8").splitlines()
         self.assertIn("fastlane/metadata/android/*/images/", gitignore)
         self.assertNotIn("fastlane/metadata/android/", gitignore)
+
+
+class PlayListingFastfileTest(unittest.TestCase):
+    def test_draft_lane_uploads_listing_only_and_never_requests_review(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        match = re.search(
+            r"lane :publish_store_listing_draft do(?P<body>.*?)\n  end",
+            fastfile,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(match)
+        body = match.group("body")
+        for setting in (
+            "skip_upload_apk: true",
+            "skip_upload_aab: true",
+            "skip_upload_metadata: false",
+            "skip_upload_changelogs: true",
+            "skip_upload_images: false",
+            "skip_upload_screenshots: false",
+            "sync_image_upload: true",
+            "changes_not_sent_for_review: true",
+            "rescue_changes_not_sent_for_review: false",
+        ):
+            self.assertIn(setting, body)
+        self.assertIn('metadata_path: "fastlane/metadata/android"', body)
+        self.assertIn('json_key_data: play_store_json_key', body)
+        self.assertIn("PLAY_STORE_JSON_KEY env is not set", body)
+        self.assertNotRegex(body, r"\b(?:aab|apk|track):")
 
 
 if __name__ == "__main__":

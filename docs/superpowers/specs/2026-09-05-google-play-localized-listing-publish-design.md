@@ -125,6 +125,8 @@ Add an Android lane dedicated to listing publication. It calls
 - changelog upload disabled;
 - SHA-256 image synchronization enabled;
 - `changes_not_sent_for_review: true`;
+- `rescue_changes_not_sent_for_review: false`, so Fastlane cannot retry by
+  weakening the no-review guarantee;
 - no binary, rollout, or track mutation.
 
 Fastlane Supply replaces the existing screenshots in filename order rather
