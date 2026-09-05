@@ -156,7 +156,7 @@ jobs:
       - name: Publish Play Store draft summary
         run: |
           echo "### Google Play listing draft" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Locales: 37" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Phone screenshots: 259" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Feature graphics: 37" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Locales: 34" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Phone screenshots: 238" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Feature graphics: 34" >> "$GITHUB_STEP_SUMMARY"
           echo "- Review status: changes not sent for review" >> "$GITHUB_STEP_SUMMARY"

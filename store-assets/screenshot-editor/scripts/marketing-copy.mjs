@@ -1,8 +1,8 @@
 export const LOCALES = [
   "ar", "az", "be", "bn", "da", "de", "el", "en", "es", "fi",
   "fr", "he", "hi", "hu", "hy", "id", "it", "ja", "ka", "kk",
-  "ko", "ky", "nb", "nl", "pl", "pt", "ro", "ru", "sv", "tg",
-  "th", "tk", "tr", "uk", "uz", "vi", "zh",
+  "ko", "ky", "nb", "nl", "pl", "pt", "ro", "ru", "sv", "th",
+  "tr", "uk", "vi", "zh",
 ];
 
 export const COPY = {
@@ -122,17 +122,9 @@ export const COPY = {
     choose: "VÄLJ DITT SPEL", growing: "VÄXANDE SAMLING",
     headlines: ["En växande värld\nav pussel.", "Välj din\nnästa utmaning.", "Rensa rader.\nHitta ditt flyt.", "Slå ihop tal.\nTänk framåt.", "Släpp frukt.\nLåt den växa.", "Olika spel.\nEtt genomtänkt hem.", "Ditt nästa pussel\nväntar."],
   },
-  tg: {
-    choose: "БОЗИРО ИНТИХОБ КУН", growing: "МАҶМӮАИ РУШДЁБАНДА",
-    headlines: ["Ҷаҳони рӯ ба рушди\nмуаммоҳо.", "Озмоиши навбатиро\nинтихоб кун.", "Қаторҳоро тоза кун.\nРитми худро ёб.", "Рақамҳоро якҷо кун.\nПешакӣ фикр кун.", "Меваро парто.\nКалонтар соз.", "Бозиҳои гуногун.\nЯк фазои бароҳат.", "Муаммои навбатӣ\nтуро интизор аст."],
-  },
   th: {
     choose: "เลือกเกมของคุณ", growing: "คอลเลกชันที่เติบโต",
     headlines: ["โลกแห่งพัซเซิล\nที่เติบโตไม่หยุด", "เลือกความท้าทาย\nครั้งต่อไป", "เคลียร์แถว\nแล้วหาจังหวะของคุณ", "รวมตัวเลข\nคิดล่วงหน้า", "ปล่อยผลไม้\nให้เติบโตยิ่งขึ้น", "หลากหลายเกม\nในที่เดียวที่ลงตัว", "พัซเซิลถัดไป\nกำลังรอคุณอยู่"],
-  },
-  tk: {
-    choose: "OÝNUŇY SAÝLA", growing: "ÖSÝÄN ÝYGYNDY",
-    headlines: ["Tapmaçalaryň\nösýän dünýäsi.", "Indiki synagyňy\nsaýla.", "Setirleri arassala.\nÖz ritmiňi tap.", "Sanlary birleşdir.\nÖňünden pikirlen.", "Miwäni taşla.\nHas ulalt.", "Dürli oýunlar.\nBir amatly ýer.", "Indiki tapmaçaň\nsaňa garaşýar."],
   },
   tr: {
     choose: "OYUNUNU SEÇ", growing: "BÜYÜYEN KOLEKSİYON",
@@ -141,10 +133,6 @@ export const COPY = {
   uk: {
     choose: "ОБЕРИ ГРУ", growing: "КОЛЕКЦІЯ ЗРОСТАЄ",
     headlines: ["Світ головоломок,\nщо постійно зростає.", "Обери своє\nнаступне випробування.", "Очищуй лінії.\nЗнайди свій ритм.", "Об’єднуй числа.\nДумай наперед.", "Кидай фрукти.\nВирощуй більші.", "Різні ігри.\nОдин продуманий простір.", "Наступна головоломка\nвже чекає."],
-  },
-  uz: {
-    choose: "O‘YININGIZNI TANLANG", growing: "KENGAYIB BORAYOTGAN TO‘PLAM",
-    headlines: ["Boshqotirmalarning\nkengayib borayotgan olami.", "Keyingi sinovingizni\ntanlang.", "Qatorlarni tozalang.\nMaromingizni toping.", "Raqamlarni birlashtiring.\nOldindan o‘ylang.", "Mevani tashlang.\nYanada kattalashtiring.", "Turli o‘yinlar.\nBitta qulay makon.", "Keyingi boshqotirma\nsizni kutmoqda."],
   },
   vi: {
     choose: "CHỌN TRÒ CHƠI", growing: "BỘ SƯU TẬP ĐANG LỚN",

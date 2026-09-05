@@ -70,5 +70,8 @@ test("manual CI workflow publishes only a complete all-locale Play draft", () =>
   assert.match(workflow, /play_listing\.py stage/);
   assert.match(workflow, /bundle exec fastlane android publish_store_listing_draft/);
   assert.match(workflow, /PLAY_STORE_JSON_KEY: \$\{\{ secrets\.PLAY_STORE_JSON_KEY \}\}/);
+  assert.match(workflow, /Locales: 34/);
+  assert.match(workflow, /Phone screenshots: 238/);
+  assert.match(workflow, /Feature graphics: 34/);
   assert.doesNotMatch(workflow, /fastlane android release|upload_to_app_store/);
 });

@@ -48,12 +48,16 @@ awards, user counts, ratings, being ad-free, or the exact number of games.
 
 ## Localizations
 
-The metadata locale set exactly matches the application's 37 supported
-locales:
+The metadata locale set contains the 34 application locales accepted by at
+least one target store:
 
 `ar`, `az`, `be`, `bn`, `da`, `de`, `el`, `en`, `es`, `fi`, `fr`, `he`, `hi`,
 `hu`, `hy`, `id`, `it`, `ja`, `ka`, `kk`, `ko`, `ky`, `nb`, `nl`, `pl`, `pt`,
-`ro`, `ru`, `sv`, `tg`, `th`, `tk`, `tr`, `uk`, `uz`, `vi`, and `zh`.
+`ro`, `ru`, `sv`, `th`, `tr`, `uk`, `vi`, and `zh`.
+
+Tajik (`tg`), Turkmen (`tk`), and Uzbek (`uz`) remain application UI locales,
+but are excluded from store metadata and screenshot generation because neither
+Google Play nor App Store Connect supports them as listing locales.
 
 Each locale receives a culturally natural short and full description rather
 than a word-for-word mechanical translation. Brand names and current game names
@@ -87,7 +91,7 @@ must reject:
 - invalid UTF-8 or missing required files;
 - missing Android screenshots or feature graphic for any locale.
 
-The workflow must stage and validate all 37 locales before invoking Fastlane.
+The workflow must stage and validate all 34 locales before invoking Fastlane.
 This makes publication atomic from the workflow's perspective: a partial render
 cannot produce a partial listing upload.
 
@@ -106,13 +110,13 @@ A new `publish-play-draft` job:
 4. downloads all `store-screenshots-*` artifacts into isolated directories;
 5. stages seven Android phone screenshots and one feature graphic per locale
    under the matching Fastlane metadata locale;
-6. validates the complete 37-locale metadata and image inventory;
+6. validates the complete 34-locale metadata and image inventory;
 7. calls one Fastlane lane with the existing `PLAY_STORE_JSON_KEY` secret;
 8. uploads no APK or AAB and does not modify release tracks;
 9. commits the Google Play edit with `changes_not_sent_for_review: true`;
 10. writes the staged locale and asset counts to the Actions summary.
 
-The publish job is deliberately singular. Running one Supply edit avoids 37
+The publish job is deliberately singular. Running one Supply edit avoids 34
 parallel jobs competing to replace the same listing's screenshots and metadata.
 
 ## Fastlane behavior
@@ -156,7 +160,7 @@ guarantee is that it does not request review.
 
 Automated tests cover:
 
-- the exact 37-locale metadata inventory and locale mappings;
+- the exact 34-locale metadata inventory and locale mappings;
 - Play title, short-description, and full-description limits;
 - staging from the per-locale GitHub artifact directory structure;
 - seven ordered phone screenshots plus one feature graphic per locale;

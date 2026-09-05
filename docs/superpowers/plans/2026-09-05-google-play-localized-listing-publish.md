@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make the existing all-locale screenshot workflow upload a complete 37-locale Google Play listing edit, including rewritten super-app metadata and generated images, without sending the edit for review.
+**Goal:** Make the existing all-locale screenshot workflow upload a complete 34-locale Google Play listing edit, including rewritten super-app metadata and generated images, without sending the edit for review.
 
-**Architecture:** Keep translated Play metadata as reviewable Fastlane text files in Git. Add a Python validation/staging boundary that assembles the 37 downloaded screenshot artifacts into Fastlane's Android metadata tree and refuses partial inputs. After every locale render succeeds, one gated GitHub Actions job invokes a dedicated metadata-only Fastlane lane with `changes_not_sent_for_review: true`.
+**Architecture:** Keep translated Play metadata as reviewable Fastlane text files in Git. Add a Python validation/staging boundary that assembles the 34 downloaded screenshot artifacts into Fastlane's Android metadata tree and refuses partial inputs. After every locale render succeeds, one gated GitHub Actions job invokes a dedicated metadata-only Fastlane lane with `changes_not_sent_for_review: true`.
 
 **Tech Stack:** GitHub Actions, Python 3.13 standard library and `unittest`, Fastlane Supply/Ruby, Bun/Node test runner, Playwright-generated PNG artifacts.
 
@@ -14,7 +14,7 @@
 
 - Create `tools/store_screenshots/play_listing.py`: canonical Play locale map, metadata validation, artifact discovery, and all-locale image staging.
 - Create `tools/store_screenshots/test_play_listing.py`: unit and integration-style tests for metadata limits, exact locale coverage, artifact staging, and failure atomicity.
-- Create `fastlane/metadata/android/<play-locale>/title.txt`: unchanged title for each of the 37 Play locales.
+- Create `fastlane/metadata/android/<play-locale>/title.txt`: unchanged title for each of the 34 Play locales.
 - Create `fastlane/metadata/android/<play-locale>/short_description.txt`: localized super-app short description.
 - Create `fastlane/metadata/android/<play-locale>/full_description.txt`: localized super-app full description.
 - Modify `tools/store_screenshots/stage_fastlane.py`: import the shared Play locale map instead of maintaining a second Python copy.
@@ -40,21 +40,21 @@ Add tests that assert the exact application-to-Play mapping:
 
 ```python
 EXPECTED_PLAY_LOCALES = {
-    "ar": "ar", "az": "az-AZ", "be": "be-BY", "bn": "bn-BD",
+    "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",
     "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
-    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "he-IL",
-    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id-ID",
-    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk-KZ",
-    "ko": "ko-KR", "ky": "ky-KG", "nb": "nb-NO", "nl": "nl-NL",
-    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro-RO", "ru": "ru-RU",
-    "sv": "sv-SE", "tg": "tg-TJ", "th": "th-TH", "tk": "tk-TM",
-    "tr": "tr-TR", "uk": "uk-UA", "uz": "uz-UZ", "vi": "vi-VN",
+    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "iw-IL",
+    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id",
+    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk",
+    "ko": "ko-KR", "ky": "ky-KG", "nb": "no-NO", "nl": "nl-NL",
+    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro", "ru": "ru-RU",
+    "sv": "sv-SE", "th": "th", "tr": "tr-TR", "uk": "uk",
+    "vi": "vi",
     "zh": "zh-TW",
 }
 
 def test_play_locale_map_is_exact():
     self.assertEqual(PLAY_STORE_LOCALES, EXPECTED_PLAY_LOCALES)
-    self.assertEqual(len(PLAY_STORE_LOCALES), 37)
+    self.assertEqual(len(PLAY_STORE_LOCALES), 34)
 ```
 
 - [ ] **Step 2: Write failing metadata validation tests**
@@ -88,15 +88,15 @@ Create constants and functions with these public signatures:
 ```python
 TITLE = "Logica — Block Puzzle"
 PLAY_STORE_LOCALES: dict[str, str] = {
-    "ar": "ar", "az": "az-AZ", "be": "be-BY", "bn": "bn-BD",
+    "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",
     "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
-    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "he-IL",
-    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id-ID",
-    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk-KZ",
-    "ko": "ko-KR", "ky": "ky-KG", "nb": "nb-NO", "nl": "nl-NL",
-    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro-RO", "ru": "ru-RU",
-    "sv": "sv-SE", "tg": "tg-TJ", "th": "th-TH", "tk": "tk-TM",
-    "tr": "tr-TR", "uk": "uk-UA", "uz": "uz-UZ", "vi": "vi-VN",
+    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "iw-IL",
+    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id",
+    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk",
+    "ko": "ko-KR", "ky": "ky-KG", "nb": "no-NO", "nl": "nl-NL",
+    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro", "ru": "ru-RU",
+    "sv": "sv-SE", "th": "th", "tr": "tr-TR", "uk": "uk",
+    "vi": "vi",
     "zh": "zh-TW",
 }
 REQUIRED_METADATA_FILES = (
@@ -143,7 +143,7 @@ def validate_metadata(metadata_root: Path) -> MetadataSummary:
 
 `validate_metadata` reads each required file as strict UTF-8, strips only outer
 whitespace for validation, counts Unicode code points with Python `len`, and
-requires exact equality between directory names and the 37 mapped Play locale
+requires exact equality between directory names and the 34 mapped Play locale
 codes. It ignores `changelogs/` and generated `images/` subdirectories.
 
 - [ ] **Step 5: Remove the duplicate Python Play locale map**
@@ -177,7 +177,7 @@ git commit -m "feat: validate localized Play Store metadata"
 ### Task 2: Rewrite and localize the Google Play listing
 
 **Files:**
-- Create: `fastlane/metadata/android/{ar,az-AZ,be-BY,bn-BD,da-DK,de-DE,el-GR,en-US,es-ES,fi-FI,fr-FR,he-IL,hi-IN,hu-HU,hy-AM,id-ID,it-IT,ja-JP,ka-GE,kk-KZ,ko-KR,ky-KG,nb-NO,nl-NL,pl-PL,pt-BR,ro-RO,ru-RU,sv-SE,tg-TJ,th-TH,tk-TM,tr-TR,uk-UA,uz-UZ,vi-VN,zh-TW}/{title,short_description,full_description}.txt`
+- Create: `fastlane/metadata/android/{ar,az-AZ,be,bn-BD,da-DK,de-DE,el-GR,en-US,es-ES,fi-FI,fr-FR,iw-IL,hi-IN,hu-HU,hy-AM,id,it-IT,ja-JP,ka-GE,kk,ko-KR,ky-KG,no-NO,nl-NL,pl-PL,pt-BR,ro,ru-RU,sv-SE,th,tr-TR,uk,vi,zh-TW}/{title,short_description,full_description}.txt`
 - Preserve: `fastlane/metadata/android/en-US/changelogs/*.txt`
 
 - [ ] **Step 1: Add the canonical English listing**
@@ -237,7 +237,7 @@ python3 tools/store_screenshots/play_listing.py \
 Expected:
 
 ```text
-Validated 37 Play Store metadata locales: 37 titles, 37 short descriptions, 37 full descriptions.
+Validated 34 Play Store metadata locales: 34 titles, 34 short descriptions, 34 full descriptions.
 ```
 
 - [ ] **Step 4: Inspect character counts and scripts**
@@ -264,7 +264,7 @@ git commit -m "feat: localize Play Store super-app listing"
 
 - [ ] **Step 1: Write failing artifact staging tests**
 
-Create 37 temporary artifact directories named
+Create 34 temporary artifact directories named
 `store-screenshots-<app-locale>`. Each contains seven files under
 `android/1080x1920/` and one
 `feature-graphic/1024x500/01-feature-graphic.png`. Assert that staging produces:
@@ -275,7 +275,7 @@ fastlane/metadata/android/<play-locale>/images/phoneScreenshots/07-hero.png
 fastlane/metadata/android/<play-locale>/images/featureGraphic.png
 ```
 
-Assert a summary of 37 locales, 259 phone screenshots, and 37 feature graphics.
+Assert a summary of 34 locales, 238 phone screenshots, and 34 feature graphics.
 Add failure tests for a missing artifact locale, six instead of seven phone
 screenshots, and a missing feature graphic. Assert the destination remains
 untouched when preflight fails.
@@ -333,7 +333,7 @@ def stage_all_play_assets(
     )
 ```
 
-Preflight all 37 source artifact directories before deleting or writing any
+Preflight all 34 source artifact directories before deleting or writing any
 destination `images/` directory. After preflight, replace each locale's
 `phoneScreenshots/`, copy the feature graphic, and retain existing metadata and
 changelog files.
@@ -507,7 +507,7 @@ bundle exec fastlane android publish_store_listing_draft
 
 Use `FL_NUMBER_OF_THREADS=4`, `FASTLANE_SKIP_UPDATE_CHECK=1`, and
 `LC_ALL=C.UTF-8`. Do not write the JSON secret to disk. Add a summary line with
-37 locales, 259 screenshots, and 37 feature graphics after Fastlane succeeds.
+34 locales, 238 screenshots, and 34 feature graphics after Fastlane succeeds.
 
 - [ ] **Step 4: Verify workflow syntax and contract**
 
@@ -542,7 +542,7 @@ State explicitly that:
 gh workflow run store-screenshots.yml -f locale=all
 ```
 
-generates all 37 locales and uploads the complete listing as changes not sent
+generates all 34 locales and uploads the complete listing as changes not sent
 for review, while a specific locale only generates an artifact. Document the
 required `PLAY_STORE_JSON_KEY` repository secret and the manual Play Console
 review action. Remove the obsolete statement that the workflow never publishes
@@ -572,7 +572,7 @@ ruby -e 'require "yaml"; YAML.load_file(".github/workflows/store-screenshots.yml
 git diff --check
 ```
 
-Expected: all JavaScript and Python tests pass, Next.js builds, 37 metadata
+Expected: all JavaScript and Python tests pass, Next.js builds, 34 metadata
 locales validate, Fastfile and workflow syntax pass, and `git diff --check`
 prints no errors.
 

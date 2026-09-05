@@ -57,12 +57,22 @@ then retains the 22 canonical upload files: seven 6.9-inch iPhone screenshots,
 seven 13-inch iPad screenshots, seven Android phone screenshots, one Google Play
 feature graphic, and the timing manifest. Apple generates the smaller accepted
 device sizes from the highest-resolution uploads. Artifacts expire after 14
-days and the workflow never publishes to either store.
+days. A single-locale run only generates its artifact. An all-locale run from
+`main` continues to a single Google Play publication job after every locale
+passes validation.
 
 ```bash
 gh workflow run store-screenshots.yml -f locale=ka
 gh workflow run store-screenshots.yml -f locale=all
 ```
+
+The `locale=all` command uploads all 34 store-supported Google Play metadata packages,
+phone screenshot decks, and feature graphics with
+`changes_not_sent_for_review: true`. The edit remains pending in Play Console
+until a human explicitly sends it for review. It uploads no APK or AAB, changes
+no release track, and does not upload anything to App Store Connect. Publication
+requires the `PLAY_STORE_JSON_KEY` repository secret and is skipped outside
+`main`.
 
 After downloading an artifact, stage its store-specific locale paths for
 Fastlane without committing generated bundles:
@@ -75,22 +85,28 @@ bundle exec fastlane android stage_store_assets
 
 Georgian has no App Store Connect screenshot locale, so the staging command
 places Georgian assets only under Google Play metadata. Existing release lanes
-still skip screenshot and image upload; staging does not publish anything.
+still skip metadata, screenshot, and image upload; the staging lane itself does
+not publish anything.
 
 ### Measured runtime and storage
 
 Local release-build measurements on this machine were 35.1 seconds for English,
 35.3 seconds for Georgian, and 35.4 seconds for German per 50-image locale. At
-four parallel jobs, pure rendering of all 37 locales is about six minutes of
+four parallel jobs, pure rendering of all 34 locales is about 5.3 minutes of
 wall time. Allow roughly 15–25 minutes for the cached GitHub Actions workflow,
 including runner setup, build, browser startup, validation, and upload; the
-first uncached run can take 20–30 minutes. Each run writes its actual job and
-render duration to the Actions summary, which is the authoritative measurement.
+first uncached render can take 20–30 minutes. Artifact download, staging, and
+Google Play draft upload add an estimated 5–15 minutes, giving an expected
+20–40 minute end-to-end run. Each run writes its actual job and render duration
+to the Actions summary, which is the authoritative measurement.
 
 Keeping every size for every locale would be roughly 850 MB. The workflow keeps
-only canonical artifacts, approximately 10 MB per locale or 370 MB for all 37,
+only canonical artifacts, approximately 10 MB per locale or 340 MB for all 34,
 and removes them automatically after 14 days. Only the English visual-regression
-baseline and Georgian README gallery are stored permanently in Git.
+baseline and Georgian README gallery are stored permanently in Git. Tajik,
+Turkmen, and Uzbek stay localized inside the app but are omitted from screenshot
+generation because neither Google Play nor App Store Connect accepts those
+listing locales.
 
 ## Customizing
 

@@ -16,9 +16,8 @@ APP_STORE_LOCALES: dict[str, str | None] = {
     "fr": "fr-FR", "he": "he", "hi": "hi", "hu": "hu", "hy": None,
     "id": "id", "it": "it", "ja": "ja", "ka": None, "kk": None,
     "ko": "ko", "ky": None, "nb": "no", "nl": "nl-NL", "pl": "pl",
-    "pt": "pt-BR", "ro": "ro", "ru": "ru", "sv": "sv", "tg": None,
-    "th": "th", "tk": None, "tr": "tr", "uk": "uk", "uz": None,
-    "vi": "vi", "zh": "zh-Hant",
+    "pt": "pt-BR", "ro": "ro", "ru": "ru", "sv": "sv", "th": "th",
+    "tr": "tr", "uk": "uk", "vi": "vi", "zh": "zh-Hant",
 }
 
 DEVICE_SIZES = {

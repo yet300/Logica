@@ -59,6 +59,14 @@ class FastlaneLocaleMappingTest(unittest.TestCase):
         self.assertEqual(play_store_locale("ka"), "ka-GE")
         self.assertEqual(play_store_locale("zh"), "zh-TW")
 
+    def test_rejects_locales_unsupported_by_both_stores(self):
+        for locale in ("tg", "tk", "uz"):
+            with self.subTest(locale=locale):
+                with self.assertRaisesRegex(ValueError, f"Unsupported locale: {locale}"):
+                    play_store_locale(locale)
+                with self.assertRaisesRegex(ValueError, f"Unsupported locale: {locale}"):
+                    app_store_locale(locale)
+
 
 class StageLocaleTest(unittest.TestCase):
     def test_stages_complete_english_export(self):

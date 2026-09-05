@@ -8,12 +8,16 @@ const project = JSON.parse(
   fs.readFileSync(path.join(editorRoot, "app-store-screenshots.json"), "utf8"),
 );
 
-const expectedLocales = [
+const applicationLocales = [
   "ar", "az", "be", "bn", "da", "de", "el", "en", "es", "fi",
   "fr", "he", "hi", "hu", "hy", "id", "it", "ja", "ka", "kk",
   "ko", "ky", "nb", "nl", "pl", "pt", "ro", "ru", "sv", "tg",
   "th", "tk", "tr", "uk", "uz", "vi", "zh",
 ];
+const unsupportedByBothStores = ["tg", "tk", "uz"];
+const expectedLocales = applicationLocales.filter(
+  (locale) => !unsupportedByBothStores.includes(locale),
+);
 
 const resourceRoots = [
   "composeApp/src/commonMain/composeResources",
@@ -37,14 +41,14 @@ function localesAt(relativeRoot) {
 
 for (const root of resourceRoots) {
   assert(
-    JSON.stringify(localesAt(root)) === JSON.stringify(expectedLocales),
-    `${root} locale set differs from the screenshot contract`,
+    JSON.stringify(localesAt(root)) === JSON.stringify(applicationLocales),
+    `${root} locale set differs from the application localization contract`,
   );
 }
 
 assert(
   JSON.stringify(project.locales) === JSON.stringify(expectedLocales),
-  `project locales must match all ${expectedLocales.length} application locales`,
+  `project locales must match all ${expectedLocales.length} store-supported application locales`,
 );
 assert(project.locale === "en", "English must remain the editor default");
 
@@ -75,4 +79,7 @@ for (const locale of expectedLocales) {
   );
 }
 
-console.log(`Verified complete screenshot copy for ${expectedLocales.length} application locales.`);
+console.log(
+  `Verified complete screenshot copy for ${expectedLocales.length} store-supported locales; ` +
+    `${unsupportedByBothStores.join(", ")} remain app-only.`,
+);

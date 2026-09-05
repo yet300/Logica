@@ -47,11 +47,41 @@ independent Gradle modules reviewed and allowlisted at build time.
   <img src="store-assets/exports/ka/ipad/2064x2752/07-hero.png" width="210" alt="შემდეგი თავსატეხი გელოდება iPad-ზე" />
 </p>
 
-The screenshot editor contains marketing copy for all 37 application locales.
+The screenshot editor contains marketing copy for all 34 application locales
+supported by at least one target store. Tajik, Turkmen, and Uzbek remain
+available in the app UI but are excluded because neither store supports them.
 The README displays the Georgian gallery. English baseline exports remain in
 Git for visual regression; all complete store-size bundles are generated on
 demand by the manual **Store screenshots** GitHub Actions workflow and retained
 as artifacts for 14 days.
+
+### Google Play listing automation
+
+From `main`, this command generates all 34 localized screenshot sets and then
+uploads the fixed `Logica — Block Puzzle` title, translated short and full
+descriptions, seven phone
+screenshots, and feature graphic for every locale to Google Play Console:
+
+```bash
+gh workflow run store-screenshots.yml -f locale=all
+```
+
+The edit is committed with `changes_not_sent_for_review: true`; it stays pending
+until a human reviews it in Play Console and explicitly sends it for review.
+No APK, AAB, release track, or App Store listing is changed. A specific locale,
+for example `locale=ka`, only generates a downloadable artifact and never
+publishes a partial listing. The normal Android release lane also continues to
+skip metadata, images, and screenshots.
+
+The workflow requires a repository secret containing the existing Google Play
+service-account JSON:
+
+```bash
+gh secret set PLAY_STORE_JSON_KEY < /path/to/play-store-service-account.json
+```
+
+Allow approximately 20–40 minutes for a complete cold generation and draft
+upload. The workflow records the actual render durations in its Actions summary.
 
 ## Features
 

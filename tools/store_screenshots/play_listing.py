@@ -13,15 +13,15 @@ from typing import Sequence
 TITLE = "Logica — Block Puzzle"
 
 PLAY_STORE_LOCALES: dict[str, str] = {
-    "ar": "ar", "az": "az-AZ", "be": "be-BY", "bn": "bn-BD",
+    "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",
     "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
-    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "he-IL",
-    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id-ID",
-    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk-KZ",
-    "ko": "ko-KR", "ky": "ky-KG", "nb": "nb-NO", "nl": "nl-NL",
-    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro-RO", "ru": "ru-RU",
-    "sv": "sv-SE", "tg": "tg-TJ", "th": "th-TH", "tk": "tk-TM",
-    "tr": "tr-TR", "uk": "uk-UA", "uz": "uz-UZ", "vi": "vi-VN",
+    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "iw-IL",
+    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id",
+    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk",
+    "ko": "ko-KR", "ky": "ky-KG", "nb": "no-NO", "nl": "nl-NL",
+    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro", "ru": "ru-RU",
+    "sv": "sv-SE", "th": "th", "tr": "tr-TR", "uk": "uk",
+    "vi": "vi",
     "zh": "zh-TW",
 }
 

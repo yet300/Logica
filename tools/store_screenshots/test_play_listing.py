@@ -18,15 +18,15 @@ from tools.store_screenshots.play_listing import (
 
 
 EXPECTED_PLAY_LOCALES = {
-    "ar": "ar", "az": "az-AZ", "be": "be-BY", "bn": "bn-BD",
+    "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",
     "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
-    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "he-IL",
-    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id-ID",
-    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk-KZ",
-    "ko": "ko-KR", "ky": "ky-KG", "nb": "nb-NO", "nl": "nl-NL",
-    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro-RO", "ru": "ru-RU",
-    "sv": "sv-SE", "tg": "tg-TJ", "th": "th-TH", "tk": "tk-TM",
-    "tr": "tr-TR", "uk": "uk-UA", "uz": "uz-UZ", "vi": "vi-VN",
+    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "iw-IL",
+    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id",
+    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk",
+    "ko": "ko-KR", "ky": "ky-KG", "nb": "no-NO", "nl": "nl-NL",
+    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro", "ru": "ru-RU",
+    "sv": "sv-SE", "th": "th", "tr": "tr-TR", "uk": "uk",
+    "vi": "vi",
     "zh": "zh-TW",
 }
 
@@ -73,7 +73,7 @@ def create_complete_artifacts(root: Path) -> Path:
 class PlayLocaleContractTest(unittest.TestCase):
     def test_play_locale_map_is_exact(self):
         self.assertEqual(PLAY_STORE_LOCALES, EXPECTED_PLAY_LOCALES)
-        self.assertEqual(len(PLAY_STORE_LOCALES), 37)
+        self.assertEqual(len(PLAY_STORE_LOCALES), 34)
 
     def test_maps_supported_locale_and_rejects_unknown_locale(self):
         self.assertEqual(play_store_locale("ka"), "ka-GE")
@@ -86,7 +86,7 @@ class PlayMetadataValidationTest(unittest.TestCase):
     def test_accepts_complete_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             summary = validate_metadata(create_complete_metadata(Path(temp)))
-            self.assertEqual(summary, MetadataSummary(37, 37, 37, 37))
+            self.assertEqual(summary, MetadataSummary(34, 34, 34, 34))
 
     def test_rejects_missing_locale(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -108,8 +108,8 @@ class PlayMetadataCliTest(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(
                 output.getvalue(),
-                "Validated 37 Play Store metadata locales: 37 titles, "
-                "37 short descriptions, 37 full descriptions.\n",
+                "Validated 34 Play Store metadata locales: 34 titles, "
+                "34 short descriptions, 34 full descriptions.\n",
             )
 
     def test_report_command_prints_character_counts(self):
@@ -138,8 +138,8 @@ class PlayMetadataCliTest(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(
                 output.getvalue(),
-                "Staged 37 Play Store locales: 259 phone screenshots, "
-                "37 feature graphics.\n",
+                "Staged 34 Play Store locales: 238 phone screenshots, "
+                "34 feature graphics.\n",
             )
 
     def test_rejects_extra_locale(self):
@@ -197,7 +197,7 @@ class PlayAssetStagingTest(unittest.TestCase):
 
             summary = stage_all_play_assets(artifacts, metadata)
 
-            self.assertEqual(summary, AssetSummary(37, 259, 37))
+            self.assertEqual(summary, AssetSummary(34, 238, 34))
             self.assertEqual(changelog.read_text(encoding="utf-8"), "Existing release notes.\n")
             self.assertEqual(
                 len(list((metadata / "ka-GE/images/phoneScreenshots").glob("*.png"))),
