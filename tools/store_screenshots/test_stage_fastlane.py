@@ -4,9 +4,9 @@ from pathlib import Path
 
 from tools.store_screenshots.stage_fastlane import (
     app_store_locale,
-    play_store_locale,
     stage_locale,
 )
+from tools.store_screenshots.play_listing import play_store_locale
 
 
 LAYOUTS = [

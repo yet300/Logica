@@ -7,6 +7,8 @@ import argparse
 import shutil
 from pathlib import Path
 
+from tools.store_screenshots.play_listing import play_store_locale
+
 
 APP_STORE_LOCALES: dict[str, str | None] = {
     "ar": "ar-SA", "az": None, "be": None, "bn": "bn-BD", "da": "da",
@@ -17,19 +19,6 @@ APP_STORE_LOCALES: dict[str, str | None] = {
     "pt": "pt-BR", "ro": "ro", "ru": "ru", "sv": "sv", "tg": None,
     "th": "th", "tk": None, "tr": "tr", "uk": "uk", "uz": None,
     "vi": "vi", "zh": "zh-Hant",
-}
-
-PLAY_STORE_LOCALES: dict[str, str] = {
-    "ar": "ar", "az": "az-AZ", "be": "be-BY", "bn": "bn-BD",
-    "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
-    "es": "es-ES", "fi": "fi-FI", "fr": "fr-FR", "he": "he-IL",
-    "hi": "hi-IN", "hu": "hu-HU", "hy": "hy-AM", "id": "id-ID",
-    "it": "it-IT", "ja": "ja-JP", "ka": "ka-GE", "kk": "kk-KZ",
-    "ko": "ko-KR", "ky": "ky-KG", "nb": "nb-NO", "nl": "nl-NL",
-    "pl": "pl-PL", "pt": "pt-BR", "ro": "ro-RO", "ru": "ru-RU",
-    "sv": "sv-SE", "tg": "tg-TJ", "th": "th-TH", "tk": "tk-TM",
-    "tr": "tr-TR", "uk": "uk-UA", "uz": "uz-UZ", "vi": "vi-VN",
-    "zh": "zh-TW",
 }
 
 DEVICE_SIZES = {
@@ -49,13 +38,6 @@ def app_store_locale(locale: str) -> str | None:
     if locale not in APP_STORE_LOCALES:
         raise ValueError(f"Unsupported locale: {locale}")
     return APP_STORE_LOCALES[locale]
-
-
-def play_store_locale(locale: str) -> str:
-    try:
-        return PLAY_STORE_LOCALES[locale]
-    except KeyError as error:
-        raise ValueError(f"Unsupported locale: {locale}") from error
 
 
 def canonical_pngs(locale_root: Path) -> list[Path]:
