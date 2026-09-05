@@ -3,9 +3,9 @@ import unittest
 from pathlib import Path
 
 from tools.store_screenshots.stage_fastlane import (
-    app_store_locale,
     stage_locale,
 )
+from tools.store_screenshots.app_store_listing import app_store_locale
 from tools.store_screenshots.play_listing import play_store_locale
 
 
@@ -54,7 +54,8 @@ def create_canonical_export(root: Path, locale: str) -> Path:
 class FastlaneLocaleMappingTest(unittest.TestCase):
     def test_maps_store_specific_locale_codes(self):
         self.assertEqual(app_store_locale("en"), "en-US")
-        self.assertIsNone(app_store_locale("ka"))
+        with self.assertRaisesRegex(ValueError, "Unsupported App Store locale: ka"):
+            app_store_locale("ka")
         self.assertEqual(app_store_locale("zh"), "zh-Hant")
         self.assertEqual(play_store_locale("ka"), "ka-GE")
         self.assertEqual(play_store_locale("zh"), "zh-TW")
@@ -64,7 +65,7 @@ class FastlaneLocaleMappingTest(unittest.TestCase):
             with self.subTest(locale=locale):
                 with self.assertRaisesRegex(ValueError, f"Unsupported locale: {locale}"):
                     play_store_locale(locale)
-                with self.assertRaisesRegex(ValueError, f"Unsupported locale: {locale}"):
+                with self.assertRaisesRegex(ValueError, f"Unsupported App Store locale: {locale}"):
                     app_store_locale(locale)
 
 

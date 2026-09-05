@@ -7,18 +7,8 @@ import argparse
 import shutil
 from pathlib import Path
 
+from tools.store_screenshots.app_store_listing import APP_STORE_LOCALES, app_store_locale
 from tools.store_screenshots.play_listing import play_store_locale
-
-
-APP_STORE_LOCALES: dict[str, str | None] = {
-    "ar": "ar-SA", "az": None, "be": None, "bn": "bn-BD", "da": "da",
-    "de": "de-DE", "el": "el", "en": "en-US", "es": "es-ES", "fi": "fi",
-    "fr": "fr-FR", "he": "he", "hi": "hi", "hu": "hu", "hy": None,
-    "id": "id", "it": "it", "ja": "ja", "ka": None, "kk": None,
-    "ko": "ko", "ky": None, "nb": "no", "nl": "nl-NL", "pl": "pl",
-    "pt": "pt-BR", "ro": "ro", "ru": "ru", "sv": "sv", "th": "th",
-    "tr": "tr", "uk": "uk", "vi": "vi", "zh": "zh-Hant",
-}
 
 DEVICE_SIZES = {
     "iphone": ("1320x2868", "1284x2778", "1206x2622", "1125x2436"),
@@ -31,12 +21,6 @@ APPLE_REQUIRED_SIZES = {
     "iphone": ("1320x2868",),
     "ipad": ("2064x2752",),
 }
-
-
-def app_store_locale(locale: str) -> str | None:
-    if locale not in APP_STORE_LOCALES:
-        raise ValueError(f"Unsupported locale: {locale}")
-    return APP_STORE_LOCALES[locale]
 
 
 def canonical_pngs(locale_root: Path) -> list[Path]:
@@ -70,7 +54,7 @@ def stage_locale(input_root: Path, fastlane_root: Path, locale: str) -> dict[str
         raise ValueError(f"Expected 22 canonical PNGs for {locale}, found {len(source_pngs)}")
 
     fastlane_root = fastlane_root.resolve()
-    apple_code = app_store_locale(locale)
+    apple_code = APP_STORE_LOCALES.get(locale)
     play_code = play_store_locale(locale)
     summary = {"apple": 0, "androidPhone": 0, "featureGraphic": 0}
 
