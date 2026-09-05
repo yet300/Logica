@@ -1,0 +1,108 @@
+name: Store screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      locale:
+        description: "Application locale code, or all"
+        required: true
+        default: all
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      locales: ${{ steps.matrix.outputs.locales }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        name: Resolve locale matrix
+        env:
+          INPUT_LOCALE: ${{ inputs.locale }}
+        working-directory: store-assets/screenshot-editor
+        run: node scripts/ci-locales.mjs
+
+  render:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        locale: ${{ fromJSON(needs.prepare.outputs.locales) }}
+    steps:
+      - name: Record job start
+        run: echo "SCREENSHOT_JOB_STARTED=$(date +%s)" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Cache Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-1.62.1-${{ runner.os }}-${{ runner.arch }}
+
+      - name: Install screenshot dependencies
+        working-directory: store-assets/screenshot-editor
+        run: |
+          bun install --frozen-lockfile
+          bunx playwright install --with-deps chromium
+          python3 -m pip install Pillow==11.3.0
+
+      - name: Build screenshot editor
+        working-directory: store-assets/screenshot-editor
+        run: bun run build
+
+      - name: Start export server
+        working-directory: store-assets/screenshot-editor
+        run: |
+          bun start -- -H 127.0.0.1 -p 3100 > "$RUNNER_TEMP/store-screenshots-server.log" 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:3100/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/store-screenshots-server.log"
+          exit 1
+
+      - name: Render ${{ matrix.locale }}
+        working-directory: store-assets/screenshot-editor
+        run: >-
+          bun run export:ci --
+          --locale "${{ matrix.locale }}"
+          --output ../../store-assets/ci-exports
+
+      - name: Verify generated PNGs
+        run: >-
+          python3 tools/store_screenshots/verify_exports.py
+          --export-root "store-assets/ci-exports/${{ matrix.locale }}"
+          --contact-sheet "$RUNNER_TEMP/${{ matrix.locale }}-contact-sheet.png"
+
+      - name: Publish timing summary
+        shell: bash
+        run: |
+          JOB_SECONDS=$(( $(date +%s) - SCREENSHOT_JOB_STARTED ))
+          RENDER_SECONDS=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["totalSeconds"])' "store-assets/ci-exports/${{ matrix.locale }}/manifest.json")
+          echo "### ${{ matrix.locale }} screenshot timing" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Complete job: ${JOB_SECONDS}s" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Rendering 50 PNGs: ${RENDER_SECONDS}s" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload localized screenshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: store-screenshots-${{ matrix.locale }}
+          path: store-assets/ci-exports/${{ matrix.locale }}
+          if-no-files-found: error
+          retention-days: 14

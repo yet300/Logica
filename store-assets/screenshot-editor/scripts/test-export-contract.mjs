@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import test from "node:test";
 import {
   buildExportUnits,
@@ -43,4 +45,14 @@ test("command arguments have deterministic defaults", () => {
     baseUrl: "http://127.0.0.1:3100",
     devices: ["iphone", "ipad", "android", "feature-graphic"],
   });
+});
+
+test("manual CI workflow retains locale artifacts without publishing", () => {
+  const workflowPath = path.resolve(process.cwd(), "../../.github/workflows/store-screenshots.yml");
+  const workflow = fs.readFileSync(workflowPath, "utf8");
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.match(workflow, /locale:/);
+  assert.match(workflow, /max-parallel: 4/);
+  assert.match(workflow, /retention-days: 14/);
+  assert.doesNotMatch(workflow, /upload_to_play_store|upload_to_app_store|PLAY_STORE_JSON_KEY/);
 });

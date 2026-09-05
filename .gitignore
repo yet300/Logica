@@ -22,5 +22,11 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+store-assets/ci-exports/
+store-assets/exports/*
+!store-assets/exports/en/
+!store-assets/exports/en/**
+!store-assets/exports/ka/
+!store-assets/exports/ka/**
 Untitled.jks
 .worktrees/
