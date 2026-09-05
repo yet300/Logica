@@ -1,0 +1,21 @@
+En app. En växande värld av pusselspel.
+
+Logica samlar lugna och genomtänkta spel på ett ställe. Starta en snabb utmaning, prova en ny strategi och byt spel när du vill.
+
+SPELA PÅ DITT SÄTT
+• Fyll rader och forma brädet i Block Blast
+• Slå ihop brickor och nå högre tal i 2048
+• Släpp och slå ihop frukter i fysikpusslet Fruit Merge
+• Upptäck nya pusselspel medan samlingen växer
+
+FÖR VARJE STUND
+• Korta omgångar som är enkla att starta
+• Enkel styrning med tillfredsställande respons
+• Personliga rekord och sparade framsteg
+• Spela offline var du än är
+• Ett rent och lugnt gränssnitt
+
+Oavsett om du gillar block, siffror, sammanslagning eller logiska utmaningar ger Logica dig en växande samling utan en separat app för varje spel.
+
+Välj ett spel och hitta ditt nästa favoritpussel.
+

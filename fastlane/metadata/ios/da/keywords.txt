@@ -1,0 +1,1 @@
+puslespil,blokke,tal,flet,logik,strategi,offline,afslapning

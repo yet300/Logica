@@ -1,0 +1,21 @@
+Tek uygulama. Sürekli büyüyen bir bulmaca dünyası.
+
+Logica, sakin ve düşündüren oyunları tek yerde buluşturur. Hızlı bir mücadeleye başla, yeni stratejiler dene ve istediğin zaman oyun değiştir.
+
+KENDİ TARZINDA OYNA
+• Block Blast’ta satırları tamamla ve tahtayı şekillendir
+• 2048’de taşları birleştir ve daha büyük sayılara ulaş
+• Fruit Merge fizik bulmacasında meyveleri bırakıp birleştir
+• Koleksiyon büyüdükçe yeni bulmacalar keşfet
+
+HER ANA UYGUN
+• Başlaması kolay kısa oyunlar
+• Basit kontroller ve tatmin edici geri bildirim
+• Kişisel rekorlar ve kaydedilen ilerleme
+• İstediğin yerde çevrimdışı oyna
+• Temiz ve sakin bir arayüz
+
+Blokları, sayıları, birleştirme oyunlarını veya mantık mücadelelerini seviyorsan Logica, her oyun için ayrı uygulama yüklemeden büyüyen bir koleksiyon sunar.
+
+Bir oyun seç ve sıradaki favori bulmacanı bul.
+

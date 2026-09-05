@@ -1,0 +1,1 @@
+puzzle,blocchi,numeri,unione,logica,strategia,offline,relax

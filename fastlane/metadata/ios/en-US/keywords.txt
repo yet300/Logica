@@ -1,0 +1,1 @@
+puzzle,blocks,numbers,merge,logic,strategy,offline,casual,relaxing

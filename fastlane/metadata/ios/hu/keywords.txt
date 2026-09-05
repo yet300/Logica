@@ -1,0 +1,1 @@
+puzzle,blokkok,számok,egyesítés,logika,stratégia,offline,nyugodt
