@@ -54,6 +54,16 @@ class IosReleaseFastfileTest(unittest.TestCase):
         self.assertIsNotNone(match)
         self.assertIn("run_precheck_before_submit: false", match.group("body"))
 
+    def test_listing_draft_validates_release_notes_before_upload(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        match = re.search(
+            r"lane :publish_app_store_listing_draft do(?P<body>.*?)\n  end",
+            fastfile,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(match)
+        self.assertIn("validate_ios_release_notes", match.group("body"))
+
 
 class IosReleaseWorkflowTest(unittest.TestCase):
     def test_fastlane_lockfile_supports_macos_26_arm64_runner(self):

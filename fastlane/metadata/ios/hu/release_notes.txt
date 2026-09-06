@@ -1,0 +1,1 @@
+A Logica mostantól szuperalkalmazás a rejtvények rajongóinak: fedezd fel a Block Blast, a 2048 és a Fruit Merge játékokat egy adaptív katalógusból. Megújult Quiet Editorial felület, gördülékenyebb navigáció, közös beállítások, jobb hang, akadálymentesítés és teljesítmény vár Androidon és iOS-en.

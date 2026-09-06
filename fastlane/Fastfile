@@ -15,6 +15,15 @@ def ios_marketing_version
   match ? match[1] : UI.user_error!("MARKETING_VERSION is missing from Config.xcconfig")
 end
 
+def validate_ios_release_notes
+  metadata_root = File.expand_path("metadata/ios", __dir__)
+  missing = Dir[File.join(metadata_root, "*")].select { |locale_root|
+    !File.file?(File.join(locale_root, "release_notes.txt")) ||
+      File.read(File.join(locale_root, "release_notes.txt"), encoding: "UTF-8").strip.empty?
+  }.map { |locale_root| File.basename(locale_root) }
+  UI.user_error!("Missing iOS release notes for: #{missing.join(', ')}") unless missing.empty?
+end
+
 # ---------------------------------------------------------------------------
 # Android — Google Play internal track
 # ---------------------------------------------------------------------------
@@ -97,6 +106,8 @@ platform :ios do
       key_content: ENV["APP_STORE_CONNECT_KEY_CONTENT"],
       is_key_content_base64: true,
     )
+
+    validate_ios_release_notes
 
     upload_to_app_store(
       api_key: api_key,

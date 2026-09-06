@@ -6,6 +6,23 @@ belong in GitHub Actions secrets and must never be committed to the repository.
 
 ## Screenshot and listing workflow
 
+### Version bump and localized What's New
+
+Keep one translation source per release in
+`fastlane/metadata/release-notes/<version>.json`. It must contain every iOS
+locale key. Generate all App Store Connect `release_notes.txt` files, Google
+Play changelogs, and bump both platform version files with:
+
+```bash
+python3 tools/store_screenshots/release_metadata.py \
+  --version-name 2.0.0 \
+  --version-code 15 \
+  --notes fastlane/metadata/release-notes/2.0.0.json
+```
+
+The iOS draft lane validates that every locale has a non-empty
+`release_notes.txt` before contacting App Store Connect.
+
 The manual **Store screenshots** workflow renders the localized marketing
 assets. Run one locale when reviewing copy or artwork:
 

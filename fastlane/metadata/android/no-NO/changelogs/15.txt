@@ -1,0 +1,1 @@
+Logica er nå en superapp for puslespillfans: utforsk Block Blast, 2048 og Fruit Merge fra én adaptiv katalog. Nyt det oppdaterte Quiet Editorial-grensesnittet, jevnere navigasjon, delte innstillinger, forbedret lyd, bedre tilgjengelighet og ytelsesforbedringer på Android og iOS.
