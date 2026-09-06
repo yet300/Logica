@@ -4,11 +4,11 @@
 
 A Kotlin Multiplatform super-app for Android and iOS: one lightweight host,
 one catalog, and short local-first game sessions. The production bundle
-currently includes Block Blast and 2048; additional games and apps are
+currently includes Block Blast, 2048, and Fruit Merge; additional games and apps are
 independent Gradle modules reviewed and allowlisted at build time.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue.svg)
-![Compose](https://img.shields.io/badge/Compose-1.11.1-green.svg)
+![Compose](https://img.shields.io/badge/Compose-1.12.0-green.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-Android%20%7C%20iOS-orange.svg)
 
 ## Download
@@ -35,95 +35,20 @@ independent Gradle modules reviewed and allowlisted at build time.
   <img src="store-assets/exports/ka/iphone/1320x2868/07-hero.png" width="150" alt="შემდეგი თავსატეხი გელოდება" />
 </p>
 
-### iPad
-
-<p>
-  <img src="store-assets/exports/ka/ipad/2064x2752/01-hero.png" width="210" alt="Logica — თავსატეხების მზარდი სამყარო iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/02-device-bottom.png" width="210" alt="აირჩიე შემდეგი გამოწვევა iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/03-device-top.png" width="210" alt="Block Blast-ის თამაში iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/04-hero.png" width="210" alt="2048-ის თამაში iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/05-device-bottom.png" width="210" alt="Fruit Merge-ის თამაში iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/06-three-devices.png" width="210" alt="Logica-ს თამაშების კოლექცია iPad-ზე" />
-  <img src="store-assets/exports/ka/ipad/2064x2752/07-hero.png" width="210" alt="შემდეგი თავსატეხი გელოდება iPad-ზე" />
-</p>
-
-The screenshot editor contains marketing copy for all 34 application locales
-supported by at least one target store. Tajik, Turkmen, and Uzbek remain
-available in the app UI but are excluded because neither store supports them.
-The README displays the Georgian gallery. English baseline exports remain in
-Git for visual regression; all complete store-size bundles are generated on
-demand by the manual **Store screenshots** GitHub Actions workflow and retained
-as artifacts for 14 days.
-
-### Store listing automation
-
-From `main`, this command generates all 34 localized screenshot sets and then
-uploads the fixed `Logica — Block Puzzle` title and localized super-app listing
-to both stores. Google Play receives 34 metadata packages, seven phone
-screenshots per locale, and 34 feature graphics. App Store Connect receives 28
-metadata packages plus seven iPhone and seven iPad screenshots per locale:
-
-```bash
-gh workflow run store-screenshots.yml -f locale=all
-```
-
-Both edits remain pending for manual review. Google Play uses
-`changes_not_sent_for_review: true`; App Store Connect uploads metadata and
-screenshots with binary upload, review submission, and automatic release
-disabled. A specific locale, for example `locale=ka`, only generates a
-downloadable artifact and never publishes a partial listing. Before an
-all-locale run, `MARKETING_VERSION` in
-`iosApp/Configuration/Config.xcconfig` must identify the next editable App Store
-version.
-
-Listing publication requires the Google service-account JSON and an App Store
-Connect team API key:
-
-```bash
-gh secret set PLAY_STORE_JSON_KEY < /path/to/play-store-service-account.json
-base64 < /path/to/AuthKey_KEYID.p8 | gh secret set APP_STORE_CONNECT_KEY_CONTENT
-gh secret set APP_STORE_CONNECT_KEY_ID
-gh secret set APP_STORE_CONNECT_ISSUER_ID
-```
-
-Allow approximately 20–45 minutes for a complete cold generation and both draft
-uploads. The Play and App Store publication jobs run independently after the
-shared render matrix. The workflow records actual render durations in its
-Actions summary.
-
-### Signed iOS release CI
-
-A pushed `vX.Y.Z` tag starts Android and iOS release jobs independently. The
-iOS job builds an App Store-signed IPA using version `X.Y.Z` and the GitHub run
-number, uploads it to App Store Connect/TestFlight, and retains the IPA and dSYM
-for 14 days. It does not distribute the build to testers, select it for an App
-Store version, submit it for review, or release it.
-
-Configure these additional repository secrets before the first tag run:
-
-```bash
-base64 < /path/to/distribution.p12 | gh secret set IOS_DIST_CERT_P12
-gh secret set IOS_DIST_CERT_PASSWORD
-base64 < /path/to/app-store.mobileprovision | gh secret set IOS_PROVISIONING_PROFILE
-gh secret set IOS_PROVISIONING_PROFILE_NAME
-base64 < iosApp/iosApp/GoogleService-Info.plist | gh secret set GOOGLE_SERVICE_INFO_PLIST
-```
-
-The certificate must be an Apple Distribution certificate and the provisioning
-profile must target `ge.yet3.blokblast.BlockBlast` for team `3KKQ642Q9H`.
-The temporary CI keychain uses a per-run random password and needs no repository
-secret.
+The README shows the Georgian phone gallery. See
+[Store and release operations](fastlane/README.md) for screenshot generation,
+store-listing drafts, signing, artifacts, and release CI.
 
 ## Features
 
-- 🧩 Classic block-puzzle gameplay with smooth animations
-- 🎨 Polished Material 3 UI tuned for the Block Blast feel
+- 🧩 A growing catalog of puzzle games: Block Blast, 2048, and Fruit Merge
+- 🎨 Polished, adaptive Material 3 UI across the host and its games
 - 📱 Single codebase for Android & iOS via Compose Multiplatform
 - 💾 Persistent settings and best-score tracking
 - 🎉 Confetti effects on big clears
-- 🎵 Rotating background music across multiple tracks
+- 🎵 Bundled and procedural game audio
 - 📴 Fully offline — no account required
-- ⭐ In-app review prompts on Android
+- ⭐ Shared in-app review policy
 - 📊 Firebase Analytics & Crashlytics
 - 🧱 Compile-time MiniApp plugin framework with a uniform catalog and host frame
 - 🔌 Contributor games discovered locally and shipped only through reviewable allowlisting
@@ -135,17 +60,19 @@ accessibility and future detail surfaces, but are not repeated in the launcher.
 ## Tech Stack
 
 - **Kotlin Multiplatform** 2.4.10 — shared business logic
-- **Compose Multiplatform** 1.11.1 — declarative UI for Android & iOS
-- **Material 3** — design system
-- **Decompose** + **Essenty** — navigation & lifecycle
-- **MVIKotlin** — predictable state management (MVI)
-- **Metro DI** — compile-time dependency injection
-- **Kotlinx Coroutines / Serialization / Datetime**
-- **Multiplatform Settings** — cross-platform key/value storage
-- **Firebase** (GitLive SDK) — Analytics, Crashlytics
-- **Google Mobile Ads** + **User Messaging Platform** (Android)
-- **ConfettiKit** — celebratory effects
+- **Compose Multiplatform** 1.12.0 — declarative Android and iOS UI
+- **Material 3** 1.10.0-alpha05 + **Material 3 Adaptive** 1.3.0-beta02 — design system and responsive layouts
+- **Decompose** 3.5.0 + **Essenty** 2.5.0 — navigation and lifecycle
+- **MVIKotlin** 4.4.0 — predictable state management
+- **Metro DI** 1.4.2 — compile-time dependency injection
+- **Kotlinx Coroutines** 1.11.0, **Serialization JSON** 1.11.0, and **Datetime** 0.8.0
+- **Multiplatform Settings** 1.3.0 — cross-platform persistence
+- **Firebase GitLive** 3.0.0-alpha02 — Analytics and Crashlytics
+- **Google Mobile Ads** 25.4.0 + **User Messaging Platform** 4.0.0
+- **Haze** 1.7.3, **ConfettiKit** 0.9.0, and **AboutLibraries** 15.2.0
+- **Turbine** 1.2.1, **Robolectric** 4.16.1, and **Compose UI testing**
 - **Baseline Profiles** — Android startup performance
+- **Store screenshot editor** — Next.js 15.0.3, Playwright 1.62.1, and `html-to-image`, built from [ParthJadhav/app-store-screenshots](https://github.com/ParthJadhav/app-store-screenshots)
 
 ## Project Structure
 
@@ -166,7 +93,8 @@ BlockBlast/
 │   └── settings/    # Host settings
 ├── game/
 │   ├── blockblast/       # Allowlisted Block Blast MiniApp
-│   └── twentyfortyeight/ # Allowlisted 2048 MiniApp
+│   ├── twentyfortyeight/ # Allowlisted 2048 MiniApp
+│   └── fruitmerge/       # Allowlisted Fruit Merge MiniApp
 ├── miniapp/
 │   ├── api/         # Stable Compose-free contracts
 │   ├── compose/     # Plugin, manifest, session and frame contracts
@@ -178,7 +106,7 @@ BlockBlast/
 │   ├── testkit/     # Contributor contract fixtures
 │   └── samples/     # Discovered but unshipped examples
 ├── build-logic/     # MiniApp discovery, scaffold and convention plugins
-└── fastlane/        # Store metadata & changelogs
+└── fastlane/        # Store metadata, screenshots, release automation and operations docs
 ```
 
 ## Getting Started
@@ -308,9 +236,18 @@ Contributions are welcome. MiniApps generated by the command above remain
 unshipped until their source, dependency boundary and allowlist change are
 reviewed.
 
-## Support Me
+<a id="support-me"></a>
 
-- **Support:** [ryaeh7282@gmail.com](mailto:ryaeh7282@gmail.com)
+## Sponsor Logica
+
+Logica is looking for sponsors who want to help fund independent development.
+Direct financial support is welcome, as are AI API credits/tokens, CI capacity,
+test devices, localization, and design support. Sponsorship does not grant
+control over the production MiniApp allowlist or project direction.
+
+For sponsorship or in-kind support, contact
+[ryaeh7282@gmail.com](mailto:ryaeh7282@gmail.com).
+
 - **ton**: UQCi1XMdZP2fBfTK-O6rsAX3fXEm5iBpjO1D6FDekdUDQnaw
 - **btc**: bc1qv2m03vg23227yfnlu0c0jx2ps5yg8v8kvy748s
 - **eth**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e
