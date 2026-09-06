@@ -35,8 +35,8 @@ METADATA_FILES = {
     "description.txt": "A thoughtful collection of puzzle games.",
     "keywords.txt": "puzzle,blocks,numbers,merge,logic,offline,casual",
     "promotional_text.txt": "Choose a puzzle and find your flow.",
-    "support_url.txt": "https://github.com/yet300/BlockBlast#support-me",
-    "privacy_url.txt": "https://github.com/yet300/block_blast/blob/main/privacy_policy.md",
+    "support_url.txt": "https://github.com/yet300/Logica#support-me",
+    "privacy_url.txt": "https://github.com/yet300/Logica/blob/main/privacy_policy.md",
 }
 
 
