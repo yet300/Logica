@@ -39,6 +39,10 @@ class IosReleaseFastfileTest(unittest.TestCase):
 
 
 class IosReleaseWorkflowTest(unittest.TestCase):
+    def test_fastlane_lockfile_supports_macos_26_arm64_runner(self):
+        lockfile = Path("Gemfile.lock").read_text(encoding="utf-8")
+        self.assertIn("  arm64-darwin-25", lockfile)
+
     def test_release_version_sources_are_200_with_build_15(self):
         gradle_properties = Path("gradle.properties").read_text(encoding="utf-8")
         config = Path("iosApp/Configuration/Config.xcconfig").read_text(encoding="utf-8")
