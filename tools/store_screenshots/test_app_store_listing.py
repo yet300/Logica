@@ -237,7 +237,7 @@ class AppStoreFastfileTest(unittest.TestCase):
         for variable in (
             "APP_STORE_CONNECT_KEY_ID",
             "APP_STORE_CONNECT_ISSUER_ID",
-            "APP_STORE_CONNECT_KEY_BASE64",
+            "APP_STORE_CONNECT_KEY_CONTENT",
         ):
             self.assertIn(variable, body)
         for setting in (

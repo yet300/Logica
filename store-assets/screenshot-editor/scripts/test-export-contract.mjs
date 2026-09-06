@@ -82,7 +82,7 @@ test("manual CI workflow publishes complete all-locale store drafts", () => {
   assert.match(workflow, /bundle exec fastlane ios publish_app_store_listing_draft/);
   assert.match(workflow, /APP_STORE_CONNECT_KEY_ID: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_ID \}\}/);
   assert.match(workflow, /APP_STORE_CONNECT_ISSUER_ID: \$\{\{ secrets\.APP_STORE_CONNECT_ISSUER_ID \}\}/);
-  assert.match(workflow, /APP_STORE_CONNECT_KEY_BASE64: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_BASE64 \}\}/);
+  assert.match(workflow, /APP_STORE_CONNECT_KEY_CONTENT: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_CONTENT \}\}/);
   assert.match(workflow, /App Store locales: 28/);
   assert.match(workflow, /iPhone screenshots: 196/);
   assert.match(workflow, /iPad screenshots: 196/);

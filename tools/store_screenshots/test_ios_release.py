@@ -14,7 +14,7 @@ class IosReleaseFastfileTest(unittest.TestCase):
             "APP_VERSION_CODE",
             "APP_STORE_CONNECT_KEY_ID",
             "APP_STORE_CONNECT_ISSUER_ID",
-            "APP_STORE_CONNECT_KEY_BASE64",
+            "APP_STORE_CONNECT_KEY_CONTENT",
             "IOS_PROVISIONING_PROFILE_NAME",
         ):
             self.assertIn(variable, body)
@@ -49,17 +49,17 @@ class IosReleaseWorkflowTest(unittest.TestCase):
         for secret in (
             "APP_STORE_CONNECT_KEY_ID",
             "APP_STORE_CONNECT_ISSUER_ID",
-            "APP_STORE_CONNECT_KEY_BASE64",
-            "IOS_DISTRIBUTION_CERTIFICATE_BASE64",
-            "IOS_DISTRIBUTION_CERTIFICATE_PASSWORD",
-            "IOS_PROVISIONING_PROFILE_BASE64",
+            "APP_STORE_CONNECT_KEY_CONTENT",
+            "IOS_DIST_CERT_P12",
+            "IOS_DIST_CERT_PASSWORD",
+            "IOS_PROVISIONING_PROFILE",
             "IOS_PROVISIONING_PROFILE_NAME",
-            "IOS_KEYCHAIN_PASSWORD",
-            "GOOGLE_SERVICE_INFO_PLIST_BASE64",
+            "GOOGLE_SERVICE_INFO_PLIST",
         ):
             self.assertIn(f"secrets.{secret}", workflow)
         for behavior in (
             "security create-keychain",
+            "openssl rand -hex 32",
             "security import",
             "security set-key-partition-list",
             "Provisioning Profiles",
@@ -73,6 +73,7 @@ class IosReleaseWorkflowTest(unittest.TestCase):
         ):
             self.assertIn(behavior, workflow)
         self.assertNotIn("submit_for_review", workflow)
+        self.assertNotIn("secrets.IOS_KEYCHAIN_PASSWORD", workflow)
 
 
 if __name__ == "__main__":

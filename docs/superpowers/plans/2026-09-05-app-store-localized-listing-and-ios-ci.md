@@ -194,7 +194,7 @@ git commit -m "feat: stage complete App Store screenshots"
 Assert that `ios publish_store_listing_draft`:
 
 - requires `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, and
-  `APP_STORE_CONNECT_KEY_BASE64`;
+  `APP_STORE_CONNECT_KEY_CONTENT`;
 - uses `app_store_connect_api_key` with base64 key content;
 - calls `upload_to_app_store` with `metadata_path: "fastlane/metadata/ios"` and
   `screenshots_path: "fastlane/screenshots"`;

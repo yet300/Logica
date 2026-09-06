@@ -81,7 +81,7 @@ Connect team API key:
 
 ```bash
 gh secret set PLAY_STORE_JSON_KEY < /path/to/play-store-service-account.json
-base64 < /path/to/AuthKey_KEYID.p8 | gh secret set APP_STORE_CONNECT_KEY_BASE64
+base64 < /path/to/AuthKey_KEYID.p8 | gh secret set APP_STORE_CONNECT_KEY_CONTENT
 gh secret set APP_STORE_CONNECT_KEY_ID
 gh secret set APP_STORE_CONNECT_ISSUER_ID
 ```
@@ -102,16 +102,17 @@ Store version, submit it for review, or release it.
 Configure these additional repository secrets before the first tag run:
 
 ```bash
-base64 < /path/to/distribution.p12 | gh secret set IOS_DISTRIBUTION_CERTIFICATE_BASE64
-gh secret set IOS_DISTRIBUTION_CERTIFICATE_PASSWORD
-base64 < /path/to/app-store.mobileprovision | gh secret set IOS_PROVISIONING_PROFILE_BASE64
+base64 < /path/to/distribution.p12 | gh secret set IOS_DIST_CERT_P12
+gh secret set IOS_DIST_CERT_PASSWORD
+base64 < /path/to/app-store.mobileprovision | gh secret set IOS_PROVISIONING_PROFILE
 gh secret set IOS_PROVISIONING_PROFILE_NAME
-gh secret set IOS_KEYCHAIN_PASSWORD
-base64 < iosApp/iosApp/GoogleService-Info.plist | gh secret set GOOGLE_SERVICE_INFO_PLIST_BASE64
+base64 < iosApp/iosApp/GoogleService-Info.plist | gh secret set GOOGLE_SERVICE_INFO_PLIST
 ```
 
 The certificate must be an Apple Distribution certificate and the provisioning
 profile must target `ge.yet3.blokblast.BlockBlast` for team `3KKQ642Q9H`.
+The temporary CI keychain uses a per-run random password and needs no repository
+secret.
 
 ## Features
 

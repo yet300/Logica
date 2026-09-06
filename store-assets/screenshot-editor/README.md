@@ -73,7 +73,7 @@ screenshots: 196 for iPhone and 196 for iPad. Both store edits remain pending
 until a human explicitly sends them for review. The workflow uploads no APK,
 AAB, or IPA and changes no release track. Publication requires
 `PLAY_STORE_JSON_KEY` plus `APP_STORE_CONNECT_KEY_ID`,
-`APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_KEY_BASE64`, and is skipped
+`APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_KEY_CONTENT`, and is skipped
 outside `main`.
 
 App Store screenshots attach to an editable version. Before running `all`, set

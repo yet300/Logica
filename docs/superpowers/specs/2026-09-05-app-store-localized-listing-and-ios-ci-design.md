@@ -140,13 +140,15 @@ their contents:
 
 - `APP_STORE_CONNECT_KEY_ID`;
 - `APP_STORE_CONNECT_ISSUER_ID`;
-- `APP_STORE_CONNECT_KEY_BASE64` (base64-encoded `.p8` team key);
-- `IOS_DISTRIBUTION_CERTIFICATE_BASE64` (base64-encoded `.p12`);
-- `IOS_DISTRIBUTION_CERTIFICATE_PASSWORD`;
-- `IOS_PROVISIONING_PROFILE_BASE64`;
+- `APP_STORE_CONNECT_KEY_CONTENT` (base64-encoded `.p8` team key);
+- `IOS_DIST_CERT_P12` (base64-encoded `.p12`);
+- `IOS_DIST_CERT_PASSWORD`;
+- `IOS_PROVISIONING_PROFILE` (base64-encoded `.mobileprovision`);
 - `IOS_PROVISIONING_PROFILE_NAME`;
-- `IOS_KEYCHAIN_PASSWORD`;
-- `GOOGLE_SERVICE_INFO_PLIST_BASE64`.
+- `GOOGLE_SERVICE_INFO_PLIST` (base64-encoded plist).
+
+The temporary CI keychain password is generated independently on every runner
+and is never stored as a repository secret.
 
 Metadata-only publication needs only the three App Store Connect key secrets.
 Signed tag builds need the complete set.
