@@ -58,21 +58,27 @@ seven 13-inch iPad screenshots, seven Android phone screenshots, one Google Play
 feature graphic, and the timing manifest. Apple generates the smaller accepted
 device sizes from the highest-resolution uploads. Artifacts expire after 14
 days. A single-locale run only generates its artifact. An all-locale run from
-`main` continues to a single Google Play publication job after every locale
-passes validation.
+`main` continues to independent Google Play and App Store Connect publication
+jobs after every locale passes validation.
 
 ```bash
 gh workflow run store-screenshots.yml -f locale=ka
 gh workflow run store-screenshots.yml -f locale=all
 ```
 
-The `locale=all` command uploads all 34 store-supported Google Play metadata packages,
-phone screenshot decks, and feature graphics with
-`changes_not_sent_for_review: true`. The edit remains pending in Play Console
-until a human explicitly sends it for review. It uploads no APK or AAB, changes
-no release track, and does not upload anything to App Store Connect. Publication
-requires the `PLAY_STORE_JSON_KEY` repository secret and is skipped outside
-`main`.
+The `locale=all` command uploads all 34 Google Play metadata packages, phone
+screenshot decks, and feature graphics with `changes_not_sent_for_review: true`.
+In parallel it uploads 28 App Store metadata packages and 392 canonical Apple
+screenshots: 196 for iPhone and 196 for iPad. Both store edits remain pending
+until a human explicitly sends them for review. The workflow uploads no APK,
+AAB, or IPA and changes no release track. Publication requires
+`PLAY_STORE_JSON_KEY` plus `APP_STORE_CONNECT_KEY_ID`,
+`APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_KEY_BASE64`, and is skipped
+outside `main`.
+
+App Store screenshots attach to an editable version. Before running `all`, set
+`MARKETING_VERSION` in `iosApp/Configuration/Config.xcconfig` to the next version
+being prepared in App Store Connect. A locale-only run remains artifact-only.
 
 After downloading an artifact, stage its store-specific locale paths for
 Fastlane without committing generated bundles:
@@ -84,9 +90,8 @@ bundle exec fastlane android stage_store_assets
 ```
 
 Georgian has no App Store Connect screenshot locale, so the staging command
-places Georgian assets only under Google Play metadata. Existing release lanes
-still skip metadata, screenshot, and image upload; the staging lane itself does
-not publish anything.
+places Georgian assets only under Google Play metadata. The one-locale staging
+lane itself does not publish anything.
 
 ### Measured runtime and storage
 
@@ -96,9 +101,16 @@ four parallel jobs, pure rendering of all 34 locales is about 5.3 minutes of
 wall time. Allow roughly 15–25 minutes for the cached GitHub Actions workflow,
 including runner setup, build, browser startup, validation, and upload; the
 first uncached render can take 20–30 minutes. Artifact download, staging, and
-Google Play draft upload add an estimated 5–15 minutes, giving an expected
-20–40 minute end-to-end run. Each run writes its actual job and render duration
+parallel store draft uploads add an estimated 5–20 minutes, giving an expected
+20–45 minute end-to-end run. Each run writes its actual job and render duration
 to the Actions summary, which is the authoritative measurement.
+
+The tag-driven release workflow separately builds a signed iOS IPA and uploads
+it to App Store Connect/TestFlight without distributing or submitting it. It
+requires the App Store Connect key, Apple Distribution `.p12`, matching App
+Store provisioning profile, temporary-keychain password, and base64 iOS
+Firebase plist secrets documented in the repository README. The IPA and dSYM
+expire after 14 days; signing material is removed even when the job fails.
 
 Keeping every size for every locale would be roughly 850 MB. The workflow keeps
 only canonical artifacts, approximately 10 MB per locale or 340 MB for all 34,

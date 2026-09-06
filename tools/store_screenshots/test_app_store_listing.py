@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 import re
+import subprocess
 from pathlib import Path
 
 from tools.store_screenshots.app_store_listing import (
@@ -77,6 +78,23 @@ class AppStoreLocaleContractTest(unittest.TestCase):
             with self.subTest(locale=locale):
                 with self.assertRaisesRegex(ValueError, f"Unsupported App Store locale: {locale}"):
                     app_store_locale(locale)
+
+    def test_bundled_fastlane_accepts_every_app_store_locale(self):
+        result = subprocess.run(
+            [
+                "bundle",
+                "exec",
+                "ruby",
+                "-rfastlane_core/languages",
+                "-e",
+                "puts FastlaneCore::Languages::ALL_LANGUAGES",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        supported = set(result.stdout.splitlines())
+        self.assertEqual(set(APP_STORE_LOCALES.values()) - supported, set())
 
 
 class AppStoreMetadataValidationTest(unittest.TestCase):

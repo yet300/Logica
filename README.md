@@ -55,33 +55,63 @@ Git for visual regression; all complete store-size bundles are generated on
 demand by the manual **Store screenshots** GitHub Actions workflow and retained
 as artifacts for 14 days.
 
-### Google Play listing automation
+### Store listing automation
 
 From `main`, this command generates all 34 localized screenshot sets and then
-uploads the fixed `Logica — Block Puzzle` title, translated short and full
-descriptions, seven phone
-screenshots, and feature graphic for every locale to Google Play Console:
+uploads the fixed `Logica — Block Puzzle` title and localized super-app listing
+to both stores. Google Play receives 34 metadata packages, seven phone
+screenshots per locale, and 34 feature graphics. App Store Connect receives 28
+metadata packages plus seven iPhone and seven iPad screenshots per locale:
 
 ```bash
 gh workflow run store-screenshots.yml -f locale=all
 ```
 
-The edit is committed with `changes_not_sent_for_review: true`; it stays pending
-until a human reviews it in Play Console and explicitly sends it for review.
-No APK, AAB, release track, or App Store listing is changed. A specific locale,
-for example `locale=ka`, only generates a downloadable artifact and never
-publishes a partial listing. The normal Android release lane also continues to
-skip metadata, images, and screenshots.
+Both edits remain pending for manual review. Google Play uses
+`changes_not_sent_for_review: true`; App Store Connect uploads metadata and
+screenshots with binary upload, review submission, and automatic release
+disabled. A specific locale, for example `locale=ka`, only generates a
+downloadable artifact and never publishes a partial listing. Before an
+all-locale run, `MARKETING_VERSION` in
+`iosApp/Configuration/Config.xcconfig` must identify the next editable App Store
+version.
 
-The workflow requires a repository secret containing the existing Google Play
-service-account JSON:
+Listing publication requires the Google service-account JSON and an App Store
+Connect team API key:
 
 ```bash
 gh secret set PLAY_STORE_JSON_KEY < /path/to/play-store-service-account.json
+base64 < /path/to/AuthKey_KEYID.p8 | gh secret set APP_STORE_CONNECT_KEY_BASE64
+gh secret set APP_STORE_CONNECT_KEY_ID
+gh secret set APP_STORE_CONNECT_ISSUER_ID
 ```
 
-Allow approximately 20–40 minutes for a complete cold generation and draft
-upload. The workflow records the actual render durations in its Actions summary.
+Allow approximately 20–45 minutes for a complete cold generation and both draft
+uploads. The Play and App Store publication jobs run independently after the
+shared render matrix. The workflow records actual render durations in its
+Actions summary.
+
+### Signed iOS release CI
+
+A pushed `vX.Y.Z` tag starts Android and iOS release jobs independently. The
+iOS job builds an App Store-signed IPA using version `X.Y.Z` and the GitHub run
+number, uploads it to App Store Connect/TestFlight, and retains the IPA and dSYM
+for 14 days. It does not distribute the build to testers, select it for an App
+Store version, submit it for review, or release it.
+
+Configure these additional repository secrets before the first tag run:
+
+```bash
+base64 < /path/to/distribution.p12 | gh secret set IOS_DISTRIBUTION_CERTIFICATE_BASE64
+gh secret set IOS_DISTRIBUTION_CERTIFICATE_PASSWORD
+base64 < /path/to/app-store.mobileprovision | gh secret set IOS_PROVISIONING_PROFILE_BASE64
+gh secret set IOS_PROVISIONING_PROFILE_NAME
+gh secret set IOS_KEYCHAIN_PASSWORD
+base64 < iosApp/iosApp/GoogleService-Info.plist | gh secret set GOOGLE_SERVICE_INFO_PLIST_BASE64
+```
+
+The certificate must be an Apple Distribution certificate and the provisioning
+profile must target `ge.yet3.blokblast.BlockBlast` for team `3KKQ642Q9H`.
 
 ## Features
 
@@ -278,6 +308,8 @@ unshipped until their source, dependency boundary and allowlist change are
 reviewed.
 
 ## Support Me
+
+- **Support:** [ryaeh7282@gmail.com](mailto:ryaeh7282@gmail.com)
 - **ton**: UQCi1XMdZP2fBfTK-O6rsAX3fXEm5iBpjO1D6FDekdUDQnaw
 - **btc**: bc1qv2m03vg23227yfnlu0c0jx2ps5yg8v8kvy748s
 - **eth**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e

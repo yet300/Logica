@@ -48,6 +48,12 @@ The application-locale-to-App-Store-locale mapping has one canonical Python
 owner. Screenshot editor TypeScript data must match it, and tests must reject
 mapping drift.
 
+Fastlane is pinned to the `2.235` release line or newer because older releases,
+including 2.229.1, reject Apple's newer `bn-BD` locale before making an App
+Store Connect request. The lock file includes both Apple Silicon macOS and
+x86_64 Linux so the same bundle supports the macOS iOS jobs and Ubuntu Android
+job.
+
 ## Tracked metadata
 
 Reviewable source files live at:
