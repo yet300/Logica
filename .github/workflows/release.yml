@@ -109,6 +109,11 @@ jobs:
           test -n "$GOOGLE_SERVICE_INFO_PLIST"
           printf '%s' "$GOOGLE_SERVICE_INFO_PLIST" | base64 -D > iosApp/iosApp/GoogleService-Info.plist
 
+      - name: Generate iOS Swift package linkage
+        env:
+          XCODEPROJ_PATH: ${{ github.workspace }}/iosApp/iosApp.xcodeproj
+        run: ./gradlew :composeApp:integrateLinkagePackage -i
+
       - name: Install distribution certificate and provisioning profile
         env:
           IOS_DIST_CERT_P12: ${{ secrets.IOS_DIST_CERT_P12 }}
