@@ -168,53 +168,25 @@ def stage_all_app_store_assets(
     )
 
 
-def _print_report(metadata_root: Path) -> None:
-    validate_metadata(metadata_root)
-    print("locale\tname\tsubtitle\tdescription\tkeywords\tpromotional")
-    for locale in sorted(APP_STORE_LOCALES.values()):
-        locale_root = metadata_root / locale
-        lengths = [
-            len(_read_metadata_file(locale_root, filename))
-            for filename in METADATA_FILENAMES[:5]
-        ]
-        print(f"{locale}\t" + "\t".join(str(length) for length in lengths))
-
-
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest="command", required=True)
-    for command in ("validate-metadata", "report"):
-        command_parser = subparsers.add_parser(command)
-        command_parser.add_argument("--metadata-root", type=Path, required=True)
+    subparsers = parser.add_subparsers(required=True)
     stage_parser = subparsers.add_parser("stage")
     stage_parser.add_argument("--artifacts-root", type=Path, required=True)
     stage_parser.add_argument("--metadata-root", type=Path, required=True)
     stage_parser.add_argument("--screenshots-root", type=Path, required=True)
     args = parser.parse_args(argv)
 
-    if args.command == "stage":
-        summary = stage_all_app_store_assets(
-            args.artifacts_root,
-            args.metadata_root,
-            args.screenshots_root,
-        )
-        print(
-            f"Staged {summary.locales} App Store locales: "
-            f"{summary.iphone_screenshots} iPhone screenshots, "
-            f"{summary.ipad_screenshots} iPad screenshots, "
-            f"{summary.screenshots} total."
-        )
-        return 0
-    if args.command == "report":
-        _print_report(args.metadata_root)
-        return 0
-
-    summary = validate_metadata(args.metadata_root)
+    summary = stage_all_app_store_assets(
+        args.artifacts_root,
+        args.metadata_root,
+        args.screenshots_root,
+    )
     print(
-        f"Validated {summary.locales} App Store metadata locales: "
-        f"{summary.names} names, {summary.subtitles} subtitles, "
-        f"{summary.descriptions} descriptions, {summary.keywords} keyword sets, "
-        f"{summary.promotional_texts} promotional texts."
+        f"Staged {summary.locales} App Store locales: "
+        f"{summary.iphone_screenshots} iPhone screenshots, "
+        f"{summary.ipad_screenshots} iPad screenshots, "
+        f"{summary.screenshots} total."
     )
     return 0
 

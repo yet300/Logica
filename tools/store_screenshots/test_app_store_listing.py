@@ -2,6 +2,8 @@ import tempfile
 import unittest
 import re
 import subprocess
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
 from pathlib import Path
 
 from tools.store_screenshots.app_store_listing import (
@@ -10,6 +12,7 @@ from tools.store_screenshots.app_store_listing import (
     MetadataSummary,
     TITLE,
     app_store_locale,
+    main,
     stage_all_app_store_assets,
     validate_metadata,
 )
@@ -154,6 +157,36 @@ class AppStoreMetadataValidationTest(unittest.TestCase):
                 (root / "en-US" / filename).write_text("http://example.com", encoding="utf-8")
                 with self.assertRaisesRegex(ValueError, f"Invalid .* URL for en-US"):
                     validate_metadata(root)
+
+
+class AppStoreMetadataCliTest(unittest.TestCase):
+    def test_stage_command_prints_complete_asset_summary(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            metadata = create_complete_metadata(root / "metadata")
+            artifacts = create_complete_artifacts(root / "artifacts")
+            output = StringIO()
+            with redirect_stdout(output):
+                result = main([
+                    "stage",
+                    "--artifacts-root", str(artifacts),
+                    "--metadata-root", str(metadata),
+                    "--screenshots-root", str(root / "screenshots"),
+                ])
+            self.assertEqual(result, 0)
+            self.assertEqual(
+                output.getvalue(),
+                "Staged 28 App Store locales: 196 iPhone screenshots, "
+                "196 iPad screenshots, 392 total.\n",
+            )
+
+    def test_removed_commands_are_not_accepted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = create_complete_metadata(Path(temp))
+            for command in ("report", "validate-metadata"):
+                with self.subTest(command=command), redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+                    with self.assertRaises(SystemExit):
+                        main([command, "--metadata-root", str(root)])
 
 
 class AppStoreAssetStagingTest(unittest.TestCase):
