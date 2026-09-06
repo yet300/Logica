@@ -270,6 +270,12 @@ class RepositoryIgnoreContractTest(unittest.TestCase):
 
 
 class PlayListingFastfileTest(unittest.TestCase):
+    def test_release_lane_uploads_localized_changelogs(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        lanes = re.findall(r"lane :release do(?P<body>.*?)\n  end", fastfile, re.DOTALL)
+        self.assertGreaterEqual(len(lanes), 2)
+        self.assertIn("skip_upload_changelogs: false", lanes[0])
+
     def test_draft_lane_uploads_listing_only_and_never_requests_review(self):
         fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
         match = re.search(

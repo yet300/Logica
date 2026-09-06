@@ -88,8 +88,8 @@ Pushing a `vX.Y.Z` tag starts Android and iOS release jobs independently. The
 tag supplies version `X.Y.Z`; the GitHub run number supplies the monotonically
 increasing build/version code.
 
-The Android job builds a signed AAB and APK, uploads the AAB as a draft to the
-Google Play internal track, and attaches the APK to the GitHub Release. It
+The Android job builds a signed AAB and APK, uploads the AAB and the localized
+release changelogs as a draft to the Google Play internal track, and attaches the APK to the GitHub Release. It
 requires:
 
 - `KEYSTORE_BASE64`
