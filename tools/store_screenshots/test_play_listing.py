@@ -64,6 +64,10 @@ def create_complete_artifacts(root: Path) -> Path:
         phone_root.mkdir(parents=True)
         for filename in SCREENSHOT_FILENAMES:
             (phone_root / filename).write_bytes(f"{locale}:{filename}".encode())
+        tablet_root = artifact / "ipad/2064x2752"
+        tablet_root.mkdir(parents=True)
+        for filename in SCREENSHOT_FILENAMES:
+            (tablet_root / filename).write_bytes(f"{locale}:ipad:{filename}".encode())
         feature = artifact / "feature-graphic/1024x500/01-feature-graphic.png"
         feature.parent.mkdir(parents=True)
         feature.write_bytes(f"{locale}:feature".encode())
@@ -114,7 +118,7 @@ class PlayMetadataCliTest(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(
                 output.getvalue(),
-                "Staged 34 Play Store locales: 238 phone screenshots, "
+                "Staged 34 Play Store locales: 238 phone screenshots, 476 tablet screenshots, "
                 "34 feature graphics.\n",
             )
 
@@ -181,12 +185,17 @@ class PlayAssetStagingTest(unittest.TestCase):
 
             summary = stage_all_play_assets(artifacts, metadata)
 
-            self.assertEqual(summary, AssetSummary(34, 238, 34))
+            self.assertEqual(summary, AssetSummary(34, 238, 476, 34))
             self.assertEqual(changelog.read_text(encoding="utf-8"), "Existing release notes.\n")
             self.assertEqual(
                 len(list((metadata / "ka-GE/images/phoneScreenshots").glob("*.png"))),
                 7,
             )
+            for directory_name in ("sevenInchScreenshots", "tenInchScreenshots"):
+                self.assertEqual(
+                    len(list((metadata / f"ka-GE/images/{directory_name}").glob("*.png"))),
+                    7,
+                )
             self.assertEqual(
                 (metadata / "ka-GE/images/featureGraphic.png").read_bytes(),
                 b"ka:feature",

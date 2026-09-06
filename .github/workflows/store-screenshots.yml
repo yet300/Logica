@@ -158,6 +158,7 @@ jobs:
           echo "### Google Play listing draft" >> "$GITHUB_STEP_SUMMARY"
           echo "- Locales: 34" >> "$GITHUB_STEP_SUMMARY"
           echo "- Phone screenshots: 238" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Tablet screenshots: 476 (iPad exports reused for 7-inch and 10-inch tablet slots)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Feature graphics: 34" >> "$GITHUB_STEP_SUMMARY"
           echo "- Review status: changes not sent for review" >> "$GITHUB_STEP_SUMMARY"
 

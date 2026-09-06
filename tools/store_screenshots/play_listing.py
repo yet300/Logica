@@ -48,6 +48,7 @@ class MetadataSummary:
 class AssetSummary:
     locales: int
     phone_screenshots: int
+    tablet_screenshots: int
     feature_graphics: int
 
 
@@ -98,22 +99,27 @@ def stage_all_play_assets(
     metadata_root: Path,
 ) -> AssetSummary:
     validate_metadata(metadata_root)
-    sources: dict[str, tuple[list[Path], Path]] = {}
+    sources: dict[str, tuple[list[Path], list[Path], Path]] = {}
     for locale, play_locale in PLAY_STORE_LOCALES.items():
         artifact = artifacts_root / f"store-screenshots-{locale}"
         if not artifact.is_dir():
             raise ValueError(f"Missing artifact for {locale}")
         phones = sorted((artifact / "android/1080x1920").glob("*.png"))
+        tablets = sorted((artifact / "ipad/2064x2752").glob("*.png"))
         feature = artifact / "feature-graphic/1024x500/01-feature-graphic.png"
         if len(phones) != 7:
             raise ValueError(f"Expected 7 phone screenshots for {locale}, found {len(phones)}")
         if tuple(path.name for path in phones) != PHONE_SCREENSHOT_FILENAMES:
             raise ValueError(f"Unexpected phone screenshot names for {locale}")
+        if len(tablets) != 7:
+            raise ValueError(f"Expected 7 tablet screenshots for {locale}, found {len(tablets)}")
+        if tuple(path.name for path in tablets) != PHONE_SCREENSHOT_FILENAMES:
+            raise ValueError(f"Unexpected tablet screenshot names for {locale}")
         if not feature.is_file():
             raise ValueError(f"Missing feature graphic for {locale}")
-        sources[play_locale] = (phones, feature)
+        sources[play_locale] = (phones, tablets, feature)
 
-    for play_locale, (phones, feature) in sources.items():
+    for play_locale, (phones, tablets, feature) in sources.items():
         images_root = metadata_root / play_locale / "images"
         if images_root.exists():
             shutil.rmtree(images_root)
@@ -121,11 +127,17 @@ def stage_all_play_assets(
         phone_destination.mkdir(parents=True)
         for source in phones:
             shutil.copy2(source, phone_destination / source.name)
+        for directory_name in ("sevenInchScreenshots", "tenInchScreenshots"):
+            tablet_destination = images_root / directory_name
+            tablet_destination.mkdir(parents=True)
+            for source in tablets:
+                shutil.copy2(source, tablet_destination / source.name)
         shutil.copy2(feature, images_root / "featureGraphic.png")
 
     return AssetSummary(
         locales=len(sources),
-        phone_screenshots=sum(len(phones) for phones, _ in sources.values()),
+        phone_screenshots=sum(len(phones) for phones, _, _ in sources.values()),
+        tablet_screenshots=sum(len(tablets) * 2 for _, tablets, _ in sources.values()),
         feature_graphics=len(sources),
     )
 
@@ -142,6 +154,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(
         f"Staged {summary.locales} Play Store locales: "
         f"{summary.phone_screenshots} phone screenshots, "
+        f"{summary.tablet_screenshots} tablet screenshots, "
         f"{summary.feature_graphics} feature graphics."
     )
     return 0
