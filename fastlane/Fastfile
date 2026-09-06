@@ -134,6 +134,19 @@ platform :ios do
     )
     profile_name = ENV["IOS_PROVISIONING_PROFILE_NAME"]
 
+    # Sign only the application target. Swift Package targets do not support
+    # provisioning profiles and must keep their default package settings.
+    update_code_signing_settings(
+      path: "iosApp/iosApp.xcodeproj",
+      targets: ["iosApp"],
+      build_configurations: ["Release"],
+      use_automatic_signing: false,
+      team_id: "3KKQ642Q9H",
+      code_sign_identity: "Apple Distribution",
+      bundle_identifier: "ge.yet3.blokblast.BlockBlast",
+      profile_name: profile_name,
+    )
+
     build_app(
       project: "iosApp/iosApp.xcodeproj",
       scheme: "iosApp",

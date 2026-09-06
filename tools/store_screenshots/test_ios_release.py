@@ -19,6 +19,9 @@ class IosReleaseFastfileTest(unittest.TestCase):
         ):
             self.assertIn(variable, body)
         for setting in (
+            "update_code_signing_settings(",
+            'targets: ["iosApp"]',
+            'profile_name: profile_name',
             "build_app(",
             'project: "iosApp/iosApp.xcodeproj"',
             'scheme: "iosApp"',
