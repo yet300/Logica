@@ -20,14 +20,17 @@ class ReadmeDocumentationContractTest(unittest.TestCase):
         self.assertIn("## Sponsor Logica", readme)
         self.assertIn("ryaeh7282@gmail.com", readme)
         for wallet in (
-            "**ton**",
-            "**btc**",
-            "**eth**",
-            "**usdt(erc20)**",
-            "**bnb**",
-            "**usdt(trc20)**",
+            "**ton**: UQCi1XMdZP2fBfTK-O6rsAX3fXEm5iBpjO1D6FDekdUDQnaw",
+            "**btc**: bc1qv2m03vg23227yfnlu0c0jx2ps5yg8v8kvy748s",
+            "**eth**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e",
+            "**usdt(erc20)**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e",
+            "**bnb**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e",
+            "**usdt(trc20)**: TYrBMc4yN4k8im2Qq2G17hv9VdmcYFngpT",
         ):
             self.assertIn(wallet, readme)
+
+    def test_unreferenced_georgian_ipad_gallery_is_not_stored(self):
+        self.assertFalse((ROOT / "store-assets/exports/ka/ipad").exists())
 
     def test_fastlane_readme_owns_release_operations(self):
         readme = (ROOT / "fastlane/README.md").read_text(encoding="utf-8")
