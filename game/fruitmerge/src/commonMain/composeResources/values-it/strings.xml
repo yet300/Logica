@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Fai cadere, unisci e fai crescere un'allegra torre di frutta.</string>
+    <string name="score">Punteggio</string>
+    <string name="best_score">Migliore</string>
+    <string name="next_fruit">Prossimo</string>
+    <string name="clear_with_count">Cancella · %1$d</string>
+    <string name="clear_with_ad">Cancella · Annuncio</string>
+    <string name="shake_with_count">Scuoti · %1$d</string>
+    <string name="shake_with_ad">Scuoti · Annuncio</string>
+    <string name="cancel">Annulla</string>
+    <string name="new_game">Nuova partita</string>
+    <string name="game_over">Torre di frutta piena</string>
+    <string name="game_over_supporting">La frutta è rimasta oltre la linea di pericolo. Ricomincia e crea un'anguria più grande.</string>
+    <string name="largest_fruit">Frutto più grande</string>
+    <string name="tutorial_skip">Salta</string>
+    <string name="tutorial_tap">Tocca ovunque per far cadere il frutto</string>
+    <string name="tutorial_drag">Trascina lateralmente e rilascia per scegliere il punto</string>
+    <string name="loading_game">Caricamento Fruit Merge</string>
+    <string name="drop_hint">Sposta in alto e rilascia per far cadere</string>
+    <string name="clear_hint">Scegli un frutto da rimuovere</string>
+    <string name="danger_line">Linea di pericolo</string>
+    <string name="board_description">Tabellone Fruit Merge. Punteggio %1$d. %2$d frutti nel contenitore.</string>
+    <string name="fruit_description">Frutto %1$s</string>
+    <string name="ad_disclosure">Pubblicità</string>
+    <string name="blueberry">Mirtillo</string>
+    <string name="raspberry">Lampone</string>
+    <string name="strawberry">Fragola</string>
+    <string name="lime">Lime</string>
+    <string name="mandarin">Mandarino</string>
+    <string name="apple">Mela</string>
+    <string name="pear">Pera</string>
+    <string name="peach">Pesca</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Anguria</string>
+</resources>

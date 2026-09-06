@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Գովազդն օգնում է մեզ բարելավել խաղը և բոլոր հնարավորությունները պահել անվճար։ Եթե անջատեք այն, վերակենդանացումները կմնան անվճար — իսկ Logica-ին կարող եք աջակցել GitHub-ի աստղով կամ նվիրատվությամբ։</string>
     <string name="keep_ads">Պահել գովազդը</string>
     <string name="disable_ads_anyway">Միևնույն է անջատել</string>
+    <string name="cd_settings">Կարգավորումներ</string>
     <string name="cd_back">Հետ</string>
+    <string name="miniapp_unavailable">%1$s-ը հասանելի չէ</string>
+    <string name="back_to_catalog">Վերադառնալ կատալոգ</string>
     <string name="exit">Ելք</string>
     <string name="review_prompt_title">Հավանու՞մ եք Logica-ն</string>
     <string name="review_prompt_body">Ձեր գնահատականը կօգնի ավելի շատ գլուխկոտրուկների սիրահարների գտնել խաղը:</string>
     <string name="review_prompt_leave_feedback">Թողնել կարծիք</string>
     <string name="review_prompt_dont_show">Այլևս չցուցադրել</string>
+    <string name="delete_game_data">Ջնջել խաղի բոլոր տվյալները</string>
+    <string name="delete_game_data_subtitle">Հեռացնել առաջընթացը և արդյունքները բոլոր խաղերից</string>
+    <string name="clear_game_data_title">Ջնջե՞լ խաղի տվյալները:</string>
+    <string name="clear_game_data_body">Սա անվերադարձ կջնջի պահպանված խաղերը, միավորները, ձեռնարկները և այլ առաջընթացը բոլոր տեղադրված խաղերից:</string>
+    <string name="clear_game_data_preferences_kept">Հավելվածի նախընտրությունները, գաղտնիության ընտրությունները, գովազդի համաձայնությունը և կարծիքի կարգավորումները չեն ջնջվի:</string>
+    <string name="clear_game_data_action">Ջնջել խաղի տվյալները</string>
+    <string name="clearing_game_data">Խաղի տվյալները ջնջվում են…</string>
+    <string name="game_data_cleared">Խաղի բոլոր տվյալները ջնջվեցին:</string>
+    <string name="game_data_clear_failed">Խաղի որոշ տվյալներ չհաջողվեց ջնջել: Կարող եք նորից փորձել ազդակիր խաղերի համար.</string>
+    <string name="retry">Կրկնել</string>
+    <string name="done">Պատրաստ է</string>
+    <string name="cancel">Չեղարկել</string>
 </resources>

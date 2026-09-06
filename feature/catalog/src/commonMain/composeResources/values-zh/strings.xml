@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Logica</string>
+    <string name="play">开始游戏</string>
+    <string name="catalog_empty_title">暂无应用</string>
+</resources>

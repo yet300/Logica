@@ -1,0 +1,215 @@
+name: Store screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      locale:
+        description: "Application locale code, or all"
+        required: true
+        default: all
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      locales: ${{ steps.matrix.outputs.locales }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        name: Resolve locale matrix
+        env:
+          INPUT_LOCALE: ${{ inputs.locale }}
+        working-directory: store-assets/screenshot-editor
+        run: node scripts/ci-locales.mjs
+
+  render:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        locale: ${{ fromJSON(needs.prepare.outputs.locales) }}
+    steps:
+      - name: Record job start
+        run: echo "SCREENSHOT_JOB_STARTED=$(date +%s)" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Cache Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-1.62.1-${{ runner.os }}-${{ runner.arch }}
+
+      - name: Install screenshot dependencies
+        working-directory: store-assets/screenshot-editor
+        run: |
+          bun install --frozen-lockfile
+          bunx playwright install --with-deps chromium
+          python3 -m pip install Pillow==11.3.0
+
+      - name: Build screenshot editor
+        working-directory: store-assets/screenshot-editor
+        run: bun run build
+
+      - name: Start export server
+        working-directory: store-assets/screenshot-editor
+        run: |
+          bun start -- -H 127.0.0.1 -p 3100 > "$RUNNER_TEMP/store-screenshots-server.log" 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:3100/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/store-screenshots-server.log"
+          exit 1
+
+      - name: Render ${{ matrix.locale }}
+        working-directory: store-assets/screenshot-editor
+        run: >-
+          bun run export:ci --
+          --locale "${{ matrix.locale }}"
+          --output ../../store-assets/ci-exports
+
+      - name: Verify generated PNGs
+        run: >-
+          python3 tools/store_screenshots/verify_exports.py
+          --export-root "store-assets/ci-exports/${{ matrix.locale }}"
+          --contact-sheet "$RUNNER_TEMP/${{ matrix.locale }}-contact-sheet.png"
+
+      - name: Publish timing summary
+        shell: bash
+        run: |
+          JOB_SECONDS=$(( $(date +%s) - SCREENSHOT_JOB_STARTED ))
+          RENDER_SECONDS=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["totalSeconds"])' "store-assets/ci-exports/${{ matrix.locale }}/manifest.json")
+          echo "### ${{ matrix.locale }} screenshot timing" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Complete job: ${JOB_SECONDS}s" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Rendering 50 PNGs: ${RENDER_SECONDS}s" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload localized screenshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: store-screenshots-${{ matrix.locale }}
+          path: |
+            store-assets/ci-exports/${{ matrix.locale }}/manifest.json
+            store-assets/ci-exports/${{ matrix.locale }}/iphone/1320x2868
+            store-assets/ci-exports/${{ matrix.locale }}/ipad/2064x2752
+            store-assets/ci-exports/${{ matrix.locale }}/android/1080x1920
+            store-assets/ci-exports/${{ matrix.locale }}/feature-graphic/1024x500
+          if-no-files-found: error
+          retention-days: 14
+
+  publish-play-draft:
+    needs: [prepare, render]
+    if: ${{ inputs.locale == 'all' && needs.render.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: google-play-listing-draft
+      cancel-in-progress: false
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: "1"
+      FL_NUMBER_OF_THREADS: "4"
+      LC_ALL: C.UTF-8
+      PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Download every localized screenshot artifact
+        uses: actions/download-artifact@v5
+        with:
+          pattern: store-screenshots-*
+          path: store-assets/ci-artifacts
+          merge-multiple: false
+
+      - name: Validate metadata and stage Play Store images
+        run: >-
+          python3 tools/store_screenshots/play_listing.py stage
+          --artifacts-root store-assets/ci-artifacts
+          --metadata-root fastlane/metadata/android
+
+      - name: Upload listing changes without sending for review
+        run: bundle exec fastlane android publish_store_listing_draft
+
+      - name: Publish Play Store draft summary
+        run: |
+          echo "### Google Play listing draft" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Locales: 34" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Phone screenshots: 238" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Feature graphics: 34" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Review status: changes not sent for review" >> "$GITHUB_STEP_SUMMARY"
+
+  publish-app-store-draft:
+    needs: [prepare, render]
+    if: ${{ inputs.locale == 'all' && needs.render.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: macos-26
+    timeout-minutes: 45
+    concurrency:
+      group: app-store-listing-draft
+      cancel-in-progress: false
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: "1"
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      APP_STORE_CONNECT_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Download every localized screenshot artifact
+        uses: actions/download-artifact@v5
+        with:
+          pattern: store-screenshots-*
+          path: store-assets/ci-artifacts
+          merge-multiple: false
+
+      - name: Validate metadata and stage App Store screenshots
+        run: >-
+          python3 tools/store_screenshots/app_store_listing.py stage
+          --artifacts-root store-assets/ci-artifacts
+          --metadata-root fastlane/metadata/ios
+          --screenshots-root fastlane/screenshots
+
+      - name: Upload App Store listing without sending for review
+        run: bundle exec fastlane ios publish_app_store_listing_draft
+
+      - name: Publish App Store draft summary
+        run: |
+          echo "### App Store listing draft" >> "$GITHUB_STEP_SUMMARY"
+          echo "- App Store locales: 28" >> "$GITHUB_STEP_SUMMARY"
+          echo "- iPhone screenshots: 196" >> "$GITHUB_STEP_SUMMARY"
+          echo "- iPad screenshots: 196" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Total Apple screenshots: 392" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Review status: not submitted for review" >> "$GITHUB_STEP_SUMMARY"

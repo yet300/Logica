@@ -49,8 +49,11 @@ Each entry is a Material 3 `Card` containing exactly one `ListItem`:
 
 - `leadingContent`: localized MiniApp icon at 64–72 dp;
 - `headlineContent`: localized title;
-- `supportingContent`: localized description, wrapping up to two or three lines;
 - `trailingContent`: compact primary Play button;
+- the launcher card intentionally omits supporting description text to keep the
+  catalog scannable on compact screens;
+- `MiniAppManifest.description` remains available for metadata, accessibility
+  and a future details surface;
 - the optional cover is not shown in the list;
 - technical category and sort priority are not rendered.
 

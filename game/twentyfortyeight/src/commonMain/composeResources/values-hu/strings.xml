@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Csúsztassa el a megfelelő lapkákat, és alakítsa a táblát 2048 felé.</string>
+    <string name="score">Pontszám</string>
+    <string name="best">Legjobb</string>
+    <string name="new_best">új legjobb</string>
+    <string name="undo">Visszavonás</string>
+    <string name="restart">Indítsa újra</string>
+    <string name="continue_game">Folytatás</string>
+    <string name="new_game">Új játék</string>
+    <string name="victory">Győzelem</string>
+    <string name="game_over">A játéknak vége</string>
+    <string name="cancel">Mégse</string>
+    <string name="loading_game">Játék betöltése</string>
+    <string name="games_won">Nyert meccsek</string>
+    <string name="successful_moves">Sikeres mozdulatok</string>
+    <string name="total_merges">Összes összevonás</string>
+    <string name="highest_tile">Legmagasabb csempe</string>
+    <string name="restart_confirmation_title">Újraindítja a játékot?</string>
+    <string name="restart_confirmation_body">Az Ön pontszáma %1$s%2$sután. Az újraindítás új játékot indít.</string>
+    <string name="progress_not_saved">A haladás nem menthető</string>
+    <string name="new_game_not_saved">Nem sikerült elmenteni egy új játékot</string>
+    <string name="score_description">Pontszám: %1$s</string>
+    <string name="best_description">Legjobb, %1$s</string>
+    <string name="best_new_description">Legjobb, új legjobb, %1$s</string>
+    <string name="undo_description">Visszavonás</string>
+    <string name="restart_description">Indítsa újra</string>
+    <string name="crown_description">Legjobb pontszám</string>
+    <string name="announcement_move">A pontszám %1$s-szal nőtt.</string>
+    <string name="announcement_move_merge">A pontszám %1$s-szal nőtt. Legnagyobb egyesítés: %2$s.</string>
+    <string name="announcement_new_best">Új legjobb pontszám: %1$s.</string>
+    <string name="announcement_victory">2048 elérte.</string>
+    <string name="announcement_game_over">A játéknak vége.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d játék</item>
+        <item quantity="other">%1$d játék</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d lépés</item>
+        <item quantity="other">%1$d lépés</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d egyesítés</item>
+        <item quantity="other">%1$d egyesítés</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Használat visszavonása</item>
+        <item quantity="other">%1$d használat visszavonása</item>
+    </plurals>
+    <string name="board_empty_cell">üres</string>
+    <string name="board_row_summary">%1$d. sor: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Bizottság. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Lépj felfelé</string>
+    <string name="move_down">Mozgás lefelé</string>
+    <string name="move_left">Mozgás balra</string>
+    <string name="move_right">Mozgás jobbra</string>
+</resources>

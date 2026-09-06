@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Mos plitkalarni siljiting va taxtani 2048 ga qarab shakllantiring.</string>
+    <string name="score">Xol</string>
+    <string name="best">Eng yaxshi</string>
+    <string name="new_best">eng yaxshi yangi</string>
+    <string name="undo">Bekor qilish</string>
+    <string name="restart">Qayta ishga tushirish</string>
+    <string name="continue_game">Davom eting</string>
+    <string name="new_game">Yangi o'yin</string>
+    <string name="victory">G'alaba</string>
+    <string name="game_over">O'yin tugadi</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="loading_game">O'yin yuklanmoqda</string>
+    <string name="games_won">O'yinlar g'alaba qozondi</string>
+    <string name="successful_moves">Muvaffaqiyatli harakatlar</string>
+    <string name="total_merges">Jami birlashmalar</string>
+    <string name="highest_tile">Eng baland plitka</string>
+    <string name="restart_confirmation_title">Oʻyin qayta boshlansinmi?</string>
+    <string name="restart_confirmation_body">Sizning ballingiz %2$sdan keyin %1$s. Qayta ishga tushirish yangi o'yinni boshlaydi.</string>
+    <string name="progress_not_saved">Jarayonni saqlab bo‘lmadi</string>
+    <string name="new_game_not_saved">Yangi oʻyinni saqlab boʻlmadi</string>
+    <string name="score_description">Bal, %1$s</string>
+    <string name="best_description">Eng yaxshisi, %1$s</string>
+    <string name="best_new_description">Eng yaxshi, yangi eng yaxshi, %1$s</string>
+    <string name="undo_description">Bekor qilish</string>
+    <string name="restart_description">Qayta ishga tushirish</string>
+    <string name="crown_description">Eng yaxshi ball</string>
+    <string name="announcement_move">Bal %1$sga oshdi.</string>
+    <string name="announcement_move_merge">Bal %1$sga oshdi. Eng katta birlashma %2$s.</string>
+    <string name="announcement_new_best">Yangi eng yaxshi ball %1$s.</string>
+    <string name="announcement_victory">2048 ga yetdi.</string>
+    <string name="announcement_game_over">O'yin tugadi.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d oʻyin</item>
+        <item quantity="other">%1$d ta oʻyin</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d ta harakat</item>
+        <item quantity="other">%1$d harakat</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d ta birlashma</item>
+        <item quantity="other">%1$d ta birlashtiriladi</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Foydalanishni bekor qilish</item>
+        <item quantity="other">%1$d foydalanishni bekor qilish</item>
+    </plurals>
+    <string name="board_empty_cell">bo'sh</string>
+    <string name="board_row_summary">%1$dqator: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Kengash. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Yuqoriga siljiting</string>
+    <string name="move_down">Pastga siljiting</string>
+    <string name="move_left">Chapga siljiting</string>
+    <string name="move_right">O'ngga siljiting</string>
+</resources>

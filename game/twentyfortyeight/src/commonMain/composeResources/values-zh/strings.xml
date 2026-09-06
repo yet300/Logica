@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">滑动匹配的瓷砖并将棋盘塑造为 2048。</string>
+    <string name="score">分数</string>
+    <string name="best">最好的</string>
+    <string name="new_best">新的最好的</string>
+    <string name="undo">撤消</string>
+    <string name="restart">重新启动</string>
+    <string name="continue_game">继续</string>
+    <string name="new_game">新游戏</string>
+    <string name="victory">胜利</string>
+    <string name="game_over">游戏结束</string>
+    <string name="cancel">取消</string>
+    <string name="loading_game">加载游戏</string>
+    <string name="games_won">赢得比赛</string>
+    <string name="successful_moves">成功的举动</string>
+    <string name="total_merges">合并总数</string>
+    <string name="highest_tile">最高的瓷砖</string>
+    <string name="restart_confirmation_title">重新开始游戏？</string>
+    <string name="restart_confirmation_body">%2$s后您的分数为 %1$s。重新启动开始新游戏。</string>
+    <string name="progress_not_saved">无法保存进度</string>
+    <string name="new_game_not_saved">无法保存新游戏</string>
+    <string name="score_description">得分，%1$s</string>
+    <string name="best_description">最好，%1$s</string>
+    <string name="best_new_description">最好的，新的最好的，%1$s</string>
+    <string name="undo_description">撤消</string>
+    <string name="restart_description">重新启动</string>
+    <string name="crown_description">最好成绩</string>
+    <string name="announcement_move">分数增加了 %1$s。</string>
+    <string name="announcement_move_merge">分数增加了 %1$s。最大合并%2$s。</string>
+    <string name="announcement_new_best">新的最好成绩%1$s。</string>
+    <string name="announcement_victory">2048 到达。</string>
+    <string name="announcement_game_over">游戏结束。</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d 游戏</item>
+        <item quantity="other">%1$d 场比赛</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d 次移动</item>
+        <item quantity="other">%1$d 步</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d 合并</item>
+        <item quantity="other">%1$d 次合并</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d 撤消使用</item>
+        <item quantity="other">%1$d 撤消使用</item>
+    </plurals>
+    <string name="board_empty_cell">空的</string>
+    <string name="board_row_summary">第 %1$d行：%2$s、%3$s、%4$s、%5$s</string>
+    <string name="board_summary">木板。 %1$s； %2$s； %3$s； %4$s</string>
+    <string name="move_up">向上移动</string>
+    <string name="move_down">下移</string>
+    <string name="move_left">向左移动</string>
+    <string name="move_right">向右移动</string>
+</resources>

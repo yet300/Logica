@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Upuszczaj, łącz i buduj radosną wieżę owoców.</string>
+    <string name="score">Wynik</string>
+    <string name="best_score">Najlepszy</string>
+    <string name="next_fruit">Następny</string>
+    <string name="clear_with_count">Wyczyść · %1$d</string>
+    <string name="clear_with_ad">Wyczyść · Reklama</string>
+    <string name="shake_with_count">Potrząśnij · %1$d</string>
+    <string name="shake_with_ad">Potrząśnij · Reklama</string>
+    <string name="cancel">Anuluj</string>
+    <string name="new_game">Nowa gra</string>
+    <string name="game_over">Wieża owoców jest pełna</string>
+    <string name="game_over_supporting">Owoce znalazły się powyżej linii ostrzegawczej. Rozpocznij ponownie i stwórz większego arbuza.</string>
+    <string name="largest_fruit">Największy owoc</string>
+    <string name="tutorial_skip">Pomiń</string>
+    <string name="tutorial_tap">Dotknij w dowolnym miejscu, aby upuścić owoc</string>
+    <string name="tutorial_drag">Przeciągnij w bok i puść, aby wybrać miejsce zrzutu</string>
+    <string name="loading_game">Ładowanie Fruit Merge</string>
+    <string name="drop_hint">Przesuń u góry i puść, aby upuścić</string>
+    <string name="clear_hint">Wybierz jeden owoc do usunięcia</string>
+    <string name="danger_line">Linia ostrzegawcza</string>
+    <string name="board_description">Plansza Fruit Merge. Wynik %1$d. Liczba owoców w pojemniku: %2$d.</string>
+    <string name="fruit_description">Owoc %1$s</string>
+    <string name="ad_disclosure">Reklama</string>
+    <string name="blueberry">Borówka</string>
+    <string name="raspberry">Malina</string>
+    <string name="strawberry">Truskawka</string>
+    <string name="lime">Limonka</string>
+    <string name="mandarin">Mandarynka</string>
+    <string name="apple">Jabłko</string>
+    <string name="pear">Gruszka</string>
+    <string name="peach">Brzoskwinia</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Arbuz</string>
+</resources>

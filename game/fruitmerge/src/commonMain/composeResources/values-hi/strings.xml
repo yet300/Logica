@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">फलों को गिराएं, मिलाएं और एक शानदार फलों की मीनार बनाएं।</string>
+    <string name="score">स्कोर</string>
+    <string name="best_score">सर्वश्रेष्ठ</string>
+    <string name="next_fruit">अगला</string>
+    <string name="clear_with_count">हटाएं · %1$d</string>
+    <string name="clear_with_ad">हटाएं · विज्ञापन</string>
+    <string name="shake_with_count">हिलाएं · %1$d</string>
+    <string name="shake_with_ad">हिलाएं · विज्ञापन</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="new_game">नया गेम</string>
+    <string name="game_over">फलों की मीनार भर गई</string>
+    <string name="game_over_supporting">फल खतरे की रेखा से ऊपर रहा। फिर से शुरू करें और एक बड़ा तरबूज बनाएं।</string>
+    <string name="largest_fruit">सबसे बड़ा फल</string>
+    <string name="tutorial_skip">छोड़ें</string>
+    <string name="tutorial_tap">फल गिराने के लिए कहीं भी टैप करें</string>
+    <string name="tutorial_drag">किनारे खींचें, फिर गिराने की जगह चुनने के लिए छोड़ें</string>
+    <string name="loading_game">Fruit Merge लोड हो रहा है</string>
+    <string name="drop_hint">शीर्ष पर ले जाएं, फिर गिराने के लिए छोड़ें</string>
+    <string name="clear_hint">हटाने के लिए एक फल चुनें</string>
+    <string name="danger_line">खतरे की रेखा</string>
+    <string name="board_description">Fruit Merge बोर्ड। स्कोर %1$d। कंटेनर में %2$d फल हैं।</string>
+    <string name="fruit_description">%1$s फल</string>
+    <string name="ad_disclosure">विज्ञापन</string>
+    <string name="blueberry">ब्लूबेरी</string>
+    <string name="raspberry">रास्पबेरी</string>
+    <string name="strawberry">स्ट्रॉबेरी</string>
+    <string name="lime">नींबू</string>
+    <string name="mandarin">संतरा</string>
+    <string name="apple">सेब</string>
+    <string name="pear">नाशपाती</string>
+    <string name="peach">आड़ू</string>
+    <string name="pineapple">अनानास</string>
+    <string name="watermelon">तरबूज</string>
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Dobd le, egyesítsd és építs vidám gyümölcstornyot.</string>
+    <string name="score">Pontszám</string>
+    <string name="best_score">Legjobb</string>
+    <string name="next_fruit">Következő</string>
+    <string name="clear_with_count">Törlés · %1$d</string>
+    <string name="clear_with_ad">Törlés · Hirdetés</string>
+    <string name="shake_with_count">Rázás · %1$d</string>
+    <string name="shake_with_ad">Rázás · Hirdetés</string>
+    <string name="cancel">Mégse</string>
+    <string name="new_game">Új játék</string>
+    <string name="game_over">A gyümölcstorony megtelt</string>
+    <string name="game_over_supporting">A gyümölcs a veszélyvonal felett maradt. Kezdd újra, és hozz létre nagyobb görögdinnyét.</string>
+    <string name="largest_fruit">Legnagyobb gyümölcs</string>
+    <string name="tutorial_skip">Kihagyás</string>
+    <string name="tutorial_tap">Koppints bárhová a gyümölcs ledobásához</string>
+    <string name="tutorial_drag">Húzd oldalra, majd engedd el a ledobási pont kiválasztásához</string>
+    <string name="loading_game">Fruit Merge betöltése</string>
+    <string name="drop_hint">Mozgasd fent, majd engedd el a ledobáshoz</string>
+    <string name="clear_hint">Válassz ki egy eltávolítandó gyümölcsöt</string>
+    <string name="danger_line">Veszélyvonal</string>
+    <string name="board_description">Fruit Merge tábla. Pontszám %1$d. %2$d gyümölcs a tárolóban.</string>
+    <string name="fruit_description">%1$s gyümölcs</string>
+    <string name="ad_disclosure">Hirdetés</string>
+    <string name="blueberry">Áfonya</string>
+    <string name="raspberry">Málna</string>
+    <string name="strawberry">Eper</string>
+    <string name="lime">Zöldcitrom</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Alma</string>
+    <string name="pear">Körte</string>
+    <string name="peach">Őszibarack</string>
+    <string name="pineapple">Ananász</string>
+    <string name="watermelon">Görögdinnye</string>
+</resources>

@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Reklam oyunu təkmilləşdirməyə və bütün imkanları pulsuz saxlamağa kömək edir. Onu söndürsəniz, dirilmələr pulsuz qalacaq — Logica-nı GitHub-da ulduz və ya ianə ilə dəstəkləyə bilərsiniz.</string>
     <string name="keep_ads">Reklamı saxla</string>
     <string name="disable_ads_anyway">Yenə də söndür</string>
+    <string name="cd_settings">Tənzimləmələr</string>
     <string name="cd_back">Geri</string>
+    <string name="miniapp_unavailable">%1$s əlçatan deyil</string>
+    <string name="back_to_catalog">Kataloqa qayıt</string>
     <string name="exit">Çıxış</string>
     <string name="review_prompt_title">Logica xoşunuza gəlir?</string>
     <string name="review_prompt_body">Rəyiniz daha çox tapmaca oyunçusunun oyunu tapmasına kömək edir.</string>
     <string name="review_prompt_leave_feedback">Rəy yazın</string>
     <string name="review_prompt_dont_show">Bir daha göstərmə</string>
+    <string name="delete_game_data">Bütün oyun məlumatlarını sil</string>
+    <string name="delete_game_data_subtitle">Bütün oyunlardan irəliləyişi və nəticələri silin</string>
+    <string name="clear_game_data_title">Oyun məlumatları silinsin?</string>
+    <string name="clear_game_data_body">Bu, bütün quraşdırılmış oyunlardan yadda saxlanılan oyunları, xalları, təlimatları və digər irəliləyişi həmişəlik siləcək.</string>
+    <string name="clear_game_data_preferences_kept">Tətbiq tənzimləmələriniz, məxfilik seçimləriniz, reklam razılığınız və rəy ayarlarınız silinməyəcək.</string>
+    <string name="clear_game_data_action">Oyun məlumatlarını sil</string>
+    <string name="clearing_game_data">Oyun məlumatları silinir…</string>
+    <string name="game_data_cleared">Bütün oyun məlumatları silindi.</string>
+    <string name="game_data_clear_failed">Bəzi oyun məlumatları silinə bilmədi. Təsirə məruz qalan oyunlar üçün yenidən cəhd edə bilərsiniz:</string>
+    <string name="retry">Yenidən cəhd et</string>
+    <string name="done">Hazırdır</string>
+    <string name="cancel">Ləğv et</string>
 </resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Кидайте, об'єднуйте та вирощуйте яскраву фруктову вежу.</string>
+    <string name="score">Рахунок</string>
+    <string name="best_score">Рекорд</string>
+    <string name="next_fruit">Далі</string>
+    <string name="clear_with_count">Очистити · %1$d</string>
+    <string name="clear_with_ad">Очистити · Реклама</string>
+    <string name="shake_with_count">Струсити · %1$d</string>
+    <string name="shake_with_ad">Струсити · Реклама</string>
+    <string name="cancel">Скасувати</string>
+    <string name="new_game">Нова гра</string>
+    <string name="game_over">Фруктова вежа заповнена</string>
+    <string name="game_over_supporting">Фрукти залишилися вище небезпечної лінії. Почніть знову та створіть більший кавун.</string>
+    <string name="largest_fruit">Найбільший фрукт</string>
+    <string name="tutorial_skip">Пропустити</string>
+    <string name="tutorial_tap">Торкніться будь-де, щоб скинути фрукт</string>
+    <string name="tutorial_drag">Перетягніть убік і відпустіть, щоб вибрати місце</string>
+    <string name="loading_game">Завантаження Fruit Merge</string>
+    <string name="drop_hint">Переміщуйте вгорі та відпустіть для скидання</string>
+    <string name="clear_hint">Виберіть один фрукт для видалення</string>
+    <string name="danger_line">Небезпечна лінія</string>
+    <string name="board_description">Поле Fruit Merge. Рахунок %1$d. Фруктів у контейнері: %2$d.</string>
+    <string name="fruit_description">Фрукт %1$s</string>
+    <string name="ad_disclosure">Реклама</string>
+    <string name="blueberry">Чорниця</string>
+    <string name="raspberry">Малина</string>
+    <string name="strawberry">Полуниця</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарин</string>
+    <string name="apple">Яблуко</string>
+    <string name="pear">Груша</string>
+    <string name="peach">Персик</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Кавун</string>
+</resources>

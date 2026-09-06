@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Плитаҳои мувофиқро лағжонед ва тахтаро ба сӯи 2048 шакл диҳед.</string>
+    <string name="score">Ҳисоб</string>
+    <string name="best">Беҳтарин</string>
+    <string name="new_best">нав беҳтарин</string>
+    <string name="undo">Бекор кардан</string>
+    <string name="restart">Оғози дубора</string>
+    <string name="continue_game">Давом додан</string>
+    <string name="new_game">Бозии нав</string>
+    <string name="victory">Ғалаба</string>
+    <string name="game_over">Бозӣ тамом шуд</string>
+    <string name="cancel">Бекор кардан</string>
+    <string name="loading_game">Бозӣ бор карда мешавад</string>
+    <string name="games_won">Бозиҳо ғолиб шуданд</string>
+    <string name="successful_moves">Ҳаракатҳои муваффақ</string>
+    <string name="total_merges">Ҳамагӣ муттаҳид мешаванд</string>
+    <string name="highest_tile">Баландтарин плита</string>
+    <string name="restart_confirmation_title">Бозиро аз нав оғоз кунед?</string>
+    <string name="restart_confirmation_body">Холи шумо пас аз %2$s%1$sаст. Бозоғозӣ бозии навро оғоз мекунад.</string>
+    <string name="progress_not_saved">Пешравӣ наҷот дода нашуд</string>
+    <string name="new_game_not_saved">Бозии навро захира кардан муяссар нашуд</string>
+    <string name="score_description">Хол, %1$s</string>
+    <string name="best_description">Беҳтарин, %1$s</string>
+    <string name="best_new_description">Беҳтарин, нав беҳтарин, %1$s</string>
+    <string name="undo_description">Бекор кардан</string>
+    <string name="restart_description">Оғози дубора</string>
+    <string name="crown_description">Беҳтарин хол</string>
+    <string name="announcement_move">Хол %1$sзиёд шуд.</string>
+    <string name="announcement_move_merge">Хол %1$sзиёд шуд. Бузургтарин муттаҳидшавӣ %2$s.</string>
+    <string name="announcement_new_best">Холи нави беҳтарин %1$s.</string>
+    <string name="announcement_victory">2048 расид.</string>
+    <string name="announcement_game_over">Бозӣ тамом шуд.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d бозӣ</item>
+        <item quantity="other">%1$d бозӣ</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d ҳаракат</item>
+        <item quantity="other">%1$d ҳаракат</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d якҷоя</item>
+        <item quantity="other">%1$d якҷоя мешавад</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Бекор кардани истифода</item>
+        <item quantity="other">%1$d Бекор кардани истифода</item>
+    </plurals>
+    <string name="board_empty_cell">холӣ</string>
+    <string name="board_row_summary">Сатри %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Раёсат. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Ба боло ҳаракат кунед</string>
+    <string name="move_down">Ба поён ҳаракат кунед</string>
+    <string name="move_left">Ба чап ҳаракат кунед</string>
+    <string name="move_right">Ба рост ҳаракат кунед</string>
+</resources>

@@ -31,10 +31,25 @@
     <string name="disable_ads_body">A hirdetések segítenek fejleszteni a játékot, és minden funkciót ingyenesen elérhetővé tenni. Ha kikapcsolod őket, az újraélesztések továbbra is ingyenesek maradnak — a Logicát pedig GitHub-csillaggal vagy adománnyal támogathatod.</string>
     <string name="keep_ads">Hirdetések megtartása</string>
     <string name="disable_ads_anyway">Kikapcsolás mindenképp</string>
+    <string name="cd_settings">Beállítások</string>
     <string name="cd_back">Vissza</string>
+    <string name="miniapp_unavailable">%1$s nem érhető el</string>
+    <string name="back_to_catalog">Vissza a katalógushoz</string>
     <string name="exit">Kilépés</string>
     <string name="review_prompt_title">Tetszik a Logica?</string>
     <string name="review_prompt_body">Az értékelésed segít több kirakós játékosnak megtalálni a játékot.</string>
     <string name="review_prompt_leave_feedback">Visszajelzés küldése</string>
     <string name="review_prompt_dont_show">Ne jelenjen meg újra</string>
+    <string name="delete_game_data">Minden játékadat törlése</string>
+    <string name="delete_game_data_subtitle">Haladás és eredmények eltávolítása minden játékból</string>
+    <string name="clear_game_data_title">Törli a játékadatokat?</string>
+    <string name="clear_game_data_body">Ez véglegesen törli a mentett játékokat, pontszámokat, oktatóanyagokat és egyéb előrehaladást minden telepített játékból.</string>
+    <string name="clear_game_data_preferences_kept">Az alkalmazásbeállítások, adatvédelmi döntések, hirdetési hozzájárulások és értékelési beállítások nem kerülnek törlésre.</string>
+    <string name="clear_game_data_action">Játékadatok törlése</string>
+    <string name="clearing_game_data">Játékadatok törlése folyamatban…</string>
+    <string name="game_data_cleared">Minden játékadat törölve lett.</string>
+    <string name="game_data_clear_failed">Néhány játékadatot nem sikerült törölni. Újrapróbálhatja az érintett játékoknál:</string>
+    <string name="retry">Újra</string>
+    <string name="done">Kész</string>
+    <string name="cancel">Mégse</string>
 </resources>

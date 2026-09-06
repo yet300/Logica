@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Գցեք, միավորեք և կառուցեք ուրախ մրգային աշտարակ:</string>
+    <string name="score">Միավորներ</string>
+    <string name="best_score">Լավագույն</string>
+    <string name="next_fruit">Հաջորդը</string>
+    <string name="clear_with_count">Մաքրել · %1$d</string>
+    <string name="clear_with_ad">Մաքրել · Գովազդ</string>
+    <string name="shake_with_count">Թափահարել · %1$d</string>
+    <string name="shake_with_ad">Թափահարել · Գովազդ</string>
+    <string name="cancel">Չեղարկել</string>
+    <string name="new_game">Նոր խաղ</string>
+    <string name="game_over">Մրգային աշտարակը լցված է</string>
+    <string name="game_over_supporting">Միրգը մնաց վտանգի գծից վեր: Սկսեք նորից և ստեղծեք ավելի մեծ ձմերուկ:</string>
+    <string name="largest_fruit">Ամենամեծ միրգը</string>
+    <string name="tutorial_skip">Բաց թողնել</string>
+    <string name="tutorial_tap">Հպեք ցանկացած տեղ միրգը գցելու համար</string>
+    <string name="tutorial_drag">Քաշեք կողք և բաց թողեք՝ ընտրելու համար</string>
+    <string name="loading_game">Fruit Merge-ը բեռնվում է</string>
+    <string name="drop_hint">Շարժեք վերևով, ապա բաց թողեք՝ գցելու համար</string>
+    <string name="clear_hint">Ընտրեք մեկ միրգ հեռացնելու համար</string>
+    <string name="danger_line">Վտանգի գիծ</string>
+    <string name="board_description">Fruit Merge տախտակ: Միավորներ՝ %1$d: %2$d միրգ տարայում:</string>
+    <string name="fruit_description">%1$s միրգ</string>
+    <string name="ad_disclosure">Գովազդ</string>
+    <string name="blueberry">Հապալաս</string>
+    <string name="raspberry">Ազնվամորի</string>
+    <string name="strawberry">Ելակ</string>
+    <string name="lime">Լայմ</string>
+    <string name="mandarin">Մանդարին</string>
+    <string name="apple">Խնձոր</string>
+    <string name="pear">Տանձ</string>
+    <string name="peach">Դեղձ</string>
+    <string name="pineapple">Անանաս</string>
+    <string name="watermelon">Ձմերուկ</string>
+</resources>

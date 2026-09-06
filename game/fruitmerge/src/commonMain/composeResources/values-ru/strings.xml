@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Бросайте, объединяйте и стройте яркую фруктовую башню.</string>
+    <string name="score">Счет</string>
+    <string name="best_score">Рекорд</string>
+    <string name="next_fruit">Следующий</string>
+    <string name="clear_with_count">Очистить · %1$d</string>
+    <string name="clear_with_ad">Очистить · Реклама</string>
+    <string name="shake_with_count">Встряхнуть · %1$d</string>
+    <string name="shake_with_ad">Встряхнуть · Реклама</string>
+    <string name="cancel">Отмена</string>
+    <string name="new_game">Новая игра</string>
+    <string name="game_over">Фруктовая башня заполнена</string>
+    <string name="game_over_supporting">Фрукты остались выше опасной линии. Начните заново и вырастите арбуз побольше.</string>
+    <string name="largest_fruit">Самый большой фрукт</string>
+    <string name="tutorial_skip">Пропустить</string>
+    <string name="tutorial_tap">Нажмите в любом месте, чтобы сбросить фрукт</string>
+    <string name="tutorial_drag">Перетащите в сторону и отпустите для выбора места</string>
+    <string name="loading_game">Загрузка Fruit Merge</string>
+    <string name="drop_hint">Перемещайте вверху и отпустите для сброса</string>
+    <string name="clear_hint">Выберите один фрукт для удаления</string>
+    <string name="danger_line">Опасная линия</string>
+    <string name="board_description">Поле Fruit Merge. Счет %1$d. Фруктов в контейнере: %2$d.</string>
+    <string name="fruit_description">Фрукт %1$s</string>
+    <string name="ad_disclosure">Реклама</string>
+    <string name="blueberry">Черника</string>
+    <string name="raspberry">Малина</string>
+    <string name="strawberry">Клубника</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарин</string>
+    <string name="apple">Яблоко</string>
+    <string name="pear">Груша</string>
+    <string name="peach">Персик</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Арбуз</string>
+</resources>

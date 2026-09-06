@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Deslize as peças correspondentes e molde o tabuleiro em direção a 2048.</string>
+    <string name="score">Pontuação</string>
+    <string name="best">Melhor</string>
+    <string name="new_best">novo melhor</string>
+    <string name="undo">Desfazer</string>
+    <string name="restart">Reiniciar</string>
+    <string name="continue_game">Continuar</string>
+    <string name="new_game">Novo jogo</string>
+    <string name="victory">Vitória</string>
+    <string name="game_over">Game Over</string>
+    <string name="cancel">Cancelar</string>
+    <string name="loading_game">Carregando jogo</string>
+    <string name="games_won">Jogos vencidos</string>
+    <string name="successful_moves">Movimentos bem sucedidos</string>
+    <string name="total_merges">Total de fusões</string>
+    <string name="highest_tile">Bloco mais alto</string>
+    <string name="restart_confirmation_title">Reiniciar o jogo?</string>
+    <string name="restart_confirmation_body">Sua pontuação é %1$sapós %2$s. Reiniciar inicia um novo jogo.</string>
+    <string name="progress_not_saved">O progresso não pôde ser salvo</string>
+    <string name="new_game_not_saved">Não foi possível salvar um novo jogo</string>
+    <string name="score_description">Pontuação, %1$s</string>
+    <string name="best_description">Atenciosamente, %1$s</string>
+    <string name="best_new_description">Melhor, novo melhor, %1$s</string>
+    <string name="undo_description">Desfazer</string>
+    <string name="restart_description">Reiniciar</string>
+    <string name="crown_description">Melhor pontuação</string>
+    <string name="announcement_move">Pontuação aumentada em %1$s.</string>
+    <string name="announcement_move_merge">Pontuação aumentada em %1$s. Maior mesclagem %2$s.</string>
+    <string name="announcement_new_best">Nova melhor pontuação %1$s.</string>
+    <string name="announcement_victory">2048 alcançado.</string>
+    <string name="announcement_game_over">Game Over.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d jogo</item>
+        <item quantity="other">%1$d jogos</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d movimento</item>
+        <item quantity="other">%1$d movimentos</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d mesclagem</item>
+        <item quantity="other">%1$d mesclagens</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="other">%1$d Desfazer usos</item>
+        <item quantity="one">%1$d Desfazer uso</item>
+    </plurals>
+    <string name="board_empty_cell">vazio</string>
+    <string name="board_row_summary">Linha %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Quadro. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Subir</string>
+    <string name="move_down">Mover para baixo</string>
+    <string name="move_left">Mover para a esquerda</string>
+    <string name="move_right">Mover para a direita</string>
+</resources>

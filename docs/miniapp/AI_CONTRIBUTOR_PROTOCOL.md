@@ -1,7 +1,7 @@
 # AI Contributor Protocol
 
 This protocol applies when an agent is asked to create, add, port or implement
-a MiniApp in this repository.
+a MiniApp in Logica, the repository's curated Kotlin Multiplatform super-app.
 
 ## Required sequence
 
@@ -20,7 +20,9 @@ a MiniApp in this repository.
    resource/provenance checks.
 9. Report the exact commands and results, including any unavailable platform
    gates.
-10. End with a reviewable change marked **NOT ALLOWLISTED**.
+10. Defer product/game icon work until the final UI stage; do not let a missing
+    icon block rules, persistence, lifecycle, accessibility or CI review.
+11. End with a reviewable change marked **NOT ALLOWLISTED**.
 
 ## Permission boundaries
 
@@ -35,6 +37,7 @@ The agent must not:
 - change release, signing, credentials or store metadata;
 - push directly to protected branches or create a non-draft release PR;
 - conceal failed tests, missing provenance or unavailable platform checks;
+- treat an icon as a scaffold prerequisite or silently invent icon assets;
 - import raw Settings, platform audio, native ad SDKs, feature modules,
   application modules or another game/sample;
 - copy code, art, audio, fonts, branding or distinctive expression from a
@@ -78,3 +81,7 @@ with it.
 The repository's [ADR-0001](../adr/0001-miniapp-contribution-and-shipping.md)
 and [human contributor guide](../../CONTRIBUTING_MINIAPP.md) are normative
 references when this protocol is incomplete.
+
+For a repository-wide architecture, product-model and CI/CD review, use the
+[super-app architecture audit prompt](super-app-architecture-audit-agent.md)
+before proposing cross-module changes.

@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">ম্যাচিং টাইলস স্লাইড করুন এবং 2048 এর দিকে বোর্ডের আকার দিন।</string>
+    <string name="score">স্কোর</string>
+    <string name="best">সেরা</string>
+    <string name="new_best">নতুন সেরা</string>
+    <string name="undo">পূর্বাবস্থায় ফেরান</string>
+    <string name="restart">রিস্টার্ট করুন</string>
+    <string name="continue_game">চালিয়ে যান</string>
+    <string name="new_game">নতুন খেলা</string>
+    <string name="victory">বিজয়</string>
+    <string name="game_over">খেলা শেষ</string>
+    <string name="cancel">বাতিল করুন</string>
+    <string name="loading_game">খেলা লোড হচ্ছে</string>
+    <string name="games_won">গেম জিতেছে</string>
+    <string name="successful_moves">সফল পদক্ষেপ</string>
+    <string name="total_merges">মোট মার্জ</string>
+    <string name="highest_tile">সর্বোচ্চ টালি</string>
+    <string name="restart_confirmation_title">গেম রিস্টার্ট করবেন?</string>
+    <string name="restart_confirmation_body">%2$sএর পরে আপনার স্কোর হল %1$s। পুনঃসূচনা একটি নতুন গেম শুরু হয়।</string>
+    <string name="progress_not_saved">অগ্রগতি সংরক্ষণ করা যায়নি</string>
+    <string name="new_game_not_saved">একটি নতুন খেলা সংরক্ষণ করা যায়নি</string>
+    <string name="score_description">স্কোর, %1$s</string>
+    <string name="best_description">সেরা, %1$s</string>
+    <string name="best_new_description">সেরা, নতুন সেরা, %1$s৷</string>
+    <string name="undo_description">পূর্বাবস্থায় ফেরান</string>
+    <string name="restart_description">রিস্টার্ট করুন</string>
+    <string name="crown_description">সেরা স্কোর</string>
+    <string name="announcement_move">স্কোর %1$sবেড়েছে।</string>
+    <string name="announcement_move_merge">স্কোর %1$sবেড়েছে। সবচেয়ে বড় মার্জ %2$s।</string>
+    <string name="announcement_new_best">নতুন সেরা স্কোর %1$s।</string>
+    <string name="announcement_victory">2048 এ পৌঁছেছে।</string>
+    <string name="announcement_game_over">খেলা শেষ।</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$dটি গেম</item>
+        <item quantity="other">%1$dটি গেম</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d সরানো</item>
+        <item quantity="other">%1$d মুভ</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d মার্জ</item>
+        <item quantity="other">%1$dটি মার্জ</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d ব্যবহার পূর্বাবস্থায় ফেরান৷</item>
+        <item quantity="other">%1$d ব্যবহার পূর্বাবস্থায় ফেরান৷</item>
+    </plurals>
+    <string name="board_empty_cell">খালি</string>
+    <string name="board_row_summary">সারি %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Board. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">উপরে সরান</string>
+    <string name="move_down">নিচে সরান</string>
+    <string name="move_left">বামে সরান</string>
+    <string name="move_right">ডানদিকে সরান</string>
+</resources>

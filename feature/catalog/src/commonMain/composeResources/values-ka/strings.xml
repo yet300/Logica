@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Logica</string>
+    <string name="play">თამაში</string>
+    <string name="catalog_empty_title">აპლიკაციები ჯერ არ არის</string>
+</resources>

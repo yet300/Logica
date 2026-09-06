@@ -31,10 +31,25 @@
     <string name="disable_ads_body">广告帮助我们改进游戏，并让所有功能保持免费。关闭广告后，复活仍然免费 — 你也可以通过 GitHub 加星或捐赠来支持 Logica。</string>
     <string name="keep_ads">保留广告</string>
     <string name="disable_ads_anyway">仍然关闭</string>
+    <string name="cd_settings">设置</string>
     <string name="cd_back">返回</string>
+    <string name="miniapp_unavailable">%1$s不可用</string>
+    <string name="back_to_catalog">返回目录</string>
     <string name="exit">退出</string>
     <string name="review_prompt_title">喜欢Logica吗？</string>
     <string name="review_prompt_body">您的评价可以帮助更多拼图玩家找到这款游戏。</string>
     <string name="review_prompt_leave_feedback">留下反馈</string>
     <string name="review_prompt_dont_show">不再显示</string>
+    <string name="delete_game_data">删除所有游戏数据</string>
+    <string name="delete_game_data_subtitle">清除所有游戏的进度和记录</string>
+    <string name="clear_game_data_title">删除游戏数据？</string>
+    <string name="clear_game_data_body">这将永久删除所有已安装游戏的存档、分数、教程进度及其他数据。</string>
+    <string name="clear_game_data_preferences_kept">您的应用偏好设置、隐私选项、广告授权及评价设置不会被删除。</string>
+    <string name="clear_game_data_action">删除游戏数据</string>
+    <string name="clearing_game_data">正在删除游戏数据…</string>
+    <string name="game_data_cleared">所有游戏数据已删除。</string>
+    <string name="game_data_clear_failed">部分游戏数据未能删除。您可以对受影响的游戏重试：</string>
+    <string name="retry">重试</string>
+    <string name="done">完成</string>
+    <string name="cancel">取消</string>
 </resources>

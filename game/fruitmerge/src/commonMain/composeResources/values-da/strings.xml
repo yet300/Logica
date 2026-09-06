@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Slip, kombiner og byg et muntert tårn af frugt.</string>
+    <string name="score">Point</string>
+    <string name="best_score">Bedste</string>
+    <string name="next_fruit">Næste</string>
+    <string name="clear_with_count">Ryd · %1$d</string>
+    <string name="clear_with_ad">Ryd · Reklame</string>
+    <string name="shake_with_count">Ryst · %1$d</string>
+    <string name="shake_with_ad">Ryst · Reklame</string>
+    <string name="cancel">Annuller</string>
+    <string name="new_game">Nyt spil</string>
+    <string name="game_over">Frugttårnet er fuldt</string>
+    <string name="game_over_supporting">Frugten forblev over farelinjen. Start forfra og skab en større vandmelon.</string>
+    <string name="largest_fruit">Største frugt</string>
+    <string name="tutorial_skip">Spring over</string>
+    <string name="tutorial_tap">Tryk hvor som helst for at kaste frugten</string>
+    <string name="tutorial_drag">Træk til siden, og slip for at vælge landingssted</string>
+    <string name="loading_game">Indlæser Fruit Merge</string>
+    <string name="drop_hint">Flyt langs toppen, og slip for at kaste</string>
+    <string name="clear_hint">Vælg en frugt, der skal fjernes</string>
+    <string name="danger_line">Farelinje</string>
+    <string name="board_description">Fruit Merge-bræt. Point %1$d. %2$d frugter i beholderen.</string>
+    <string name="fruit_description">%1$s frugt</string>
+    <string name="ad_disclosure">Reklame</string>
+    <string name="blueberry">Blåbær</string>
+    <string name="raspberry">Hindbær</string>
+    <string name="strawberry">Jordbær</string>
+    <string name="lime">Lime</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Æble</string>
+    <string name="pear">Pære</string>
+    <string name="peach">Fersken</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Vandmelon</string>
+</resources>

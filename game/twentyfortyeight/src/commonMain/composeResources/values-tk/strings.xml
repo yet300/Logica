@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Gabat gelýän plitkalary süýşüriň we tagtany 2048-e tarap şekillendiriň.</string>
+    <string name="score">Bal</string>
+    <string name="best">Iň gowusy</string>
+    <string name="new_best">täze iň gowusy</string>
+    <string name="undo">Yza gaýtar</string>
+    <string name="restart">Gaýtadan açyň</string>
+    <string name="continue_game">Dowam et</string>
+    <string name="new_game">Täze oýun</string>
+    <string name="victory">Oryeňiş</string>
+    <string name="game_over">Oýun gutardy</string>
+    <string name="cancel">Elatyr</string>
+    <string name="loading_game">Oýun ýüklemek</string>
+    <string name="games_won">Oýunlar ýeňiş gazandy</string>
+    <string name="successful_moves">Üstünlikli hereketler</string>
+    <string name="total_merges">Jemi birleşmeler</string>
+    <string name="highest_tile">Iň ýokary kafel</string>
+    <string name="restart_confirmation_title">Oýun täzeden başladyňmy?</string>
+    <string name="restart_confirmation_body">Balyňyz%2$s-den soň%1$s. Täzeden başlamak täze oýun başlaýar.</string>
+    <string name="progress_not_saved">Ösüş saklanyp bilinmedi</string>
+    <string name="new_game_not_saved">Täze oýun halas edip bolmady</string>
+    <string name="score_description">Bal,%1$s</string>
+    <string name="best_description">Iň gowusy,%1$s</string>
+    <string name="best_new_description">Iň gowy, täze iň gowy,%1$s</string>
+    <string name="undo_description">Yza gaýtar</string>
+    <string name="restart_description">Gaýtadan açyň</string>
+    <string name="crown_description">Iň gowy bal</string>
+    <string name="announcement_move">Bal%1$sýokarlandy.</string>
+    <string name="announcement_move_merge">Bal%1$sýokarlandy. Iň uly birleşme%2$s.</string>
+    <string name="announcement_new_best">Täze iň gowy bal%1$s.</string>
+    <string name="announcement_victory">2048-e ýetdi.</string>
+    <string name="announcement_game_over">Oýun gutardy.</string>
+    <plurals name="games_count">
+        <item quantity="one">% 1 $ d oýun</item>
+        <item quantity="other">% 1 $ d oýunlar</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="other">% 1 $ d hereket edýär</item>
+        <item quantity="one">% 1 $ d hereket</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="other">% 1 $ d birleşýär</item>
+        <item quantity="one">% 1 $ d birleşmek</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">% 1 $ d Ulanyşy yzyna al</item>
+        <item quantity="other">% 1 $ d Ulanyşlary yzyna al</item>
+    </plurals>
+    <string name="board_empty_cell">boş</string>
+    <string name="board_row_summary">Setir%1$d:%2$s,%3$s,%4$s,%5$s</string>
+    <string name="board_summary">Geňeş. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Göçüriň</string>
+    <string name="move_down">Aşak süýşüriň</string>
+    <string name="move_left">Çepe süýşüriň</string>
+    <string name="move_right">Saga süýşüň</string>
+</resources>

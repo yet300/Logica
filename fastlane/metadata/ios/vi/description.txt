@@ -1,0 +1,20 @@
+Một ứng dụng. Cả thế giới trò chơi giải đố không ngừng mở rộng.
+
+Logica tập hợp các trò chơi nhẹ nhàng và đầy tính chiến thuật tại một nơi. Bắt đầu thử thách nhanh, thử chiến lược mới và đổi trò chơi bất cứ lúc nào.
+
+CHƠI THEO CÁCH CỦA BẠN
+• Hoàn thành các hàng và sắp xếp bàn chơi trong Block Blast
+• Ghép ô và chinh phục số lớn hơn trong 2048
+• Thả và hợp nhất trái cây trong câu đố vật lý Fruit Merge
+• Khám phá thêm trò chơi mới khi bộ sưu tập phát triển
+
+PHÙ HỢP MỌI KHOẢNH KHẮC
+• Ván chơi ngắn, dễ bắt đầu
+• Điều khiển đơn giản và phản hồi thú vị
+• Kỷ lục cá nhân và tiến trình được lưu
+• Chơi ngoại tuyến ở mọi nơi
+• Giao diện sạch sẽ, nhẹ nhàng
+
+Dù bạn thích khối hình, con số, hợp nhất hay thử thách logic, Logica mang đến một bộ sưu tập ngày càng lớn mà không cần cài nhiều ứng dụng riêng.
+
+Chọn một trò chơi và tìm câu đố yêu thích tiếp theo.

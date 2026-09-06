@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Geser ubin yang cocok dan bentuk papan ke arah 2048.</string>
+    <string name="score">Skor</string>
+    <string name="best">Terbaik</string>
+    <string name="new_best">baru yang terbaik</string>
+    <string name="undo">Membuka</string>
+    <string name="restart">Mulai ulang</string>
+    <string name="continue_game">Melanjutkan</string>
+    <string name="new_game">Permainan baru</string>
+    <string name="victory">Kemenangan</string>
+    <string name="game_over">Permainan selesai</string>
+    <string name="cancel">Membatalkan</string>
+    <string name="loading_game">Memuat permainan</string>
+    <string name="games_won">Permainan dimenangkan</string>
+    <string name="successful_moves">Gerakan yang sukses</string>
+    <string name="total_merges">Penggabungan total</string>
+    <string name="highest_tile">Ubin tertinggi</string>
+    <string name="restart_confirmation_title">Mulai ulang permainan?</string>
+    <string name="restart_confirmation_body">Skor Anda adalah %1$ssetelah %2$s. Memulai ulang memulai permainan baru.</string>
+    <string name="progress_not_saved">Kemajuan tidak dapat diselamatkan</string>
+    <string name="new_game_not_saved">Game baru tidak dapat disimpan</string>
+    <string name="score_description">Skor, %1$s</string>
+    <string name="best_description">Terbaik, %1$s</string>
+    <string name="best_new_description">Terbaik, terbaik baru, %1$s</string>
+    <string name="undo_description">Membuka</string>
+    <string name="restart_description">Mulai ulang</string>
+    <string name="crown_description">Skor terbaik</string>
+    <string name="announcement_move">Skor meningkat sebesar %1$s.</string>
+    <string name="announcement_move_merge">Skor meningkat sebesar %1$s. Penggabungan terbesar %2$s.</string>
+    <string name="announcement_new_best">Skor terbaik baru %1$s.</string>
+    <string name="announcement_victory">2048 tercapai.</string>
+    <string name="announcement_game_over">Permainan selesai.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d permainan</item>
+        <item quantity="other">%1$d permainan</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d perpindahan</item>
+        <item quantity="other">%1$d gerakan</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d penggabungan</item>
+        <item quantity="other">%1$d digabungkan</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Batalkan penggunaan</item>
+        <item quantity="other">%1$d Batalkan penggunaan</item>
+    </plurals>
+    <string name="board_empty_cell">kosong</string>
+    <string name="board_row_summary">Baris %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Papan. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Naik</string>
+    <string name="move_down">Pindah ke bawah</string>
+    <string name="move_left">Pindah ke kiri</string>
+    <string name="move_right">Bergerak ke kanan</string>
+</resources>

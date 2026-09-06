@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048년</string>
+    <string name="miniapp_description">일치하는 타일을 밀어서 2048을 향해 보드 모양을 만듭니다.</string>
+    <string name="score">점수</string>
+    <string name="best">최상의</string>
+    <string name="new_best">새로운 최고</string>
+    <string name="undo">끄르다</string>
+    <string name="restart">다시 시작</string>
+    <string name="continue_game">계속하다</string>
+    <string name="new_game">새로운 게임</string>
+    <string name="victory">승리</string>
+    <string name="game_over">게임 종료</string>
+    <string name="cancel">취소</string>
+    <string name="loading_game">게임 로딩 중</string>
+    <string name="games_won">승리한 게임</string>
+    <string name="successful_moves">성공적인 움직임</string>
+    <string name="total_merges">총 병합</string>
+    <string name="highest_tile">가장 높은 타일</string>
+    <string name="restart_confirmation_title">게임을 다시 시작하시겠습니까?</string>
+    <string name="restart_confirmation_body">%2$s이후 점수는 %1$s입니다. 다시 시작하면 새로운 게임이 시작됩니다.</string>
+    <string name="progress_not_saved">진행 상황을 저장할 수 없습니다.</string>
+    <string name="new_game_not_saved">새 게임을 저장할 수 없습니다.</string>
+    <string name="score_description">점수, %1$s</string>
+    <string name="best_description">최고입니다, %1$s</string>
+    <string name="best_new_description">최고, 새로운 최고, %1$s</string>
+    <string name="undo_description">끄르다</string>
+    <string name="restart_description">다시 시작</string>
+    <string name="crown_description">최고 점수</string>
+    <string name="announcement_move">점수가 %1$s증가했습니다.</string>
+    <string name="announcement_move_merge">점수가 %1$s증가했습니다. 가장 큰 병합 %2$s.</string>
+    <string name="announcement_new_best">새로운 최고 점수 %1$s.</string>
+    <string name="announcement_victory">2048년에 도달했습니다.</string>
+    <string name="announcement_game_over">게임이 끝났습니다.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d 게임</item>
+        <item quantity="other">%1$d 게임</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d 이동</item>
+        <item quantity="other">%1$d 이동</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d 병합</item>
+        <item quantity="other">%1$d 병합</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d 사용 취소</item>
+        <item quantity="other">%1$d 실행 취소 사용</item>
+    </plurals>
+    <string name="board_empty_cell">비어 있는</string>
+    <string name="board_row_summary">행 %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">판자. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">위로 이동</string>
+    <string name="move_down">아래로 이동</string>
+    <string name="move_left">왼쪽으로 이동</string>
+    <string name="move_right">오른쪽으로 이동</string>
+</resources>

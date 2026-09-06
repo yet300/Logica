@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Реклама допомагає нам покращувати гру й залишати всі можливості безплатними. Якщо її вимкнути, відродження залишаться безплатними — а підтримати Logica можна зіркою на GitHub або пожертвою.</string>
     <string name="keep_ads">Залишити рекламу</string>
     <string name="disable_ads_anyway">Усе одно вимкнути</string>
+    <string name="cd_settings">Налаштування</string>
     <string name="cd_back">Назад</string>
+    <string name="miniapp_unavailable">%1$s недоступний</string>
+    <string name="back_to_catalog">Назад до каталогу</string>
     <string name="exit">Вийти</string>
     <string name="review_prompt_title">Подобається Logica?</string>
     <string name="review_prompt_body">Ваш відгук допоможе іншим любителям головоломок знайти гру.</string>
     <string name="review_prompt_leave_feedback">Залишити відгук</string>
     <string name="review_prompt_dont_show">Більше не показувати</string>
+    <string name="delete_game_data">Видалити всі дані ігор</string>
+    <string name="delete_game_data_subtitle">Видалити прогрес і результати з усіх ігор</string>
+    <string name="clear_game_data_title">Видалити дані ігор?</string>
+    <string name="clear_game_data_body">Це назавжди видалить збережені ігри, рекорди, навчання та інший прогрес з усіх встановлених ігор.</string>
+    <string name="clear_game_data_preferences_kept">Ваші налаштування програми, параметри конфіденційності, згода на рекламу та налаштування відгуків не будуть видалені.</string>
+    <string name="clear_game_data_action">Видалити дані ігор</string>
+    <string name="clearing_game_data">Видалення даних ігор…</string>
+    <string name="game_data_cleared">Усі дані ігор видалено.</string>
+    <string name="game_data_clear_failed">Не вдалося видалити деякі дані ігор. Ви можете повторити спробу для цих ігор:</string>
+    <string name="retry">Повторити</string>
+    <string name="done">Готово</string>
+    <string name="cancel">Скасувати</string>
 </resources>

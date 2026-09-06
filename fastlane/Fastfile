@@ -8,10 +8,39 @@ def version_code
   ENV["APP_VERSION_CODE"] or UI.user_error!("APP_VERSION_CODE env is not set")
 end
 
+def ios_marketing_version
+  config = File.read("iosApp/Configuration/Config.xcconfig")
+  match = config.match(/^\s*MARKETING_VERSION\s*=\s*([^\s]+)\s*$/)
+  match ? match[1] : UI.user_error!("MARKETING_VERSION is missing from Config.xcconfig")
+end
+
 # ---------------------------------------------------------------------------
 # Android — Google Play internal track
 # ---------------------------------------------------------------------------
 platform :android do
+  desc "Upload localized Google Play listing changes without sending for review"
+  lane :publish_store_listing_draft do
+    play_store_json_key = ENV["PLAY_STORE_JSON_KEY"]
+    if play_store_json_key.to_s.empty?
+      UI.user_error!("PLAY_STORE_JSON_KEY env is not set")
+    end
+
+    upload_to_play_store(
+      package_name: "ge.yet.blokblast",
+      metadata_path: "fastlane/metadata/android",
+      json_key_data: play_store_json_key,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      sync_image_upload: true,
+      changes_not_sent_for_review: true,
+      rescue_changes_not_sent_for_review: false,
+    )
+  end
+
   desc "Build signed AAB+APK and upload AAB to Google Play (internal track)"
   lane :release do
     # AAB for Play (Play only accepts bundles for new uploads).
@@ -43,6 +72,105 @@ platform :android do
       skip_upload_changelogs: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
+    )
+  end
+end
+
+# ---------------------------------------------------------------------------
+# iOS — App Store Connect listing and build upload
+# ---------------------------------------------------------------------------
+platform :ios do
+  desc "Upload localized App Store listing changes without sending for review"
+  lane :publish_app_store_listing_draft do
+    %w[
+      APP_STORE_CONNECT_KEY_ID
+      APP_STORE_CONNECT_ISSUER_ID
+      APP_STORE_CONNECT_KEY_CONTENT
+    ].each do |variable|
+      UI.user_error!("#{variable} env is not set") if ENV[variable].to_s.empty?
+    end
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_CONTENT"],
+      is_key_content_base64: true,
+    )
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: "ge.yet3.blokblast.BlockBlast",
+      app_version: ios_marketing_version,
+      metadata_path: "fastlane/metadata/ios",
+      screenshots_path: "fastlane/screenshots",
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      submit_for_review: false,
+      automatic_release: false,
+      overwrite_screenshots: true,
+      force: true,
+    )
+  end
+
+  desc "Build a signed IPA and upload it to App Store Connect/TestFlight"
+  lane :release do
+    %w[
+      APP_VERSION_NAME
+      APP_VERSION_CODE
+      APP_STORE_CONNECT_KEY_ID
+      APP_STORE_CONNECT_ISSUER_ID
+      APP_STORE_CONNECT_KEY_CONTENT
+      IOS_PROVISIONING_PROFILE_NAME
+    ].each do |variable|
+      UI.user_error!("#{variable} env is not set") if ENV[variable].to_s.empty?
+    end
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_CONTENT"],
+      is_key_content_base64: true,
+    )
+    profile_name = ENV["IOS_PROVISIONING_PROFILE_NAME"]
+
+    build_app(
+      project: "iosApp/iosApp.xcodeproj",
+      scheme: "iosApp",
+      configuration: "Release",
+      clean: true,
+      export_method: "app-store",
+      output_directory: "build/ios",
+      output_name: "Logica.ipa",
+      archive_path: "build/ios/Logica.xcarchive",
+      derived_data_path: "build/ios/DerivedData",
+      include_symbols: true,
+      xcargs: [
+        "MARKETING_VERSION=#{ENV['APP_VERSION_NAME']}",
+        "CURRENT_PROJECT_VERSION=#{ENV['APP_VERSION_CODE']}",
+        "DEVELOPMENT_TEAM=3KKQ642Q9H",
+        "PRODUCT_BUNDLE_IDENTIFIER=ge.yet3.blokblast.BlockBlast",
+        "CODE_SIGN_STYLE=Manual",
+        "CODE_SIGN_IDENTITY='Apple Distribution'",
+        "PROVISIONING_PROFILE_SPECIFIER='#{profile_name}'",
+      ].join(" "),
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual",
+        teamID: "3KKQ642Q9H",
+        provisioningProfiles: {
+          "ge.yet3.blokblast.BlockBlast" => profile_name,
+        },
+        uploadSymbols: true,
+      },
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      app_identifier: "ge.yet3.blokblast.BlockBlast",
+      ipa: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
     )
   end
 end

@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">ჩამოაგდეთ, შეაერთეთ და გაზარდეთ ხილის მხიარული კოშკი.</string>
+    <string name="score">ქულა</string>
+    <string name="best_score">საუკეთესო</string>
+    <string name="next_fruit">შემდეგი</string>
+    <string name="clear_with_count">გასუფთავება · %1$d</string>
+    <string name="clear_with_ad">გასუფთავება · რეკლამა</string>
+    <string name="shake_with_count">შენჯღრევა · %1$d</string>
+    <string name="shake_with_ad">შენჯღრევა · რეკლამა</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="new_game">ახალი თამაში</string>
+    <string name="game_over">ხილის კოშკი გაივსო</string>
+    <string name="game_over_supporting">ხილი საფრთხის ხაზს ზემოთ დარჩა. დაიწყეთ თავიდან და შექმენით უფრო დიდი საზამთრო.</string>
+    <string name="largest_fruit">ყველაზე დიდი ხილი</string>
+    <string name="tutorial_skip">გამოტოვება</string>
+    <string name="tutorial_tap">შეეხეთ ნებისმიერ ადგილას ხილის ჩამოსაგდებად</string>
+    <string name="tutorial_drag">გადაიტანეთ გვერდზე და აუშვით ადგილი ასარჩევად</string>
+    <string name="loading_game">იტვირთება Fruit Merge</string>
+    <string name="drop_hint">გადაადგილეთ ზემოთ და აუშვით ჩამოსაგდებად</string>
+    <string name="clear_hint">აირჩიეთ ერთი ხილი წასაშლელად</string>
+    <string name="danger_line">საფრთხის ხაზი</string>
+    <string name="board_description">Fruit Merge-ის დაფა. ქულა %1$d. %2$d ხილი კონტეინერში.</string>
+    <string name="fruit_description">%1$s ხილი</string>
+    <string name="ad_disclosure">რეკლამა</string>
+    <string name="blueberry">მოცვი</string>
+    <string name="raspberry">ჟოლო</string>
+    <string name="strawberry">მარწყვი</string>
+    <string name="lime">ლაიმი</string>
+    <string name="mandarin">მანდარინი</string>
+    <string name="apple">ვაშლი</string>
+    <string name="pear">მსხალი</string>
+    <string name="peach">ატამი</string>
+    <string name="pineapple">ანანასი</string>
+    <string name="watermelon">საზამთრო</string>
+</resources>

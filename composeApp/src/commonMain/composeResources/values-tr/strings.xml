@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Reklamlar oyunu geliştirmemize ve tüm özellikleri ücretsiz sunmamıza yardımcı olur. Reklamları kapatsanız da yeniden canlanmalar ücretsiz kalır — Logica'yı GitHub yıldızı veya bağışla destekleyebilirsiniz.</string>
     <string name="keep_ads">Reklamları koru</string>
     <string name="disable_ads_anyway">Yine de devre dışı bırak</string>
+    <string name="cd_settings">Ayarlar</string>
     <string name="cd_back">Geri</string>
+    <string name="miniapp_unavailable">%1$s kullanılamıyor</string>
+    <string name="back_to_catalog">Kataloğa dön</string>
     <string name="exit">Çıkış</string>
     <string name="review_prompt_title">Logica'yı beğeniyor musunuz?</string>
     <string name="review_prompt_body">Yorumunuz daha fazla bulmaca oyuncusunun oyunu bulmasına yardımcı olur.</string>
     <string name="review_prompt_leave_feedback">Geri bildirim bırak</string>
     <string name="review_prompt_dont_show">Tekrar gösterme</string>
+    <string name="delete_game_data">Tüm oyun verilerini sil</string>
+    <string name="delete_game_data_subtitle">Her oyundaki ilerlemeyi ve sonuçları kaldırın</string>
+    <string name="clear_game_data_title">Oyun verileri silinsin mi?</string>
+    <string name="clear_game_data_body">Bu işlem yüklü tüm oyunlardaki kayıtlı oyunları, puanları, öğreticileri ve diğer ilerlemeleri kalıcı olarak siler.</string>
+    <string name="clear_game_data_preferences_kept">Uygulama tercihleriniz, gizlilik seçimleriniz, reklam onayınız ve değerlendirme ayarlarınız silinmez.</string>
+    <string name="clear_game_data_action">Oyun verilerini sil</string>
+    <string name="clearing_game_data">Oyun verileri siliniyor…</string>
+    <string name="game_data_cleared">Tüm oyun verileri silindi.</string>
+    <string name="game_data_clear_failed">Bazı oyun verileri silinemedi. Etkilenen oyunlar için tekrar deneyebilirsiniz:</string>
+    <string name="retry">Tekrar dene</string>
+    <string name="done">Bitti</string>
+    <string name="cancel">İptal</string>
 </resources>

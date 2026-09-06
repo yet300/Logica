@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Lass Früchte fallen, verschmelze sie und baue einen bunten Fruchtturm.</string>
+    <string name="score">Punkte</string>
+    <string name="best_score">Rekord</string>
+    <string name="next_fruit">Nächste</string>
+    <string name="clear_with_count">Löschen · %1$d</string>
+    <string name="clear_with_ad">Löschen · Werbung</string>
+    <string name="shake_with_count">Schütteln · %1$d</string>
+    <string name="shake_with_ad">Schütteln · Werbung</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="new_game">Neues Spiel</string>
+    <string name="game_over">Fruchtturm voll</string>
+    <string name="game_over_supporting">Die Früchte lagen über der Gefahrenlinie. Starte neu und erschaffe eine größere Wassermelone.</string>
+    <string name="largest_fruit">Größte Frucht</string>
+    <string name="tutorial_skip">Überspringen</string>
+    <string name="tutorial_tap">Tippe irgendwohin, um die Frucht fallen zu lassen</string>
+    <string name="tutorial_drag">Zur Seite ziehen und loslassen, um den Abwurfpunkt zu wählen</string>
+    <string name="loading_game">Fruit Merge wird geladen</string>
+    <string name="drop_hint">Oben entlangbewegen und zum Abwerfen loslassen</string>
+    <string name="clear_hint">Wähle eine Frucht zum Entfernen aus</string>
+    <string name="danger_line">Gefahrenlinie</string>
+    <string name="board_description">Fruit Merge Spielfeld. Punkte %1$d. %2$d Früchte im Behälter.</string>
+    <string name="fruit_description">%1$s-Frucht</string>
+    <string name="ad_disclosure">Werbung</string>
+    <string name="blueberry">Blaubeere</string>
+    <string name="raspberry">Himbeere</string>
+    <string name="strawberry">Erdbeere</string>
+    <string name="lime">Limette</string>
+    <string name="mandarin">Mandarine</string>
+    <string name="apple">Apfel</string>
+    <string name="pear">Birne</string>
+    <string name="peach">Pfirsich</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Wassermelone</string>
+</resources>

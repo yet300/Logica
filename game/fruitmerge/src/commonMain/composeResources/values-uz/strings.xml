@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Mevalarni tashlang, birlashtiring va quvnoq meva minorasini quring.</string>
+    <string name="score">Ball</string>
+    <string name="best_score">Eng yaxshi</string>
+    <string name="next_fruit">Keyingi</string>
+    <string name="clear_with_count">Tozalash · %1$d</string>
+    <string name="clear_with_ad">Tozalash · Reklama</string>
+    <string name="shake_with_count">Silkitish · %1$d</string>
+    <string name="shake_with_ad">Silkitish · Reklama</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="new_game">Yangi o'yin</string>
+    <string name="game_over">Meva minorasi to'ldi</string>
+    <string name="game_over_supporting">Meva xavfli chiziqdan yuqorida qoldi. Qayta boshlang va kattaroq tarvuz yarating.</string>
+    <string name="largest_fruit">Eng katta meva</string>
+    <string name="tutorial_skip">O'tkazib yuborish</string>
+    <string name="tutorial_tap">Mevani tashlash uchun istalgan joyga bosing</string>
+    <string name="tutorial_drag">Yonga suring va tashlash joyini tanlash uchun qo'yib yuboring</string>
+    <string name="loading_game">Fruit Merge yuklanmoqda</string>
+    <string name="drop_hint">Yuqori bo'ylab suring va tashlash uchun qo'yib yuboring</string>
+    <string name="clear_hint">O'chirish uchun bitta mevani tanlang</string>
+    <string name="danger_line">Xavfli chiziq</string>
+    <string name="board_description">Fruit Merge doskasi. Ball %1$d. Idishda %2$d ta meva.</string>
+    <string name="fruit_description">%1$s mevasi</string>
+    <string name="ad_disclosure">Reklama</string>
+    <string name="blueberry">Chernika</string>
+    <string name="raspberry">Malina</string>
+    <string name="strawberry">Qulupnay</string>
+    <string name="lime">Laym</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Olma</string>
+    <string name="pear">Nok</string>
+    <string name="peach">Shaftoli</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Tarvuz</string>
+</resources>

@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Reklama o'yinni yaxshilashimizga va barcha imkoniyatlarni bepul saqlashimizga yordam beradi. Uni o'chirsangiz ham, qayta tirilish bepul qoladi — Logica'ni GitHub'dagi yulduz yoki xayriya bilan qo'llab-quvvatlashingiz mumkin.</string>
     <string name="keep_ads">Reklamani qoldirish</string>
     <string name="disable_ads_anyway">Baribir o'chirish</string>
+    <string name="cd_settings">Sozlamalar</string>
     <string name="cd_back">Orqaga</string>
+    <string name="miniapp_unavailable">%1$s mavjud emas</string>
+    <string name="back_to_catalog">Katalogga qaytish</string>
     <string name="exit">Chiqish</string>
     <string name="review_prompt_title">Logica yoqdimi?</string>
     <string name="review_prompt_body">Sizning sharhingiz ko'proq jumboq o'yinchilariga o'yinni topishga yordam beradi.</string>
     <string name="review_prompt_leave_feedback">Fikr qoldirish</string>
     <string name="review_prompt_dont_show">Yana ko'rsatmaslik</string>
+    <string name="delete_game_data">Barcha o'yin ma'lumotlarini o'chirish</string>
+    <string name="delete_game_data_subtitle">Barcha o'yinlardan yutuq va natijalarni o'chirish</string>
+    <string name="clear_game_data_title">O'yin ma'lumotlari o'chirilsinmi?</string>
+    <string name="clear_game_data_body">Bu barcha o'rnatilgan o'yinlardan saqlangan o'yinlar, ballar, qo'llanmalar va boshqa yutuqlarni butunlay o'chirib tashlaydi.</string>
+    <string name="clear_game_data_preferences_kept">Ilova sozlamalari, maxfiylik tanlovlari, reklama roziligi va sharh sozlamalari o'chirilmaydi.</string>
+    <string name="clear_game_data_action">O'yin ma'lumotlarini o'chirish</string>
+    <string name="clearing_game_data">O'yin ma'lumotlari o'chirilmoqda…</string>
+    <string name="game_data_cleared">Barcha o'yin ma'lumotlari o'chirildi.</string>
+    <string name="game_data_clear_failed">Ba'zi o'yin ma'lumotlarini o'chirib bo'lmadi. Ta'sirlangan o'yinlar uchun qayta urinib ko'rishingiz mumkin:</string>
+    <string name="retry">Qayta urinish</string>
+    <string name="done">Tayyor</string>
+    <string name="cancel">Bekor qilish</string>
 </resources>

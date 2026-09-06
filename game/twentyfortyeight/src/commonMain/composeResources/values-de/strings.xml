@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Schieben Sie passende Spielsteine und formen Sie das Spielbrett in Richtung 2048.</string>
+    <string name="score">Punktzahl</string>
+    <string name="best">Am besten</string>
+    <string name="new_best">neues Bestes</string>
+    <string name="undo">Rückgängig machen</string>
+    <string name="restart">Neustart</string>
+    <string name="continue_game">Weitermachen</string>
+    <string name="new_game">Neues Spiel</string>
+    <string name="victory">Sieg</string>
+    <string name="game_over">Spiel vorbei</string>
+    <string name="cancel">Stornieren</string>
+    <string name="loading_game">Spiel wird geladen</string>
+    <string name="games_won">Spiele gewonnen</string>
+    <string name="successful_moves">Erfolgreiche Umzüge</string>
+    <string name="total_merges">Totale Zusammenführungen</string>
+    <string name="highest_tile">Höchste Kachel</string>
+    <string name="restart_confirmation_title">Spiel neu starten?</string>
+    <string name="restart_confirmation_body">Ihre Punktzahl beträgt %1$snach %2$s. Durch einen Neustart beginnt ein neues Spiel.</string>
+    <string name="progress_not_saved">Der Fortschritt konnte nicht gespeichert werden</string>
+    <string name="new_game_not_saved">Ein neues Spiel konnte nicht gespeichert werden</string>
+    <string name="score_description">Ergebnis, %1$s</string>
+    <string name="best_description">Beste Grüße %1$s</string>
+    <string name="best_new_description">Bestes, neues Bestes, %1$s</string>
+    <string name="undo_description">Rückgängig machen</string>
+    <string name="restart_description">Neustart</string>
+    <string name="crown_description">Bestes Ergebnis</string>
+    <string name="announcement_move">Score increased by %1$s.</string>
+    <string name="announcement_move_merge">Punktestand um %1$serhöht. Größte Zusammenführung %2$s.</string>
+    <string name="announcement_new_best">Neue beste Punktzahl %1$s.</string>
+    <string name="announcement_victory">2048 erreicht.</string>
+    <string name="announcement_game_over">Spiel vorbei.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d Spiel</item>
+        <item quantity="other">%1$d Spiele</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d Umzug</item>
+        <item quantity="other">%1$d moves</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d zusammenführen</item>
+        <item quantity="other">%1$d führt zusammen</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Verwendung rückgängig machen</item>
+        <item quantity="other">%1$d Verwendungen rückgängig machen</item>
+    </plurals>
+    <string name="board_empty_cell">leer</string>
+    <string name="board_row_summary">Zeile %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Planke. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Bewegen Sie sich nach oben</string>
+    <string name="move_down">Bewegen Sie sich nach unten</string>
+    <string name="move_left">Bewegen Sie sich nach links</string>
+    <string name="move_right">Bewegen Sie sich nach rechts</string>
+</resources>

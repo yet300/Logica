@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Ρίξτε, ενώστε και δημιουργήστε έναν χαρούμενο πύργο φρούτων.</string>
+    <string name="score">Βαθμολογία</string>
+    <string name="best_score">Καλύτερο</string>
+    <string name="next_fruit">Επόμενο</string>
+    <string name="clear_with_count">Εκκαθάριση · %1$d</string>
+    <string name="clear_with_ad">Εκκαθάριση · Διαφήμιση</string>
+    <string name="shake_with_count">Κούνημα · %1$d</string>
+    <string name="shake_with_ad">Κούνημα · Διαφήμιση</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="new_game">Νέο παιχνίδι</string>
+    <string name="game_over">Ο πύργος φρούτων γέμισε</string>
+    <string name="game_over_supporting">Τα φρούτα έμειναν πάνω από τη γραμμή κινδύνου. Ξεκινήστε ξανά και φτιάξτε ένα μεγαλύτερο καρπούζι.</string>
+    <string name="largest_fruit">Μεγαλύτερο φρούτο</string>
+    <string name="tutorial_skip">Παράλειψη</string>
+    <string name="tutorial_tap">Πατήστε οπουδήποτε για να ρίξετε το φρούτο</string>
+    <string name="tutorial_drag">Σύρετε στο πλάι και αφήστε για να επιλέξετε σημείο</string>
+    <string name="loading_game">Φόρτωση Fruit Merge</string>
+    <string name="drop_hint">Κινηθείτε κατά μήκος της κορυφής και αφήστε για ρίψη</string>
+    <string name="clear_hint">Επιλέξτε ένα φρούτο για αφαίρεση</string>
+    <string name="danger_line">Γραμμή κινδύνου</string>
+    <string name="board_description">Ταμπλό Fruit Merge. Βαθμολογία %1$d. %2$d φρούτα στο δοχείο.</string>
+    <string name="fruit_description">Φρούτο %1$s</string>
+    <string name="ad_disclosure">Διαφήμιση</string>
+    <string name="blueberry">Μύρτιλο</string>
+    <string name="raspberry">Σμέουρο</string>
+    <string name="strawberry">Φράουλα</string>
+    <string name="lime">Μοσχολέμονο</string>
+    <string name="mandarin">Μανταρίνι</string>
+    <string name="apple">Μήλο</string>
+    <string name="pear">Αχλάδι</string>
+    <string name="peach">Ροδάκινο</string>
+    <string name="pineapple">Ανανάς</string>
+    <string name="watermelon">Καρπούζι</string>
+</resources>

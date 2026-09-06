@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Trượt các ô phù hợp và định hình bảng theo hướng 2048.</string>
+    <string name="score">Điểm</string>
+    <string name="best">Tốt nhất</string>
+    <string name="new_best">mới tốt nhất</string>
+    <string name="undo">Hoàn tác</string>
+    <string name="restart">Khởi động lại</string>
+    <string name="continue_game">Tiếp tục</string>
+    <string name="new_game">Trò chơi mới</string>
+    <string name="victory">Chiến thắng</string>
+    <string name="game_over">Trò chơi kết thúc</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="loading_game">Đang tải trò chơi</string>
+    <string name="games_won">Trò chơi đã thắng</string>
+    <string name="successful_moves">Bước đi thành công</string>
+    <string name="total_merges">Tổng số lần hợp nhất</string>
+    <string name="highest_tile">Ngói cao nhất</string>
+    <string name="restart_confirmation_title">Khởi động lại trò chơi?</string>
+    <string name="restart_confirmation_body">Điểm của bạn là %1$ssau %2$s. Khởi động lại sẽ bắt đầu một trò chơi mới.</string>
+    <string name="progress_not_saved">Không thể lưu tiến trình</string>
+    <string name="new_game_not_saved">Không thể lưu trò chơi mới</string>
+    <string name="score_description">Điểm, %1$s</string>
+    <string name="best_description">Tốt nhất, %1$s</string>
+    <string name="best_new_description">Tốt nhất, mới tốt nhất, %1$s</string>
+    <string name="undo_description">Hoàn tác</string>
+    <string name="restart_description">Khởi động lại</string>
+    <string name="crown_description">Điểm tốt nhất</string>
+    <string name="announcement_move">Điểm tăng thêm %1$s.</string>
+    <string name="announcement_move_merge">Điểm tăng thêm %1$s. Hợp nhất lớn nhất %2$s.</string>
+    <string name="announcement_new_best">Điểm tốt nhất mới %1$s.</string>
+    <string name="announcement_victory">Đã đến năm 2048.</string>
+    <string name="announcement_game_over">Trò chơi kết thúc.</string>
+    <plurals name="games_count">
+        <item quantity="one">trò chơi %1$d</item>
+        <item quantity="other">%1$d trò chơi</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d di chuyển</item>
+        <item quantity="other">%1$d di chuyển</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">hợp nhất %1$d</item>
+        <item quantity="other">%1$d hợp nhất</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Hoàn tác việc sử dụng</item>
+        <item quantity="other">%1$d Hoàn tác việc sử dụng</item>
+    </plurals>
+    <string name="board_empty_cell">trống</string>
+    <string name="board_row_summary">Hàng %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Bảng. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Di chuyển lên</string>
+    <string name="move_down">Di chuyển xuống</string>
+    <string name="move_left">Di chuyển sang trái</string>
+    <string name="move_right">Di chuyển sang phải</string>
+</resources>

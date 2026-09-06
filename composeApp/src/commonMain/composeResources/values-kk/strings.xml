@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Жарнама ойынды жақсартуға және барлық мүмкіндікті тегін ұсынуға көмектеседі. Оны өшірсеңіз де, қайта тірілу тегін болып қалады — Logica-ны GitHub-тағы жұлдызбен немесе қайырымдылықпен қолдай аласыз.</string>
     <string name="keep_ads">Жарнаманы қалдыру</string>
     <string name="disable_ads_anyway">Бәрібір өшіру</string>
+    <string name="cd_settings">Параметрлер</string>
     <string name="cd_back">Артқа</string>
+    <string name="miniapp_unavailable">%1$s қолжетімсіз</string>
+    <string name="back_to_catalog">Каталогқа оралу</string>
     <string name="exit">Шығу</string>
     <string name="review_prompt_title">Logica ұнады ма?</string>
     <string name="review_prompt_body">Сіздің пікіріңіз көбірек жұмбақ ойыншыларына ойынды табуға көмектеседі.</string>
     <string name="review_prompt_leave_feedback">Пікір қалдыру</string>
     <string name="review_prompt_dont_show">Қайта көрсетпеу</string>
+    <string name="delete_game_data">Барлық ойын деректерін жою</string>
+    <string name="delete_game_data_subtitle">Барлық ойыннан үлгерім мен нәтижелерді жою</string>
+    <string name="clear_game_data_title">Ойын деректері жойылсын ба?</string>
+    <string name="clear_game_data_body">Бұл барлық орнатылған ойындардан сақталған ойындарды, ұпайларды, нұсқаулықтарды және басқа да үлгерімді біржола жояды.</string>
+    <string name="clear_game_data_preferences_kept">Қолданба параметрлері, құпиялылық таңдаулары, жарнама келісімі және пікір параметрлері жойылмайды.</string>
+    <string name="clear_game_data_action">Ойын деректерін жою</string>
+    <string name="clearing_game_data">Ойын деректері жойылуда…</string>
+    <string name="game_data_cleared">Барлық ойын деректері жойылды.</string>
+    <string name="game_data_clear_failed">Кейбір ойын деректерін жою мүмкін болмады. Қатысты ойындар үшін қайталап көруге болады:</string>
+    <string name="retry">Қайталау</string>
+    <string name="done">Дайын</string>
+    <string name="cancel">Бас тарту</string>
 </resources>

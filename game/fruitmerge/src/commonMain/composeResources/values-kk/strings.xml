@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Жемістерді тастаңыз, біріктіріңіз және көңілді жеміс мұнарасын құрыңыз.</string>
+    <string name="score">Ұпай</string>
+    <string name="best_score">Үздік</string>
+    <string name="next_fruit">Келесі</string>
+    <string name="clear_with_count">Тазалау · %1$d</string>
+    <string name="clear_with_ad">Тазалау · Жарнама</string>
+    <string name="shake_with_count">Сілкілеу · %1$d</string>
+    <string name="shake_with_ad">Сілкілеу · Жарнама</string>
+    <string name="cancel">Бас тарту</string>
+    <string name="new_game">Жаңа ойын</string>
+    <string name="game_over">Жеміс мұнарасы толды</string>
+    <string name="game_over_supporting">Жеміс қауіп сызығынан жоғары қалды. Қайта бастап, үлкенірек қарбыз жасаңыз.</string>
+    <string name="largest_fruit">Ең үлкен жеміс</string>
+    <string name="tutorial_skip">Өткізіп жіберу</string>
+    <string name="tutorial_tap">Жемісті тастау үшін кез келген жерді түртіңіз</string>
+    <string name="tutorial_drag">Жанға қарай жылжытып, тастайтын орынды таңдау үшін жіберіңіз</string>
+    <string name="loading_game">Fruit Merge жүктелуде</string>
+    <string name="drop_hint">Жоғарғы жағымен жылжытып, тастау үшін жіберіңіз</string>
+    <string name="clear_hint">Жою үшін бір жемісті таңдаңыз</string>
+    <string name="danger_line">Қауіп сызығы</string>
+    <string name="board_description">Fruit Merge тақтасы. Ұпай %1$d. Контейнерде %2$d жеміс бар.</string>
+    <string name="fruit_description">%1$s жемісі</string>
+    <string name="ad_disclosure">Жарнама</string>
+    <string name="blueberry">Қаражидек</string>
+    <string name="raspberry">Таңқурай</string>
+    <string name="strawberry">Құлпынай</string>
+    <string name="lime">Лайм</string>
+    <string name="mandarin">Мандарин</string>
+    <string name="apple">Алма</string>
+    <string name="pear">Алмұрт</string>
+    <string name="peach">Шабдалы</string>
+    <string name="pineapple">Ананас</string>
+    <string name="watermelon">Қарбыз</string>
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">ফল ফেলুন, একত্র করুন এবং ফলের একটি সুন্দর টাওয়ার তৈরি করুন।</string>
+    <string name="score">স্কোর</string>
+    <string name="best_score">সেরা</string>
+    <string name="next_fruit">পরবর্তী</string>
+    <string name="clear_with_count">পরিষ্কার · %1$d</string>
+    <string name="clear_with_ad">পরিষ্কার · বিজ্ঞাপন</string>
+    <string name="shake_with_count">নাড়ান · %1$d</string>
+    <string name="shake_with_ad">নাড়ান · বিজ্ঞাপন</string>
+    <string name="cancel">বাতিল</string>
+    <string name="new_game">নতুন গেম</string>
+    <string name="game_over">ফলের টাওয়ার পূর্ণ</string>
+    <string name="game_over_supporting">ফলটি বিপদের লাইনের উপরে রয়ে গেছে। আবার শুরু করুন এবং আরও বড় তরমুজ তৈরি করুন।</string>
+    <string name="largest_fruit">সবচেয়ে বড় ফল</string>
+    <string name="tutorial_skip">এড়িয়ে যান</string>
+    <string name="tutorial_tap">ফল ফেলতে যেকোনো জায়গায় ট্যাপ করুন</string>
+    <string name="tutorial_drag">পাশে টেনে নিয়ে ফেলুন এবং ড্রপ স্পট বেছে নিতে ছেড়ে দিন</string>
+    <string name="loading_game">Fruit Merge লোড হচ্ছে</string>
+    <string name="drop_hint">শীর্ষ বরাবর সরান, তারপর ড্রপ করতে ছেড়ে দিন</string>
+    <string name="clear_hint">মুছে ফেলার জন্য একটি ফল বেছে নিন</string>
+    <string name="danger_line">বিপদের লাইন</string>
+    <string name="board_description">Fruit Merge বোর্ড। স্কোর %1$d। পাত্রে %2$dটি ফল আছে।</string>
+    <string name="fruit_description">%1$s ফল</string>
+    <string name="ad_disclosure">বিজ্ঞাপন</string>
+    <string name="blueberry">ব্লুবেরি</string>
+    <string name="raspberry">রাস্পবেরি</string>
+    <string name="strawberry">স্ট্রবেরি</string>
+    <string name="lime">লেবু</string>
+    <string name="mandarin">ট্যানজারিন</string>
+    <string name="apple">আপেল</string>
+    <string name="pear">নাশপাতি</string>
+    <string name="peach">পীচ</string>
+    <string name="pineapple">আনারস</string>
+    <string name="watermelon">তরমুজ</string>
+</resources>

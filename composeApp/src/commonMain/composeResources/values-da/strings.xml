@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Annoncer hjælper os med at forbedre spillet og holde alle funktioner gratis. Hvis du slår dem fra, forbliver genoplivninger gratis — og du kan stadig støtte Logica med en GitHub-stjerne eller en donation.</string>
     <string name="keep_ads">Behold annoncer</string>
     <string name="disable_ads_anyway">Deaktivér alligevel</string>
+    <string name="cd_settings">Indstillinger</string>
     <string name="cd_back">Tilbage</string>
+    <string name="miniapp_unavailable">%1$s er utilgængelig</string>
+    <string name="back_to_catalog">Tilbage til katalog</string>
     <string name="exit">Afslut</string>
     <string name="review_prompt_title">Nyder du Logica?</string>
     <string name="review_prompt_body">Din anmeldelse hjælper flere puslespilsspillere med at finde spillet.</string>
     <string name="review_prompt_leave_feedback">Giv feedback</string>
     <string name="review_prompt_dont_show">Vis ikke igen</string>
+    <string name="delete_game_data">Slet alle spildata</string>
+    <string name="delete_game_data_subtitle">Fjern fremskridt og resultater fra alle spil</string>
+    <string name="clear_game_data_title">Slet spildata?</string>
+    <string name="clear_game_data_body">Dette sletter permanent gemte spil, scoringer, vejledninger og andre fremskridt fra alle installerede spil.</string>
+    <string name="clear_game_data_preferences_kept">Dine appindstillinger, privatlivsvalg, reklamesamtykke og anmeldelsesindstillinger slettes ikke.</string>
+    <string name="clear_game_data_action">Slet spildata</string>
+    <string name="clearing_game_data">Sletter spildata…</string>
+    <string name="game_data_cleared">Alle spildata blev slettet.</string>
+    <string name="game_data_clear_failed">Nogle spildata kunne ikke slettes. Du kan prøve igen for de berørte spil:</string>
+    <string name="retry">Prøv igen</string>
+    <string name="done">Færdig</string>
+    <string name="cancel">Annuller</string>
 </resources>

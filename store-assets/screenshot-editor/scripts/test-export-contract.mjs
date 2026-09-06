@@ -1,0 +1,91 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import {
+  buildExportUnits,
+  parseArguments,
+  shouldIgnoreConsoleError,
+  validateRequest,
+} from "./export-contract.mjs";
+
+test("one complete locale produces fifty store images", () => {
+  const units = buildExportUnits("ka");
+  assert.equal(units.length, 50);
+  assert.equal(units.filter((unit) => unit.device === "iphone").length, 28);
+  assert.equal(units.filter((unit) => unit.device === "ipad").length, 14);
+  assert.equal(units.filter((unit) => unit.device === "android").length, 7);
+  assert.equal(units.filter((unit) => unit.device === "feature-graphic").length, 1);
+  assert.equal(units[0].relativePath, "ka/iphone/1320x2868/01-hero.png");
+});
+
+test("browser favicon noise is ignored but render failures are retained", () => {
+  assert.equal(shouldIgnoreConsoleError("Failed to load resource", "/favicon.ico"), true);
+  assert.equal(shouldIgnoreConsoleError("Failed to load resource", "/screenshots/missing.png"), false);
+});
+
+test("unknown locale is rejected", () => {
+  assert.throws(
+    () => validateRequest({ locale: "xx", devices: ["iphone"] }),
+    /Unsupported locale: xx/,
+  );
+});
+
+test("unknown device is rejected", () => {
+  assert.throws(
+    () => validateRequest({ locale: "en", devices: ["watch"] }),
+    /Unsupported device: watch/,
+  );
+});
+
+test("command arguments have deterministic defaults", () => {
+  assert.deepEqual(parseArguments(["--locale", "ja", "--output", "/tmp/out"]), {
+    locale: "ja",
+    output: "/tmp/out",
+    baseUrl: "http://127.0.0.1:3100",
+    devices: ["iphone", "ipad", "android", "feature-graphic"],
+  });
+});
+
+test("manual CI workflow publishes complete all-locale store drafts", () => {
+  const workflowPath = path.resolve(process.cwd(), "../../.github/workflows/store-screenshots.yml");
+  const workflow = fs.readFileSync(workflowPath, "utf8");
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.match(workflow, /locale:/);
+  assert.match(workflow, /max-parallel: 4/);
+  assert.match(workflow, /retention-days: 14/);
+  assert.match(workflow, /iphone\/1320x2868/);
+  assert.match(workflow, /ipad\/2064x2752/);
+  assert.match(workflow, /android\/1080x1920/);
+  assert.match(workflow, /feature-graphic\/1024x500/);
+  assert.doesNotMatch(workflow, /path:\s*store-assets\/ci-exports\/\$\{\{ matrix\.locale \}\}\s*$/m);
+  assert.match(workflow, /publish-play-draft:/);
+  assert.match(workflow, /needs: \[prepare, render\]/);
+  assert.match(workflow, /inputs\.locale == 'all'/);
+  assert.match(workflow, /needs\.render\.result == 'success'/);
+  assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
+  assert.match(workflow, /actions\/download-artifact@v5/);
+  assert.match(workflow, /pattern: store-screenshots-\*/);
+  assert.match(workflow, /merge-multiple: false/);
+  assert.match(workflow, /play_listing\.py stage/);
+  assert.match(workflow, /bundle exec fastlane android publish_store_listing_draft/);
+  assert.match(workflow, /PLAY_STORE_JSON_KEY: \$\{\{ secrets\.PLAY_STORE_JSON_KEY \}\}/);
+  assert.match(workflow, /Locales: 34/);
+  assert.match(workflow, /Phone screenshots: 238/);
+  assert.match(workflow, /Feature graphics: 34/);
+  assert.match(workflow, /publish-app-store-draft:/);
+  assert.match(workflow, /runs-on: macos-26/);
+  assert.match(workflow, /group: app-store-listing-draft/);
+  assert.match(workflow, /app_store_listing\.py stage/);
+  assert.match(workflow, /--metadata-root fastlane\/metadata\/ios/);
+  assert.match(workflow, /--screenshots-root fastlane\/screenshots/);
+  assert.match(workflow, /bundle exec fastlane ios publish_app_store_listing_draft/);
+  assert.match(workflow, /APP_STORE_CONNECT_KEY_ID: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_ID \}\}/);
+  assert.match(workflow, /APP_STORE_CONNECT_ISSUER_ID: \$\{\{ secrets\.APP_STORE_CONNECT_ISSUER_ID \}\}/);
+  assert.match(workflow, /APP_STORE_CONNECT_KEY_CONTENT: \$\{\{ secrets\.APP_STORE_CONNECT_KEY_CONTENT \}\}/);
+  assert.match(workflow, /App Store locales: 28/);
+  assert.match(workflow, /iPhone screenshots: 196/);
+  assert.match(workflow, /iPad screenshots: 196/);
+  assert.match(workflow, /Total Apple screenshots: 392/);
+  assert.doesNotMatch(workflow, /fastlane android release|upload_to_app_store/);
+});

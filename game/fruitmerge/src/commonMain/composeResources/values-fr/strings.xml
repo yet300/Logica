@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Lâchez, fusionnez et faites grandir une joyeuse tour de fruits.</string>
+    <string name="score">Score</string>
+    <string name="best_score">Meilleur</string>
+    <string name="next_fruit">Suivant</string>
+    <string name="clear_with_count">Effacer · %1$d</string>
+    <string name="clear_with_ad">Effacer · Pub</string>
+    <string name="shake_with_count">Secouer · %1$d</string>
+    <string name="shake_with_ad">Secouer · Pub</string>
+    <string name="cancel">Annuler</string>
+    <string name="new_game">Nouvelle partie</string>
+    <string name="game_over">Tour de fruits pleine</string>
+    <string name="game_over_supporting">Les fruits ont dépassé la ligne de danger. Recommencez et créez une plus grosse pastèque.</string>
+    <string name="largest_fruit">Plus gros fruit</string>
+    <string name="tutorial_skip">Passer</string>
+    <string name="tutorial_tap">Touchez n'importe où pour lâcher le fruit</string>
+    <string name="tutorial_drag">Glissez latéralement puis relâchez pour choisir l'emplacement</string>
+    <string name="loading_game">Chargement de Fruit Merge</string>
+    <string name="drop_hint">Déplacez en haut puis relâchez pour lâcher</string>
+    <string name="clear_hint">Choisissez un fruit à retirer</string>
+    <string name="danger_line">Ligne de danger</string>
+    <string name="board_description">Plateau Fruit Merge. Score %1$d. %2$d fruits dans le récipient.</string>
+    <string name="fruit_description">Fruit %1$s</string>
+    <string name="ad_disclosure">Publicité</string>
+    <string name="blueberry">Myrtille</string>
+    <string name="raspberry">Framboise</string>
+    <string name="strawberry">Fraise</string>
+    <string name="lime">Citron vert</string>
+    <string name="mandarin">Mandarine</string>
+    <string name="apple">Pomme</string>
+    <string name="pear">Poire</string>
+    <string name="peach">Pêche</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Pastèque</string>
+</resources>

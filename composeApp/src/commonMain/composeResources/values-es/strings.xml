@@ -31,10 +31,25 @@
     <string name="disable_ads_body">La publicidad nos ayuda a mejorar el juego y a mantener todas las funciones gratis. Si la desactivas, las reanimaciones seguirán siendo gratuitas, y aún podrás apoyar Logica con una estrella en GitHub o una donación.</string>
     <string name="keep_ads">Mantener la publicidad</string>
     <string name="disable_ads_anyway">Desactivar de todos modos</string>
+    <string name="cd_settings">Ajustes</string>
     <string name="cd_back">Atrás</string>
+    <string name="miniapp_unavailable">%1$s no está disponible</string>
+    <string name="back_to_catalog">Volver al catálogo</string>
     <string name="exit">Salir</string>
     <string name="review_prompt_title">¿Disfrutando Logica?</string>
     <string name="review_prompt_body">Tu reseña ayuda a más jugadores de puzzles a encontrar el juego.</string>
     <string name="review_prompt_leave_feedback">Dejar comentario</string>
     <string name="review_prompt_dont_show">No mostrar de nuevo</string>
+    <string name="delete_game_data">Eliminar todos los datos de juego</string>
+    <string name="delete_game_data_subtitle">Elimina el progreso y los resultados de todos los juegos</string>
+    <string name="clear_game_data_title">¿Eliminar datos de juego?</string>
+    <string name="clear_game_data_body">Esto eliminará permanentemente las partidas guardadas, puntuaciones, tutoriales y otros progresos de todos los juegos instalados.</string>
+    <string name="clear_game_data_preferences_kept">Tus preferencias de la app, opciones de privacidad, consentimiento de anuncios y ajustes de reseñas no se eliminarán.</string>
+    <string name="clear_game_data_action">Eliminar datos de juego</string>
+    <string name="clearing_game_data">Eliminando datos de juego…</string>
+    <string name="game_data_cleared">Se eliminaron todos los datos de juego.</string>
+    <string name="game_data_clear_failed">No se pudieron eliminar algunos datos de juego. Puedes reintentarlo con los juegos afectados:</string>
+    <string name="retry">Reintentar</string>
+    <string name="done">Listo</string>
+    <string name="cancel">Cancelar</string>
 </resources>

@@ -31,10 +31,25 @@
     <string name="disable_ads_body">A publicidade ajuda-nos a melhorar o jogo e a manter todas as funcionalidades gratuitas. Se a desativar, as ressurreições continuarão gratuitas — e ainda poderá apoiar o Logica com uma estrela no GitHub ou uma doação.</string>
     <string name="keep_ads">Manter a publicidade</string>
     <string name="disable_ads_anyway">Desativar mesmo assim</string>
+    <string name="cd_settings">Configurações</string>
     <string name="cd_back">Voltar</string>
+    <string name="miniapp_unavailable">%1$s não está disponível</string>
+    <string name="back_to_catalog">Voltar ao catálogo</string>
     <string name="exit">Sair</string>
     <string name="review_prompt_title">Gostando de Logica?</string>
     <string name="review_prompt_body">Sua avaliação ajuda mais jogadores de quebra-cabeças a encontrar o jogo.</string>
     <string name="review_prompt_leave_feedback">Deixar feedback</string>
     <string name="review_prompt_dont_show">Não mostrar novamente</string>
+    <string name="delete_game_data">Excluir todos os dados do jogo</string>
+    <string name="delete_game_data_subtitle">Remova o progresso e os resultados de cada jogo</string>
+    <string name="clear_game_data_title">Excluir dados do jogo?</string>
+    <string name="clear_game_data_body">Isso excluirá permanentemente jogos salvos, pontuações, tutoriais e outros progressos de todos os jogos instalados.</string>
+    <string name="clear_game_data_preferences_kept">Suas preferências no app, opções de privacidade, consentimento de anúncios e configurações de avaliação não serão excluídos.</string>
+    <string name="clear_game_data_action">Excluir dados do jogo</string>
+    <string name="clearing_game_data">Excluindo dados do jogo…</string>
+    <string name="game_data_cleared">Todos os dados do jogo foram excluídos.</string>
+    <string name="game_data_clear_failed">Não foi possível excluir alguns dados do jogo. Você pode tentar novamente nos jogos afetados:</string>
+    <string name="retry">Repetir</string>
+    <string name="done">Concluído</string>
+    <string name="cancel">Cancelar</string>
 </resources>

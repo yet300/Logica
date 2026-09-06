@@ -1,0 +1,1 @@
+pussel,block,siffror,slå ihop,logik,strategi,offline,avkoppling

@@ -2,12 +2,13 @@
 
 <img src="picture/app_icon.png" width="180" alt="App icon" />
 
-A Kotlin Multiplatform MiniApp catalog for Android and iOS. The production
-bundle currently includes Block Blast and 2048; additional games and apps are
+A Kotlin Multiplatform super-app for Android and iOS: one lightweight host,
+one catalog, and short local-first game sessions. The production bundle
+currently includes Block Blast, 2048, and Fruit Merge; additional games and apps are
 independent Gradle modules reviewed and allowlisted at build time.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue.svg)
-![Compose](https://img.shields.io/badge/Compose-1.11.1-green.svg)
+![Compose](https://img.shields.io/badge/Compose-1.12.0-green.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-Android%20%7C%20iOS-orange.svg)
 
 ## Download
@@ -22,41 +23,56 @@ independent Gradle modules reviewed and allowlisted at build time.
 
 ## Screenshots
 
+### iPhone
+
 <p>
-  <img src="picture/screen1_en.png" width="200" />
-  <img src="picture/screen2_en.png" width="200" />
-  <img src="picture/screen3_en.png" width="200" />
-  <img src="picture/screen4_en.png" width="200" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/01-hero.png" width="150" alt="Logica — თავსატეხების მზარდი სამყარო" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/02-device-bottom.png" width="150" alt="აირჩიე შემდეგი გამოწვევა Logica-ში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/03-device-top.png" width="150" alt="Block Blast-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/04-hero.png" width="150" alt="2048-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/05-device-bottom.png" width="150" alt="Fruit Merge-ის თამაში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/06-three-devices.png" width="150" alt="Logica-ს თამაშების კოლექცია" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/07-hero.png" width="150" alt="შემდეგი თავსატეხი გელოდება" />
 </p>
+
+The README shows the Georgian phone gallery. See
+[Store and release operations](fastlane/README.md) for screenshot generation,
+store-listing drafts, signing, artifacts, and release CI.
 
 ## Features
 
-- 🧩 Classic block-puzzle gameplay with smooth animations
-- 🎨 Polished Material 3 UI tuned for the Block Blast feel
+- 🧩 A growing catalog of puzzle games: Block Blast, 2048, and Fruit Merge
+- 🎨 Polished, adaptive Material 3 UI across the host and its games
 - 📱 Single codebase for Android & iOS via Compose Multiplatform
 - 💾 Persistent settings and best-score tracking
 - 🎉 Confetti effects on big clears
-- 🎵 Rotating background music across multiple tracks
+- 🎵 Bundled and procedural game audio
 - 📴 Fully offline — no account required
-- ⭐ In-app review prompts on Android
+- ⭐ Shared in-app review policy
 - 📊 Firebase Analytics & Crashlytics
 - 🧱 Compile-time MiniApp plugin framework with a uniform catalog and host frame
 - 🔌 Contributor games discovered locally and shipped only through reviewable allowlisting
 
+The catalog is intentionally compact: cards show the game icon, title and Play
+action. Full descriptions remain in each `MiniAppManifest` for metadata,
+accessibility and future detail surfaces, but are not repeated in the launcher.
+
 ## Tech Stack
 
 - **Kotlin Multiplatform** 2.4.10 — shared business logic
-- **Compose Multiplatform** 1.11.1 — declarative UI for Android & iOS
-- **Material 3** — design system
-- **Decompose** + **Essenty** — navigation & lifecycle
-- **MVIKotlin** — predictable state management (MVI)
-- **Metro DI** — compile-time dependency injection
-- **Kotlinx Coroutines / Serialization / Datetime**
-- **Multiplatform Settings** — cross-platform key/value storage
-- **Firebase** (GitLive SDK) — Analytics, Crashlytics
-- **Google Mobile Ads** + **User Messaging Platform** (Android)
-- **ConfettiKit** — celebratory effects
+- **Compose Multiplatform** 1.12.0 — declarative Android and iOS UI
+- **Material 3** 1.10.0-alpha05 + **Material 3 Adaptive** 1.3.0-beta02 — design system and responsive layouts
+- **Decompose** 3.5.0 + **Essenty** 2.5.0 — navigation and lifecycle
+- **MVIKotlin** 4.4.0 — predictable state management
+- **Metro DI** 1.4.2 — compile-time dependency injection
+- **Kotlinx Coroutines** 1.11.0, **Serialization JSON** 1.11.0, and **Datetime** 0.8.0
+- **Multiplatform Settings** 1.3.0 — cross-platform persistence
+- **Firebase GitLive** 3.0.0-alpha02 — Analytics and Crashlytics
+- **Google Mobile Ads** 25.4.0 + **User Messaging Platform** 4.0.0
+- **Haze** 1.7.3, **ConfettiKit** 0.9.0, and **AboutLibraries** 15.2.0
+- **Turbine** 1.2.1, **Robolectric** 4.16.1, and **Compose UI testing**
 - **Baseline Profiles** — Android startup performance
+- **Store screenshot editor** — Next.js 15.0.3, Playwright 1.62.1, and `html-to-image`, built from [ParthJadhav/app-store-screenshots](https://github.com/ParthJadhav/app-store-screenshots)
 
 ## Project Structure
 
@@ -77,7 +93,8 @@ BlockBlast/
 │   └── settings/    # Host settings
 ├── game/
 │   ├── blockblast/       # Allowlisted Block Blast MiniApp
-│   └── twentyfortyeight/ # Allowlisted 2048 MiniApp
+│   ├── twentyfortyeight/ # Allowlisted 2048 MiniApp
+│   └── fruitmerge/       # Allowlisted Fruit Merge MiniApp
 ├── miniapp/
 │   ├── api/         # Stable Compose-free contracts
 │   ├── compose/     # Plugin, manifest, session and frame contracts
@@ -89,7 +106,7 @@ BlockBlast/
 │   ├── testkit/     # Contributor contract fixtures
 │   └── samples/     # Discovered but unshipped examples
 ├── build-logic/     # MiniApp discovery, scaffold and convention plugins
-└── fastlane/        # Store metadata & changelogs
+└── fastlane/        # Store metadata, screenshots, release automation and operations docs
 ```
 
 ## Getting Started
@@ -166,6 +183,24 @@ Settings/Review, visibility and stale-callback protection. The common frame
 owns catalog cards, toolbar controls and ad containers; Replay is intentionally
 not part of the initial plugin API.
 
+### Asset and icon timing
+
+Do not spend the beginning of a MiniApp implementation on its product or game
+icon. Build and review rules, persistence, lifecycle, compact/wide UI,
+accessibility and CI first. Add the final icon only after that surface is
+stable. The approved workflow is to write an icon brief, generate/review an
+SVG with [QuiverAI](https://app.quiver.ai/), and convert the approved SVG with
+[Valkyrie](https://github.com/ComposeGears/Valkyrie) to Compose/Android vector
+resources. A Gemini Flash-class model may assist a bounded SVG-to-Android-XML
+conversion, but the result still requires human review, Valkyrie validation
+and provenance. Record the source, license, tool/version, brief, date and hash
+in the MiniApp provenance file. Experimental open SVG models are research
+inputs, not build or runtime dependencies; evaluate their license and
+reproducibility before adopting one.
+
+For a broader, evidence-based review of the super-app architecture and CI,
+use the [architecture audit agent prompt](docs/miniapp/super-app-architecture-audit-agent.md).
+
 Use the session-bound `MiniAppStorage` from `MiniAppSessionContext` for new
 persistence. Games supply only local snake-case names; the host owns physical
 namespacing, snapshot migrations, legacy aliases and the safe all-game-data
@@ -201,7 +236,18 @@ Contributions are welcome. MiniApps generated by the command above remain
 unshipped until their source, dependency boundary and allowlist change are
 reviewed.
 
-## Support Me
+<a id="support-me"></a>
+
+## Sponsor Logica
+
+Logica is looking for sponsors who want to help fund independent development.
+Direct financial support is welcome, as are AI API credits/tokens, CI capacity,
+test devices, localization, and design support. Sponsorship does not grant
+control over the production MiniApp allowlist or project direction.
+
+For sponsorship or in-kind support, contact
+[ryaeh7282@gmail.com](mailto:ryaeh7282@gmail.com).
+
 - **ton**: UQCi1XMdZP2fBfTK-O6rsAX3fXEm5iBpjO1D6FDekdUDQnaw
 - **btc**: bc1qv2m03vg23227yfnlu0c0jx2ps5yg8v8kvy748s
 - **eth**: 0xdF196759E996Fe684c33416282F30d6B9A0b325e

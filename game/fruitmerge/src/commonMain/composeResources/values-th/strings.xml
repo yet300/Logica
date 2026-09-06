@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">หยอด ผสม และสร้างหอคอยผลไม้แสนสดใส</string>
+    <string name="score">คะแนน</string>
+    <string name="best_score">ดีที่สุด</string>
+    <string name="next_fruit">ถัดไป</string>
+    <string name="clear_with_count">ล้าง · %1$d</string>
+    <string name="clear_with_ad">ล้าง · โฆษณา</string>
+    <string name="shake_with_count">เขย่า · %1$d</string>
+    <string name="shake_with_ad">เขย่า · โฆษณา</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="new_game">เกมใหม่</string>
+    <string name="game_over">หอคอยผลไม้เต็มแล้ว</string>
+    <string name="game_over_supporting">ผลไม้อยู่เหนือเส้นอันตราย เริ่มใหม่อีกครั้งและสร้างแตงโมที่ใหญ่ขึ้น</string>
+    <string name="largest_fruit">ผลไม้ที่ใหญ่ที่สุด</string>
+    <string name="tutorial_skip">ข้าม</string>
+    <string name="tutorial_tap">แตะที่ใดก็ได้เพื่อหยอดผลไม้</string>
+    <string name="tutorial_drag">ลากไปด้านข้างแล้วปล่อยเพื่อเลือกจุดหยอด</string>
+    <string name="loading_game">กำลังโหลด Fruit Merge</string>
+    <string name="drop_hint">เลื่อนไปตามด้านบนแล้วปล่อยเพื่อหยอด</string>
+    <string name="clear_hint">เลือกผลไม้หนึ่งชิ้นที่จะลบ</string>
+    <string name="danger_line">เส้นอันตราย</string>
+    <string name="board_description">กระดาน Fruit Merge คะแนน %1$d มีผลไม้ %2$d ชิ้นในภาชนะ</string>
+    <string name="fruit_description">ผลไม้ %1$s</string>
+    <string name="ad_disclosure">โฆษณา</string>
+    <string name="blueberry">บลูเบอร์รี</string>
+    <string name="raspberry">ราสเบอร์รี</string>
+    <string name="strawberry">สตรอว์เบอร์รี</string>
+    <string name="lime">มะนาว</string>
+    <string name="mandarin">ส้มแมนดาริน</string>
+    <string name="apple">แอปเปิ้ล</string>
+    <string name="pear">ลูกแพร์</string>
+    <string name="peach">ลูกพีช</string>
+    <string name="pineapple">สับปะรด</string>
+    <string name="watermelon">แตงโม</string>
+</resources>

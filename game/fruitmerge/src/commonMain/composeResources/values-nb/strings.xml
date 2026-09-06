@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Slipp, slå sammen og bygg et muntert frukttårn.</string>
+    <string name="score">Poeng</string>
+    <string name="best_score">Beste</string>
+    <string name="next_fruit">Neste</string>
+    <string name="clear_with_count">Fjern · %1$d</string>
+    <string name="clear_with_ad">Fjern · Reklame</string>
+    <string name="shake_with_count">Rist · %1$d</string>
+    <string name="shake_with_ad">Rist · Reklame</string>
+    <string name="cancel">Avbryt</string>
+    <string name="new_game">Nytt spill</string>
+    <string name="game_over">Frukttårnet er fullt</string>
+    <string name="game_over_supporting">Frukten ble liggende over farelinjen. Start på nytt og lag en større vannmelon.</string>
+    <string name="largest_fruit">Største frukt</string>
+    <string name="tutorial_skip">Hopp over</string>
+    <string name="tutorial_tap">Trykk hvor som helst for å slippe frukten</string>
+    <string name="tutorial_drag">Dra sidelengs og slipp for å velge slippested</string>
+    <string name="loading_game">Laster inn Fruit Merge</string>
+    <string name="drop_hint">Flytt langs toppen og slipp for å kaste</string>
+    <string name="clear_hint">Velg én frukt som skal fjernes</string>
+    <string name="danger_line">Farelinje</string>
+    <string name="board_description">Fruit Merge-brett. Poeng %1$d. %2$d frukter i beholderen.</string>
+    <string name="fruit_description">%1$s frukt</string>
+    <string name="ad_disclosure">Reklame</string>
+    <string name="blueberry">Blåbær</string>
+    <string name="raspberry">Bringebær</string>
+    <string name="strawberry">Jordbær</string>
+    <string name="lime">Lime</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Eple</string>
+    <string name="pear">Pære</string>
+    <string name="peach">Fersken</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Vannmelon</string>
+</resources>

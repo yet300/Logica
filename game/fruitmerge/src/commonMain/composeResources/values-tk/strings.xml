@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Miwe taşlaň, birleşdiriň we şadyýan miwe diňini ösdüriň.</string>
+    <string name="score">Utuk</string>
+    <string name="best_score">Iň gowy</string>
+    <string name="next_fruit">Indiki</string>
+    <string name="clear_with_count">Arassala · %1$d</string>
+    <string name="clear_with_ad">Arassala · Mahabat</string>
+    <string name="shake_with_count">Yrala · %1$d</string>
+    <string name="shake_with_ad">Yrala · Mahabat</string>
+    <string name="cancel">Ýatyr</string>
+    <string name="new_game">Täze oýun</string>
+    <string name="game_over">Miwe diňi doldy</string>
+    <string name="game_over_supporting">Miwe howp çyzygynyň ýokarsynda galdy. Täzeden başlaň we has uly garpyz dörediň.</string>
+    <string name="largest_fruit">Iň uly miwe</string>
+    <string name="tutorial_skip">Geçir</string>
+    <string name="tutorial_tap">Miwäni taşlamak üçin islän ýeriňize basyň</string>
+    <string name="tutorial_drag">Gapdala süýräň we taşlajak ýeriňizi saýlamak üçin goýberiň</string>
+    <string name="loading_game">Fruit Merge ýüklenýär</string>
+    <string name="drop_hint">Ýokaryk süýräň we taşlamak üçin goýberiň</string>
+    <string name="clear_hint">Aýyrmak üçin bir miwe saýlaň</string>
+    <string name="danger_line">Howp çyzygy</string>
+    <string name="board_description">Fruit Merge tagtasy. Utuk %1$d. Gapda %2$d miwe bar.</string>
+    <string name="fruit_description">%1$s miwesi</string>
+    <string name="ad_disclosure">Mahabat</string>
+    <string name="blueberry">Gökbäri</string>
+    <string name="raspberry">Ýertudana</string>
+    <string name="strawberry">Kertudana</string>
+    <string name="lime">Laým</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Alma</string>
+    <string name="pear">Armyt</string>
+    <string name="peach">Şetdaly</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Garpyz</string>
+</resources>

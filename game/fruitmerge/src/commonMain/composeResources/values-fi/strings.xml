@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Pudota, yhdistä ja kasvata iloinen hedelmätorni.</string>
+    <string name="score">Pisteet</string>
+    <string name="best_score">Paras</string>
+    <string name="next_fruit">Seuraava</string>
+    <string name="clear_with_count">Tyhjennä · %1$d</string>
+    <string name="clear_with_ad">Tyhjennä · Mainos</string>
+    <string name="shake_with_count">Ravista · %1$d</string>
+    <string name="shake_with_ad">Ravista · Mainos</string>
+    <string name="cancel">Peruuta</string>
+    <string name="new_game">Uusi peli</string>
+    <string name="game_over">Hedelmätorni on täynnä</string>
+    <string name="game_over_supporting">Hedelmät jäivät vaaraviivan yläpuolelle. Aloita alusta ja kasvata suurempi vesimeloni.</string>
+    <string name="largest_fruit">Suurin hedelmä</string>
+    <string name="tutorial_skip">Ohita</string>
+    <string name="tutorial_tap">Napauta mihin tahansa pudottaaksesi hedelmän</string>
+    <string name="tutorial_drag">Vedä sivusuunnassa ja vapauta valitaksesi pudotuspaikan</string>
+    <string name="loading_game">Ladataan Fruit Mergeä</string>
+    <string name="drop_hint">Siirrä yläreunassa ja pudota vapauttamalla</string>
+    <string name="clear_hint">Valitse yksi poistettava hedelmä</string>
+    <string name="danger_line">Vaaraviiva</string>
+    <string name="board_description">Fruit Merge -pelilauta. Pisteet %1$d. %2$d hedelmää astiassa.</string>
+    <string name="fruit_description">%1$s-hedelmä</string>
+    <string name="ad_disclosure">Mainos</string>
+    <string name="blueberry">Mustikka</string>
+    <string name="raspberry">Vadelma</string>
+    <string name="strawberry">Mansikka</string>
+    <string name="lime">Limetti</string>
+    <string name="mandarin">Mandariini</string>
+    <string name="apple">Omena</string>
+    <string name="pear">Päärynä</string>
+    <string name="peach">Persikka</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Vesimeloni</string>
+</resources>

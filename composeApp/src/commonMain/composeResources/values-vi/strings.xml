@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Quảng cáo giúp chúng tôi cải thiện trò chơi và giữ mọi tính năng miễn phí. Nếu tắt quảng cáo, lượt hồi sinh vẫn miễn phí — và bạn vẫn có thể ủng hộ Logica bằng một sao trên GitHub hoặc khoản quyên góp.</string>
     <string name="keep_ads">Giữ quảng cáo</string>
     <string name="disable_ads_anyway">Vẫn tắt</string>
+    <string name="cd_settings">Cài đặt</string>
     <string name="cd_back">Quay lại</string>
+    <string name="miniapp_unavailable">%1$s hiện không khả dụng</string>
+    <string name="back_to_catalog">Quay lại danh mục</string>
     <string name="exit">Thoát</string>
     <string name="review_prompt_title">Bạn thích Logica?</string>
     <string name="review_prompt_body">Đánh giá của bạn giúp nhiều người chơi giải đố tìm thấy trò chơi này.</string>
     <string name="review_prompt_leave_feedback">Để lại phản hồi</string>
     <string name="review_prompt_dont_show">Không hiển thị lại</string>
+    <string name="delete_game_data">Xóa toàn bộ dữ liệu trò chơi</string>
+    <string name="delete_game_data_subtitle">Xóa tiến trình và kết quả khỏi mọi trò chơi</string>
+    <string name="clear_game_data_title">Xóa dữ liệu trò chơi?</string>
+    <string name="clear_game_data_body">Thao tác này sẽ xóa vĩnh viễn các trò chơi đã lưu, điểm số, hướng dẫn và tiến trình khác khỏi mọi trò chơi đã cài đặt.</string>
+    <string name="clear_game_data_preferences_kept">Tùy chọn ứng dụng, cài đặt quyền riêng tư, sự đồng ý quảng cáo và cài đặt đánh giá sẽ không bị xóa.</string>
+    <string name="clear_game_data_action">Xóa dữ liệu trò chơi</string>
+    <string name="clearing_game_data">Đang xóa dữ liệu trò chơi…</string>
+    <string name="game_data_cleared">Toàn bộ dữ liệu trò chơi đã được xóa.</string>
+    <string name="game_data_clear_failed">Không thể xóa một số dữ liệu trò chơi. Bạn có thể thử lại cho các trò chơi bị ảnh hưởng:</string>
+    <string name="retry">Thử lại</string>
+    <string name="done">Xong</string>
+    <string name="cancel">Hủy</string>
 </resources>

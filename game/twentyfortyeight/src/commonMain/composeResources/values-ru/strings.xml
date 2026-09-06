@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Перемещайте одинаковые плитки и формируйте игровое поле в направлении 2048.</string>
+    <string name="score">Счет</string>
+    <string name="best">Лучший</string>
+    <string name="new_best">новое лучшее</string>
+    <string name="undo">Отменить</string>
+    <string name="restart">Перезапуск</string>
+    <string name="continue_game">Продолжать</string>
+    <string name="new_game">Новая игра</string>
+    <string name="victory">Победа</string>
+    <string name="game_over">Игра закончена</string>
+    <string name="cancel">Отмена</string>
+    <string name="loading_game">Загрузка игры</string>
+    <string name="games_won">Выиграно игр</string>
+    <string name="successful_moves">Успешные ходы</string>
+    <string name="total_merges">Всего слияний</string>
+    <string name="highest_tile">Самая высокая плитка</string>
+    <string name="restart_confirmation_title">Перезапустить игру?</string>
+    <string name="restart_confirmation_body">Ваш результат составляет %1$sпосле %2$s. Перезапуск начинает новую игру.</string>
+    <string name="progress_not_saved">Не удалось сохранить прогресс</string>
+    <string name="new_game_not_saved">Не удалось сохранить новую игру.</string>
+    <string name="score_description">Оценка, %1$s</string>
+    <string name="best_description">Лучший, %1$s</string>
+    <string name="best_new_description">Лучший, новый лучший, %1$s</string>
+    <string name="undo_description">Отменить</string>
+    <string name="restart_description">Перезапуск</string>
+    <string name="crown_description">Лучший результат</string>
+    <string name="announcement_move">Оценка увеличена на %1$s.</string>
+    <string name="announcement_move_merge">Оценка увеличена на %1$s. Крупнейшее слияние %2$s.</string>
+    <string name="announcement_new_best">Новый лучший результат %1$s.</string>
+    <string name="announcement_victory">Достигнуто 2048.</string>
+    <string name="announcement_game_over">Игра закончена.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d игра</item>
+        <item quantity="other">%1$d игр</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d переезд</item>
+        <item quantity="other">%1$d ходов</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d объединение</item>
+        <item quantity="other">%1$d слияний</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Отменить использование</item>
+        <item quantity="other">%1$d Отменить использование</item>
+    </plurals>
+    <string name="board_empty_cell">пустой</string>
+    <string name="board_row_summary">Строка %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Доска. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Вверх</string>
+    <string name="move_down">Двигаться вниз</string>
+    <string name="move_left">Двигаться влево</string>
+    <string name="move_right">Двигайтесь вправо</string>
+</resources>

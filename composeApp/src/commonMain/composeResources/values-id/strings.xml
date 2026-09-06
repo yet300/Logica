@@ -31,10 +31,25 @@
     <string name="disable_ads_body">Iklan membantu kami meningkatkan game dan menjaga semua fitur tetap gratis. Jika dinonaktifkan, hidup kembali akan tetap gratis — dan Anda masih dapat mendukung Logica dengan bintang GitHub atau donasi.</string>
     <string name="keep_ads">Pertahankan iklan</string>
     <string name="disable_ads_anyway">Tetap nonaktifkan</string>
+    <string name="cd_settings">Pengaturan</string>
     <string name="cd_back">Kembali</string>
+    <string name="miniapp_unavailable">%1$s tidak tersedia</string>
+    <string name="back_to_catalog">Kembali ke katalog</string>
     <string name="exit">Keluar</string>
     <string name="review_prompt_title">Menikmati Logica?</string>
     <string name="review_prompt_body">Ulasan Anda membantu lebih banyak pemain teka-teki menemukan permainan ini.</string>
     <string name="review_prompt_leave_feedback">Berikan masukan</string>
     <string name="review_prompt_dont_show">Jangan tampilkan lagi</string>
+    <string name="delete_game_data">Hapus semua data game</string>
+    <string name="delete_game_data_subtitle">Hapus kemajuan dan hasil dari setiap game</string>
+    <string name="clear_game_data_title">Hapus data game?</string>
+    <string name="clear_game_data_body">Ini akan menghapus secara permanen game yang disimpan, skor, tutorial, dan kemajuan lainnya dari setiap game yang terpasang.</string>
+    <string name="clear_game_data_preferences_kept">Preferensi aplikasi, pilihan privasi, izin iklan, dan pengaturan ulasan Anda tidak akan dihapus.</string>
+    <string name="clear_game_data_action">Hapus data game</string>
+    <string name="clearing_game_data">Menghapus data game…</string>
+    <string name="game_data_cleared">Semua data game telah dihapus.</string>
+    <string name="game_data_clear_failed">Beberapa data game tidak dapat dihapus. Anda dapat mencoba lagi untuk game yang terpengaruh:</string>
+    <string name="retry">Coba lagi</string>
+    <string name="done">Selesai</string>
+    <string name="cancel">Batal</string>
 </resources>

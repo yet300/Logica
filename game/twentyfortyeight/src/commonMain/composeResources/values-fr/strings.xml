@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Faites glisser les tuiles assorties et façonnez le plateau vers 2048.</string>
+    <string name="score">Score</string>
+    <string name="best">Meilleur</string>
+    <string name="new_best">nouveau meilleur</string>
+    <string name="undo">Défaire</string>
+    <string name="restart">Redémarrage</string>
+    <string name="continue_game">Continuer</string>
+    <string name="new_game">Nouveau jeu</string>
+    <string name="victory">Victoire</string>
+    <string name="game_over">Jeu terminé</string>
+    <string name="cancel">Annuler</string>
+    <string name="loading_game">Chargement du jeu</string>
+    <string name="games_won">Jeux gagnés</string>
+    <string name="successful_moves">Des mouvements réussis</string>
+    <string name="total_merges">Fusions totales</string>
+    <string name="highest_tile">Tuile la plus haute</string>
+    <string name="restart_confirmation_title">Redémarrer le jeu ?</string>
+    <string name="restart_confirmation_body">Votre score est de %1$saprès %2$s. Le redémarrage commence une nouvelle partie.</string>
+    <string name="progress_not_saved">La progression n'a pas pu être enregistrée</string>
+    <string name="new_game_not_saved">Une nouvelle partie n'a pas pu être enregistrée</string>
+    <string name="score_description">Score, %1$s</string>
+    <string name="best_description">Meilleur, %1$s</string>
+    <string name="best_new_description">Meilleur, nouveau meilleur, %1$s</string>
+    <string name="undo_description">Défaire</string>
+    <string name="restart_description">Redémarrage</string>
+    <string name="crown_description">Meilleur score</string>
+    <string name="announcement_move">Le score a augmenté de %1$s.</string>
+    <string name="announcement_move_merge">Le score a augmenté de %1$s. La plus grande fusion %2$s.</string>
+    <string name="announcement_new_best">Nouveau meilleur score %1$s.</string>
+    <string name="announcement_victory">2048 atteint.</string>
+    <string name="announcement_game_over">Jeu terminé.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d jeu</item>
+        <item quantity="other">%1$d jeux</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="one">%1$d déplacement</item>
+        <item quantity="other">%1$d mouvements</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d fusion</item>
+        <item quantity="other">%1$d fusions</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="one">%1$d Annuler l'utilisation</item>
+        <item quantity="other">%1$d Annuler les utilisations</item>
+    </plurals>
+    <string name="board_empty_cell">vide</string>
+    <string name="board_row_summary">Ligne %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Conseil. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Monter</string>
+    <string name="move_down">Descendre</string>
+    <string name="move_left">Déplacer vers la gauche</string>
+    <string name="move_right">Déplacer à droite</string>
+</resources>

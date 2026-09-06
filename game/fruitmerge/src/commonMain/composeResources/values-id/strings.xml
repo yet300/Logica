@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Jatuhkan, gabungkan, dan bangun menara buah yang ceria.</string>
+    <string name="score">Skor</string>
+    <string name="best_score">Terbaik</string>
+    <string name="next_fruit">Berikutnya</string>
+    <string name="clear_with_count">Hapus · %1$d</string>
+    <string name="clear_with_ad">Hapus · Iklan</string>
+    <string name="shake_with_count">Goyang · %1$d</string>
+    <string name="shake_with_ad">Goyang · Iklan</string>
+    <string name="cancel">Batal</string>
+    <string name="new_game">Game baru</string>
+    <string name="game_over">Menara buah penuh</string>
+    <string name="game_over_supporting">Buah berada di atas garis bahaya. Mulai lagi dan ciptakan semangka yang lebih besar.</string>
+    <string name="largest_fruit">Buah terbesar</string>
+    <string name="tutorial_skip">Lewati</string>
+    <string name="tutorial_tap">Ketuk di mana saja untuk menjatuhkan buah</string>
+    <string name="tutorial_drag">Geser ke samping, lalu lepaskan untuk memilih lokasi jatuh</string>
+    <string name="loading_game">Memuat Fruit Merge</string>
+    <string name="drop_hint">Geser di bagian atas, lalu lepaskan untuk menjatuhkan</string>
+    <string name="clear_hint">Pilih satu buah untuk dihapus</string>
+    <string name="danger_line">Garis bahaya</string>
+    <string name="board_description">Papan Fruit Merge. Skor %1$d. %2$d buah di dalam wadah.</string>
+    <string name="fruit_description">Buah %1$s</string>
+    <string name="ad_disclosure">Iklan</string>
+    <string name="blueberry">Blueberry</string>
+    <string name="raspberry">Raspberry</string>
+    <string name="strawberry">Stroberi</string>
+    <string name="lime">Jeruk nipis</string>
+    <string name="mandarin">Mandarin</string>
+    <string name="apple">Apel</string>
+    <string name="pear">Pir</string>
+    <string name="peach">Persik</string>
+    <string name="pineapple">Nanas</string>
+    <string name="watermelon">Semangka</string>
+</resources>

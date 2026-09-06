@@ -1,0 +1,57 @@
+<resources>
+    <string name="miniapp_title">2048</string>
+    <string name="miniapp_description">Glisați plăcile potrivite și modelați placa spre 2048.</string>
+    <string name="score">Scor</string>
+    <string name="best">Cel mai bun</string>
+    <string name="new_best">cel mai bun nou</string>
+    <string name="undo">Anula</string>
+    <string name="restart">Repornire</string>
+    <string name="continue_game">Continua</string>
+    <string name="new_game">Joc nou</string>
+    <string name="victory">Victorie</string>
+    <string name="game_over">Joc încheiat</string>
+    <string name="cancel">Anula</string>
+    <string name="loading_game">Se încarcă jocul</string>
+    <string name="games_won">Jocurile câștigate</string>
+    <string name="successful_moves">Mișcări reușite</string>
+    <string name="total_merges">Total fuziuni</string>
+    <string name="highest_tile">Cea mai înaltă țiglă</string>
+    <string name="restart_confirmation_title">Reporniți jocul?</string>
+    <string name="restart_confirmation_body">Scorul tău este %1$sdupă %2$s. Repornirea începe un nou joc.</string>
+    <string name="progress_not_saved">Progresul nu a putut fi salvat</string>
+    <string name="new_game_not_saved">Un joc nou nu a putut fi salvat</string>
+    <string name="score_description">Scor, %1$s</string>
+    <string name="best_description">Cel mai bun, %1$s</string>
+    <string name="best_new_description">Cel mai bun, cel mai bun nou, %1$s</string>
+    <string name="undo_description">Anula</string>
+    <string name="restart_description">Repornire</string>
+    <string name="crown_description">Cel mai bun scor</string>
+    <string name="announcement_move">Scorul a crescut cu %1$s.</string>
+    <string name="announcement_move_merge">Scorul a crescut cu %1$s. Cea mai mare îmbinare %2$s.</string>
+    <string name="announcement_new_best">Cel mai bun scor nou %1$s.</string>
+    <string name="announcement_victory">2048 atins.</string>
+    <string name="announcement_game_over">Joc încheiat.</string>
+    <plurals name="games_count">
+        <item quantity="one">%1$d joc</item>
+        <item quantity="other">%1$d jocuri</item>
+    </plurals>
+    <plurals name="moves_count">
+        <item quantity="other">%1$d mișcări</item>
+        <item quantity="one">%1$d mutare</item>
+    </plurals>
+    <plurals name="merges_count">
+        <item quantity="one">%1$d îmbinare</item>
+        <item quantity="other">%1$d îmbinări</item>
+    </plurals>
+    <plurals name="undo_uses_count">
+        <item quantity="other">%1$d Anulați utilizări</item>
+        <item quantity="one">%1$d Anulați utilizarea</item>
+    </plurals>
+    <string name="board_empty_cell">gol</string>
+    <string name="board_row_summary">Rândul %1$d: %2$s, %3$s, %4$s, %5$s</string>
+    <string name="board_summary">Bord. %1$s; %2$s; %3$s; %4$s</string>
+    <string name="move_up">Mișcă-te în sus</string>
+    <string name="move_down">Deplasați-vă în jos</string>
+    <string name="move_left">Deplasați-vă la stânga</string>
+    <string name="move_right">Deplasați-vă la dreapta</string>
+</resources>

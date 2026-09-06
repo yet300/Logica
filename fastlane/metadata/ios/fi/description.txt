@@ -1,0 +1,20 @@
+Yksi sovellus. Kasvava maailma pulmapelejä.
+
+Logica kokoaa rauhalliset ja oivaltavat pelit yhteen paikkaan. Aloita nopea haaste, kokeile uutta strategiaa ja vaihda peliä milloin haluat.
+
+PELAA OMALLA TAVALLASI
+• Täytä rivejä ja muotoile pelilautaa Block Blastissa
+• Yhdistä laattoja ja tavoittele suurempia lukuja 2048:ssa
+• Pudota ja yhdistä hedelmiä Fruit Mergen fysiikkapulmassa
+• Löydä uusia pulmapelejä kokoelman kasvaessa
+
+JOKAISEEN HETKEEN
+• Lyhyet pelit on helppo aloittaa
+• Yksinkertainen ohjaus ja miellyttävä palaute
+• Omat ennätykset ja tallennettu edistyminen
+• Pelaa ilman verkkoyhteyttä missä vain
+• Selkeä ja rauhallinen käyttöliittymä
+
+Piditpä palikoista, numeroista, yhdistelystä tai logiikkahaasteista, Logica tarjoaa kasvavan kokoelman ilman erillistä sovellusta jokaiselle pelille.
+
+Valitse peli ja löydä seuraava suosikkipulmasi.

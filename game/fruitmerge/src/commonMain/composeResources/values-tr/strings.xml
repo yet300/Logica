@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Meyveleri bırakın, birleştirin ve neşeli bir meyve kulesi oluşturun.</string>
+    <string name="score">Puan</string>
+    <string name="best_score">En iyi</string>
+    <string name="next_fruit">Sonraki</string>
+    <string name="clear_with_count">Temizle · %1$d</string>
+    <string name="clear_with_ad">Temizle · Reklam</string>
+    <string name="shake_with_count">Salla · %1$d</string>
+    <string name="shake_with_ad">Salla · Reklam</string>
+    <string name="cancel">İptal</string>
+    <string name="new_game">Yeni oyun</string>
+    <string name="game_over">Meyve kulesi doldu</string>
+    <string name="game_over_supporting">Meyveler tehlike çizgisinin üzerinde kaldı. Yeniden başlayın ve daha büyük bir karpuz yapın.</string>
+    <string name="largest_fruit">En büyük meyve</string>
+    <string name="tutorial_skip">Atla</string>
+    <string name="tutorial_tap">Meyveyi bırakmak için herhangi bir yere dokunun</string>
+    <string name="tutorial_drag">Yana kaydırın ve bırakma noktasını seçmek için bırakın</string>
+    <string name="loading_game">Fruit Merge yükleniyor</string>
+    <string name="drop_hint">Üst kısım boyunca hareket ettirin ve bırakmak için bırakın</string>
+    <string name="clear_hint">Kaldırmak için bir meyve seçin</string>
+    <string name="danger_line">Tehlike çizgisi</string>
+    <string name="board_description">Fruit Merge tahtası. Puan %1$d. Kutuda %2$d meyve var.</string>
+    <string name="fruit_description">%1$s meyvesi</string>
+    <string name="ad_disclosure">Reklam</string>
+    <string name="blueberry">Yaban mersini</string>
+    <string name="raspberry">Ahududu</string>
+    <string name="strawberry">Çilek</string>
+    <string name="lime">Misket limonu</string>
+    <string name="mandarin">Mandalina</string>
+    <string name="apple">Elma</string>
+    <string name="pear">Armut</string>
+    <string name="peach">Şeftali</string>
+    <string name="pineapple">Ananas</string>
+    <string name="watermelon">Karpuz</string>
+</resources>

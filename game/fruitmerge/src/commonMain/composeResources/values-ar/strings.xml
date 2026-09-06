@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">أسقط الفواكه وادمجها لتكوين برج فواكه مبهج.</string>
+    <string name="score">النقاط</string>
+    <string name="best_score">الأفضل</string>
+    <string name="next_fruit">التالي</string>
+    <string name="clear_with_count">مسح · %1$d</string>
+    <string name="clear_with_ad">مسح · إعلان</string>
+    <string name="shake_with_count">هز · %1$d</string>
+    <string name="shake_with_ad">هز · إعلان</string>
+    <string name="cancel">إلغاء</string>
+    <string name="new_game">لعبة جديدة</string>
+    <string name="game_over">برج الفواكه ممتلئ</string>
+    <string name="game_over_supporting">بقيت الفاكهة فوق خط الخطر. ابدأ من جديد واصنع بطيخة أكبر.</string>
+    <string name="largest_fruit">أكبر فاكهة</string>
+    <string name="tutorial_skip">تخطي</string>
+    <string name="tutorial_tap">انقر في أي مكان لإسقاط الفاكهة</string>
+    <string name="tutorial_drag">اسحب جانبياً ثم أفلت لاختيار مكان الإسقاط</string>
+    <string name="loading_game">جارٍ تحميل Fruit Merge</string>
+    <string name="drop_hint">تحرك على طول الجزء العلوي ثم حرر للإسقاط</string>
+    <string name="clear_hint">اختر فاكهة واحدة لإزالتها</string>
+    <string name="danger_line">خط الخطر</string>
+    <string name="board_description">لوحة Fruit Merge. النقاط %1$d. %2$d فواكه في الوعاء.</string>
+    <string name="fruit_description">فاكهة %1$s</string>
+    <string name="ad_disclosure">إعلان</string>
+    <string name="blueberry">توت أزرق</string>
+    <string name="raspberry">توت العليق</string>
+    <string name="strawberry">فراولة</string>
+    <string name="lime">ليمون حامض</string>
+    <string name="mandarin">يوسفي</string>
+    <string name="apple">تفاح</string>
+    <string name="pear">كمثرى</string>
+    <string name="peach">خوخ</string>
+    <string name="pineapple">أناناس</string>
+    <string name="watermelon">بطيخ</string>
+</resources>

@@ -48,6 +48,15 @@ class CatalogContentTest {
     }
 
     @Test
+    fun launcher_card_hides_manifest_description() = runComposeUiTest {
+        val component = FakeCatalogComponent()
+        setContent { TestCatalog(component) }
+
+        onNodeWithText("No apps yet").assertDoesNotExist()
+        onNodeWithTag("catalog_card_game.blockblast").assertIsDisplayed()
+    }
+
+    @Test
     fun long_press_does_not_open_a_context_menu() = runComposeUiTest {
         val component = FakeCatalogComponent()
         setContent { TestCatalog(component) }

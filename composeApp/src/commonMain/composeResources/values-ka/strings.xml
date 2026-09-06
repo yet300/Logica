@@ -31,10 +31,25 @@
     <string name="disable_ads_body">რეკლამა გვეხმარება თამაშის გაუმჯობესებასა და ყველა ფუნქციის უფასოდ დატოვებაში. თუ მას გამორთავთ, გაცოცხლება კვლავ უფასო იქნება — Logica-ს კი GitHub-ის ვარსკვლავით ან დონაციით დაუჭერთ მხარს.</string>
     <string name="keep_ads">რეკლამის დატოვება</string>
     <string name="disable_ads_anyway">მაინც გამორთვა</string>
+    <string name="cd_settings">პარამეტრები</string>
     <string name="cd_back">უკან</string>
+    <string name="miniapp_unavailable">%1$s მიუწვდომელია</string>
+    <string name="back_to_catalog">კატალოგში დაბრუნება</string>
     <string name="exit">გასვლა</string>
     <string name="review_prompt_title">მოგწონთ Logica?</string>
     <string name="review_prompt_body">თქვენი შეფასება დაეხმარება მეტ თავსატეხის მოთამაშეს თამაშის პოვნაში.</string>
     <string name="review_prompt_leave_feedback">გამოხმაურების დატოვება</string>
     <string name="review_prompt_dont_show">აღარ აჩვენო</string>
+    <string name="delete_game_data">თამაშის ყველა მონაცემის წაშლა</string>
+    <string name="delete_game_data_subtitle">პროგრესისა და შედეგების წაშლა ყველა თამაშიდან</string>
+    <string name="clear_game_data_title">წაიშალოს თამაშის მონაცემები?</string>
+    <string name="clear_game_data_body">ეს სამუდამოდ წაშლის შენახულ თამაშებს, ქულებს, გაკვეთილებსა და სხვა პროგრესს ყველა დაინსტალირებული თამაშიდან.</string>
+    <string name="clear_game_data_preferences_kept">აპლიკაციის პარამეტრები, კონფიდენციალურობის არჩევანი, რეკლამის თანხმობა და შეფასების პარამეტრები არ წაიშლება.</string>
+    <string name="clear_game_data_action">თამაშის მონაცემების წაშლა</string>
+    <string name="clearing_game_data">თამაშის მონაცემები იშლება…</string>
+    <string name="game_data_cleared">თამაშის ყველა მონაცემი წაიშალა.</string>
+    <string name="game_data_clear_failed">თამაშის ზოგიერთი მონაცემის წაშლა ვერ მოხერხდა. შეგიძლიათ ხელახლა სცადოთ:</string>
+    <string name="retry">ხელახლა ცდა</string>
+    <string name="done">მზადაა</string>
+    <string name="cancel">გაუქმება</string>
 </resources>

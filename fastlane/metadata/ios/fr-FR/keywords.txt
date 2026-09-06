@@ -1,0 +1,1 @@
+puzzle,blocs,nombres,fusion,logique,stratégie,hors ligne,détente

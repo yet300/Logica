@@ -1,0 +1,36 @@
+<resources>
+    <string name="miniapp_title">Fruit Merge</string>
+    <string name="miniapp_description">Solte, combine e crie uma alegre torre de frutas.</string>
+    <string name="score">Pontuação</string>
+    <string name="best_score">Melhor</string>
+    <string name="next_fruit">Próxima</string>
+    <string name="clear_with_count">Limpar · %1$d</string>
+    <string name="clear_with_ad">Limpar · Anúncio</string>
+    <string name="shake_with_count">Sacudir · %1$d</string>
+    <string name="shake_with_ad">Sacudir · Anúncio</string>
+    <string name="cancel">Cancelar</string>
+    <string name="new_game">Novo jogo</string>
+    <string name="game_over">Torre de frutas cheia</string>
+    <string name="game_over_supporting">A fruta ficou acima da linha de perigo. Comece de novo e crie uma melancia maior.</string>
+    <string name="largest_fruit">Maior fruta</string>
+    <string name="tutorial_skip">Pular</string>
+    <string name="tutorial_tap">Toque em qualquer lugar para soltar a fruta</string>
+    <string name="tutorial_drag">Arraste para os lados e solte para escolher onde cair</string>
+    <string name="loading_game">Carregando Fruit Merge</string>
+    <string name="drop_hint">Mova pelo topo e solte para deixar cair</string>
+    <string name="clear_hint">Escolha uma fruta para remover</string>
+    <string name="danger_line">Linha de perigo</string>
+    <string name="board_description">Tabuleiro de Fruit Merge. Pontuação %1$d. %2$d frutas no recipiente.</string>
+    <string name="fruit_description">Fruta %1$s</string>
+    <string name="ad_disclosure">Anúncio</string>
+    <string name="blueberry">Mirtilo</string>
+    <string name="raspberry">Framboesa</string>
+    <string name="strawberry">Morango</string>
+    <string name="lime">Limão</string>
+    <string name="mandarin">Mandarina</string>
+    <string name="apple">Maçã</string>
+    <string name="pear">Pera</string>
+    <string name="peach">Pêssego</string>
+    <string name="pineapple">Abacaxi</string>
+    <string name="watermelon">Melancia</string>
+</resources>
