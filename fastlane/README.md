@@ -33,6 +33,11 @@ gh workflow run store-screenshots.yml -f locale=ka
 A single-locale run builds and validates one downloadable artifact. It never
 publishes a partial store listing.
 
+For releases, the separate `Store metadata` workflow uploads only localized
+iOS `What's New` text from the tag. It does not render or upload screenshots.
+The full `Store screenshots` workflow is only needed when visual assets or
+screenshot copy changes.
+
 Run the complete matrix when preparing both store listings:
 
 ```bash

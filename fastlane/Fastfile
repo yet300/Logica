@@ -1,4 +1,5 @@
 default_platform(:android)
+require "fileutils"
 
 def version_name
   ENV["APP_VERSION_NAME"] or UI.user_error!("APP_VERSION_NAME env is not set")
@@ -22,6 +23,21 @@ def validate_ios_release_notes
       File.read(File.join(locale_root, "release_notes.txt"), encoding: "UTF-8").strip.empty?
   }.map { |locale_root| File.basename(locale_root) }
   UI.user_error!("Missing iOS release notes for: #{missing.join(', ')}") unless missing.empty?
+end
+
+def stage_ios_release_notes
+  source_root = File.expand_path("metadata/ios", __dir__)
+  staging_root = File.expand_path("../build/store-metadata/ios", __dir__)
+  FileUtils.rm_rf(staging_root)
+  Dir[File.join(source_root, "*")].each do |locale_root|
+    release_notes = File.join(locale_root, "release_notes.txt")
+    next unless File.file?(release_notes)
+
+    destination = File.join(staging_root, File.basename(locale_root))
+    FileUtils.mkdir_p(destination)
+    FileUtils.cp(release_notes, File.join(destination, "release_notes.txt"))
+  end
+  staging_root
 end
 
 # ---------------------------------------------------------------------------
@@ -121,6 +137,39 @@ platform :ios do
       submit_for_review: false,
       automatic_release: false,
       overwrite_screenshots: true,
+      force: true,
+      run_precheck_before_submit: false,
+    )
+  end
+
+  desc "Upload only localized What's New text without screenshots"
+  lane :publish_app_store_release_notes_draft do
+    %w[
+      APP_STORE_CONNECT_KEY_ID
+      APP_STORE_CONNECT_ISSUER_ID
+      APP_STORE_CONNECT_KEY_CONTENT
+    ].each do |variable|
+      UI.user_error!("#{variable} env is not set") if ENV[variable].to_s.empty?
+    end
+
+    validate_ios_release_notes
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY_CONTENT"],
+      is_key_content_base64: true,
+    )
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: "ge.yet3.blokblast.BlockBlast",
+      app_version: ios_marketing_version,
+      metadata_path: stage_ios_release_notes,
+      skip_binary_upload: true,
+      skip_metadata: false,
+      skip_screenshots: true,
+      submit_for_review: false,
+      automatic_release: false,
       force: true,
       run_precheck_before_submit: false,
     )
