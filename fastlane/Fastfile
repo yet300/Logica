@@ -18,19 +18,6 @@ end
 # Android — Google Play internal track
 # ---------------------------------------------------------------------------
 platform :android do
-  desc "Stage one generated screenshot locale without uploading it"
-  lane :stage_store_assets do
-    locale = ENV["SCREENSHOT_LOCALE"] or UI.user_error!("SCREENSHOT_LOCALE env is not set")
-    export_root = ENV.fetch("SCREENSHOT_EXPORT_ROOT", "store-assets/ci-exports")
-    sh(
-      "python3",
-      "tools/store_screenshots/stage_fastlane.py",
-      "--input", export_root,
-      "--fastlane-root", "fastlane",
-      "--locale", locale,
-    )
-  end
-
   desc "Upload localized Google Play listing changes without sending for review"
   lane :publish_store_listing_draft do
     play_store_json_key = ENV["PLAY_STORE_JSON_KEY"]

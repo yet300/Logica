@@ -57,6 +57,15 @@ class ReadmeDocumentationContractTest(unittest.TestCase):
         self.assertNotIn("IOS_DIST_CERT_P12", readme)
         self.assertNotIn("stage_store_assets", readme)
 
+    def test_only_retained_store_tool_entrypoints_exist(self):
+        tools = ROOT / "tools/store_screenshots"
+        self.assertFalse((tools / "stage_fastlane.py").exists())
+        self.assertFalse((tools / "test_stage_fastlane.py").exists())
+
+        fastfile = (ROOT / "fastlane/Fastfile").read_text(encoding="utf-8")
+        self.assertNotIn("stage_store_assets", fastfile)
+        self.assertNotIn("stage_fastlane.py", fastfile)
+
 
 if __name__ == "__main__":
     unittest.main()
