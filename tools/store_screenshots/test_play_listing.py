@@ -279,7 +279,7 @@ class PlayListingFastfileTest(unittest.TestCase):
             "skip_upload_screenshots: false",
             "sync_image_upload: true",
             "changes_not_sent_for_review: true",
-            "rescue_changes_not_sent_for_review: false",
+            "rescue_changes_not_sent_for_review: true",
         ):
             self.assertIn(setting, body)
         self.assertIn('metadata_path: "fastlane/metadata/android"', body)
