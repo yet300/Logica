@@ -18,4 +18,3 @@ HƏR AN ÜÇÜN
 Blokları, rəqəmləri, birləşdirməni və ya məntiq sınaqlarını sevirsinizsə, Logica hər oyun üçün ayrıca tətbiq quraşdırmadan böyüyən kolleksiya təqdim edir.
 
 Oyunu seçin və növbəti sevimli tapmacanızı tapın.
-

@@ -18,4 +18,3 @@ JOKAISEEN HETKEEN
 Piditpä palikoista, numeroista, yhdistelystä tai logiikkahaasteista, Logica tarjoaa kasvavan kokoelman ilman erillistä sovellusta jokaiselle pelille.
 
 Valitse peli ja löydä seuraava suosikkipulmasi.
-

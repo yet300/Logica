@@ -71,6 +71,8 @@ def verify_exports(export_root: Path) -> list[Path]:
                     )
                 if image.mode != "RGB" or "transparency" in image.info:
                     raise ValueError(f"{file}: must be opaque RGB")
+                if all(low == high for low, high in image.getextrema()):
+                    raise ValueError(f"{file}: must contain visible content")
             verified.append(file)
     return verified
 

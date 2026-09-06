@@ -75,6 +75,17 @@ class IosReleaseWorkflowTest(unittest.TestCase):
         self.assertNotIn("submit_for_review", workflow)
         self.assertNotIn("secrets.IOS_KEYCHAIN_PASSWORD", workflow)
 
+    def test_cleanup_paths_are_persisted_before_signing_material_is_installed(self):
+        workflow = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
+        self.assertLess(
+            workflow.index('echo "IOS_KEYCHAIN_PATH=$KEYCHAIN_PATH"'),
+            workflow.index('security create-keychain'),
+        )
+        self.assertLess(
+            workflow.index('echo "IOS_PROFILE_PATH=$PROFILE_DESTINATION"'),
+            workflow.index('cp "$PROFILE_PATH" "$PROFILE_DESTINATION"'),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

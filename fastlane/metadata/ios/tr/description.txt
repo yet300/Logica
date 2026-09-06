@@ -18,4 +18,3 @@ HER ANA UYGUN
 Blokları, sayıları, birleştirme oyunlarını veya mantık mücadelelerini seviyorsan Logica, her oyun için ayrı uygulama yüklemeden büyüyen bir koleksiyon sunar.
 
 Bir oyun seç ve sıradaki favori bulmacanı bul.
-

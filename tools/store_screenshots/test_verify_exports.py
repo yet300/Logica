@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import sys
 import unittest
 
-from PIL import Image, ImageChops
+from PIL import Image, ImageChops, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -23,9 +23,12 @@ class ExportVerifierTest(unittest.TestCase):
             directory.mkdir(parents=True)
             width, height = contract["size"]
             for index in range(1, contract["count"] + 1):
-                Image.new("RGB", (width, height), (23 + index, 23, 21)).save(
-                    directory / f"{index:02d}-shot.png"
+                image = Image.new("RGB", (width, height), (23 + index, 23, 21))
+                ImageDraw.Draw(image).rectangle(
+                    (0, 0, max(1, width // 4), max(1, height // 4)),
+                    fill=(230, 120, 40),
                 )
+                image.save(directory / f"{index:02d}-shot.png")
 
     def test_rejects_missing_required_deck(self):
         with TemporaryDirectory() as temp:
@@ -52,6 +55,17 @@ class ExportVerifierTest(unittest.TestCase):
                 root / "feature-graphic/1024x500/01-shot.png"
             )
             with self.assertRaisesRegex(ValueError, "must be opaque RGB"):
+                verify_exports(root)
+
+    def test_rejects_solid_color_render(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.make_inventory(root)
+            target = root / "iphone/1320x2868/01-shot.png"
+            Image.new("RGB", EXPECTED["iphone/1320x2868"]["size"], "#FFFFFF").save(
+                target
+            )
+            with self.assertRaisesRegex(ValueError, "must contain visible content"):
                 verify_exports(root)
 
     def test_flattens_opaque_rgba_exports(self):

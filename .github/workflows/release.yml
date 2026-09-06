@@ -122,6 +122,7 @@ jobs:
           PROFILE_PATH="$RUNNER_TEMP/appstore.mobileprovision"
           PROFILE_PLIST="$RUNNER_TEMP/appstore-profile.plist"
           KEYCHAIN_PATH="$RUNNER_TEMP/logica-ci.keychain-db"
+          echo "IOS_KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
           IOS_KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
           printf '%s' "$IOS_DIST_CERT_P12" | base64 -D > "$CERTIFICATE_PATH"
           printf '%s' "$IOS_PROVISIONING_PROFILE" | base64 -D > "$PROFILE_PATH"
@@ -135,10 +136,9 @@ jobs:
           security cms -D -i "$PROFILE_PATH" > "$PROFILE_PLIST"
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$PROFILE_PLIST")
           PROFILE_DESTINATION="$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          echo "IOS_PROFILE_PATH=$PROFILE_DESTINATION" >> "$GITHUB_ENV"
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
           cp "$PROFILE_PATH" "$PROFILE_DESTINATION"
-          echo "IOS_KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
-          echo "IOS_PROFILE_PATH=$PROFILE_DESTINATION" >> "$GITHUB_ENV"
 
       - name: Build signed IPA and upload to App Store Connect
         env:

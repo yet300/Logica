@@ -108,9 +108,10 @@ to the Actions summary, which is the authoritative measurement.
 The tag-driven release workflow separately builds a signed iOS IPA and uploads
 it to App Store Connect/TestFlight without distributing or submitting it. It
 requires the App Store Connect key, Apple Distribution `.p12`, matching App
-Store provisioning profile, temporary-keychain password, and base64 iOS
-Firebase plist secrets documented in the repository README. The IPA and dSYM
-expire after 14 days; signing material is removed even when the job fails.
+Store provisioning profile, and base64 iOS Firebase plist secrets documented
+in the repository README. The temporary-keychain password is generated for
+each run. The IPA and dSYM expire after 14 days; signing material is removed
+even when the job fails.
 
 Keeping every size for every locale would be roughly 850 MB. The workflow keeps
 only canonical artifacts, approximately 10 MB per locale or 340 MB for all 34,
