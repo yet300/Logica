@@ -37,7 +37,7 @@ platform :android do
       skip_upload_screenshots: false,
       sync_image_upload: true,
       changes_not_sent_for_review: true,
-      rescue_changes_not_sent_for_review: false,
+      rescue_changes_not_sent_for_review: true,
     )
   end
 
