@@ -4,6 +4,10 @@ from pathlib import Path
 
 
 class IosReleaseFastfileTest(unittest.TestCase):
+    def test_marketing_version_reads_config_from_repository_root(self):
+        fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
+        self.assertIn('File.expand_path("../iosApp/Configuration/Config.xcconfig", __dir__)', fastfile)
+
     def test_release_lane_builds_signed_ipa_and_uploads_only_to_testflight(self):
         fastfile = Path("fastlane/Fastfile").read_text(encoding="utf-8")
         lanes = re.findall(r"lane :release do(?P<body>.*?)\n  end", fastfile, re.DOTALL)

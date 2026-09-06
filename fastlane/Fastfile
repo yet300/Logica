@@ -9,7 +9,8 @@ def version_code
 end
 
 def ios_marketing_version
-  config = File.read("iosApp/Configuration/Config.xcconfig")
+  config_path = File.expand_path("../iosApp/Configuration/Config.xcconfig", __dir__)
+  config = File.read(config_path)
   match = config.match(/^\s*MARKETING_VERSION\s*=\s*([^\s]+)\s*$/)
   match ? match[1] : UI.user_error!("MARKETING_VERSION is missing from Config.xcconfig")
 end
