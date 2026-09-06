@@ -111,6 +111,7 @@ platform :ios do
       automatic_release: false,
       overwrite_screenshots: true,
       force: true,
+      run_precheck_before_submit: false,
     )
   end
 
