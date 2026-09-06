@@ -130,46 +130,19 @@ def stage_all_play_assets(
     )
 
 
-def _print_report(metadata_root: Path) -> None:
-    validate_metadata(metadata_root)
-    print("locale\ttitle\tshort\tfull")
-    for play_locale in sorted(PLAY_STORE_LOCALES.values()):
-        locale_root = metadata_root / play_locale
-        lengths = [
-            len(_read_metadata_file(locale_root, filename))
-            for filename in ("title.txt", "short_description.txt", "full_description.txt")
-        ]
-        print(f"{play_locale}\t{lengths[0]}\t{lengths[1]}\t{lengths[2]}")
-
-
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest="command", required=True)
-    for command in ("validate-metadata", "report"):
-        command_parser = subparsers.add_parser(command)
-        command_parser.add_argument("--metadata-root", type=Path, required=True)
+    subparsers = parser.add_subparsers(required=True)
     stage_parser = subparsers.add_parser("stage")
     stage_parser.add_argument("--artifacts-root", type=Path, required=True)
     stage_parser.add_argument("--metadata-root", type=Path, required=True)
     args = parser.parse_args(argv)
 
-    if args.command == "stage":
-        summary = stage_all_play_assets(args.artifacts_root, args.metadata_root)
-        print(
-            f"Staged {summary.locales} Play Store locales: "
-            f"{summary.phone_screenshots} phone screenshots, "
-            f"{summary.feature_graphics} feature graphics."
-        )
-        return 0
-    if args.command == "report":
-        _print_report(args.metadata_root)
-        return 0
-
-    summary = validate_metadata(args.metadata_root)
+    summary = stage_all_play_assets(args.artifacts_root, args.metadata_root)
     print(
-        f"Validated {summary.locales} Play Store metadata locales: "
-        f"{summary.titles} titles, {summary.short_descriptions} short descriptions, "
-        f"{summary.full_descriptions} full descriptions."
+        f"Staged {summary.locales} Play Store locales: "
+        f"{summary.phone_screenshots} phone screenshots, "
+        f"{summary.feature_graphics} feature graphics."
     )
     return 0
 

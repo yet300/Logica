@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 import re
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
 
@@ -99,30 +99,6 @@ class PlayMetadataValidationTest(unittest.TestCase):
 
 
 class PlayMetadataCliTest(unittest.TestCase):
-    def test_validate_metadata_command_prints_summary(self):
-        with tempfile.TemporaryDirectory() as temp:
-            root = create_complete_metadata(Path(temp))
-            output = StringIO()
-            with redirect_stdout(output):
-                result = main(["validate-metadata", "--metadata-root", str(root)])
-            self.assertEqual(result, 0)
-            self.assertEqual(
-                output.getvalue(),
-                "Validated 34 Play Store metadata locales: 34 titles, "
-                "34 short descriptions, 34 full descriptions.\n",
-            )
-
-    def test_report_command_prints_character_counts(self):
-        with tempfile.TemporaryDirectory() as temp:
-            root = create_complete_metadata(Path(temp))
-            output = StringIO()
-            with redirect_stdout(output):
-                result = main(["report", "--metadata-root", str(root)])
-            self.assertEqual(result, 0)
-            lines = output.getvalue().splitlines()
-            self.assertEqual(lines[0], "locale\ttitle\tshort\tfull")
-            self.assertIn("ka-GE\t21\t28\t47", lines)
-
     def test_stage_command_prints_complete_asset_summary(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -141,6 +117,14 @@ class PlayMetadataCliTest(unittest.TestCase):
                 "Staged 34 Play Store locales: 238 phone screenshots, "
                 "34 feature graphics.\n",
             )
+
+    def test_removed_commands_are_not_accepted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = create_complete_metadata(Path(temp))
+            for command in ("report", "validate-metadata"):
+                with self.subTest(command=command), redirect_stderr(StringIO()):
+                    with self.assertRaises(SystemExit):
+                        main([command, "--metadata-root", str(root)])
 
     def test_rejects_extra_locale(self):
         with tempfile.TemporaryDirectory() as temp:
