@@ -98,7 +98,8 @@ class DefaultRootComponentTest {
         assertEquals(FIRST_ID, restored.running().id)
         assertIs<RootComponent.MiniAppState.Content>(restored.running().state)
         assertEquals(1, restoredPlugin.createCount)
-        assertEquals(1, restored.component.stack.value.items.size)
+        assertEquals(2, restored.component.stack.value.items.size)
+        assertIs<RootComponent.Child.Catalog>(restored.component.stack.value.backStack.single().instance)
     }
 
     @Test

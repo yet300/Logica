@@ -10,7 +10,8 @@ import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.replaceAll
+import com.arkivanov.decompose.router.stack.popTo
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.lifecycle.Lifecycle
@@ -32,7 +33,6 @@ import ge.yet.game.miniapp.api.MiniAppStorageProvider
 import ge.yet.game.miniapp.audio.MiniAppAudioEngine
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 internal class DefaultRootComponent(
@@ -72,7 +72,7 @@ internal class DefaultRootComponent(
         audioEngine = miniAppAudioEngine,
         initialForeground = lifecycle.state.isForeground,
         navigateToCatalog = { keepSheet ->
-            navigation.replaceAll(Config.Catalog)
+            navigation.popTo(0)
             if (!keepSheet && sheetSlot.value.child != null) sheetNavigation.dismiss()
         },
         showReview = { id, opportunity ->
@@ -106,14 +106,21 @@ internal class DefaultRootComponent(
         childFactory = ::createChild,
     )
 
-    private val backCallback = BackCallback(
+    private val sheetBackCallback = BackCallback(
         isEnabled = false,
         priority = BackCallback.PRIORITY_MAX,
         onBack = ::onBackClicked,
     )
 
+    private val rootBackCallback = BackCallback(
+        isEnabled = false,
+        priority = BackCallback.PRIORITY_DEFAULT,
+        onBack = ::onBackClicked,
+    )
+
     init {
-        backHandler.register(backCallback)
+        backHandler.register(sheetBackCallback)
+        backHandler.register(rootBackCallback)
         val stackSubscription = stack.subscribe { updateBackCallback() }
         val sheetSubscription = sheetSlot.subscribe { slot ->
             runtimeCoordinator.setObscured(slot.child != null)
@@ -130,7 +137,8 @@ internal class DefaultRootComponent(
         lifecycle.doOnDestroy {
             stackSubscription.cancel()
             sheetSubscription.cancel()
-            backHandler.unregister(backCallback)
+            backHandler.unregister(sheetBackCallback)
+            backHandler.unregister(rootBackCallback)
         }
         updateBackCallback()
     }
@@ -169,7 +177,7 @@ internal class DefaultRootComponent(
 
     private fun launchMiniApp(id: MiniAppId) {
         runtimeCoordinator.launch(id) { key ->
-            navigation.replaceAll(Config.Running(id, key))
+            navigation.pushNew(Config.Running(id, key))
         }
     }
 
@@ -213,8 +221,9 @@ internal class DefaultRootComponent(
     }
 
     private fun updateBackCallback() {
-        backCallback.isEnabled =
-            sheetSlot.value.child != null || stack.value.active.configuration is Config.Running
+        sheetBackCallback.isEnabled = sheetSlot.value.child != null
+        rootBackCallback.isEnabled =
+            sheetSlot.value.child == null && stack.value.active.configuration is Config.Running
     }
 
     @Serializable
