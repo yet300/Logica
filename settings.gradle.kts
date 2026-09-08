@@ -1,4 +1,4 @@
-rootProject.name = "BlockBlast"
+rootProject.name = "Logica"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
