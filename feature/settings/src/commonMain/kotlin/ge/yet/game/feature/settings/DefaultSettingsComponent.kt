@@ -46,6 +46,11 @@ internal class DefaultSettingsComponent(
     )
 
     override fun onBackClicked() {
+        val active = stack.value.active.instance
+        if (active is SettingsComponent.Child.ResetGameData) {
+            active.component.onBackClicked()
+            return
+        }
         if (stack.value.backStack.isEmpty()) {
             analytics.logEvent(eventName = "settings_back_clicked", params = null)
             onBackClickedCb()
@@ -100,7 +105,8 @@ internal class DefaultSettingsComponent(
             DefaultResetGameDataComponent(
                 componentContext = componentContext,
                 clearGameData = clearGameData,
-                onBackClickedCb = ::onBackClicked,
+                onBackClickedCb = { navigation.pop() },
+                onDismissSheetCb = onBackClickedCb,
             ),
         )
     }

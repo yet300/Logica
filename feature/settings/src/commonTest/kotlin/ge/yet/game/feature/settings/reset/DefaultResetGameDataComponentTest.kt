@@ -132,6 +132,50 @@ class DefaultResetGameDataComponentTest {
         assertTrue(cancelled)
     }
 
+    @Test
+    fun back_after_success_dismisses_the_sheet() = runTest {
+        var backCalls = 0
+        var dismissCalls = 0
+        val component = DefaultResetGameDataComponent(
+            componentContext = DefaultComponentContext(LifecycleRegistry()),
+            clearGameData = { MiniAppDataResetResult.Success },
+            onBackClickedCb = { backCalls += 1 },
+            onDismissSheetCb = { dismissCalls += 1 },
+            coroutineScope = backgroundScope,
+        )
+
+        component.onConfirmClicked()
+        runCurrent()
+
+        component.onBackClicked()
+        runCurrent()
+
+        assertEquals(0, backCalls)
+        assertEquals(1, dismissCalls)
+    }
+
+    @Test
+    fun back_after_partial_failure_dismisses_the_sheet() = runTest {
+        var backCalls = 0
+        var dismissCalls = 0
+        val component = DefaultResetGameDataComponent(
+            componentContext = DefaultComponentContext(LifecycleRegistry()),
+            clearGameData = { MiniAppDataResetResult.PartialFailure(setOf(MiniAppId("game.test"))) },
+            onBackClickedCb = { backCalls += 1 },
+            onDismissSheetCb = { dismissCalls += 1 },
+            coroutineScope = backgroundScope,
+        )
+
+        component.onConfirmClicked()
+        runCurrent()
+
+        component.onBackClicked()
+        runCurrent()
+
+        assertEquals(0, backCalls)
+        assertEquals(1, dismissCalls)
+    }
+
     private fun kotlinx.coroutines.test.TestScope.component(
         clearGameData: suspend () -> MiniAppDataResetResult,
         onBack: () -> Unit = {},

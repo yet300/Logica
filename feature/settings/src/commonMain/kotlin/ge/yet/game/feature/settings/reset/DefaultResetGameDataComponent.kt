@@ -12,6 +12,7 @@ internal class DefaultResetGameDataComponent(
     componentContext: ComponentContext,
     private val clearGameData: suspend () -> MiniAppDataResetResult,
     private val onBackClickedCb: () -> Unit,
+    private val onDismissSheetCb: () -> Unit = onBackClickedCb,
     private val coroutineScope: CoroutineScope = componentContext.componentCoroutineScope(),
 ) : ResetGameDataComponent, ComponentContext by componentContext {
     private val modelState = MutableValue(
@@ -23,7 +24,14 @@ internal class DefaultResetGameDataComponent(
 
     override fun onRetryClicked() = startClear(allowFromPartialFailure = true)
 
-    override fun onBackClicked() = onBackClickedCb()
+    override fun onBackClicked() {
+        val status = modelState.value.status
+        if (status is ResetGameDataComponent.Status.Success || status is ResetGameDataComponent.Status.PartialFailure) {
+            onDismissSheetCb()
+        } else {
+            onBackClickedCb()
+        }
+    }
 
     private fun startClear(allowFromPartialFailure: Boolean) {
         val status = modelState.value.status

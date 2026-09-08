@@ -3,21 +3,37 @@ package ge.yet.game.feature.settings
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import ge.yet.game.feature.settings.libraries.LibrariesProvider
-import ge.yet.game.feature.settings.main.store.SettingsStoreFactory
 import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.domain.repository.SettingsRepository
-import ge.yet.game.feature.settings.DefaultSettingsComponent
-import ge.yet.game.feature.settings.SettingsComponent
+import ge.yet.game.feature.settings.libraries.LibrariesProvider
+import ge.yet.game.feature.settings.main.store.SettingsStoreFactory
 import ge.yet.game.miniapp.api.MiniAppDataResetResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class DefaultSettingsComponentTest {
+
+    private val dispatcher = UnconfinedTestDispatcher()
+
+    @BeforeTest
+    fun setUp() = Dispatchers.setMain(dispatcher)
+
+    @AfterTest
+    fun tearDown() = Dispatchers.resetMain()
 
     @Test
     fun disable_ads_request_pushes_one_confirmation_child_and_back_keeps_ads_enabled() {
@@ -91,6 +107,34 @@ class DefaultSettingsComponentTest {
         component.onBackClicked()
         assertIs<SettingsComponent.Child.More>(component.stack.value.active.instance)
         assertEquals(0, clearCalls)
+    }
+
+    @Test
+    fun reset_after_confirmation_success_back_dismisses_settings() = runTest {
+        val settings = FakeSettings()
+        val analytics = RecordingAnalytics()
+        var dismissCalls = 0
+        val component = DefaultSettingsComponent(
+            componentContext = DefaultComponentContext(LifecycleRegistry()),
+            storeFactory = SettingsStoreFactory(DefaultStoreFactory(), settings, analytics),
+            librariesProvider = LibrariesProvider { emptyList() },
+            settingsRepository = settings,
+            analytics = analytics,
+            clearGameData = { MiniAppDataResetResult.Success },
+            onBackClickedCb = { dismissCalls += 1 },
+        )
+
+        assertIs<SettingsComponent.Child.Main>(component.stack.value.active.instance)
+            .component.onMoreClicked()
+        val more = assertIs<SettingsComponent.Child.More>(component.stack.value.active.instance).component
+        more.onResetGameDataClicked()
+
+        val reset = assertIs<SettingsComponent.Child.ResetGameData>(component.stack.value.active.instance).component
+        reset.onConfirmClicked()
+        runCurrent()
+
+        component.onBackClicked()
+        assertEquals(1, dismissCalls)
     }
 
     private class FakeSettings : SettingsRepository {
