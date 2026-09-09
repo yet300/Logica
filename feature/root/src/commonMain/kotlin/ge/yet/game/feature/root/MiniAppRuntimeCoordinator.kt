@@ -1,6 +1,7 @@
 package ge.yet.game.feature.root
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.domain.repository.CrashlyticsRepository
@@ -18,7 +19,6 @@ import ge.yet.game.miniapp.compose.MiniAppPlugin
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancel
@@ -56,15 +56,12 @@ internal class MiniAppRuntimeCoordinator(
     private val shippedMiniAppIds = registry.manifests.map { it.id }.toSet()
     private var pendingKey: MiniAppSessionKey? = null
     private var pendingPlugin: MiniAppPlugin? = null
-    private var activeKey: MiniAppSessionKey? = null
-    private var activeId: MiniAppId? = null
-    private var activeVisibilitySource: DefaultMiniAppVisibilitySource? = null
-    private var activeDestroyed: CompletableDeferred<Unit>? = null
+    private var active: ActiveSession? = null
     private var isForeground = initialForeground
     private var isObscured = false
 
     fun launch(id: MiniAppId, navigate: (MiniAppSessionKey) -> Unit) {
-        if (resetInProgress || launchInProgress || activeKey != null) return
+        if (resetInProgress || launchInProgress || active != null) return
         launchInProgress = true
         try {
             val plugin = registry[id]
@@ -95,23 +92,25 @@ internal class MiniAppRuntimeCoordinator(
         scope: CoroutineScope,
     ): RootComponent.MiniAppState {
         lastSessionKey = maxOf(lastSessionKey, key.value)
+        val sessionLifecycle = MiniAppSessionLifecycle(componentContext.lifecycle)
+        val sessionComponentContext = DefaultComponentContext(
+            lifecycle = sessionLifecycle,
+            stateKeeper = componentContext.stateKeeper,
+            backHandler = componentContext.backHandler,
+        )
         val visibility = DefaultMiniAppVisibilitySource(currentVisibility())
-        val destroyed = CompletableDeferred<Unit>()
         val host = BoundMiniAppSessionHost(
             key = key,
             id = id,
             scope = scope,
         )
 
-        activeKey = key
-        activeId = id
-        activeVisibilitySource = visibility
-        activeDestroyed = destroyed
+        active = ActiveSession(id, key, visibility, sessionLifecycle)
         publishSessionContext(id, key, visibility.current, state = "creating")
         componentContext.lifecycle.doOnDestroy {
             audioEngine.closeSession(id, key.value)
-            destroyed.complete(Unit)
-            clearActiveSession(key, visibility, destroyed)
+            sessionLifecycle.close()
+            clearActiveSession(key, visibility)
         }
 
         val plugin = pendingPlugin.takeIf { pendingKey == key } ?: registry[id]
@@ -135,7 +134,7 @@ internal class MiniAppRuntimeCoordinator(
         )
         return try {
             val context = object : MiniAppSessionContext {
-                override val componentContext = componentContext
+                override val componentContext = sessionComponentContext
                 override val visibility = visibility
                 override val host = host
                 override val storage = storageProvider.storageFor(id)
@@ -153,11 +152,15 @@ internal class MiniAppRuntimeCoordinator(
             RootComponent.MiniAppState.Content(session)
         } catch (error: CancellationException) {
             audioEngine.closeSession(id, key.value)
-            clearActiveSession(key, visibility, destroyed)
+            sessionLifecycle.close()
+            clearActiveSession(key, visibility)
             scope.cancel()
             throw error
         } catch (error: Throwable) {
             audioEngine.closeSession(id, key.value)
+            sessionLifecycle.close()
+            clearActiveSession(key, visibility)
+            scope.cancel()
             analytics.logEvent(
                 "miniapp_launch_failed",
                 mapOf(
@@ -184,9 +187,10 @@ internal class MiniAppRuntimeCoordinator(
     }
 
     fun closeActiveSession() {
-        val key = activeKey ?: return
-        val id = activeId ?: return
-        val visibility = activeVisibilitySource?.current ?: currentVisibility()
+        val active = active ?: return
+        val key = active.key
+        val id = active.id
+        val visibility = active.visibility.current
         crash {
             logMessage(
                 "miniapp_session_closed id=${id.value} key=${key.value} " +
@@ -200,12 +204,9 @@ internal class MiniAppRuntimeCoordinator(
     suspend fun clearMiniAppData(): MiniAppDataResetResult = resetMutex.withLock {
         resetInProgress = true
         try {
-            val destroyed = activeDestroyed
+            val session = active
             navigateToCatalog(true)
-            destroyed?.await()
-            // A lifecycle may complete the signal from inside its destroy callback.
-            // Yield once so all sibling destroy callbacks finish before storage deletion.
-            yield()
+            session?.lifecycle?.awaitTeardown()
             dataResetter.clear(shippedMiniAppIds)
         } finally {
             resetInProgress = false
@@ -213,9 +214,10 @@ internal class MiniAppRuntimeCoordinator(
     }
 
     private fun updateActiveVisibility() {
-        val key = activeKey ?: return
-        val id = activeId ?: return
-        val source = activeVisibilitySource ?: return
+        val active = active ?: return
+        val key = active.key
+        val id = active.id
+        val source = active.visibility
         val visibility = currentVisibility()
         if (!source.set(visibility)) return
         if (!isActive(key, source)) return
@@ -233,19 +235,15 @@ internal class MiniAppRuntimeCoordinator(
     private fun clearActiveSession(
         key: MiniAppSessionKey,
         source: DefaultMiniAppVisibilitySource,
-        destroyed: CompletableDeferred<Unit>,
     ) {
-        if (!isActive(key, source) || activeDestroyed !== destroyed) return
-        activeKey = null
-        activeId = null
-        activeVisibilitySource = null
-        activeDestroyed = null
+        if (!isActive(key, source)) return
+        active = null
         crash { setCustomValue(MINI_APP_ID, "") }
-        if (activeKey != null) return
+        if (active != null) return
         crash { setCustomValue(MINI_APP_SESSION_KEY, "") }
-        if (activeKey != null) return
+        if (active != null) return
         crash { setCustomValue(MINI_APP_VISIBILITY, "") }
-        if (activeKey != null) return
+        if (active != null) return
         crash { setCustomValue(MINI_APP_STATE, "closed") }
     }
 
@@ -274,12 +272,19 @@ internal class MiniAppRuntimeCoordinator(
         else -> MiniAppVisibility.ACTIVE
     }
 
-    private fun isActive(key: MiniAppSessionKey): Boolean = activeKey == key
+    private fun isActive(key: MiniAppSessionKey): Boolean = active?.key == key
 
     private fun isActive(
         key: MiniAppSessionKey,
         source: DefaultMiniAppVisibilitySource,
-    ): Boolean = activeKey == key && activeVisibilitySource === source
+    ): Boolean = active?.let { it.key == key && it.visibility === source } == true
+
+    private data class ActiveSession(
+        val id: MiniAppId,
+        val key: MiniAppSessionKey,
+        val visibility: DefaultMiniAppVisibilitySource,
+        val lifecycle: MiniAppSessionLifecycle,
+    )
 
     private fun canRequestReview(key: MiniAppSessionKey): Boolean =
         isActive(key) && !isObscured
@@ -307,6 +312,7 @@ internal class MiniAppRuntimeCoordinator(
         override fun close() {
             scope.launch {
                 // MiniApp hosts have no caller-thread contract; the child scope is the actor boundary.
+                yield()
                 if (!armed || !isActive(key) || closeDelivered) return@launch
                 closeDelivered = true
                 closeActiveSession()
@@ -316,6 +322,7 @@ internal class MiniAppRuntimeCoordinator(
         override fun requestReview(opportunity: MiniAppReviewOpportunity) {
             scope.launch {
                 // Read mutable host and coordinator state only after entering the child scope.
+                yield()
                 if (!armed || !canRequestReview(key)) return@launch
                 var acquired = false
                 var committed = false

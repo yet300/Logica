@@ -7,14 +7,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+
+/** Registers lifecycle-owned coroutine jobs when teardown must be awaitable. */
+interface LifecycleCoroutineScopeRegistry {
+    fun register(job: Job)
+}
 
 /**
  * This helper implementation in from Cofetti Kmp App See
  * https://github.com/joreilly/Confetti/blob/fb832c2131b2f3e5276a1a3a30666aa571e1e17e/shared/src/commonMain/kotlin/dev/johnoreilly/confetti/decompose/DecomposeUtils.kt#L27
  */
 fun LifecycleOwner.coroutineScope(context: MainCoroutineDispatcher = Dispatchers.Main.immediate): CoroutineScope {
-    val scope = CoroutineScope(context + SupervisorJob())
+    val job = SupervisorJob()
+    val scope = CoroutineScope(context + job)
+    (lifecycle as? LifecycleCoroutineScopeRegistry)?.register(job)
     lifecycle.doOnDestroy(scope::cancel)
 
     return scope

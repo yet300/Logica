@@ -6,6 +6,7 @@ import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.destroy
 import com.arkivanov.essenty.lifecycle.resume
 import ge.yet.game.domain.repository.AnalyticRepository
@@ -41,6 +42,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.awaitCancellation
@@ -49,6 +51,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.StringResource
@@ -156,6 +159,7 @@ class MiniAppRuntimeCoordinatorTest {
         assertEquals(0, setup.closeCalls)
         assertEquals(0, setup.reviewPolicy.acquireCalls)
         assertEquals(listOf(FIRST_ID to 1L), setup.audioEngine.closes)
+        assertEquals(Lifecycle.State.DESTROYED, plugin.sessionLifecycles.single().state)
     }
 
     @Test
@@ -163,9 +167,9 @@ class MiniAppRuntimeCoordinatorTest {
         val opportunity = MiniAppReviewOpportunity("queued")
         val plugin = RecordingPlugin(
             id = FIRST_ID,
-            onCreate = { host ->
-                host.close()
-                host.requestReview(opportunity)
+            onCreate = { context ->
+                context.host.close()
+                context.host.requestReview(opportunity)
             },
         )
         val setup = build(firstPlugin = plugin)
@@ -457,8 +461,8 @@ class MiniAppRuntimeCoordinatorTest {
         }
 
         assertSame(cancellation, thrown)
-        assertEquals(true, callbackInvoked)
         assertFalse(failedScope.isActive)
+        assertEquals(true, callbackInvoked)
         assertEquals("", setup.crashlytics.values["mini_app_id"])
         assertEquals("", setup.crashlytics.values["mini_app_session_key"])
         assertEquals("", setup.crashlytics.values["mini_app_visibility"])
@@ -505,6 +509,47 @@ class MiniAppRuntimeCoordinatorTest {
             setup.coordinator.createSessionWithChildScope(SECOND_ID, key, componentContext())
         }
         assertEquals(1, setup.secondPlugin.createCount)
+    }
+
+    @Test
+    fun reset_waits_for_session_coroutine_cleanup_before_deleting_data() = runTest {
+        val cleanupStarted = CompletableDeferred<Unit>()
+        val allowCleanupToFinish = CompletableDeferred<Unit>()
+        val clearStarted = CompletableDeferred<Unit>()
+        lateinit var activeLifecycle: LifecycleRegistry
+        val plugin = RecordingPlugin(
+            id = FIRST_ID,
+            onCreate = { context ->
+                context.componentContext.coroutineScope().launch {
+                    try {
+                        awaitCancellation()
+                    } finally {
+                        withContext(NonCancellable) {
+                            cleanupStarted.complete(Unit)
+                            allowCleanupToFinish.await()
+                        }
+                    }
+                }
+            },
+        )
+        val setup = build(
+            firstPlugin = plugin,
+            dataResetter = dataResetter {
+                clearStarted.complete(Unit)
+                MiniAppDataResetResult.Success
+            },
+            afterClose = { activeLifecycle.destroy() },
+        )
+        activeLifecycle = lifecycle().also(LifecycleRegistry::resume)
+        setup.launchAndCreate(FIRST_ID, DefaultComponentContext(activeLifecycle))
+
+        val reset = backgroundScope.launch { setup.coordinator.clearMiniAppData() }
+        cleanupStarted.await()
+        assertFalse(clearStarted.isCompleted)
+
+        allowCleanupToFinish.complete(Unit)
+        reset.join()
+        assertEquals(true, clearStarted.isCompleted)
     }
 
     @Test
@@ -674,7 +719,7 @@ class MiniAppRuntimeCoordinatorTest {
         id: MiniAppId,
         private val failure: Throwable? = null,
         private val closeOnVisibility: MiniAppVisibility? = null,
-        private val onCreate: (MiniAppSessionHost) -> Unit = {},
+        private val onCreate: (MiniAppSessionContext) -> Unit = {},
     ) : MiniAppPlugin {
         override val manifest = manifest(id)
         var createCount = 0
@@ -682,6 +727,7 @@ class MiniAppRuntimeCoordinatorTest {
         val hosts = mutableListOf<MiniAppSessionHost>()
         val storages = mutableListOf<MiniAppStorage>()
         val audios = mutableListOf<MiniAppAudio>()
+        val sessionLifecycles = mutableListOf<Lifecycle>()
 
         override fun createSession(context: MiniAppSessionContext): MiniAppSession {
             createCount += 1
@@ -689,7 +735,8 @@ class MiniAppRuntimeCoordinatorTest {
             hosts += context.host
             storages += context.storage
             audios += context.audio
-            onCreate(context.host)
+            sessionLifecycles += context.componentContext.lifecycle
+            onCreate(context)
             closeOnVisibility?.let { target ->
                 context.componentContext.coroutineScope().launch(start = CoroutineStart.UNDISPATCHED) {
                     context.visibility.visibility.first { it == target }
