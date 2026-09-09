@@ -6,7 +6,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.domain.repository.CrashlyticsRepository
-import ge.yet.game.miniapp.api.MiniAppAdditionalDataCleaner
 import ge.yet.game.miniapp.api.MiniAppDataResetResult
 import ge.yet.game.miniapp.api.MiniAppDataResetter
 import ge.yet.game.miniapp.api.MiniAppId
@@ -21,7 +20,6 @@ internal class DefaultMiniAppDataResetter(
     private val settings: ObservableSettings,
     private val dispatchers: AppDispatchers,
     legacyStorageKeys: Set<MiniAppLegacyStorageKeys>,
-    additionalDataCleaners: Set<MiniAppAdditionalDataCleaner>,
     private val crashlytics: CrashlyticsRepository,
 ) : MiniAppDataResetter {
     private val legacyKeysById = legacyStorageKeys
@@ -29,9 +27,6 @@ internal class DefaultMiniAppDataResetter(
         .mapValues { (_, declarations) ->
             declarations.flatMap { it.localToPhysicalKeys.values }.distinct()
         }
-    private val cleanersById = additionalDataCleaners
-        .onEach { it.miniAppId.requireValid() }
-        .groupBy(MiniAppAdditionalDataCleaner::miniAppId)
 
     override suspend fun clear(miniAppIds: Set<MiniAppId>): MiniAppDataResetResult {
         val ids = buildSet { miniAppIds.forEach { add(it.also(MiniAppId::requireValid)) } }
@@ -44,9 +39,6 @@ internal class DefaultMiniAppDataResetter(
                 attempt(id, failures) {
                     withContext(dispatchers.io) { settings.remove(physicalKey) }
                 }
-            }
-            cleanersById[id].orEmpty().forEach { cleaner ->
-                attempt(id, failures, cleaner::clear)
             }
         }
 
@@ -65,9 +57,8 @@ internal class DefaultMiniAppDataResetter(
         id: MiniAppId,
         failures: MutableMap<MiniAppId, Exception>,
     ) {
-        val prefix = "miniapp.${id.value}."
         val keys = try {
-            withContext(dispatchers.io) { settings.keys.filter { it.startsWith(prefix) } }
+            withContext(dispatchers.io) { settings.keys.filter { it.belongsTo(id) } }
         } catch (cancellation: CancellationException) {
             throw cancellation
         } catch (failure: Exception) {
@@ -80,6 +71,9 @@ internal class DefaultMiniAppDataResetter(
             }
         }
     }
+
+    private fun String.belongsTo(id: MiniAppId): Boolean =
+        startsWith("miniapp.") && substringBeforeLast('.') == "miniapp.${id.value}"
 
     private suspend fun attempt(
         id: MiniAppId,

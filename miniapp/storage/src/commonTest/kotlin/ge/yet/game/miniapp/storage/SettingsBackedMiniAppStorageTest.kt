@@ -165,6 +165,23 @@ class SettingsBackedMiniAppStorageTest {
     }
 
     @Test
+    fun snapshot_from_a_newer_app_version_is_preserved() = runTest {
+        val physicalKey = "miniapp.game.snake.save"
+        val raw = """{"version":2,"payload":{"score":9}}"""
+        val settings = MapSettings(physicalKey to raw)
+        val storage = storage(settings, MiniAppId("game.snake"))
+
+        assertNull(
+            storage.readSnapshot(
+                "save",
+                MiniAppSnapshotSpec(Snapshot.serializer(), currentVersion = 1),
+            ),
+        )
+
+        assertEquals(raw, settings.getString(physicalKey, ""))
+    }
+
+    @Test
     fun provider_returns_one_storage_per_validated_id() {
         val provider = DefaultMiniAppStorageProvider(
             settings = MapSettings().makeObservable(),

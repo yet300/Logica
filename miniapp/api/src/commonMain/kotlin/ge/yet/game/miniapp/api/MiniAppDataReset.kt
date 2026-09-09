@@ -41,9 +41,3 @@ class MiniAppLegacyStorageKeys(
         }
     }
 }
-
-interface MiniAppAdditionalDataCleaner {
-    val miniAppId: MiniAppId
-
-    suspend fun clear()
-}

@@ -73,9 +73,7 @@ without editing contributor games.
 3. Root first closes the active MiniApp session and navigates to Catalog.
 4. Only after session teardown completes, the reset coordinator enumerates the
    namespaces of all shipped MiniApps.
-5. It clears each namespace independently and invokes any registered
-   `MiniAppAdditionalDataCleaner` for files or databases outside key/value
-   storage.
+5. It clears each namespaced Settings partition and registered legacy key independently.
 6. It reports success or a structured partial failure. Failed MiniApp IDs are
    recorded through Crashlytics; the UI does not expose raw exceptions.
 7. A retry operates only on namespaces that still contain data or previously
@@ -96,13 +94,6 @@ Block Blast keeps its existing physical keys until an explicit migration:
 The storage registry declares these as deletion aliases for `game.blockblast`.
 New Block Blast values and every new MiniApp use framework namespaces. Merely
 introducing this API must not rename existing keys or erase user progress.
-
-## Additional Data Cleaner
-
-`MiniAppAdditionalDataCleaner` is an optional escape hatch for a MiniApp that
-owns files, SQLite tables or another approved backend. It is not required for
-normal values and snapshots. Cleaners are registered at compile time, receive
-no host UI object and must be idempotent.
 
 ## Failure and Concurrency Semantics
 

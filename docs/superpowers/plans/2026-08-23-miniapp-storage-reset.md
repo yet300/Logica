@@ -1,5 +1,9 @@
 # MiniApp Storage and Game-Data Reset Implementation Plan
 
+> Historical implementation plan. The unused `MiniAppAdditionalDataCleaner`
+> extension point was removed on 2026-09-09; current reset support covers
+> namespaced Settings data and explicit legacy aliases.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add namespaced typed MiniApp persistence, migrate Block Blast away from raw Settings, and let Settings safely delete all shipped MiniApp data after closing the active session.
@@ -14,10 +18,10 @@
 
 - `miniapp/api/.../MiniAppStorage.kt`: storage/provider contracts and primitive operations.
 - `miniapp/api/.../MiniAppSnapshot.kt`: versioned JSON snapshot specification and migration contract.
-- `miniapp/api/.../MiniAppDataReset.kt`: reset result, legacy-key and additional-cleaner contracts.
+- `miniapp/api/.../MiniAppDataReset.kt`: reset result and legacy-key contracts.
 - `miniapp/storage/.../SettingsBackedMiniAppStorage.kt`: one namespace-bound backend.
 - `miniapp/storage/.../DefaultMiniAppStorageProvider.kt`: cached app-scoped storage factory with legacy local-name mappings.
-- `miniapp/storage/.../DefaultMiniAppDataResetter.kt`: best-effort namespace/legacy/additional cleanup.
+- `miniapp/storage/.../DefaultMiniAppDataResetter.kt`: best-effort namespace and legacy cleanup.
 - `miniapp/storage/.../MiniAppStorageBindings.kt`: Metro app-scope bindings and empty multibindings.
 - `miniapp/compose/.../MiniAppSessionContext.kt`: one typed runtime input for every plugin.
 - `miniapp/metro/.../MiniAppSessionContextBindings.kt`: exposes context fields inside child graphs.
@@ -378,15 +382,14 @@ Run: `./gradlew :miniapp:storage:allTests :game:blockblast:allTests`
 - [ ] **Step 3: Implement reset and empty multibindings**
 
 `DefaultMiniAppDataResetter.clear(ids)` validates/sorts a defensive ID snapshot,
-removes keys whose physical prefix matches each ID, removes matching contributed
-legacy aliases, then invokes matching additional cleaners. Catch ordinary
-failures per MiniApp, rethrow `CancellationException`, continue unrelated IDs
-and report/log the final failed set.
+removes keys whose physical namespace matches each ID, then removes matching
+contributed legacy aliases. Catch ordinary failures per MiniApp, rethrow
+`CancellationException`, continue unrelated IDs and report/log the final failed
+set.
 
-Reuse the empty-capable `MiniAppLegacyStorageKeys` set from Task 2 and declare
-an empty-capable `MiniAppAdditionalDataCleaner` set. Block Blast already
-contributes only its legacy-key declaration. New games need no contribution
-unless they have exceptional data.
+Reuse the empty-capable `MiniAppLegacyStorageKeys` set from Task 2. Block Blast
+contributes its legacy-key declaration; new games need no contribution when all
+state uses namespaced `MiniAppStorage`.
 
 - [ ] **Step 4: Verify GREEN on Android and iOS final graphs**
 

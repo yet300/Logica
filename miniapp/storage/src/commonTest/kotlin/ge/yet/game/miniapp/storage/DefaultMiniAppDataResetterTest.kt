@@ -5,16 +5,13 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.observable.makeObservable
 import ge.yet.game.domain.repository.CrashlyticsRepository
-import ge.yet.game.miniapp.api.MiniAppAdditionalDataCleaner
 import ge.yet.game.miniapp.api.MiniAppDataResetResult
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppLegacyStorageKeys
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 @OptIn(ExperimentalSettingsApi::class)
 class DefaultMiniAppDataResetterTest {
@@ -57,49 +54,18 @@ class DefaultMiniAppDataResetterTest {
     }
 
     @Test
-    fun cleaners_run_independently_and_failures_are_aggregated_by_sorted_id() = runTest {
-        val first = RecordingCleaner(MiniAppId("game.alpha"), failure = IllegalStateException("alpha"))
-        val second = RecordingCleaner(MiniAppId("game.beta"))
-        val third = RecordingCleaner(MiniAppId("game.beta"), failure = IllegalStateException("beta"))
-        val crashlytics = RecordingCrashlytics()
-        val resetter = resetter(
-            settings = MapSettings(),
-            cleaners = setOf(third, first, second),
-            crashlytics = crashlytics,
-        )
-
-        val result = resetter.clear(
-            linkedSetOf(MiniAppId("game.beta"), MiniAppId("game.alpha"), MiniAppId("game.clean")),
+    fun clear_does_not_remove_a_nested_miniapp_id_namespace() = runTest {
+        val settings = MapSettings(
+            "miniapp.game.foo.score" to 7L,
+            "miniapp.game.foo.bar.score" to 9L,
         )
 
         assertEquals(
-            setOf(MiniAppId("game.alpha"), MiniAppId("game.beta")),
-            (result as MiniAppDataResetResult.PartialFailure).failedMiniAppIds,
-        )
-        assertEquals(1, first.clearCount)
-        assertEquals(1, second.clearCount)
-        assertEquals(1, third.clearCount)
-        assertEquals(listOf("game.alpha", "game.beta"), crashlytics.failedIds)
-    }
-
-    @Test
-    fun cancellation_is_rethrown_and_not_reported() = runTest {
-        val crashlytics = RecordingCrashlytics()
-        val resetter = resetter(
-            settings = MapSettings(),
-            cleaners = setOf(
-                RecordingCleaner(
-                    miniAppId = MiniAppId("game.blocks"),
-                    failure = CancellationException("cancel"),
-                ),
-            ),
-            crashlytics = crashlytics,
+            MiniAppDataResetResult.Success,
+            resetter(settings).clear(setOf(MiniAppId("game.foo"))),
         )
 
-        assertFailsWith<CancellationException> {
-            resetter.clear(setOf(MiniAppId("game.blocks")))
-        }
-        assertEquals(emptyList(), crashlytics.failedIds)
+        assertEquals(setOf("miniapp.game.foo.bar.score"), settings.keys)
     }
 
     @Test
@@ -115,7 +81,6 @@ class DefaultMiniAppDataResetterTest {
     private fun resetter(
         settings: MapSettings,
         legacyKeys: Set<MiniAppLegacyStorageKeys> = emptySet(),
-        cleaners: Set<MiniAppAdditionalDataCleaner> = emptySet(),
         crashlytics: RecordingCrashlytics = RecordingCrashlytics(),
     ): DefaultMiniAppDataResetter = DefaultMiniAppDataResetter(
         settings = settings.makeObservable(),
@@ -124,7 +89,6 @@ class DefaultMiniAppDataResetterTest {
             io = Dispatchers.Unconfined,
         ),
         legacyStorageKeys = legacyKeys,
-        additionalDataCleaners = cleaners,
         crashlytics = crashlytics,
     )
 
@@ -136,19 +100,6 @@ class DefaultMiniAppDataResetterTest {
             "tutorial_seen" to "blockblast.tutorial_seen",
         ),
     )
-
-    private class RecordingCleaner(
-        override val miniAppId: MiniAppId,
-        private val failure: Throwable? = null,
-    ) : MiniAppAdditionalDataCleaner {
-        var clearCount = 0
-            private set
-
-        override suspend fun clear() {
-            clearCount += 1
-            failure?.let { throw it }
-        }
-    }
 
     private class RecordingCrashlytics : CrashlyticsRepository {
         val failedIds = mutableListOf<String>()

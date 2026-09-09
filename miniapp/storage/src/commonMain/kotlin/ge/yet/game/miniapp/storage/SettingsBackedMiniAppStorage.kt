@@ -95,9 +95,16 @@ internal class SettingsBackedMiniAppStorage(
     ): T? = snapshotMutex.withLock {
         val physicalKey = key(localName)
         val raw = settings.getStringOrNull(physicalKey) ?: return@withLock null
+        val stored = runCatching {
+            json.decodeFromString(StoredMiniAppSnapshot.serializer(), raw)
+        }.getOrElse {
+            settings.remove(physicalKey)
+            return@withLock null
+        }
+        if (stored.version > spec.currentVersion) return@withLock null
+
         val decodedResult = runCatching {
-            val stored = json.decodeFromString(StoredMiniAppSnapshot.serializer(), raw)
-            require(stored.version in 1..spec.currentVersion)
+            require(stored.version > 0)
 
             var version = stored.version
             var payload = stored.payload
