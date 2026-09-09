@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import blockblast.composeapp.generated.resources.Res
-import blockblast.composeapp.generated.resources.back_to_catalog
-import blockblast.composeapp.generated.resources.miniapp_unavailable
+import logica.composeapp.generated.resources.Res
+import logica.composeapp.generated.resources.back_to_catalog
+import logica.composeapp.generated.resources.miniapp_unavailable
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.uikit.components.button.PrimaryTerracottaButton
 import org.jetbrains.compose.resources.stringResource

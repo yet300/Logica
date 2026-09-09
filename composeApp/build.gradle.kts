@@ -113,6 +113,10 @@ aboutLibraries {
     }
 }
 
+compose.resources {
+    packageOfResClass = "logica.composeapp.generated.resources"
+}
+
 tasks.named("copyNonXmlValueResourcesForCommonMain") {
     dependsOn("exportLibraryDefinitions")
 }

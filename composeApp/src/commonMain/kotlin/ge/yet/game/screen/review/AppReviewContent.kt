@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import ge.yet.game.feature.review.AppReviewComponent
 import ge.yet.game.uikit.components.button.PrimaryTerracottaButton
 import ge.yet.game.uikit.components.button.SecondaryWarmSandButton
-import blockblast.composeapp.generated.resources.Res
-import blockblast.composeapp.generated.resources.review_prompt_body
-import blockblast.composeapp.generated.resources.review_prompt_dont_show
-import blockblast.composeapp.generated.resources.review_prompt_leave_feedback
-import blockblast.composeapp.generated.resources.review_prompt_title
+import logica.composeapp.generated.resources.Res
+import logica.composeapp.generated.resources.review_prompt_body
+import logica.composeapp.generated.resources.review_prompt_dont_show
+import logica.composeapp.generated.resources.review_prompt_leave_feedback
+import logica.composeapp.generated.resources.review_prompt_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

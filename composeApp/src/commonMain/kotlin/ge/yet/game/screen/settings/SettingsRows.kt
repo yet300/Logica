@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import blockblast.composeapp.generated.resources.Res
-import blockblast.composeapp.generated.resources.cd_back
+import logica.composeapp.generated.resources.Res
+import logica.composeapp.generated.resources.cd_back
 import ge.yet.game.uikit.components.button.IconCircleButton
 import ge.yet.game.uikit.components.icon.ArrowBack
 import ge.yet.game.uikit.components.icon.OpenInNew

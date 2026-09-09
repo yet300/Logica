@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import blockblast.composeapp.generated.resources.Res
-import blockblast.composeapp.generated.resources.open_source_libraries
+import logica.composeapp.generated.resources.Res
+import logica.composeapp.generated.resources.open_source_libraries
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.feature.settings.libraries.LibrariesSettingsComponent
 import ge.yet.game.uikit.components.icon.OpenInNew

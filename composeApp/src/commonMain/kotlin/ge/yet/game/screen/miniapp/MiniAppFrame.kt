@@ -24,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import blockblast.composeapp.generated.resources.Res
-import blockblast.composeapp.generated.resources.cd_back
-import blockblast.composeapp.generated.resources.cd_settings
+import logica.composeapp.generated.resources.Res
+import logica.composeapp.generated.resources.cd_back
+import logica.composeapp.generated.resources.cd_settings
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.uikit.components.button.IconCircleButton
 import ge.yet.game.uikit.components.icon.ArrowBack
