@@ -96,7 +96,10 @@ internal interface BlockBlastPluginTestGraph {
     val appScope: CoroutineScope
 }
 
-@GraphExtension(MiniAppSessionScope::class)
+@GraphExtension(
+    scope = MiniAppSessionScope::class,
+    bindingContainers = [BlockBlastSessionBindings::class],
+)
 internal interface InspectableBlockBlastSessionGraph {
     val session: BlockBlastSession
     val sessionComponent: BlockBlastSessionComponent

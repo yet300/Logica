@@ -144,7 +144,9 @@ app-scoped registry and its empty-capable compile-time plugin aggregation; its
 session-scope marker is a child lifecycle, not a second game-specific scope.
 Block Blast implements `MiniAppPlugin` through a retained Metro child graph;
 session-owned components and reducers live in `MiniAppSessionScope`, while save,
-best-score and preference repositories remain app-scoped. Game plugins consume
+best-score and preference repositories remain app-scoped. Each game includes
+its own session binding container explicitly on its `@GraphExtension`; do not
+contribute game-specific bindings globally to the shared session scope. Game plugins consume
 `MiniAppInterstitialCapability` and must not depend on a MiniApp host,
 `:feature:root`, `:composeApp`, native application modules or native-ad modules.
 `:composeApp` renders every running session inside one host-owned frame. Back,
@@ -190,8 +192,8 @@ contract; overlay and effect inputs use explicit `InViewport` names.
 The root settings `miniApps` allowlist is the sole authoritative shipping path:
 the bundle convention consumes its finalized declarations in order, adds exactly
 those projects to `commonMainApi` alongside `:miniapp:metro`, and generates the
-public `ProductionMiniAppExpectation` contributed to Metro. Block Blast and
-2048 are the current allowlist entries and are included in the production
+public `ProductionMiniAppExpectation` contributed to Metro. Block Blast, 2048,
+and Fruit Merge are the current allowlist entries and are included in the production
 bundle; Counter remains discovered but excluded from the allowlist and
 unshipped.
 `verifyMiniAppBundle` rejects missing,

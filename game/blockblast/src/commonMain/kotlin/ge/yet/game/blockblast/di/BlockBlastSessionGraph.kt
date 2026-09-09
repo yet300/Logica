@@ -8,7 +8,10 @@ import ge.yet.game.blockblast.session.BlockBlastSession
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
-@GraphExtension(MiniAppSessionScope::class)
+@GraphExtension(
+    scope = MiniAppSessionScope::class,
+    bindingContainers = [BlockBlastSessionBindings::class],
+)
 interface BlockBlastSessionGraph {
     val session: BlockBlastSession
 

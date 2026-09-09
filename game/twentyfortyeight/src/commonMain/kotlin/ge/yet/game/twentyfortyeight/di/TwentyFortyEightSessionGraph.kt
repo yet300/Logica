@@ -8,7 +8,10 @@ import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.TwentyFortyEightSession
 
-@GraphExtension(MiniAppSessionScope::class)
+@GraphExtension(
+    scope = MiniAppSessionScope::class,
+    bindingContainers = [TwentyFortyEightSessionBindings::class],
+)
 interface TwentyFortyEightSessionGraph {
     val session: TwentyFortyEightSession
 

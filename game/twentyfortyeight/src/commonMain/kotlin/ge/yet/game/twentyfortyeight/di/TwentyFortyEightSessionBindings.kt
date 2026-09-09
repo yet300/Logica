@@ -3,7 +3,6 @@ package ge.yet.game.twentyfortyeight.di
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import dev.zacsweers.metro.BindingContainer
-import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.api.MiniAppSessionHost
@@ -28,7 +27,6 @@ import ge.yet.game.twentyfortyeight.store.NewGameSeedSource
 import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStoreFactory
 
-@ContributesTo(MiniAppSessionScope::class)
 @BindingContainer
 abstract class TwentyFortyEightSessionBindings {
     companion object {

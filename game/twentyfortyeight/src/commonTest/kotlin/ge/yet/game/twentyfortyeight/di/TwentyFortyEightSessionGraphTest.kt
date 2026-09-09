@@ -57,7 +57,10 @@ internal interface InspectableTwentyFortyEightAppGraph {
     val seedSource: NewGameSeedSource
 }
 
-@GraphExtension(MiniAppSessionScope::class)
+@GraphExtension(
+    scope = MiniAppSessionScope::class,
+    bindingContainers = [TwentyFortyEightSessionBindings::class],
+)
 internal interface InspectableTwentyFortyEightSessionGraph {
     val session: TwentyFortyEightSession
     val component: TwentyFortyEightSessionComponent

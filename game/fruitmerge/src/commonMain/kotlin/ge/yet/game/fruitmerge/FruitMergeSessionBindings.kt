@@ -2,7 +2,6 @@ package ge.yet.game.fruitmerge
 
 import com.arkivanov.decompose.ComponentContext
 import dev.zacsweers.metro.BindingContainer
-import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
@@ -18,7 +17,6 @@ import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
-@ContributesTo(MiniAppSessionScope::class)
 @BindingContainer
 abstract class FruitMergeSessionBindings {
     companion object {

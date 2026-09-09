@@ -7,7 +7,10 @@ import dev.zacsweers.metro.Provides
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
-@GraphExtension(MiniAppSessionScope::class)
+@GraphExtension(
+    scope = MiniAppSessionScope::class,
+    bindingContainers = [FruitMergeSessionBindings::class],
+)
 interface FruitMergeSessionGraph {
     val session: FruitMergeSession
 
