@@ -35,7 +35,7 @@ internal object MiniAppDependencyBoundary {
         "platform.CoreAudioTypes.",
         "platform.MediaToolbox.",
     )
-    private val externalAudioTokens = setOf("audio", "sound", "media3", "oboe", "klang", "korau")
+    private val forbiddenExternalAudioGroups = setOf("androidx.media3", "com.google.oboe")
     private const val AUDIO_REPLACEMENT = "MiniAppSessionContext.audio and :miniapp:audio-presets"
 
     fun violationFor(projectPath: String, configuration: String, dependencyPath: String): MiniAppDependencyViolation? {
@@ -64,9 +64,8 @@ internal object MiniAppDependencyBoundary {
             }
             return violation(projectPath, configuration, "$group:$name", replacement)
         }
+        if (group !in forbiddenExternalAudioGroups) return null
         val coordinate = "${group.orEmpty()}:$name"
-        val normalized = coordinate.lowercase()
-        if (externalAudioTokens.none { token -> token in normalized }) return null
         return violation(projectPath, configuration, coordinate, AUDIO_REPLACEMENT)
     }
 

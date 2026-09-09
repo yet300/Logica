@@ -1,11 +1,13 @@
 package com.yet.plugins.miniapp
 
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class MiniAppConventionPlugin : Plugin<Project> {
@@ -15,8 +17,8 @@ class MiniAppConventionPlugin : Plugin<Project> {
         pluginManager.apply("com.plugins.composeMultiplatform")
         pluginManager.apply("dev.zacsweers.metro")
 
-        configureResources(extensions.getByName("compose") as ExtensionAware, MiniAppResourcePackage.from(path))
-        configureAndroidResources(extensions.getByName("kotlin") as ExtensionAware)
+        configureResources(extensions.getByType(), MiniAppResourcePackage.from(path))
+        configureAndroidResources(extensions.getByType())
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.getByName("commonMain").dependencies {
                 api(project(":miniapp:metro"))
@@ -41,9 +43,9 @@ class MiniAppConventionPlugin : Plugin<Project> {
             dependsOn("compileAndroidMain")
             dependsOn("compileKotlinIosSimulatorArm64")
         }
-        val configurationContainer = configurations
-        gradle.projectsEvaluated {
-            val messages = configurationContainer.toList()
+        validate.configure {
+            violations.set(providers.provider {
+                configurations.toList()
                 .filter { it.isCanBeDeclared }
                 .flatMap { configuration ->
                     val projectViolations = configuration.dependencies
@@ -69,24 +71,21 @@ class MiniAppConventionPlugin : Plugin<Project> {
                 }
                 .distinct()
                 .sorted()
-            validate.configure { violations.set(messages) }
+            })
         }
         tasks.matching { it.name == "check" || it.name == "allTests" }.configureEach { dependsOn(validate) }
     }
 
-    private fun configureResources(compose: ExtensionAware, resourcePackage: String) {
-        val resources = requireNotNull(compose.extensions.findByName("resources")) {
-            "Compose resources extension is unavailable"
+    private fun configureResources(compose: ComposeExtension, resourcePackage: String) {
+        compose.extensions.configure<ResourcesExtension>("resources") {
+            publicResClass = false
+            packageOfResClass = resourcePackage
         }
-        resources.javaClass.getMethod("setPublicResClass", Boolean::class.javaPrimitiveType).invoke(resources, false)
-        resources.javaClass.getMethod("setPackageOfResClass", String::class.java).invoke(resources, resourcePackage)
     }
 
-    private fun configureAndroidResources(kotlin: ExtensionAware) {
-        val android = requireNotNull(kotlin.extensions.findByName("android")) {
-            "Kotlin Android library extension is unavailable"
+    private fun configureAndroidResources(kotlin: KotlinMultiplatformExtension) {
+        kotlin.extensions.configure<KotlinMultiplatformAndroidLibraryExtension>("android") {
+            androidResources.enable = true
         }
-        val resources = android.javaClass.getMethod("getAndroidResources").invoke(android)
-        resources.javaClass.getMethod("setEnable", Boolean::class.javaPrimitiveType).invoke(resources, true)
     }
 }

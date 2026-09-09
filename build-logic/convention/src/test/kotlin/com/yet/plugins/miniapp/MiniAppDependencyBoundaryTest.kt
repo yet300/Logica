@@ -65,7 +65,6 @@ class MiniAppDependencyBoundaryTest {
         listOf(
             "androidx.media3" to "media3-exoplayer",
             "com.google.oboe" to "oboe",
-            "dev.example" to "procedural-audio-engine",
         ).forEach { (group, name) ->
             assertEquals(
                 "MiniAppSessionContext.audio and :miniapp:audio-presets",
@@ -77,6 +76,15 @@ class MiniAppDependencyBoundaryTest {
                 )?.replacement,
             )
         }
+        assertEquals(
+            null,
+            MiniAppDependencyBoundary.externalViolationFor(
+                projectPath = ":game:snake",
+                configuration = "commonMainImplementation",
+                group = "dev.example",
+                name = "procedural-audio-engine",
+            ),
+        )
         assertEquals(
             null,
             MiniAppDependencyBoundary.externalViolationFor(
