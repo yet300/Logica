@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Logica</string>
-    <string name="play">Jouer</string>
     <string name="catalog_empty_title">Aucune application pour l'instant</string>
 </resources>

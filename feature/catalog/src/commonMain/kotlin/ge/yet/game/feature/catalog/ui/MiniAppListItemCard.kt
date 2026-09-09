@@ -3,7 +3,6 @@ package ge.yet.game.feature.catalog.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ListItem
@@ -15,8 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ge.yet.game.feature.catalog.generated.resources.Res
-import ge.yet.game.feature.catalog.generated.resources.play
 import ge.yet.game.miniapp.compose.MiniAppManifest
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -28,6 +25,7 @@ internal fun MiniAppListItemCard(
     modifier: Modifier = Modifier,
 ) {
     Card(
+        onClick = onPlay,
         modifier = modifier.testTag("catalog_card_${manifest.id.value}"),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -52,16 +50,6 @@ internal fun MiniAppListItemCard(
                         .clip(MaterialTheme.shapes.medium)
                         .testTag("catalog_icon_${manifest.id.value}"),
                 )
-            },
-            trailingContent = {
-                Button(
-                    onClick = onPlay,
-                    modifier = Modifier
-                        .heightIn(min = 40.dp)
-                        .testTag("catalog_play_${manifest.id.value}"),
-                ) {
-                    Text(stringResource(Res.string.play))
-                }
             },
         )
     }

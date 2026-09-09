@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.value.MutableValue
@@ -32,7 +30,7 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class CatalogContentTest {
     @Test
-    fun list_item_exposes_only_the_direct_play_action() = runComposeUiTest {
+    fun card_is_the_only_direct_launch_action() = runComposeUiTest {
         val component = FakeCatalogComponent()
         setContent { TestCatalog(component) }
 
@@ -42,8 +40,10 @@ class CatalogContentTest {
             onNodeWithTag("catalog_content").getUnclippedBoundsInRoot(),
             onNodeWithTag("catalog_ambient_background").getUnclippedBoundsInRoot(),
         )
-        onNodeWithTag("catalog_card_game.blockblast").assertHasNoClickAction()
-        onNodeWithTag("catalog_play_game.blockblast").performClick()
+        onNodeWithTag("catalog_play_game.blockblast").assertDoesNotExist()
+        onNodeWithTag("catalog_card_game.blockblast")
+            .assertHasClickAction()
+            .performClick()
         assertEquals(listOf(component.manifest.id), component.played)
     }
 
@@ -54,35 +54,6 @@ class CatalogContentTest {
 
         onNodeWithText("No apps yet").assertDoesNotExist()
         onNodeWithTag("catalog_card_game.blockblast").assertIsDisplayed()
-    }
-
-    @Test
-    fun long_press_does_not_open_a_context_menu() = runComposeUiTest {
-        val component = FakeCatalogComponent()
-        setContent { TestCatalog(component) }
-
-        onNodeWithTag("catalog_card_game.blockblast")
-            .performTouchInput { longClick() }
-
-        onNodeWithTag("catalog_menu_play_game.blockblast").assertDoesNotExist()
-        onNodeWithTag("catalog_menu_details_game.blockblast").assertDoesNotExist()
-        onNodeWithTag("catalog_details_dialog").assertDoesNotExist()
-    }
-
-    @Test
-    fun icon_and_play_action_are_vertically_centered() = runComposeUiTest {
-        val component = FakeCatalogComponent()
-        setContent { TestCatalog(component) }
-
-        val icon = onNodeWithTag(
-            testTag = "catalog_icon_game.blockblast",
-            useUnmergedTree = true,
-        ).getUnclippedBoundsInRoot()
-        val play = onNodeWithTag("catalog_play_game.blockblast").getUnclippedBoundsInRoot()
-        val iconCenterY = icon.top + (icon.bottom - icon.top) / 2
-        val playCenterY = play.top + (play.bottom - play.top) / 2
-
-        assertEquals(iconCenterY, playCenterY)
     }
 
     @Test
@@ -121,7 +92,6 @@ class CatalogContentTest {
             title = Res.string.app_name,
             description = Res.string.catalog_empty_title,
             icon = Res.drawable.catalog_placeholder,
-            cover = null,
             category = MiniAppCategoryId("game"),
             sortPriority = 0,
         )

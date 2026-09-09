@@ -10,7 +10,6 @@ data class MiniAppManifest(
     val title: StringResource,
     val description: StringResource,
     val icon: DrawableResource,
-    val cover: DrawableResource?,
     val category: MiniAppCategoryId,
     val sortPriority: Int,
 )

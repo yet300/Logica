@@ -24,7 +24,6 @@ internal val manifests = listOf(
         title = Res.string.app_name,
         description = Res.string.catalog_empty_title,
         icon = Res.drawable.catalog_placeholder,
-        cover = null,
         category = MiniAppCategoryId("game"),
         sortPriority = 0,
     ),

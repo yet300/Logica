@@ -818,7 +818,6 @@ class MiniAppRuntimeCoordinatorTest {
             title = StringResource("test:${id.value}:title", "title", emptySet()),
             description = StringResource("test:${id.value}:description", "description", emptySet()),
             icon = DrawableResource("test:${id.value}:icon", emptySet()),
-            cover = null,
             category = MiniAppCategoryId("game"),
             sortPriority = 0,
         )

@@ -41,7 +41,6 @@ import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 @DependencyGraph(
     scope = AppScope::class,
@@ -89,7 +88,6 @@ class FruitMergePluginContractTest {
         assertEquals(Res.string.miniapp_title, plugin.manifest.title)
         assertEquals(Res.string.miniapp_description, plugin.manifest.description)
         assertEquals(Res.drawable.miniapp_icon, plugin.manifest.icon)
-        assertNull(plugin.manifest.cover)
         assertEquals(MiniAppCategoryId("game"), plugin.manifest.category)
         assertEquals(0, plugin.manifest.sortPriority)
     }

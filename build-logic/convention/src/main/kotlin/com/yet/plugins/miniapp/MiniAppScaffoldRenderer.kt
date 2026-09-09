@@ -347,7 +347,7 @@ internal class MiniAppScaffoldRenderer(
         ) : MiniAppPlugin {
             override val manifest = MiniAppManifest(
                 id = MiniAppId("$id"), title = Res.string.miniapp_title, description = Res.string.miniapp_description,
-                icon = Res.drawable.miniapp_icon, cover = null, category = MiniAppCategoryId("${segments.first()}"), sortPriority = 0,
+                icon = Res.drawable.miniapp_icon, category = MiniAppCategoryId("${segments.first()}"), sortPriority = 0,
             )
             override fun createSession(context: MiniAppSessionContext): MiniAppSession {
                 val graph = graphFactory.$graphFactoryMethod(context)

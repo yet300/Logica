@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Logica</string>
-    <string name="play">खेलें</string>
     <string name="catalog_empty_title">अभी कोई ऐप नहीं है</string>
 </resources>

@@ -205,7 +205,6 @@ class DefaultMiniAppRegistryTest {
                         title = fakeTitle,
                         description = fakeDescription,
                         icon = fakeIcon,
-                        cover = null,
                         category = MiniAppCategoryId("game"),
                         sortPriority = sortPriority,
                     )

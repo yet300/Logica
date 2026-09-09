@@ -95,7 +95,6 @@ class DefaultCatalogComponentTest {
             title = StringResource("test:$id:title", "title", emptySet()),
             description = StringResource("test:$id:description", "description", emptySet()),
             icon = DrawableResource("test:$id:icon", emptySet()),
-            cover = null,
             category = MiniAppCategoryId("game"),
             sortPriority = 0,
         )

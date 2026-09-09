@@ -37,6 +37,7 @@ class CreateMiniAppTaskTest {
         assertEquals(true, plugin.contains("import ge.yet.game.snake.generated.resources.miniapp_title"))
         assertEquals(true, plugin.contains("import ge.yet.game.snake.generated.resources.miniapp_description"))
         assertEquals(true, plugin.contains("import ge.yet.game.snake.generated.resources.miniapp_icon"))
+        assertEquals(false, plugin.contains("cover ="))
         assertContains(plugin, "RetainedMiniAppSession(graph, graph.session)")
         assertContains(plugin, "graphFactory.createGameSnakeSessionGraph(")
         val sessionGraph = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeSessionGraph.kt").readText()

@@ -299,9 +299,10 @@ maintainer references, not authorization for contributors to modify the engine.
 
 The catalog uses a centered `Logica` app bar and an adaptive grid: one column
 below 840 dp and two columns at or above it, capped at 1200 dp. Each host-owned
-card contains one Material 3 `ListItem`, and its trailing Play button launches
-the MiniApp. Card details, context menus, Share actions and deep links are
-deliberately deferred and must not be exposed as inert catalog UI.
+clickable card contains one Material 3 `ListItem` and launches the MiniApp as a
+single action; it contains no nested Play button or trailing affordance. The
+manifest exposes no cover art or per-game catalog colors. Details dialogs,
+context menus, Share actions and deep links are not part of the catalog UI.
 
 ## Source Placement and Architecture
 

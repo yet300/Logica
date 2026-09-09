@@ -46,8 +46,5 @@ object MiniAppContractAssertions {
         assertTrue(getString(manifest.description).isNotBlank())
         val environment = getSystemResourceEnvironment()
         assertTrue(getDrawableResourceBytes(environment, manifest.icon).isNotEmpty())
-        manifest.cover?.let { cover ->
-            assertTrue(getDrawableResourceBytes(environment, cover).isNotEmpty())
-        }
     }
 }

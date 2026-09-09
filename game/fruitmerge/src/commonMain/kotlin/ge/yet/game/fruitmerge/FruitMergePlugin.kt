@@ -25,7 +25,6 @@ class FruitMergePlugin(
         title = Res.string.miniapp_title,
         description = Res.string.miniapp_description,
         icon = Res.drawable.miniapp_icon,
-        cover = null,
         category = MiniAppCategoryId("game"),
         sortPriority = 0,
     )

@@ -82,7 +82,6 @@ class MiniAppContractsTest {
                     title = StringResource("fake_title", "fake_title", emptySet()),
                     description = StringResource("fake_description", "fake_description", emptySet()),
                     icon = DrawableResource("fake_icon", emptySet()),
-                    cover = null,
                     category = MiniAppCategoryId("game"),
                     sortPriority = 0,
                 )

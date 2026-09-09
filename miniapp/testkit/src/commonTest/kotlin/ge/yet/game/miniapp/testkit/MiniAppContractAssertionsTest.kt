@@ -127,7 +127,6 @@ class MiniAppContractAssertionsTest {
             title = StringResource("test:title", "title", emptySet()),
             description = StringResource("test:description", "description", emptySet()),
             icon = DrawableResource("test:icon", emptySet()),
-            cover = null,
             category = MiniAppCategoryId("sample"),
             sortPriority = 0,
         )
