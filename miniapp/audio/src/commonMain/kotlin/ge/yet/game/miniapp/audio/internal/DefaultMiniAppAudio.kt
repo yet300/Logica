@@ -18,13 +18,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.roundToInt
 
 internal class DefaultMiniAppAudio(
-    private val backend: PlatformAudioSinkSession?,
+    backendFactory: () -> PlatformAudioSinkSession?,
     private val diagnostics: AudioDiagnostics,
     initialVisibility: MiniAppVisibility,
     initialMusicEnabled: Boolean,
     initialSfxEnabled: Boolean,
     private val onClosed: () -> Unit,
 ) : MiniAppAudio {
+    private val backend = lazy(backendFactory)
     private val state = MutableStateFlow(
         State(
             visibility = initialVisibility,
@@ -32,10 +33,6 @@ internal class DefaultMiniAppAudio(
             sfxEnabled = initialSfxEnabled,
         ),
     )
-
-    init {
-        updateBackendPolicy()
-    }
 
     override fun playMusic(program: AudioProgram): AudioCommandResult {
         rejectedWhenUnavailable()?.let { return it }
@@ -53,7 +50,8 @@ internal class DefaultMiniAppAudio(
 
     override fun stopMusic(fadeOut: AudioDuration): AudioCommandResult {
         rejectedWhenUnavailable()?.let { return it }
-        val fadeFrames = (fadeOut.seconds * requireNotNull(backend).sampleRate).roundToInt()
+        val activeBackend = existingBackend() ?: return AudioCommandResult.Accepted
+        val fadeFrames = (fadeOut.seconds * activeBackend.sampleRate).roundToInt()
         return submit { it.stopMusic(fadeFrames) }.also { result ->
             if (result === AudioCommandResult.Accepted) updateState { it.copy(currentMusic = null) }
         }
@@ -122,7 +120,7 @@ internal class DefaultMiniAppAudio(
     fun drainDiagnostics() {
         if (state.value.closed) return
         try {
-            backend?.drainDiagnostics()?.let(diagnostics::report)
+            existingBackend()?.drainDiagnostics()?.let(diagnostics::report)
         } catch (error: Exception) {
             diagnostics.backendFailure(error)
         }
@@ -132,7 +130,7 @@ internal class DefaultMiniAppAudio(
         val previous = closeState() ?: return
         previous.visibilityJob?.cancel()
         try {
-            backend?.release()
+            existingBackend()?.release()
         } catch (error: Exception) {
             diagnostics.backendFailure(error)
         } finally {
@@ -142,13 +140,12 @@ internal class DefaultMiniAppAudio(
 
     private fun rejectedWhenUnavailable(): AudioCommandResult.Rejected? = when {
         state.value.closed -> AudioCommandResult.Rejected(AudioCommandRejection.SESSION_CLOSED)
-        backend == null -> AudioCommandResult.Rejected(AudioCommandRejection.BACKEND_UNAVAILABLE)
         else -> null
     }
 
     private fun updateBackendPolicy(current: State = state.value) {
         try {
-            backend?.updatePolicy(policy(current))
+            existingBackend()?.updatePolicy(policy(current))
         } catch (error: Exception) {
             diagnostics.backendFailure(error)
         }
@@ -193,7 +190,18 @@ internal class DefaultMiniAppAudio(
 
     private inline fun submit(operation: (PlatformAudioSinkSession) -> AudioRuntimeSubmitResult): AudioCommandResult =
         try {
-            when (operation(requireNotNull(backend))) {
+            val activeBackend = backend.value
+                ?: return AudioCommandResult.Rejected(AudioCommandRejection.BACKEND_UNAVAILABLE)
+            if (state.value.closed) {
+                try {
+                    activeBackend.release()
+                } catch (error: Exception) {
+                    diagnostics.backendFailure(error)
+                }
+                return AudioCommandResult.Rejected(AudioCommandRejection.SESSION_CLOSED)
+            }
+            activeBackend.updatePolicy(policy(state.value))
+            when (operation(activeBackend)) {
                 AudioRuntimeSubmitResult.Accepted,
                 AudioRuntimeSubmitResult.AcceptedAfterEviction,
                 AudioRuntimeSubmitResult.Coalesced,
@@ -207,6 +215,9 @@ internal class DefaultMiniAppAudio(
             diagnostics.backendFailure(error)
             AudioCommandResult.Rejected(AudioCommandRejection.BACKEND_UNAVAILABLE)
         }
+
+    private fun existingBackend(): PlatformAudioSinkSession? =
+        if (backend.isInitialized()) backend.value else null
 
     private data class State(
         val visibility: MiniAppVisibility,

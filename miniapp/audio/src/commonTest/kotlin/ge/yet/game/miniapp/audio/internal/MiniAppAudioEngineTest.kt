@@ -42,8 +42,7 @@ class MiniAppAudioEngineTest {
         assertNotSame(first, second)
         assertRejected(first.playMusic(musicProgram()), AudioCommandRejection.SESSION_CLOSED)
         assertEquals(AudioCommandResult.Accepted, second.playMusic(musicProgram()))
-        assertEquals(listOf(ID to 1L, ID to 2L), setup.sink.opened)
-        assertEquals(1, setup.sink.sessions.first().releaseCount)
+        assertEquals(listOf(ID to 2L), setup.sink.opened)
     }
 
     @Test
@@ -52,10 +51,9 @@ class MiniAppAudioEngineTest {
         val visibility = MutableVisibility()
         val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility)
         runCurrent()
-
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(sfxProgram(), SFX))
         val backend = setup.sink.sessions.single()
         assertEquals(AudioSessionPolicy.Active, backend.policies.last())
-        assertEquals(AudioCommandResult.Accepted, audio.playSfx(sfxProgram(), SFX))
 
         visibility.set(MiniAppVisibility.OBSCURED)
         runCurrent()
@@ -72,6 +70,7 @@ class MiniAppAudioEngineTest {
         val setup = setup(backgroundScope)
         val lifecycle = LifecycleRegistry().also(LifecycleRegistry::resume)
         val audio = setup.engine.openSession(ID, 7, lifecycle, visibility())
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
         val backend = setup.sink.sessions.single()
 
         lifecycle.destroy()
@@ -90,6 +89,7 @@ class MiniAppAudioEngineTest {
         backgroundScope.launch { setup.engine.observeSettings() }
         val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
         runCurrent()
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
         val backend = setup.sink.sessions.single()
 
         settings.musicEnabled.value = false
@@ -119,15 +119,37 @@ class MiniAppAudioEngineTest {
 
         val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
 
+        assertEquals(emptyList(), setup.sink.opened)
         assertRejected(audio.playMusic(musicProgram()), AudioCommandRejection.BACKEND_UNAVAILABLE)
         advanceUntilIdle()
+    }
+
+    @Test
+    fun `close during lazy backend creation releases the backend and rejects the command`() {
+        val backend = RecordingSinkSession()
+        lateinit var audio: DefaultMiniAppAudio
+        audio = DefaultMiniAppAudio(
+            backendFactory = {
+                audio.close()
+                backend
+            },
+            diagnostics = AudioDiagnostics(RecordingCrashlytics()),
+            initialVisibility = MiniAppVisibility.ACTIVE,
+            initialMusicEnabled = true,
+            initialSfxEnabled = true,
+            onClosed = {},
+        )
+
+        assertRejected(audio.playMusic(musicProgram()), AudioCommandRejection.SESSION_CLOSED)
+        assertEquals(1, backend.releaseCount)
     }
 
     @Test
     fun `repeated runtime diagnostics are drained outside the sink callback`() = runTest {
         val crashlytics = RecordingCrashlytics()
         val setup = setup(backgroundScope, crashlytics = crashlytics)
-        setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
         val backend = setup.sink.sessions.single()
         backend.diagnostics = AudioRuntimeDiagnosticsSnapshot(
             validationRejections = 1,

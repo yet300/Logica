@@ -12,6 +12,7 @@ import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.audio.AudioControlName
 import ge.yet.game.miniapp.audio.CompiledAudioProgram
 import ge.yet.game.miniapp.audio.SfxName
+import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
@@ -101,6 +102,7 @@ private class AndroidAudioSinkSession(
         maxCommandsPerBlock = MAX_COMMANDS_PER_BLOCK,
     )
     private val commandLock = ReentrantLock()
+    private val wakeSignal = Semaphore(0)
     private val running = AtomicBoolean(true)
     private val released = AtomicBoolean(false)
     private val callbackFailures = AtomicLong()
@@ -119,7 +121,10 @@ private class AndroidAudioSinkSession(
     }
 
     override fun updatePolicy(policy: AudioSessionPolicy) {
-        if (!released.get()) this.policy = policy
+        if (!released.get()) {
+            this.policy = policy
+            wakeSignal.release()
+        }
     }
 
     override fun playMusic(program: CompiledAudioProgram): AudioRuntimeSubmitResult =
@@ -160,7 +165,7 @@ private class AndroidAudioSinkSession(
         if (released.get()) return AudioRuntimeSubmitResult.RejectedDestroyed
         return commandLock.withLock {
             if (released.get()) AudioRuntimeSubmitResult.RejectedDestroyed else runtime.submit(command)
-        }
+        }.also { wakeSignal.release() }
     }
 
     private fun writeLoop() {
@@ -193,7 +198,7 @@ private class AndroidAudioSinkSession(
                         focus = AndroidAudioFocusChange.Gain
                         appliedFocus = null
                     }
-                    Thread.sleep(PAUSED_POLL_MILLIS)
+                    awaitWork()
                     continue
                 }
 
@@ -212,17 +217,20 @@ private class AndroidAudioSinkSession(
                         platform.abandonAudioFocus()
                         focusHeld = false
                     }
-                    Thread.sleep(PAUSED_POLL_MILLIS)
+                    awaitWork()
                     continue
                 }
                 if (!focusHeld) {
                     focus = AndroidAudioFocusChange.Gain
                     focusHeld = platform.requestAudioFocus { change ->
-                        if (!released.get()) focus = change
+                        if (!released.get()) {
+                            focus = change
+                            wakeSignal.release()
+                        }
                     }
                     appliedFocus = null
                     if (!focusHeld) {
-                        Thread.sleep(PAUSED_POLL_MILLIS)
+                        awaitWork()
                         continue
                     }
                 }
@@ -269,6 +277,12 @@ private class AndroidAudioSinkSession(
     private fun writePcm16Block(): Int {
         interleavePcm16(left, right, pcm16Interleaved, frameCapacity)
         return track.write(pcm16Interleaved, frameCapacity * STEREO_CHANNEL_COUNT)
+    }
+
+    private fun awaitWork() {
+        if (!running.get()) return
+        wakeSignal.acquire()
+        wakeSignal.drainPermits()
     }
 
     private inline fun tryPlatform(operation: () -> Unit) {
@@ -443,5 +457,4 @@ private const val STEREO_CHANNEL_COUNT = 2
 private const val MIN_BLOCK_FRAMES = 64
 private const val COMMAND_QUEUE_CAPACITY = 64
 private const val MAX_COMMANDS_PER_BLOCK = 8
-private const val PAUSED_POLL_MILLIS = 5L
 private const val DUCK_VOLUME = 0.2f

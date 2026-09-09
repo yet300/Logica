@@ -32,15 +32,16 @@ internal class DefaultMiniAppAudioEngine(
         visibility: MiniAppVisibilitySource,
     ): MiniAppAudio {
         active.value?.audio?.close()
-        val backend = try {
-            sink.openSession(id, sessionKey)
-        } catch (error: Exception) {
-            diagnostics.backendFailure(error)
-            null
-        }
         lateinit var audio: DefaultMiniAppAudio
         audio = DefaultMiniAppAudio(
-            backend = backend,
+            backendFactory = {
+                try {
+                    sink.openSession(id, sessionKey)
+                } catch (error: Exception) {
+                    diagnostics.backendFailure(error)
+                    null
+                }
+            },
             diagnostics = diagnostics,
             initialVisibility = visibility.visibility.value,
             initialMusicEnabled = settings.musicEnabled.value,
