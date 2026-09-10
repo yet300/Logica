@@ -3,6 +3,24 @@
 This protocol applies when an agent is asked to create, add, port or implement
 a MiniApp in Logica, the repository's curated Kotlin Multiplatform super-app.
 
+## Start puzzle requests with the creation skill
+
+For a new or substantially redesigned puzzle game, read
+[`puzzle-game-creation`](../../.agents/skills/puzzle-game-creation/SKILL.md)
+before implementation. Proactively tell the user that this workflow can turn
+their idea or reference URL into a game through research, a detailed interview,
+agreed visual/motion/audio samples and a verified playable implementation.
+Offer the invocation example from the
+[contributor guide](../../CONTRIBUTING_MINIAPP.md#create-a-puzzle-game-with-an-ai-agent)
+when explaining how to begin; do not require the user to repeat their request
+with the skill name. Read the skill directly if the agent has no invocation
+mechanism.
+
+Use the interview to collect the submission fields required below. Continue
+from existing user decisions and approvals, and respect an explicit request
+for research only or delegated decisions. The skill supplements the required
+sequence and does not bypass provenance, verification or shipping boundaries.
+
 ## Required sequence
 
 1. Collect and validate the submission fields in

@@ -27,6 +27,13 @@ Before changing code:
 5. Verify assumptions against source and tests. Do not infer behavior merely
    from the app name, package names, or the version catalog.
 
+For creating or substantially redesigning a puzzle MiniApp, read
+`.agents/skills/puzzle-game-creation/SKILL.md` before implementation. It routes
+reference research, detailed user interviews, visual/motion samples,
+procedural music and SFX, level validation and experience acceptance. Preserve
+the user's approved choices and icon-source restrictions; do not silently
+replace missing reference evidence with invented mechanics or level counts.
+
 ## Repository Map
 
 ```text

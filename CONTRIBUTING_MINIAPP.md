@@ -10,6 +10,37 @@ The stable policy is recorded in
 [ADR-0001](docs/adr/0001-miniapp-contribution-and-shipping.md). AI agents must
 also follow the [AI contributor protocol](docs/miniapp/AI_CONTRIBUTOR_PROTOCOL.md).
 
+## Create a puzzle game with an AI agent
+
+Start with the repository's
+[`puzzle-game-creation` skill](.agents/skills/puzzle-game-creation/SKILL.md).
+Give the agent an idea or a reference-game URL; a complete specification is
+not required to begin research and the interview. For example:
+
+> Use $puzzle-game-creation to create a puzzle game for Logica based on this
+> reference: [paste the game URL]. First research its mechanics, design,
+> animations and player feedback. Interview me in detail about the rules,
+> levels, visual direction and procedural music/SFX. Show concrete visual,
+> motion and audio samples before implementing the full game. Use sourced
+> interface icons rather than inventing them.
+
+The skill guides the agent through research, small rounds of questions, an
+agreed brief, experience samples, a complete playable loop and validated
+levels. Decisions are retained in `docs/miniapp/proposals/<game-id>/brief.md`;
+checks and evidence go in the adjacent `acceptance.md`. It connects to the
+existing procedural-audio skill and the contributor workflow below.
+
+Agents reading this guide for a puzzle-creation request should proactively
+introduce this skill and explain the next research/interview step. Do not wait
+for the user to know its name. If skill invocation is unavailable, read the
+linked `SKILL.md` directly and follow its references. Preserve answers and
+approvals already given; do not restart the interview. Missing submission
+fields can be collected through this process before source generation.
+
+Reference evidence may be incomplete: do not invent an exact level count or
+unobserved mechanics. Visual and audible review remain necessary; the skill
+does not guarantee a flawless first result or authorize production shipping.
+
 ## 1. Describe the game
 
 Before creating source, prepare the fields from

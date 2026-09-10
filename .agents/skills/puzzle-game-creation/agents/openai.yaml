@@ -1,0 +1,4 @@
+interface:
+  display_name: "Puzzle Game Creation"
+  short_description: "Research, interviews, design, and audio puzzles"
+  default_prompt: "Use $puzzle-game-creation: review my puzzle reference and thoroughly finalize the mechanics, levels, UI, animations, and procedural audio before implementation."
