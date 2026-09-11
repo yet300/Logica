@@ -8,7 +8,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import ge.yet.game.fruitmerge.session.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
 import kotlin.math.min
 import kotlin.math.sin
 

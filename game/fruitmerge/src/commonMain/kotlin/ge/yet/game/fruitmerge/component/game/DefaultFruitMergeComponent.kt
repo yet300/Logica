@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.session
+package ge.yet.game.fruitmerge.component.game
 
 import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
@@ -8,9 +8,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import dev.zacsweers.metro.Inject
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.fruitmerge.domain.model.TargetingMode
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import kotlinx.coroutines.CoroutineStart

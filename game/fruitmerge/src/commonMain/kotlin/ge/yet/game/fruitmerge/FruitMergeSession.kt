@@ -7,7 +7,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
 import ge.yet.game.fruitmerge.ui.FruitMergeTestTags
 import ge.yet.game.fruitmerge.ui.MarketStallBackground
 import ge.yet.game.fruitmerge.ui.MarketPriceTag

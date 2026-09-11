@@ -21,6 +21,7 @@ import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.createGraph
+import ge.yet.game.fruitmerge.di.FruitMergeSessionGraph
 import ge.yet.game.fruitmerge.generated.resources.Res
 import ge.yet.game.fruitmerge.generated.resources.miniapp_description
 import ge.yet.game.fruitmerge.generated.resources.miniapp_icon

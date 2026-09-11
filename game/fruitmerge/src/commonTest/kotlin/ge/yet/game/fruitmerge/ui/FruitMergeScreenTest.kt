@@ -29,10 +29,10 @@ import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.FruitMergeState
 import ge.yet.game.fruitmerge.domain.model.RunPhase
 import ge.yet.game.fruitmerge.domain.model.Vec2
-import ge.yet.game.fruitmerge.session.FruitMergeComponent
-import ge.yet.game.fruitmerge.session.PaidAction
-import ge.yet.game.fruitmerge.session.PaidActionToken
-import ge.yet.game.fruitmerge.session.TutorialStep
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.PaidAction
+import ge.yet.game.fruitmerge.component.game.PaidActionToken
+import ge.yet.game.fruitmerge.component.game.TutorialStep
 import ge.yet.game.uikit.theme.LogicaTheme
 import ge.yet.game.uikit.theme.PieceColors
 import kotlinx.coroutines.flow.Flow

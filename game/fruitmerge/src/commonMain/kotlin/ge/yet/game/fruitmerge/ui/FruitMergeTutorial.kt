@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.generated.resources.Res
 import ge.yet.game.fruitmerge.generated.resources.tutorial_skip
-import ge.yet.game.fruitmerge.session.TutorialStep
+import ge.yet.game.fruitmerge.component.game.TutorialStep
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs

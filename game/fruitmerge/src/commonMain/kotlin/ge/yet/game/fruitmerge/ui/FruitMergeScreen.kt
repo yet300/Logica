@@ -75,8 +75,8 @@ import ge.yet.game.fruitmerge.generated.resources.lime
 import ge.yet.game.fruitmerge.generated.resources.shake_with_ad
 import ge.yet.game.fruitmerge.generated.resources.shake_with_count
 import ge.yet.game.fruitmerge.generated.resources.strawberry
-import ge.yet.game.fruitmerge.session.FruitMergeComponent
-import ge.yet.game.fruitmerge.session.PaidActionToken
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.PaidActionToken
 import ge.yet.game.uikit.adaptive.AdaptiveGameLayoutPolicy
 import ge.yet.game.uikit.adaptive.AdaptiveGameScaffold
 import ge.yet.game.uikit.components.icon.BombFilled

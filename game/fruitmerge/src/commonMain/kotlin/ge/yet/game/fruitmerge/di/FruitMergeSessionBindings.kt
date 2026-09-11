@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge
+package ge.yet.game.fruitmerge.di
 
 import com.arkivanov.decompose.ComponentContext
 import dev.zacsweers.metro.Binds
@@ -11,12 +11,13 @@ import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
 import ge.yet.game.fruitmerge.domain.repository.GameCommitWriter
 import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
-import ge.yet.game.fruitmerge.session.DefaultFruitMergeComponentFactory
-import ge.yet.game.fruitmerge.session.DefaultFruitMergeSessionComponent
-import ge.yet.game.fruitmerge.session.DefaultFruitMergeSessionComponentFactory
-import ge.yet.game.fruitmerge.session.FruitMergeComponent
-import ge.yet.game.fruitmerge.session.FruitMergeSessionComponent
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
+import ge.yet.game.fruitmerge.FruitMergeSession
+import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponentFactory
+import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponentFactory
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
 import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 

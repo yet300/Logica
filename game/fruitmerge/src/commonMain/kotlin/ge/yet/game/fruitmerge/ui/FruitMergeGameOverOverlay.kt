@@ -30,7 +30,7 @@ import ge.yet.game.fruitmerge.generated.resources.game_over
 import ge.yet.game.fruitmerge.generated.resources.largest_fruit
 import ge.yet.game.fruitmerge.generated.resources.new_game
 import ge.yet.game.fruitmerge.generated.resources.score
-import ge.yet.game.fruitmerge.session.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
 import ge.yet.game.uikit.components.score.compactScore
 import org.jetbrains.compose.resources.stringResource
 

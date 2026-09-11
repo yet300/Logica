@@ -1,12 +1,12 @@
-package ge.yet.game.fruitmerge.session
+package ge.yet.game.fruitmerge.component.game
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.FruitMergeState
 import ge.yet.game.fruitmerge.domain.model.RunPhase
 import ge.yet.game.fruitmerge.domain.model.Vec2
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
 import kotlinx.coroutines.flow.Flow
 
 internal enum class PaidAction {

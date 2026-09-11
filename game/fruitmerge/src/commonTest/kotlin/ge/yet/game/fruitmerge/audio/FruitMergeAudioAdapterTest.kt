@@ -2,7 +2,7 @@ package ge.yet.game.fruitmerge.audio
 
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.Vec2
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.miniapp.audio.AudioCommandResult
 import ge.yet.game.miniapp.audio.AudioControlName
 import ge.yet.game.miniapp.audio.AudioDuration

@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.session
+package ge.yet.game.fruitmerge.component.session
 
 import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
@@ -9,8 +9,11 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import dev.zacsweers.metro.Inject
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
-import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.PaidActionToken
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStoreFactory
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch

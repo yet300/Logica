@@ -1,15 +1,18 @@
-package ge.yet.game.fruitmerge.session
+package ge.yet.game.fruitmerge.component.session
 
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.fruitmerge.TestFruitMergeRules
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
+import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponentFactory
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.game.TutorialStep
 import ge.yet.game.fruitmerge.domain.model.FruitMergeState
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.RunPhase
 import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.fruitmerge.data.FruitMergePersistence
-import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppStorage
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource

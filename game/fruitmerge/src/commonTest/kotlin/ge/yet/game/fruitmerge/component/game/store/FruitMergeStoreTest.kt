@@ -1,7 +1,7 @@
-package ge.yet.game.fruitmerge.store
+package ge.yet.game.fruitmerge.component.game.store
 
-import ge.yet.game.fruitmerge.session.store.FruitMergeStore
-import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStoreFactory
 import com.arkivanov.mvikotlin.core.rx.observer
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.fruitmerge.TestFruitMergeRules

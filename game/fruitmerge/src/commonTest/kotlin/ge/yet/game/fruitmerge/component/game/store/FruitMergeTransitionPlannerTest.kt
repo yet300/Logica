@@ -1,5 +1,7 @@
-package ge.yet.game.fruitmerge.session.store
+package ge.yet.game.fruitmerge.component.game.store
 
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeTransitionPlanner
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
 import ge.yet.game.fruitmerge.domain.model.FruitBody
 import ge.yet.game.fruitmerge.domain.model.FruitLevel

@@ -3,6 +3,7 @@ package ge.yet.game.fruitmerge
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
+import ge.yet.game.fruitmerge.di.FruitMergeSessionGraph
 import ge.yet.game.fruitmerge.generated.resources.Res
 import ge.yet.game.fruitmerge.generated.resources.miniapp_description
 import ge.yet.game.fruitmerge.generated.resources.miniapp_icon

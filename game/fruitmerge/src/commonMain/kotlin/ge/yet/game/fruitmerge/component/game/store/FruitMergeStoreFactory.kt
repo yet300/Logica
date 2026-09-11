@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.session.store
+package ge.yet.game.fruitmerge.component.game.store
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
