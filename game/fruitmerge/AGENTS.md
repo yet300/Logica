@@ -17,18 +17,24 @@ callbacks, Compose work, or delays. UI receives immutable models and actions; bu
   `internal`. `FruitMergeSession` is public only as the graph's unique
   Metro binding type; its constructor and state remain internal.
 - Create session-owned components through `FruitMergeSessionGraph`
-  (`di/`); every level (`component/session`, `component/game`)
-  exposes a `Factory` interface with a `Default` implementation.
-  Factories and aliases are unscoped `@Binds`;
+  (`di/`); every level (`component/session`, `component/game`,
+  `component/result`) exposes a `Factory` interface with a `Default`
+  implementation. Factories and aliases are unscoped `@Binds`;
   `@SingleIn(MiniAppSessionScope)` lives on stateful classes (engine,
-  physics, audio adapter) and on the retained component/store/session
+  physics, audio adapter) and on the retained component/session
   providers. The stateless persistence stays unscoped and plays all
   three repository roles.
-- The MVI store is session-retained and game-owned
-  (`component/game/store`); the game component receives the retained
-  store from the session factory. Pure step-label and result-reached
-  decisions live in `FruitMergeTransitionPlanner` with focused unit
-  tests; the executor keeps orchestration and side effects only.
+- The session owns a `childStack` (`Playing`, `Result`) with
+  `@Serializable` configs; `frameMode` derives from the active child.
+  The game component retains its own store per run
+  (`component/game/store`, `isNewGame` bootstrap) and reports
+  completion through an `onGameCompleted` callback with a detached
+  serializable `FruitMergeResultSnapshot`. The result screen never
+  observes the live store. New Game replaces the stack with a fresh
+  `Playing` child; Back on Result stays host-owned.
+- Pure step-label and result-reached decisions live in
+  `FruitMergeTransitionPlanner` with focused unit tests; the executor
+  keeps orchestration and side effects only.
 - Persistence splits into `domain/repository` contracts (snapshot
   loading, commit writing, tutorial flag) plus the `data/`
   implementation and schemas. Keys and schemas are frozen.

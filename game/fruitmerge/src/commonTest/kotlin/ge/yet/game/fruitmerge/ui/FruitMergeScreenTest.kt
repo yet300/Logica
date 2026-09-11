@@ -150,7 +150,7 @@ class FruitMergeScreenTest {
     }
 
     @Test
-    fun `game over is an in screen state and new game stays owned by the game component`() = runComposeUiTest {
+    fun `terminal phase keeps the board interactive behind the result stack`() = runComposeUiTest {
         val base = playingModel()
         val component = FakeFruitMergeComponent(
             base.copy(
@@ -169,12 +169,8 @@ class FruitMergeScreenTest {
             }
         }
 
-        onNodeWithTag(FruitMergeTestTags.Result).assertIsDisplayed()
-        onNodeWithTag(FruitMergeTestTags.ResultScore).assertIsDisplayed()
-        onNodeWithTag(FruitMergeTestTags.NewGame).performClick()
-
-        assertEquals(1, component.newGameCalls)
-        assertEquals(0, component.dropCalls)
+        onNodeWithTag(FruitMergeTestTags.Board).assertIsDisplayed()
+        onNodeWithTag(FruitMergeTestTags.Result).assertDoesNotExist()
     }
 
     @Test
@@ -307,7 +303,6 @@ private class FakeFruitMergeComponent(
     var shakeRequests = 0
     var dropCalls = 0
     var lastDropDragged: Boolean? = null
-    var newGameCalls = 0
     var skipTutorialCalls = 0
 
     override fun frame(elapsedSeconds: Float) = Unit
@@ -329,10 +324,6 @@ private class FakeFruitMergeComponent(
         return null
     }
     override fun completePaidAction(token: PaidActionToken) = Unit
-
-    override fun newGame() {
-        newGameCalls += 1
-    }
 
     override fun skipTutorial() {
         skipTutorialCalls += 1

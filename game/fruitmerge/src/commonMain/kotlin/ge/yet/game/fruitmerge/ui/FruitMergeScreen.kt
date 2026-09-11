@@ -280,7 +280,7 @@ internal fun FruitMergeScreen(
             boardBoundsInViewport = boardBoundsInViewport,
             modifier = Modifier.fillMaxSize(),
         )
-        if (model.screen is FruitMergeComponent.ScreenState.Playing) {
+        if (model.game.phase == RunPhase.PLAYING) {
             FruitMergeTutorial(
                 step = model.tutorialStep,
                 boardBoundsInViewport = boardBoundsInViewport,
@@ -288,15 +288,6 @@ internal fun FruitMergeScreen(
                 reducedMotion = reducedMotion,
                 onSkip = component::skipTutorial,
                 onComplete = component::completeTutorial,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-        (model.screen as? FruitMergeComponent.ScreenState.GameOver)?.let { screen ->
-            FruitMergeGameOverOverlay(
-                screen = screen,
-                faceTimeSeconds = faceTimeSeconds,
-                reducedMotion = reducedMotion,
-                onNewGame = component::newGame,
                 modifier = Modifier.fillMaxSize(),
             )
         }

@@ -2,8 +2,10 @@ package ge.yet.game.fruitmerge
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import com.arkivanov.decompose.extensions.compose.stack.Children
 import ge.yet.game.fruitmerge.component.game.PaidActionToken
+import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.ui.FruitMergeResultScreen
 import ge.yet.game.fruitmerge.ui.FruitMergeScreen
 
 @Composable
@@ -13,10 +15,19 @@ internal fun FruitMergeContent(
     requestShakeAd: (PaidActionToken) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FruitMergeScreen(
-        component = component.game,
-        requestClearAd = requestClearAd,
-        requestShakeAd = requestShakeAd,
-        modifier = modifier,
-    )
+    Children(stack = component.stack, modifier = modifier) { child ->
+        when (val instance = child.instance) {
+            is FruitMergeSessionComponent.Child.Playing -> FruitMergeScreen(
+                component = instance.component,
+                requestClearAd = requestClearAd,
+                requestShakeAd = requestShakeAd,
+                modifier = Modifier,
+            )
+
+            is FruitMergeSessionComponent.Child.Result -> FruitMergeResultScreen(
+                component = instance.component,
+                modifier = Modifier,
+            )
+        }
+    }
 }

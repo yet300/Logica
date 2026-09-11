@@ -13,10 +13,11 @@ import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.fruitmerge.FruitMergeSession
 import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponentFactory
+import ge.yet.game.fruitmerge.component.result.DefaultFruitMergeResultComponentFactory
+import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
 import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
 import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponentFactory
 import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
-import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
 import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
@@ -41,6 +42,11 @@ abstract class FruitMergeSessionBindings {
     ): FruitMergeComponent.Factory
 
     @Binds
+    internal abstract fun bindResultComponentFactory(
+        impl: DefaultFruitMergeResultComponentFactory,
+    ): FruitMergeResultComponent.Factory
+
+    @Binds
     internal abstract fun bindSessionComponentFactory(
         impl: DefaultFruitMergeSessionComponentFactory,
     ): FruitMergeSessionComponent.Factory
@@ -59,13 +65,8 @@ abstract class FruitMergeSessionBindings {
         ): DefaultFruitMergeSessionComponent =
             // Safe: the only Factory binding in this scope is DefaultFruitMergeSessionComponentFactory,
             // whose create() returns the Default type (covariant override). Concrete type is kept
-            // because provideStore exposes the retained store for graph inspection.
+            // because provideSession exposes the graph-retained session.
             factory.create(componentContext) as DefaultFruitMergeSessionComponent
-
-        @Provides
-        @SingleIn(MiniAppSessionScope::class)
-        internal fun provideStore(component: DefaultFruitMergeSessionComponent): FruitMergeStore =
-            component.retainedStore
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)

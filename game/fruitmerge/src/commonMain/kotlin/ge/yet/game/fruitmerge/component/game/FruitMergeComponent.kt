@@ -2,10 +2,9 @@ package ge.yet.game.fruitmerge.component.game
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.FruitMergeState
-import ge.yet.game.fruitmerge.domain.model.RunPhase
 import ge.yet.game.fruitmerge.domain.model.Vec2
 import kotlinx.coroutines.flow.Flow
 
@@ -39,21 +38,9 @@ internal interface FruitMergeComponent {
     fun cancelClear()
     fun requestShakeGate(): PaidActionToken?
     fun completePaidAction(token: PaidActionToken)
-    fun newGame()
     fun skipTutorial()
     fun completeTutorial()
     fun handleBack(): Boolean
-
-    sealed interface ScreenState {
-        val game: FruitMergeState
-
-        data class Playing(override val game: FruitMergeState) : ScreenState
-
-        data class GameOver(
-            override val game: FruitMergeState,
-            val largestFruit: FruitLevel,
-        ) : ScreenState
-    }
 
     sealed interface PresentationEvent {
         data class Landing(val level: FruitLevel, val position: Vec2) : PresentationEvent
@@ -68,22 +55,13 @@ internal interface FruitMergeComponent {
         val visible: Boolean = true,
         val tutorialReady: Boolean = false,
         val tutorialStep: TutorialStep? = null,
-    ) {
-        val screen: ScreenState get() = game.toScreenState()
-    }
+    )
 
     fun interface Factory {
         fun create(
             componentContext: ComponentContext,
-            store: FruitMergeStore,
+            isNewGame: Boolean,
+            onGameCompleted: (FruitMergeResultSnapshot) -> Unit,
         ): FruitMergeComponent
     }
-}
-
-private fun FruitMergeState.toScreenState(): FruitMergeComponent.ScreenState = when (phase) {
-    RunPhase.PLAYING -> FruitMergeComponent.ScreenState.Playing(this)
-    RunPhase.RESULT -> FruitMergeComponent.ScreenState.GameOver(
-        game = this,
-        largestFruit = bodies.maxByOrNull { body -> body.level.ordinal }?.level ?: previewLevel,
-    )
 }

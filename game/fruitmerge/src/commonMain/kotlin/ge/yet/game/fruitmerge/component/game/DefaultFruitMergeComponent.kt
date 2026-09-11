@@ -6,9 +6,16 @@ import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import dev.zacsweers.metro.Inject
+import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
 import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
+import ge.yet.game.fruitmerge.component.game.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
 import ge.yet.game.fruitmerge.domain.model.TargetingMode
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.miniapp.api.MiniAppVisibility
@@ -22,11 +29,17 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateDecomposeApi::class)
 internal class DefaultFruitMergeComponent(
     componentContext: ComponentContext,
-    private val store: FruitMergeStore,
+    private val gameStoreFactory: FruitMergeStoreFactory,
+    private val audio: FruitMergeAudioAdapter,
     private val tutorial: TutorialSeenRepository,
     private val visibility: MiniAppVisibilitySource,
+    private val isNewGame: Boolean,
+    private val onGameCompletedCb: (FruitMergeResultSnapshot) -> Unit,
 ) : FruitMergeComponent,
     ComponentContext by componentContext {
+    internal val store: FruitMergeStore = instanceKeeper.getStore {
+        gameStoreFactory.create(isNewGame)
+    }
     private val mutableModel = MutableValue(
         FruitMergeComponent.Model(
             game = store.state.game,
@@ -43,8 +56,10 @@ internal class DefaultFruitMergeComponent(
     private var pendingToken: PaidActionToken? = null
     private var pendingClearPaid = false
     private var alive = true
+    private var completionReported = false
 
     init {
+        audio.start()
         val scope = coroutineScope()
         scope.launch(start = CoroutineStart.UNDISPATCHED) {
             store.states.collect { state ->
@@ -52,6 +67,18 @@ internal class DefaultFruitMergeComponent(
                     game = state.game,
                     initialized = state.initialized,
                 )
+                if (state.initialized && state.game.phase == RunPhase.RESULT) {
+                    reportCompletion(state.game)
+                }
+            }
+        }
+        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            store.labels.collect { label ->
+                onStoreLabel(label)
+                audio.play(label)
+                if (label is FruitMergeStore.Label.ResultReached) {
+                    reportCompletion(store.state.game)
+                }
             }
         }
         scope.launch(start = CoroutineStart.UNDISPATCHED) {
@@ -140,13 +167,6 @@ internal class DefaultFruitMergeComponent(
         }
     }
 
-    override fun newGame() {
-        if (!alive) return
-        pendingToken = null
-        pendingClearPaid = false
-        store.accept(FruitMergeStore.Intent.NewGame)
-    }
-
     override fun skipTutorial() {
         if (!alive || model.value.tutorialStep == null) return
         finishTutorial()
@@ -183,6 +203,12 @@ internal class DefaultFruitMergeComponent(
         false
     }
 
+    private fun reportCompletion(game: FruitMergeState) {
+        if (!alive || completionReported || game.phase != RunPhase.RESULT) return
+        completionReported = true
+        onGameCompletedCb(FruitMergeResultSnapshot.from(game))
+    }
+
     private fun createToken(action: PaidAction): PaidActionToken {
         val token = PaidActionToken(
             sessionKey = sessionKey,
@@ -209,16 +235,22 @@ internal class DefaultFruitMergeComponent(
 
 @Inject
 internal class DefaultFruitMergeComponentFactory(
+    private val gameStoreFactory: FruitMergeStoreFactory,
+    private val audio: FruitMergeAudioAdapter,
     private val tutorial: TutorialSeenRepository,
     private val visibility: MiniAppVisibilitySource,
 ) : FruitMergeComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
-        store: FruitMergeStore,
+        isNewGame: Boolean,
+        onGameCompleted: (FruitMergeResultSnapshot) -> Unit,
     ): DefaultFruitMergeComponent = DefaultFruitMergeComponent(
         componentContext = componentContext,
-        store = store,
+        gameStoreFactory = gameStoreFactory,
+        audio = audio,
         tutorial = tutorial,
         visibility = visibility,
+        isNewGame = isNewGame,
+        onGameCompletedCb = onGameCompleted,
     )
 }

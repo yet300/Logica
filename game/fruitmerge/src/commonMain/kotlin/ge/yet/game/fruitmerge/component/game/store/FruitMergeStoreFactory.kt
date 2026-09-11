@@ -21,20 +21,20 @@ internal class FruitMergeStoreFactory(
     private val snapshotLoader: GameSnapshotLoader,
     private val commitWriter: GameCommitWriter,
 ) {
-    fun create(): FruitMergeStore =
+    fun create(isNewGame: Boolean = false): FruitMergeStore =
         object :
             FruitMergeStore,
             Store<FruitMergeStore.Intent, FruitMergeStore.State, FruitMergeStore.Label> by
                 storeFactory.create(
                     name = "FruitMergeStore",
                     initialState = FruitMergeStore.State(),
-                    bootstrapper = SimpleBootstrapper(Action.Initialize),
+                    bootstrapper = SimpleBootstrapper(Action.Initialize(isNewGame)),
                     executorFactory = ::ExecutorImpl,
                     reducer = ReducerImpl,
                 ) {}
 
     private sealed interface Action {
-        data object Initialize : Action
+        data class Initialize(val isNewGame: Boolean) : Action
     }
 
     private sealed interface Message {
@@ -62,8 +62,13 @@ internal class FruitMergeStoreFactory(
 
         override fun executeAction(action: Action) {
             when (action) {
-                Action.Initialize -> scope.launch {
-                    dispatch(Message.Initialized(snapshotLoader.restore()))
+                is Action.Initialize -> scope.launch {
+                    val restored = snapshotLoader.restore()
+                    dispatch(
+                        Message.Initialized(
+                            if (action.isNewGame) rules.newRun(restored) else restored,
+                        ),
+                    )
                 }
             }
         }

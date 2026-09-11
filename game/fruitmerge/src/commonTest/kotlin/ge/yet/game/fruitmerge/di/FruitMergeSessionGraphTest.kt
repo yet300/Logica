@@ -14,9 +14,9 @@ import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
 import ge.yet.game.fruitmerge.domain.engine.FruitPhysics
 import ge.yet.game.fruitmerge.data.FruitMergePersistence
+import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponent
 import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
 import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
-import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppStorage
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
@@ -53,7 +53,6 @@ internal interface InspectableFruitMergeSessionGraph {
     val session: FruitMergeSession
     val component: FruitMergeSessionComponent
     val concreteComponent: DefaultFruitMergeSessionComponent
-    val store: FruitMergeStore
     val engine: FruitMergeEngine
     val rules: FruitMergeRules
     val physics: FruitPhysics
@@ -102,12 +101,14 @@ class FruitMergeSessionGraphTest {
         val second = app.sessionFactory.createInspectableFruitMergeSessionGraph(secondContext)
 
         assertSame(first.component, first.concreteComponent)
-        assertSame(first.store, first.concreteComponent.retainedStore)
         assertSame(first.concreteComponent.game, first.concreteComponent.gameComponent)
+        // Every playing child retains its own store instance.
+        val firstStore = (first.concreteComponent.game as DefaultFruitMergeComponent).store
+        val secondStore = (second.concreteComponent.game as DefaultFruitMergeComponent).store
+        assertNotSame(firstStore, secondStore)
         assertNotSame(first.session, second.session)
         assertNotSame(first.component, second.component)
         assertNotSame(first.concreteComponent.game, second.concreteComponent.game)
-        assertNotSame(first.store, second.store)
         assertNotSame(first.audioAdapter, second.audioAdapter)
         assertNotSame(first.engine, second.engine)
         assertNotSame(first.physics, second.physics)
@@ -132,7 +133,7 @@ class FruitMergeSessionGraphTest {
 
         firstLifecycle.destroy()
         secondLifecycle.destroy()
-        first.store.dispose()
-        second.store.dispose()
+        firstStore.dispose()
+        secondStore.dispose()
     }
 }

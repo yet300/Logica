@@ -30,21 +30,20 @@ import ge.yet.game.fruitmerge.generated.resources.game_over
 import ge.yet.game.fruitmerge.generated.resources.largest_fruit
 import ge.yet.game.fruitmerge.generated.resources.new_game
 import ge.yet.game.fruitmerge.generated.resources.score
-import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
+import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
 import ge.yet.game.uikit.components.score.compactScore
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun FruitMergeGameOverOverlay(
-    screen: FruitMergeComponent.ScreenState.GameOver,
+    snapshot: FruitMergeResultSnapshot,
     faceTimeSeconds: Float,
     reducedMotion: Boolean,
     onNewGame: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val game = screen.game
     val palette = rememberFruitMergePalette()
-    val scoreState = scoreCardState(game.bestScore, game.bestImprovedInRun)
+    val scoreState = scoreCardState(snapshot.bestScore, snapshot.bestImprovedInRun)
     val largestFruitLabel = stringResource(Res.string.largest_fruit)
     Box(
         modifier = modifier
@@ -75,7 +74,7 @@ internal fun FruitMergeGameOverOverlay(
                     color = palette.ink,
                 )
                 FruitPreview(
-                    level = screen.largestFruit,
+                    level = snapshot.largestFruit,
                     faceTimeSeconds = faceTimeSeconds,
                     reducedMotion = reducedMotion,
                     modifier = Modifier
@@ -89,7 +88,7 @@ internal fun FruitMergeGameOverOverlay(
                     if (scoreState != ScoreCardState.BEST_ONLY) {
                         ResultValue(
                             label = stringResource(Res.string.score),
-                            value = game.score,
+                            value = snapshot.score,
                             tag = FruitMergeTestTags.ResultScore,
                         )
                     }
@@ -100,7 +99,7 @@ internal fun FruitMergeGameOverOverlay(
                             } else {
                                 stringResource(Res.string.best_score)
                             },
-                            value = game.bestScore,
+                            value = snapshot.bestScore,
                             tag = FruitMergeTestTags.ResultBest,
                         )
                     }
