@@ -15,8 +15,8 @@ import dev.zacsweers.metro.Inject
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStoreFactory
 import kotlinx.coroutines.CoroutineStart

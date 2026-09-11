@@ -1,5 +1,16 @@
 package ge.yet.game.twentyfortyeight.persistence
 
+import ge.yet.game.twentyfortyeight.data.CheckpointResult
+import ge.yet.game.twentyfortyeight.data.CoordinatorSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.data.PersistenceWriteException
+import ge.yet.game.twentyfortyeight.domain.model.RestoredGameData
+import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
+
 import ge.yet.game.miniapp.api.MiniAppStorage
 import ge.yet.game.miniapp.testkit.NoopMiniAppStorage
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
@@ -212,7 +223,7 @@ class SessionPersistenceCoordinatorTest {
                 revision = 3L,
                 game = null,
                 bestScore = 10L,
-                statistics = ge.yet.game.twentyfortyeight.engine.GameStatistics(),
+                statistics = ge.yet.game.twentyfortyeight.domain.model.GameStatistics(),
                 tutorialSeen = false,
                 tutorialReason = null,
                 terminal = false,

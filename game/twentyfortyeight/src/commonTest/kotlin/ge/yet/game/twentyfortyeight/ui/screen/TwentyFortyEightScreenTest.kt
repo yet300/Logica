@@ -40,9 +40,9 @@ import com.arkivanov.decompose.value.MutableValue
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
-import ge.yet.game.twentyfortyeight.engine.Board
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
 import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import ge.yet.game.twentyfortyeight.ui.gameplay.PlayingContent
 import ge.yet.game.twentyfortyeight.ui.gameplay.ScoreBestRow

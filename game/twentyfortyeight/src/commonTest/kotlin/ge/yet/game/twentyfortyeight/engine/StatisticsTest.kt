@@ -1,5 +1,13 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.maximumTileId
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.UndoResult
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

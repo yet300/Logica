@@ -1,4 +1,22 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.engine
+
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.Position
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.model.RunFacts
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
+import ge.yet.game.twentyfortyeight.domain.model.UndoLineage
+import ge.yet.game.twentyfortyeight.domain.model.UndoResult
+import ge.yet.game.twentyfortyeight.domain.model.UndoSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.UndoTileMotion
+import ge.yet.game.twentyfortyeight.domain.model.UndoTransition
+import ge.yet.game.twentyfortyeight.domain.model.VictoryTransition
 
 internal object GameRules {
     fun newGame(previous: RulesState?, seed: RngState): RulesState {

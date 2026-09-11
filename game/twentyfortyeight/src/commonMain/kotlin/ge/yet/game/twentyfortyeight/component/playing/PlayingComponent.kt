@@ -4,8 +4,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
 import ge.yet.game.twentyfortyeight.component.playing.store.OverlayState
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.playing.store.VisualTransition

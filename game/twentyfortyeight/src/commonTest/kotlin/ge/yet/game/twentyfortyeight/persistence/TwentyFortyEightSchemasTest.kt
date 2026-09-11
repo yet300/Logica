@@ -1,5 +1,14 @@
 package ge.yet.game.twentyfortyeight.persistence
 
+import ge.yet.game.twentyfortyeight.data.BestScoreV1
+import ge.yet.game.twentyfortyeight.data.CurrentGameV1
+import ge.yet.game.twentyfortyeight.data.SnapshotValidationException
+import ge.yet.game.twentyfortyeight.data.StatisticsV1
+import ge.yet.game.twentyfortyeight.domain.model.TileId
+import ge.yet.game.twentyfortyeight.data.TutorialV1
+import ge.yet.game.twentyfortyeight.data.TwentyFortyEightSchemas
+import ge.yet.game.twentyfortyeight.data.UndoV1
+
 import ge.yet.game.twentyfortyeight.diagnostics.ContractCode
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure

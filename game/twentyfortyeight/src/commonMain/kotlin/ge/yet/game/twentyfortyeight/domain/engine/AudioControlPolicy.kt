@@ -1,4 +1,11 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.engine
+
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.Position
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
 
 import kotlin.math.min
 import kotlin.math.roundToInt

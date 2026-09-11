@@ -20,7 +20,7 @@ import com.arkivanov.decompose.value.Value
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
-import ge.yet.game.twentyfortyeight.engine.Direction
+import ge.yet.game.twentyfortyeight.domain.model.Direction
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test

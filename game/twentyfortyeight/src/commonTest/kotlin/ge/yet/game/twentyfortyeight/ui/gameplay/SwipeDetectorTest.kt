@@ -2,7 +2,7 @@ package ge.yet.game.twentyfortyeight.ui.gameplay
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Velocity
-import ge.yet.game.twentyfortyeight.engine.Direction
+import ge.yet.game.twentyfortyeight.domain.model.Direction
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

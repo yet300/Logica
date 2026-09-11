@@ -1,5 +1,14 @@
 package ge.yet.game.twentyfortyeight.persistence
 
+import ge.yet.game.twentyfortyeight.data.BestScoreV1
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.domain.model.MetadataRecord
+import ge.yet.game.twentyfortyeight.data.PersistenceWriteException
+import ge.yet.game.twentyfortyeight.data.TutorialV1
+import ge.yet.game.twentyfortyeight.data.TwentyFortyEightPersistence
+import ge.yet.game.twentyfortyeight.data.TwentyFortyEightSchemas
+
 import ge.yet.game.miniapp.api.MiniAppSnapshotSpec
 import ge.yet.game.miniapp.api.MiniAppStorage
 import ge.yet.game.miniapp.testkit.NoopMiniAppStorage
@@ -7,8 +16,8 @@ import ge.yet.game.twentyfortyeight.diagnostics.ContractCode
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

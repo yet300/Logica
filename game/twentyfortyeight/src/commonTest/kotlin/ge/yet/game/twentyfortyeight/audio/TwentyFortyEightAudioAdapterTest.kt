@@ -9,8 +9,8 @@ import ge.yet.game.miniapp.audio.AudioDuration
 import ge.yet.game.miniapp.audio.AudioProgram
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
-import ge.yet.game.twentyfortyeight.engine.AudioControls
-import ge.yet.game.twentyfortyeight.engine.TileValue
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

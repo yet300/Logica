@@ -1,4 +1,11 @@
-package ge.yet.game.twentyfortyeight.persistence
+package ge.yet.game.twentyfortyeight.data
+
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.domain.model.MetadataRecord
+import ge.yet.game.twentyfortyeight.domain.model.RestoredGameData
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
@@ -7,66 +14,15 @@ import ge.yet.game.miniapp.api.MiniAppSnapshotSpec
 import ge.yet.game.miniapp.api.MiniAppStorage
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.GameState
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
 import kotlinx.coroutines.CancellationException
-
-internal enum class MetadataRecord {
-    BestScore,
-    Statistics,
-    Tutorial,
-}
-
-internal data class GameCommit(
-    val revision: Long,
-    val game: GameState,
-    val bestScore: Long,
-    val statistics: GameStatistics,
-    val tutorialSeen: Boolean,
-    val tutorialReason: TutorialCompletionReason?,
-    val metadataWrites: Set<MetadataRecord> = MetadataRecord.entries.toSet(),
-) {
-    init {
-        require(revision >= 0L) { "Revision must be non-negative: $revision" }
-        require(bestScore >= game.score) { "Best score cannot be below current score" }
-        require(tutorialSeen == (tutorialReason != null)) {
-            "Tutorial completion and reason must agree"
-        }
-    }
-}
-
-internal data class RestoredGameData(
-    val revision: Long,
-    val game: GameState?,
-    val bestScore: Long,
-    val statistics: GameStatistics,
-    val tutorialSeen: Boolean,
-    val tutorialReason: TutorialCompletionReason?,
-    val terminal: Boolean,
-)
-
-internal sealed interface LoadResult {
-    data class Loaded(
-        val data: RestoredGameData,
-        val validationFailures: Set<TwentyFortyEightFailure>,
-    ) : LoadResult
-
-    data class Failed(val failure: TwentyFortyEightFailure) : LoadResult
-}
 
 internal class PersistenceWriteException(
     val failure: TwentyFortyEightFailure.StorageWrite,
 ) : RuntimeException(failure.toString())
-
-internal fun interface GameCommitWriter {
-    suspend fun commit(storage: MiniAppStorage, commit: GameCommit)
-}
-
-internal fun interface GameSnapshotLoader {
-    suspend fun load(storage: MiniAppStorage): LoadResult
-}
 
 @Inject
 @SingleIn(AppScope::class)

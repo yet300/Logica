@@ -6,13 +6,13 @@ import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.twentyfortyeight.analytics.AnalyticsFact
 import ge.yet.game.twentyfortyeight.audio.AudioEvent
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.AudioControls
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GameState
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.MoveResult
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.engine.UndoTransition
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.UndoTransition
 
 internal interface TwentyFortyEightStore :
     Store<TwentyFortyEightStore.Intent, TwentyFortyEightStore.State, TwentyFortyEightStore.Label> {

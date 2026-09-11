@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import ge.yet.game.twentyfortyeight.engine.Direction
+import ge.yet.game.twentyfortyeight.domain.model.Direction
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

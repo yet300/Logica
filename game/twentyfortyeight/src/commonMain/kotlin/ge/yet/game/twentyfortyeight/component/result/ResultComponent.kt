@@ -1,7 +1,7 @@
 package ge.yet.game.twentyfortyeight.component.result
 
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 
 internal interface ResultComponent {
     val model: Value<Model>

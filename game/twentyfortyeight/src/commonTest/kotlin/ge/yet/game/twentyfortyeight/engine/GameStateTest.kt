@@ -1,5 +1,24 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.Position
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.model.RunFacts
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+import ge.yet.game.twentyfortyeight.domain.model.TileId
+import ge.yet.game.twentyfortyeight.domain.model.UndoResult
+import ge.yet.game.twentyfortyeight.domain.model.UndoTileMotion
+import ge.yet.game.twentyfortyeight.domain.model.UndoTransition
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

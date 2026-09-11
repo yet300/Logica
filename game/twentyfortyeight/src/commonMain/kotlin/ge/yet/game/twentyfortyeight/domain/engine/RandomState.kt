@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.engine
 
 internal data class RngState(
     val algorithm: String,

@@ -2,7 +2,7 @@ package ge.yet.game.twentyfortyeight.ui.board
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import ge.yet.game.twentyfortyeight.engine.TileValue
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2

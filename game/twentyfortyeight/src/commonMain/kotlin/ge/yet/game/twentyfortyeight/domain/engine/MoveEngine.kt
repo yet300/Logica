@@ -1,4 +1,21 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.engine
+
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GameOverTransition
+import ge.yet.game.twentyfortyeight.domain.model.LineReduction
+import ge.yet.game.twentyfortyeight.domain.model.MergeGroup
+import ge.yet.game.twentyfortyeight.domain.model.MoveFailure
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.Position
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeTile
+import ge.yet.game.twentyfortyeight.domain.model.SpawnedTile
+import ge.yet.game.twentyfortyeight.domain.model.TileId
+import ge.yet.game.twentyfortyeight.domain.model.TileMotion
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
+import ge.yet.game.twentyfortyeight.domain.model.VictoryTransition
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn

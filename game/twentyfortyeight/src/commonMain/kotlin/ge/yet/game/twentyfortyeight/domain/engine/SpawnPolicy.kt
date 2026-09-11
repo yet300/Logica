@@ -1,4 +1,8 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.engine
+
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Position
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn

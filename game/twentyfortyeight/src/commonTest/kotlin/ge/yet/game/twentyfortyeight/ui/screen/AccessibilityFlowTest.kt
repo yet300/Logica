@@ -1,5 +1,7 @@
 package ge.yet.game.twentyfortyeight.ui.screen
 
+import ge.yet.game.twentyfortyeight.domain.model.Board
+
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact

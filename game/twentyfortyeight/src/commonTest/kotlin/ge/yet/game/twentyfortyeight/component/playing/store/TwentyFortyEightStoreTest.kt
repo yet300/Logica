@@ -1,5 +1,10 @@
 package ge.yet.game.twentyfortyeight.component.playing.store
 
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.data.PersistenceWriteException
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+
 import com.arkivanov.mvikotlin.core.rx.Disposable
 import com.arkivanov.mvikotlin.core.rx.observer
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
@@ -10,26 +15,26 @@ import ge.yet.game.miniapp.testkit.NoopMiniAppStorage
 import ge.yet.game.twentyfortyeight.diagnostics.ContractCode
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.AudioControlPolicy
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.GameRules
-import ge.yet.game.twentyfortyeight.engine.GameState
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.MoveEngine
-import ge.yet.game.twentyfortyeight.engine.RngState
-import ge.yet.game.twentyfortyeight.engine.RulesState
-import ge.yet.game.twentyfortyeight.engine.SpawnPolicy
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControlPolicy
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
 import ge.yet.game.twentyfortyeight.engine.rulesState
 import ge.yet.game.twentyfortyeight.engine.runtimeBoardOf
-import ge.yet.game.twentyfortyeight.persistence.CheckpointResult
-import ge.yet.game.twentyfortyeight.persistence.GameCommit
-import ge.yet.game.twentyfortyeight.persistence.GameCommitWriter
-import ge.yet.game.twentyfortyeight.persistence.GameSnapshotLoader
-import ge.yet.game.twentyfortyeight.persistence.LoadResult
-import ge.yet.game.twentyfortyeight.persistence.RestoredGameData
-import ge.yet.game.twentyfortyeight.persistence.SessionPersistenceCoordinator
+import ge.yet.game.twentyfortyeight.data.CheckpointResult
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.domain.model.RestoredGameData
+import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -404,7 +409,7 @@ class TwentyFortyEightStoreTest {
             RulesState(playableGame(), GameStatistics()),
             assertIs(
                 MoveEngine(SpawnPolicy()).apply(
-                    ge.yet.game.twentyfortyeight.engine.MoveInput(
+                    ge.yet.game.twentyfortyeight.domain.model.MoveInput(
                         playableGame().board,
                         0L,
                         playableGame().rng,
@@ -612,7 +617,7 @@ internal open class StoreCommitWriter(
         started.send(commit.revision)
         if (controlled) gates.getOrPut(commit.revision) { CompletableDeferred() }.await()
         if (commit.revision in failRevisions) {
-            throw ge.yet.game.twentyfortyeight.persistence.PersistenceWriteException(
+            throw ge.yet.game.twentyfortyeight.data.PersistenceWriteException(
                 TwentyFortyEightFailure.StorageWrite(StorageOperation.CurrentGameWrite),
             )
         }
@@ -668,7 +673,7 @@ internal fun restoredData(
 )
 
 internal fun playableGame(
-    board: ge.yet.game.twentyfortyeight.engine.RuntimeBoard = runtimeBoardOf(
+    board: ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard = runtimeBoardOf(
         2L, 2L, null, null,
         null, null, null, null,
         null, null, null, null,
@@ -684,9 +689,9 @@ internal fun playableGame(
 
 private fun movedGameWithUndoForStoreTest(): GameState {
     val initial = playableGame()
-    val move = assertIs<ge.yet.game.twentyfortyeight.engine.MoveResult.Changed>(
+    val move = assertIs<ge.yet.game.twentyfortyeight.domain.model.MoveResult.Changed>(
         MoveEngine(SpawnPolicy()).apply(
-            ge.yet.game.twentyfortyeight.engine.MoveInput(
+            ge.yet.game.twentyfortyeight.domain.model.MoveInput(
                 initial.board,
                 initial.score,
                 initial.rng,
@@ -708,9 +713,9 @@ private fun terminalGameWithUndoForStoreTest(): GameState {
             null, 4L, 2L, 4L,
         ),
     )
-    val move = assertIs<ge.yet.game.twentyfortyeight.engine.MoveResult.Changed>(
+    val move = assertIs<ge.yet.game.twentyfortyeight.domain.model.MoveResult.Changed>(
         MoveEngine(SpawnPolicy()).apply(
-            ge.yet.game.twentyfortyeight.engine.MoveInput(
+            ge.yet.game.twentyfortyeight.domain.model.MoveInput(
                 initial.board,
                 initial.score,
                 initial.rng,

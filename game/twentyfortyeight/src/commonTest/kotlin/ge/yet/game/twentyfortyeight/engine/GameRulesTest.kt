@@ -1,5 +1,9 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

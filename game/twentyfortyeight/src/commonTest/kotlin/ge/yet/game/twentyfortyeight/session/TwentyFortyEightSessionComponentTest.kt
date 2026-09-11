@@ -1,5 +1,9 @@
 package ge.yet.game.twentyfortyeight.session
 
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
+
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.backhandler.BackDispatcher
 import com.arkivanov.essenty.instancekeeper.InstanceKeeperDispatcher
@@ -28,17 +32,17 @@ import ge.yet.game.twentyfortyeight.component.playing.DefaultPlayingComponentFac
 import ge.yet.game.twentyfortyeight.component.result.DefaultResultComponentFactory
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightDiagnostics
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.MoveEngine
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.engine.SpawnPolicy
-import ge.yet.game.twentyfortyeight.engine.UndoSnapshot
-import ge.yet.game.twentyfortyeight.persistence.GameCommitWriter
-import ge.yet.game.twentyfortyeight.persistence.GameSnapshotLoader
-import ge.yet.game.twentyfortyeight.persistence.LoadResult
-import ge.yet.game.twentyfortyeight.persistence.RestoredGameData
-import ge.yet.game.twentyfortyeight.persistence.SessionPersistenceCoordinator
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+import ge.yet.game.twentyfortyeight.domain.model.UndoSnapshot
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.domain.model.RestoredGameData
+import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
@@ -692,11 +696,11 @@ class TwentyFortyEightSessionComponentTest {
     }
 }
 
-private fun unfinishedData(game: ge.yet.game.twentyfortyeight.engine.GameState = playableGame()) =
-    RestoredGameData(0L, game, game.bestScore, GameStatistics(), true, ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason.Move, false)
+private fun unfinishedData(game: ge.yet.game.twentyfortyeight.domain.model.GameState = playableGame()) =
+    RestoredGameData(0L, game, game.bestScore, GameStatistics(), true, ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason.Move, false)
 
 private fun terminalData(
-    game: ge.yet.game.twentyfortyeight.engine.GameState = playableGame().copy(phase = GamePhase.GameOver),
+    game: ge.yet.game.twentyfortyeight.domain.model.GameState = playableGame().copy(phase = GamePhase.GameOver),
     statistics: GameStatistics = GameStatistics(),
 ): RestoredGameData = RestoredGameData(
     0L,
@@ -704,7 +708,7 @@ private fun terminalData(
     game.bestScore,
     statistics,
     true,
-    ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason.Move,
+    ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason.Move,
     true,
 )
 

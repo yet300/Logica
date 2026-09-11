@@ -26,9 +26,9 @@ import ge.yet.game.twentyfortyeight.TwentyFortyEightSession
 import ge.yet.game.twentyfortyeight.analytics.TwentyFortyEightAnalytics
 import ge.yet.game.twentyfortyeight.audio.TwentyFortyEightAudioAdapter
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightDiagnostics
-import ge.yet.game.twentyfortyeight.engine.MoveEngine
-import ge.yet.game.twentyfortyeight.persistence.SessionPersistenceCoordinator
-import ge.yet.game.twentyfortyeight.persistence.TwentyFortyEightPersistence
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
+import ge.yet.game.twentyfortyeight.data.TwentyFortyEightPersistence
 import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent

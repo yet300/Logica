@@ -1,5 +1,7 @@
 package ge.yet.game.twentyfortyeight.session
 
+import ge.yet.game.twentyfortyeight.domain.model.Board
+
 import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.miniapp.api.MiniAppReviewOpportunity
 import ge.yet.game.miniapp.api.MiniAppSessionHost
@@ -16,9 +18,9 @@ import ge.yet.game.twentyfortyeight.audio.TwentyFortyEightAudioAdapter
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightDiagnostics
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.AudioControls
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore.Label

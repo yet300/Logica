@@ -15,28 +15,29 @@ import ge.yet.game.twentyfortyeight.analytics.RestartSource
 import ge.yet.game.twentyfortyeight.audio.AudioEvent
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.AudioControlPolicy
-import ge.yet.game.twentyfortyeight.engine.AudioControls
-import ge.yet.game.twentyfortyeight.engine.CounterOverflowException
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.GameRules
-import ge.yet.game.twentyfortyeight.engine.GameState
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.MoveEngine
-import ge.yet.game.twentyfortyeight.engine.MoveFailure
-import ge.yet.game.twentyfortyeight.engine.MoveInput
-import ge.yet.game.twentyfortyeight.engine.MoveResult
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.engine.RngState
-import ge.yet.game.twentyfortyeight.engine.RulesState
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
-import ge.yet.game.twentyfortyeight.engine.UndoResult
-import ge.yet.game.twentyfortyeight.persistence.CheckpointResult
-import ge.yet.game.twentyfortyeight.persistence.GameCommit
-import ge.yet.game.twentyfortyeight.persistence.LoadResult
-import ge.yet.game.twentyfortyeight.persistence.RestoredGameData
-import ge.yet.game.twentyfortyeight.persistence.SessionPersistenceCoordinator
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControlPolicy
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
+import ge.yet.game.twentyfortyeight.domain.engine.CounterOverflowException
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.MoveFailure
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.model.UndoResult
+import ge.yet.game.twentyfortyeight.data.CheckpointResult
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
+import ge.yet.game.twentyfortyeight.domain.model.RestoredGameData
+import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
+import ge.yet.game.twentyfortyeight.domain.model.VictoryTransition
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
@@ -211,15 +212,7 @@ internal class TwentyFortyEightStoreFactory(
                             bootstrapFresh(result.data)
                         } else {
                             val game = restored.copy(bestScore = maxOf(restored.bestScore, result.data.bestScore))
-                            val overlay = if (
-                                game.phase == GamePhase.Playing &&
-                                game.facts.victoryReached &&
-                                !game.facts.victoryAcknowledged
-                            ) {
-                                OverlayState.Victory
-                            } else {
-                                null
-                            }
+                            val overlay = PlayingBootstrapPlanner.resolveRestoredOverlay(game)
                             dispatch(
                                 Msg.BootstrapReady(
                                     game = game,
@@ -247,7 +240,11 @@ internal class TwentyFortyEightStoreFactory(
 
         private fun bootstrapFresh(data: RestoredGameData) {
             tutorialReason = data.tutorialReason
-            val rules = freshRules(data)
+            val fresh = PlayingBootstrapPlanner.freshRules(data, seed = nextSeed())
+            if (fresh.counterOverflow) {
+                publishRevisionDiagnostic(InvariantCode.CounterOverflow)
+            }
+            val rules = fresh.rules
             dispatch(
                 Msg.BootstrapReady(
                     game = rules.game,
@@ -264,27 +261,6 @@ internal class TwentyFortyEightStoreFactory(
                     TwentyFortyEightStore.Label.Analytics(
                         AnalyticsFact.GameStarted(rules.game.runOrdinal),
                     ),
-                ),
-            )
-        }
-
-        private fun freshRules(data: RestoredGameData): RulesState {
-            val fresh = GameRules.newGame(previous = null, seed = nextSeed())
-            val gamesStarted = if (data.statistics.gamesStarted == Long.MAX_VALUE) {
-                publishRevisionDiagnostic(InvariantCode.CounterOverflow)
-                Long.MAX_VALUE
-            } else {
-                data.statistics.gamesStarted + 1L
-            }
-            val highest = fresh.game.board.values().filterNotNull().maxOrNull() ?: 0L
-            return RulesState(
-                game = fresh.game.copy(
-                    runOrdinal = maxOf(1L, gamesStarted),
-                    bestScore = maxOf(data.bestScore, fresh.game.score),
-                ),
-                statistics = data.statistics.copy(
-                    gamesStarted = gamesStarted,
-                    highestTileEver = maxOf(data.statistics.highestTileEver, highest),
                 ),
             )
         }
@@ -355,7 +331,7 @@ internal class TwentyFortyEightStoreFactory(
             val tutorialCompleted = !before.tutorialSeen
             if (tutorialCompleted) tutorialReason = TutorialCompletionReason.Move
             val terminal = rules.game.phase == GamePhase.GameOver
-            val victory = result.victory == ge.yet.game.twentyfortyeight.engine.VictoryTransition.FirstReached
+            val victory = result.victory == VictoryTransition.FirstReached
             val overlay = when {
                 terminal -> null
                 victory -> OverlayState.Victory

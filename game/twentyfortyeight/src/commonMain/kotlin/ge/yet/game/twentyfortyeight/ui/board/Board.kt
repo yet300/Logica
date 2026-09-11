@@ -24,11 +24,11 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import ge.yet.game.twentyfortyeight.engine.Board
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
-import ge.yet.game.twentyfortyeight.engine.TileId
-import ge.yet.game.twentyfortyeight.engine.TileValue
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.TileId
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
 import ge.yet.game.twentyfortyeight.generated.resources.Res
 import ge.yet.game.twentyfortyeight.generated.resources.board_empty_cell
 import ge.yet.game.twentyfortyeight.generated.resources.board_row_summary

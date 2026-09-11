@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.model
 
 internal enum class Direction {
     Up,

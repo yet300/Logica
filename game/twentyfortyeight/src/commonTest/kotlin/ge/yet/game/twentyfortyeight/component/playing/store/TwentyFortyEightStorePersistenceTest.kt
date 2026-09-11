@@ -1,16 +1,19 @@
 package ge.yet.game.twentyfortyeight.component.playing.store
 
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GameRules
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.MoveEngine
-import ge.yet.game.twentyfortyeight.engine.MoveInput
-import ge.yet.game.twentyfortyeight.engine.MoveResult
-import ge.yet.game.twentyfortyeight.engine.RulesState
-import ge.yet.game.twentyfortyeight.engine.SpawnPolicy
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -212,7 +215,7 @@ class TwentyFortyEightStorePersistenceTest {
         val terminalWithUndo = GameRules.acceptChanged(
             RulesState(beforeMove, GameStatistics()),
             changed,
-        ).game.copy(phase = ge.yet.game.twentyfortyeight.engine.GamePhase.GameOver)
+        ).game.copy(phase = ge.yet.game.twentyfortyeight.domain.model.GamePhase.GameOver)
         val resultWriter = StoreCommitWriter(controlled = true)
         val result = readyStore(loaded(game = terminalWithUndo, terminal = true), resultWriter)
         result.store.accept(TwentyFortyEightStore.Intent.NewGameFromResult)
@@ -478,7 +481,7 @@ class TwentyFortyEightStorePersistenceTest {
         val terminal = playableGame(score = 40L).copy(
             runOrdinal = 3L,
             bestScore = 80L,
-            phase = ge.yet.game.twentyfortyeight.engine.GamePhase.GameOver,
+            phase = ge.yet.game.twentyfortyeight.domain.model.GamePhase.GameOver,
         )
         val successWriter = StoreCommitWriter(controlled = true)
         val success = readyStore(loaded(game = terminal, terminal = true), successWriter)
@@ -504,7 +507,7 @@ class TwentyFortyEightStorePersistenceTest {
     @Test
     fun `restart preserves cumulative statistics`() = runTest {
         val writer = StoreCommitWriter()
-        val statistics = ge.yet.game.twentyfortyeight.engine.GameStatistics(
+        val statistics = ge.yet.game.twentyfortyeight.domain.model.GameStatistics(
             gamesStarted = 4L,
             successfulMoves = 12L,
             totalMerges = 8L,

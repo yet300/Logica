@@ -1,19 +1,19 @@
-package ge.yet.game.twentyfortyeight.persistence
+package ge.yet.game.twentyfortyeight.data
 
 import ge.yet.game.miniapp.api.MiniAppSnapshotSpec
 import ge.yet.game.twentyfortyeight.diagnostics.ContractCode
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
-import ge.yet.game.twentyfortyeight.engine.Board
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.GameState
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.RngState
-import ge.yet.game.twentyfortyeight.engine.RunFacts
-import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
-import ge.yet.game.twentyfortyeight.engine.TileValue
-import ge.yet.game.twentyfortyeight.engine.TutorialCompletionReason
-import ge.yet.game.twentyfortyeight.engine.UndoSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.RunFacts
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
+import ge.yet.game.twentyfortyeight.domain.model.TutorialCompletionReason
+import ge.yet.game.twentyfortyeight.domain.model.UndoSnapshot
 import kotlinx.serialization.Serializable
 
 @Serializable

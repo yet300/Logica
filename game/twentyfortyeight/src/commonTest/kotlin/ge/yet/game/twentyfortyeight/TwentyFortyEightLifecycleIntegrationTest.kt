@@ -11,9 +11,9 @@ import ge.yet.game.miniapp.testkit.TestMiniAppSessionContext
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightAppGraph
 import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightSessionGraph
-import ge.yet.game.twentyfortyeight.engine.GameRules
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

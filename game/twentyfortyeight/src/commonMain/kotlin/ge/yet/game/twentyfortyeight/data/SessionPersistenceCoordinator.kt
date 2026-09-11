@@ -1,4 +1,9 @@
-package ge.yet.game.twentyfortyeight.persistence
+package ge.yet.game.twentyfortyeight.data
+
+import ge.yet.game.twentyfortyeight.domain.model.GameCommit
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.domain.model.LoadResult
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn

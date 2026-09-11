@@ -16,9 +16,9 @@ import ge.yet.game.twentyfortyeight.component.playing.store.RandomNewGameSeedSou
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.result.DefaultResultComponentFactory
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
-import ge.yet.game.twentyfortyeight.persistence.GameCommitWriter
-import ge.yet.game.twentyfortyeight.persistence.GameSnapshotLoader
-import ge.yet.game.twentyfortyeight.persistence.TwentyFortyEightPersistence
+import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
+import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
+import ge.yet.game.twentyfortyeight.data.TwentyFortyEightPersistence
 import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponentFactory
 import ge.yet.game.twentyfortyeight.session.SessionNavigation

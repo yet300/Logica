@@ -1,5 +1,17 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import ge.yet.game.twentyfortyeight.domain.model.Board
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GameOverTransition
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.model.RuntimeBoard
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+import ge.yet.game.twentyfortyeight.domain.model.TileValue
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

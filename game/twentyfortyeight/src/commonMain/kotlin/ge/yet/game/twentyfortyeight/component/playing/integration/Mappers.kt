@@ -4,7 +4,7 @@ import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.component.playing.store.BootstrapState
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
-import ge.yet.game.twentyfortyeight.engine.GamePhase
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
 
 internal val stateToModel: (TwentyFortyEightStore.State) -> PlayingComponent.Model = { state ->
     val game = state.game

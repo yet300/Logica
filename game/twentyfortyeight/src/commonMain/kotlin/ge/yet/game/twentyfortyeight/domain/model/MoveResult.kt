@@ -1,4 +1,6 @@
-package ge.yet.game.twentyfortyeight.engine
+package ge.yet.game.twentyfortyeight.domain.model
+
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
 
 internal sealed interface MoveResult {
     val direction: Direction

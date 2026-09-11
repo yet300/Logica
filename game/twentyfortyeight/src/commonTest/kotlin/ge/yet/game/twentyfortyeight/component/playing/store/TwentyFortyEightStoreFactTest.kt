@@ -1,10 +1,20 @@
 package ge.yet.game.twentyfortyeight.component.playing.store
 
+import ge.yet.game.twentyfortyeight.domain.engine.AudioControlPolicy
+import ge.yet.game.twentyfortyeight.domain.model.GamePhase
+import ge.yet.game.twentyfortyeight.domain.engine.GameRules
+import ge.yet.game.twentyfortyeight.domain.model.GameState
+import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
+import ge.yet.game.twentyfortyeight.domain.model.MoveInput
+import ge.yet.game.twentyfortyeight.domain.model.MoveResult
+import ge.yet.game.twentyfortyeight.domain.model.RulesState
+import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
+
 import ge.yet.game.twentyfortyeight.analytics.AnalyticsBucketPolicy
 import ge.yet.game.twentyfortyeight.analytics.AnalyticsFact
 import ge.yet.game.twentyfortyeight.audio.AudioEvent
-import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GameStatistics
+import ge.yet.game.twentyfortyeight.domain.model.Direction
+import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -54,7 +64,7 @@ class TwentyFortyEightStoreFactTest {
         val controlLabels = harness.labels.filterIsInstance<TwentyFortyEightStore.Label.AudioControlsChanged>()
         assertEquals(bootstrapControls + 1, controlLabels.size)
         assertEquals(
-            ge.yet.game.twentyfortyeight.engine.AudioControlPolicy.from(assertNotNull(harness.store.state.game)),
+            ge.yet.game.twentyfortyeight.domain.engine.AudioControlPolicy.from(assertNotNull(harness.store.state.game)),
             controlLabels.last().controls,
         )
     }
@@ -157,12 +167,12 @@ class TwentyFortyEightStoreFactTest {
     @Test
     fun `undo increments only undo use cumulative statistic and emits typed facts`() = runTest {
         val initialStatistics = GameStatistics(successfulMoves = 5L, totalMerges = 3L, totalScoreEarned = 20L)
-        val initial = ge.yet.game.twentyfortyeight.engine.RulesState(playableGame(), initialStatistics)
-        val moved = ge.yet.game.twentyfortyeight.engine.GameRules.acceptChanged(
+        val initial = ge.yet.game.twentyfortyeight.domain.model.RulesState(playableGame(), initialStatistics)
+        val moved = ge.yet.game.twentyfortyeight.domain.engine.GameRules.acceptChanged(
             initial,
             assertIs(
-                ge.yet.game.twentyfortyeight.engine.MoveEngine(ge.yet.game.twentyfortyeight.engine.SpawnPolicy()).apply(
-                    ge.yet.game.twentyfortyeight.engine.MoveInput(
+                ge.yet.game.twentyfortyeight.domain.engine.MoveEngine(ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy()).apply(
+                    ge.yet.game.twentyfortyeight.domain.model.MoveInput(
                         initial.game.board,
                         initial.game.score,
                         initial.game.rng,
@@ -287,7 +297,7 @@ class TwentyFortyEightStoreFactTest {
         runCurrent()
         writer.awaitStarted(1L)
 
-        assertEquals(ge.yet.game.twentyfortyeight.engine.GamePhase.GameOver, harness.store.state.game?.phase)
+        assertEquals(ge.yet.game.twentyfortyeight.domain.model.GamePhase.GameOver, harness.store.state.game?.phase)
         assertNull(harness.store.state.activeTransition)
         assertEquals(1, harness.labels.filterIsInstance<TwentyFortyEightStore.Label.NavigateToResult>().size)
         assertEquals(1, harness.labels.filterIsInstance<TwentyFortyEightStore.Label.Announcement>()
@@ -329,7 +339,7 @@ class TwentyFortyEightStoreFactTest {
         harness.store.accept(TwentyFortyEightStore.Intent.RequestRestart)
         runCurrent()
 
-        assertEquals(ge.yet.game.twentyfortyeight.engine.GamePhase.GameOver, harness.store.state.game?.phase)
+        assertEquals(ge.yet.game.twentyfortyeight.domain.model.GamePhase.GameOver, harness.store.state.game?.phase)
         assertEquals(1L, harness.store.state.requestedRevision)
         assertNull(harness.store.state.activeTransition)
         assertNull(harness.store.state.overlay)
@@ -339,11 +349,11 @@ class TwentyFortyEightStoreFactTest {
     }
 }
 
-private fun movedGameWithUndo(): ge.yet.game.twentyfortyeight.engine.GameState {
+private fun movedGameWithUndo(): ge.yet.game.twentyfortyeight.domain.model.GameState {
     val initial = playableGame()
-    val move = assertIs<ge.yet.game.twentyfortyeight.engine.MoveResult.Changed>(
-        ge.yet.game.twentyfortyeight.engine.MoveEngine(ge.yet.game.twentyfortyeight.engine.SpawnPolicy()).apply(
-            ge.yet.game.twentyfortyeight.engine.MoveInput(
+    val move = assertIs<ge.yet.game.twentyfortyeight.domain.model.MoveResult.Changed>(
+        ge.yet.game.twentyfortyeight.domain.engine.MoveEngine(ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy()).apply(
+            ge.yet.game.twentyfortyeight.domain.model.MoveInput(
                 initial.board,
                 initial.score,
                 initial.rng,
@@ -353,8 +363,8 @@ private fun movedGameWithUndo(): ge.yet.game.twentyfortyeight.engine.GameState {
             1L,
         ),
     )
-    return ge.yet.game.twentyfortyeight.engine.GameRules.acceptChanged(
-        ge.yet.game.twentyfortyeight.engine.RulesState(initial, GameStatistics()),
+    return ge.yet.game.twentyfortyeight.domain.engine.GameRules.acceptChanged(
+        ge.yet.game.twentyfortyeight.domain.model.RulesState(initial, GameStatistics()),
         move,
     ).game
 }

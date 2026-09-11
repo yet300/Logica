@@ -1,5 +1,9 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import ge.yet.game.twentyfortyeight.domain.engine.RngState
+import ge.yet.game.twentyfortyeight.domain.engine.SplitMix64
+import ge.yet.game.twentyfortyeight.domain.engine.unbiasedBoundedInt
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

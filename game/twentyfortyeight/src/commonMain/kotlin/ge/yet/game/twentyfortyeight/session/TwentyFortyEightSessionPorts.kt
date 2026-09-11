@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
+import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
