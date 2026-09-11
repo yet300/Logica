@@ -2,10 +2,11 @@ package ge.yet.game.fruitmerge.session
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.store.FruitMergeStore
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.Vec2
+import ge.yet.game.fruitmerge.session.store.FruitMergeStore
 import kotlinx.coroutines.flow.Flow
 
 internal enum class PaidAction {
@@ -55,9 +56,9 @@ internal interface FruitMergeComponent {
     }
 
     sealed interface PresentationEvent {
-        data class Landing(val level: FruitLevel, val position: ge.yet.game.fruitmerge.engine.Vec2) : PresentationEvent
-        data class Merge(val level: FruitLevel, val position: ge.yet.game.fruitmerge.engine.Vec2) : PresentationEvent
-        data class Clear(val level: FruitLevel, val position: ge.yet.game.fruitmerge.engine.Vec2) : PresentationEvent
+        data class Landing(val level: FruitLevel, val position: Vec2) : PresentationEvent
+        data class Merge(val level: FruitLevel, val position: Vec2) : PresentationEvent
+        data class Clear(val level: FruitLevel, val position: Vec2) : PresentationEvent
         data class ShakePulse(val index: Int) : PresentationEvent
     }
 

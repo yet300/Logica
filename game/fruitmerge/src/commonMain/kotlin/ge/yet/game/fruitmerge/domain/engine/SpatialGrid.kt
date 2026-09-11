@@ -1,5 +1,6 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.engine
 
+import ge.yet.game.fruitmerge.domain.model.FruitBody
 import kotlin.math.floor
 
 internal const val MAX_BODIES: Int = 80

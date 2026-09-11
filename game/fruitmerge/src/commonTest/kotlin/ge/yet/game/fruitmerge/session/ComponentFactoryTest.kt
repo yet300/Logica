@@ -3,8 +3,8 @@ package ge.yet.game.fruitmerge.session
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.fruitmerge.TestFruitMergeRules
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
-import ge.yet.game.fruitmerge.persistence.FruitMergePersistence
-import ge.yet.game.fruitmerge.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.data.FruitMergePersistence
+import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppStorage
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
@@ -44,7 +44,8 @@ class ComponentFactoryTest {
         val store = FruitMergeStoreFactory(
             storeFactory = DefaultStoreFactory(),
             rules = TestFruitMergeRules(),
-            persistence = persistence,
+            snapshotLoader = persistence,
+            commitWriter = persistence,
         ).create()
         val factory: FruitMergeComponent.Factory =
             DefaultFruitMergeComponentFactory(persistence, visibility)
@@ -68,13 +69,12 @@ class ComponentFactoryTest {
         val storeFactory = FruitMergeStoreFactory(
             storeFactory = DefaultStoreFactory(),
             rules = TestFruitMergeRules(),
-            persistence = persistence,
+            snapshotLoader = persistence,
+            commitWriter = persistence,
         )
         val factory: FruitMergeSessionComponent.Factory = DefaultFruitMergeSessionComponentFactory(
             gameFactory = DefaultFruitMergeComponentFactory(persistence, visibility),
             storeFactory = storeFactory,
-            persistence = persistence,
-            visibility = visibility,
             audio = FruitMergeAudioAdapter(NoopMiniAppAudio),
         )
 

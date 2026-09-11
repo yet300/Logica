@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.engine.Vec2
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.fruitmerge.session.FruitMergeComponent
 import ge.yet.game.fruitmerge.session.PaidAction
 import ge.yet.game.fruitmerge.session.PaidActionToken

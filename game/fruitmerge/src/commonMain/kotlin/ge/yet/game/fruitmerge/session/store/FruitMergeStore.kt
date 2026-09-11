@@ -1,9 +1,9 @@
-package ge.yet.game.fruitmerge.store
+package ge.yet.game.fruitmerge.session.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.Vec2
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.Vec2
 
 internal interface FruitMergeStore :
     Store<FruitMergeStore.Intent, FruitMergeStore.State, FruitMergeStore.Label> {

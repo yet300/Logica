@@ -9,10 +9,8 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import dev.zacsweers.metro.Inject
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
-import ge.yet.game.fruitmerge.persistence.FruitMergePersistence
-import ge.yet.game.fruitmerge.store.FruitMergeStore
-import ge.yet.game.fruitmerge.store.FruitMergeStoreFactory
-import ge.yet.game.miniapp.api.MiniAppVisibilitySource
+import ge.yet.game.fruitmerge.session.store.FruitMergeStore
+import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
@@ -21,8 +19,6 @@ internal class DefaultFruitMergeSessionComponent(
     componentContext: ComponentContext,
     private val gameFactory: FruitMergeComponent.Factory,
     storeFactory: FruitMergeStoreFactory,
-    private val persistence: FruitMergePersistence,
-    private val visibility: MiniAppVisibilitySource,
     private val audio: FruitMergeAudioAdapter,
 ) : FruitMergeSessionComponent,
     ComponentContext by componentContext {
@@ -61,8 +57,6 @@ internal class DefaultFruitMergeSessionComponent(
 internal class DefaultFruitMergeSessionComponentFactory(
     private val gameFactory: FruitMergeComponent.Factory,
     private val storeFactory: FruitMergeStoreFactory,
-    private val persistence: FruitMergePersistence,
-    private val visibility: MiniAppVisibilitySource,
     private val audio: FruitMergeAudioAdapter,
 ) : FruitMergeSessionComponent.Factory {
     override fun create(
@@ -71,8 +65,6 @@ internal class DefaultFruitMergeSessionComponentFactory(
         componentContext = componentContext,
         gameFactory = gameFactory,
         storeFactory = storeFactory,
-        persistence = persistence,
-        visibility = visibility,
         audio = audio,
     )
 }

@@ -8,9 +8,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import dev.zacsweers.metro.Inject
-import ge.yet.game.fruitmerge.engine.TargetingMode
-import ge.yet.game.fruitmerge.persistence.FruitMergePersistence
-import ge.yet.game.fruitmerge.store.FruitMergeStore
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
+import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
+import ge.yet.game.fruitmerge.session.store.FruitMergeStore
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import kotlinx.coroutines.CoroutineStart
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 internal class DefaultFruitMergeComponent(
     componentContext: ComponentContext,
     private val store: FruitMergeStore,
-    private val persistence: FruitMergePersistence,
+    private val tutorial: TutorialSeenRepository,
     private val visibility: MiniAppVisibilitySource,
 ) : FruitMergeComponent,
     ComponentContext by componentContext {
@@ -62,7 +62,7 @@ internal class DefaultFruitMergeComponent(
             }
         }
         scope.launch {
-            val seen = persistence.isTutorialSeen()
+            val seen = tutorial.isTutorialSeen()
             if (alive) {
                 mutableModel.value = mutableModel.value.copy(
                     tutorialReady = true,
@@ -203,13 +203,13 @@ internal class DefaultFruitMergeComponent(
 
     private fun finishTutorial() {
         mutableModel.value = mutableModel.value.copy(tutorialStep = null)
-        coroutineScope().launch { persistence.markTutorialSeen() }
+        coroutineScope().launch { tutorial.markTutorialSeen() }
     }
 }
 
 @Inject
 internal class DefaultFruitMergeComponentFactory(
-    private val persistence: FruitMergePersistence,
+    private val tutorial: TutorialSeenRepository,
     private val visibility: MiniAppVisibilitySource,
 ) : FruitMergeComponent.Factory {
     override fun create(
@@ -218,7 +218,7 @@ internal class DefaultFruitMergeComponentFactory(
     ): DefaultFruitMergeComponent = DefaultFruitMergeComponent(
         componentContext = componentContext,
         store = store,
-        persistence = persistence,
+        tutorial = tutorial,
         visibility = visibility,
     )
 }

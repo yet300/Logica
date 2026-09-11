@@ -20,12 +20,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeEngine
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.engine.TargetingMode
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
 import kotlin.math.min
 import kotlin.math.sin
 

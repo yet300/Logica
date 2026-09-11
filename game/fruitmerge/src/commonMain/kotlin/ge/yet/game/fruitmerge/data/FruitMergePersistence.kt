@@ -1,7 +1,10 @@
-package ge.yet.game.fruitmerge.persistence
+package ge.yet.game.fruitmerge.data
 
 import dev.zacsweers.metro.Inject
-import ge.yet.game.fruitmerge.engine.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.repository.GameCommitWriter
+import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
+import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.miniapp.api.MiniAppSnapshotMigration
 import ge.yet.game.miniapp.api.MiniAppSnapshotSpec
 import ge.yet.game.miniapp.api.MiniAppStorage
@@ -20,8 +23,8 @@ internal val FruitMergeSnapshotSpec = MiniAppSnapshotSpec(
 
 internal class FruitMergePersistence @Inject constructor(
     private val storage: MiniAppStorage,
-) {
-    suspend fun restore(): FruitMergeState {
+) : GameSnapshotLoader, GameCommitWriter, TutorialSeenRepository {
+    override suspend fun restore(): FruitMergeState {
         val bestScore = try {
             storage.getLong(BEST_SCORE_KEY, 0L).coerceAtLeast(0L)
         } catch (cancellation: CancellationException) {
@@ -39,16 +42,16 @@ internal class FruitMergePersistence @Inject constructor(
         }
     }
 
-    suspend fun checkpoint(state: FruitMergeState) {
+    override suspend fun checkpoint(state: FruitMergeState) {
         storage.putLong(BEST_SCORE_KEY, max(state.bestScore, state.score))
         storage.writeSnapshot(SNAPSHOT_KEY, FruitMergeSnapshot.from(state), FruitMergeSnapshotSpec)
     }
 
-    suspend fun clearRun() {
+    override suspend fun clearRun() {
         storage.remove(SNAPSHOT_KEY)
     }
 
-    suspend fun isTutorialSeen(): Boolean = try {
+    override suspend fun isTutorialSeen(): Boolean = try {
         storage.getBoolean(TUTORIAL_SEEN_KEY, false)
     } catch (cancellation: CancellationException) {
         throw cancellation
@@ -56,7 +59,7 @@ internal class FruitMergePersistence @Inject constructor(
         false
     }
 
-    suspend fun markTutorialSeen() {
+    override suspend fun markTutorialSeen() {
         try {
             storage.putBoolean(TUTORIAL_SEEN_KEY, true)
         } catch (cancellation: CancellationException) {

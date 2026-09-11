@@ -1,28 +1,18 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.engine
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import ge.yet.game.fruitmerge.domain.model.ActionResult
+import ge.yet.game.fruitmerge.domain.model.ActionRejection
+import ge.yet.game.fruitmerge.domain.model.EngineDiagnostics
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import kotlin.math.max
-
-enum class ActionRejection {
-    GAME_OVER,
-    BOARD_BUSY,
-    BODY_NOT_FOUND,
-    NO_FREE_USE,
-    BODY_LIMIT,
-    DROP_COOLDOWN,
-    SHAKE_ACTIVE,
-}
-
-data class ActionResult(
-    val state: FruitMergeState,
-    val rejection: ActionRejection? = null,
-)
-
-data class EngineDiagnostics(
-    val maxCandidatePairs: Int = 0,
-)
 
 interface FruitMergeRules {
     fun movePreview(state: FruitMergeState, normalizedX: Float): FruitMergeState

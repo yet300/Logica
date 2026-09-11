@@ -43,7 +43,7 @@ internal fun FruitMergePresentation(
             boardBoundsInViewport.left + (boardBoundsInViewport.width - side) * 0.5f,
             boardBoundsInViewport.top + (boardBoundsInViewport.height - side) * 0.5f,
         )
-        fun world(position: ge.yet.game.fruitmerge.engine.Vec2): Offset =
+        fun world(position: ge.yet.game.fruitmerge.domain.model.Vec2): Offset =
             origin + Offset(position.x * side, position.y * side)
 
         events.forEach { active ->

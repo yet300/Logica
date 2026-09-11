@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
-import ge.yet.game.fruitmerge.engine.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.sin

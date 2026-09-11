@@ -51,9 +51,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.engine.TargetingMode
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
 import ge.yet.game.fruitmerge.generated.resources.Res
 import ge.yet.game.fruitmerge.generated.resources.ad_disclosure
 import ge.yet.game.fruitmerge.generated.resources.apple

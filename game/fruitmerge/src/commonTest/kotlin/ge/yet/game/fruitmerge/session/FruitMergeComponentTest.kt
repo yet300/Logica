@@ -2,13 +2,13 @@ package ge.yet.game.fruitmerge.session
 
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.fruitmerge.TestFruitMergeRules
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.TargetingMode
-import ge.yet.game.fruitmerge.engine.Vec2
-import ge.yet.game.fruitmerge.persistence.FruitMergePersistence
-import ge.yet.game.fruitmerge.store.FruitMergeStoreFactory
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
+import ge.yet.game.fruitmerge.domain.model.Vec2
+import ge.yet.game.fruitmerge.data.FruitMergePersistence
+import ge.yet.game.fruitmerge.session.store.FruitMergeStoreFactory
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppStorage
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
@@ -81,12 +81,13 @@ class FruitMergeComponentTest {
         val store = FruitMergeStoreFactory(
             storeFactory = DefaultStoreFactory(),
             rules = rules,
-            persistence = persistence,
+            snapshotLoader = persistence,
+            commitWriter = persistence,
         ).create()
         val component = DefaultFruitMergeComponent(
             componentContext = lifecycle.componentContext,
             store = store,
-            persistence = persistence,
+            tutorial = persistence,
             visibility = MutableMiniAppVisibilitySource(),
         )
         advanceUntilIdle()

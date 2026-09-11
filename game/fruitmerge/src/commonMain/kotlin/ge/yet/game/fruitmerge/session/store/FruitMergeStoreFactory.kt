@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.store
+package ge.yet.game.fruitmerge.session.store
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
@@ -6,14 +6,11 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import dev.zacsweers.metro.Inject
-import ge.yet.game.fruitmerge.engine.ActionResult
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitMergeEngine
-import ge.yet.game.fruitmerge.engine.FruitMergeRules
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.persistence.FruitMergePersistence
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
+import ge.yet.game.fruitmerge.domain.model.ActionResult
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.repository.GameCommitWriter
+import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
 import kotlinx.coroutines.launch
 import kotlin.math.min
 
@@ -21,7 +18,8 @@ import kotlin.math.min
 internal class FruitMergeStoreFactory(
     private val storeFactory: StoreFactory,
     private val rules: FruitMergeRules,
-    private val persistence: FruitMergePersistence,
+    private val snapshotLoader: GameSnapshotLoader,
+    private val commitWriter: GameCommitWriter,
 ) {
     fun create(): FruitMergeStore =
         object :
@@ -65,7 +63,7 @@ internal class FruitMergeStoreFactory(
         override fun executeAction(action: Action) {
             when (action) {
                 Action.Initialize -> scope.launch {
-                    dispatch(Message.Initialized(persistence.restore()))
+                    dispatch(Message.Initialized(snapshotLoader.restore()))
                 }
             }
         }
@@ -116,7 +114,7 @@ internal class FruitMergeStoreFactory(
             )
             var game = state().game
             var steps = 0
-            val startingPhase = game.phase
+            val frameStart = game
             while (accumulatorSeconds + STEP_EPSILON >= FIXED_STEP_SECONDS && steps < MAX_STEPS_PER_FRAME) {
                 val beforeStep = game
                 game = rules.step(beforeStep, FIXED_STEP_SECONDS)
@@ -126,7 +124,7 @@ internal class FruitMergeStoreFactory(
             }
             if (steps == MAX_STEPS_PER_FRAME) accumulatorSeconds = 0f
             replace(game)
-            if (startingPhase == RunPhase.PLAYING && game.phase == RunPhase.RESULT) {
+            if (FruitMergeTransitionPlanner.resultReached(frameStart, game)) {
                 publish(FruitMergeStore.Label.ResultReached)
                 checkpoint(game)
             }
@@ -167,62 +165,7 @@ internal class FruitMergeStoreFactory(
         }
 
         private fun publishStepLabels(before: FruitMergeState, after: FruitMergeState) {
-            publishLandingLabels(before, after)
-            publishMergeLabels(before, after)
-            if (
-                before.shakeStepsRemaining > 0 &&
-                (FruitMergeEngine.SHAKE_DURATION_STEPS - before.shakeStepsRemaining) %
-                    FruitMergeEngine.SHAKE_IMPULSE_INTERVAL_STEPS == 0
-            ) {
-                val pulseIndex =
-                    (FruitMergeEngine.SHAKE_DURATION_STEPS - before.shakeStepsRemaining) /
-                        FruitMergeEngine.SHAKE_IMPULSE_INTERVAL_STEPS
-                publish(FruitMergeStore.Label.ShakePulse(pulseIndex))
-            }
-            if (before.dangerSeconds == 0f && after.dangerSeconds > 0f) {
-                publish(FruitMergeStore.Label.DangerEntered)
-            }
-        }
-
-        private fun publishLandingLabels(before: FruitMergeState, after: FruitMergeState) {
-            if (before.bodies.none { body -> !body.hasJoinedPile }) return
-            val afterById = after.bodies.associateBy { body -> body.id }
-            before.bodies
-                .asSequence()
-                .filterNot { body -> body.hasJoinedPile }
-                .mapNotNull { body -> afterById[body.id] }
-                .filter(FruitBody::hasJoinedPile)
-                .sortedBy { body -> body.id }
-                .forEach { body ->
-                    publish(FruitMergeStore.Label.FruitLanded(body.level, body.position))
-                }
-        }
-
-        private fun publishMergeLabels(before: FruitMergeState, after: FruitMergeState) {
-            if (before.score == after.score) return
-            val previousIds = before.bodies.asSequence().map { body -> body.id }.toHashSet()
-            after.bodies
-                .asSequence()
-                .filterNot { body -> body.id in previousIds }
-                .sortedBy { body -> body.id }
-                .forEach { body ->
-                    publish(FruitMergeStore.Label.MergeResolved(body.level, body.position))
-                }
-
-            val survivingIds = after.bodies.asSequence().map { body -> body.id }.toHashSet()
-            val removedMelons = before.bodies.filter { body ->
-                body.level == FruitLevel.WATERMELON && body.id !in survivingIds
-            }.sortedBy { body -> body.id }
-            removedMelons.chunked(2).forEach { pair ->
-                if (pair.size == 2) {
-                    publish(
-                        FruitMergeStore.Label.MergeResolved(
-                            level = FruitLevel.WATERMELON,
-                            position = (pair[0].position + pair[1].position) * 0.5f,
-                        ),
-                    )
-                }
-            }
+            FruitMergeTransitionPlanner.stepLabels(before, after).forEach(::publish)
         }
 
         private fun replace(game: FruitMergeState, checkpoint: Boolean = false) {
@@ -233,7 +176,7 @@ internal class FruitMergeStoreFactory(
 
         private fun checkpoint(game: FruitMergeState = state().game) {
             if (!state().initialized) return
-            scope.launch { persistence.checkpoint(game) }
+            scope.launch { commitWriter.checkpoint(game) }
         }
     }
 

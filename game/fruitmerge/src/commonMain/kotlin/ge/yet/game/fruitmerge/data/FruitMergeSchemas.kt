@@ -1,14 +1,14 @@
-package ge.yet.game.fruitmerge.persistence
+package ge.yet.game.fruitmerge.data
 
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeEngine
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.MAX_BODIES
-import ge.yet.game.fruitmerge.engine.RandomState
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.engine.TargetingMode
-import ge.yet.game.fruitmerge.engine.Vec2
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.engine.MAX_BODIES
+import ge.yet.game.fruitmerge.domain.engine.RandomState
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.TargetingMode
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
 import kotlin.math.max

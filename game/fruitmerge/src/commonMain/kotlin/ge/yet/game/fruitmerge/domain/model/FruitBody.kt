@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.model
 
 import kotlin.math.sqrt
 

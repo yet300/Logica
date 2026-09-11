@@ -1,9 +1,9 @@
 package ge.yet.game.fruitmerge
 
-import ge.yet.game.fruitmerge.engine.ActionResult
-import ge.yet.game.fruitmerge.engine.FruitMergeEngine
-import ge.yet.game.fruitmerge.engine.FruitMergeRules
-import ge.yet.game.fruitmerge.engine.FruitMergeState
+import ge.yet.game.fruitmerge.domain.model.ActionResult
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
 
 internal class TestFruitMergeRules(
     private val delegate: FruitMergeRules = FruitMergeEngine(),

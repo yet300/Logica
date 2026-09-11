@@ -1,6 +1,6 @@
 package ge.yet.game.fruitmerge.ui
 
-import ge.yet.game.fruitmerge.engine.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals

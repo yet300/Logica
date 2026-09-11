@@ -13,7 +13,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
-import ge.yet.game.fruitmerge.engine.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.test.Test

@@ -5,14 +5,18 @@ import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import ge.yet.game.fruitmerge.engine.FruitMergeEngine
-import ge.yet.game.fruitmerge.engine.FruitMergeRules
+import ge.yet.game.fruitmerge.data.FruitMergePersistence
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
+import ge.yet.game.fruitmerge.domain.repository.GameCommitWriter
+import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
+import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.fruitmerge.session.DefaultFruitMergeComponentFactory
 import ge.yet.game.fruitmerge.session.DefaultFruitMergeSessionComponent
 import ge.yet.game.fruitmerge.session.DefaultFruitMergeSessionComponentFactory
 import ge.yet.game.fruitmerge.session.FruitMergeComponent
 import ge.yet.game.fruitmerge.session.FruitMergeSessionComponent
-import ge.yet.game.fruitmerge.store.FruitMergeStore
+import ge.yet.game.fruitmerge.session.store.FruitMergeStore
 import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
@@ -20,6 +24,15 @@ import ge.yet.game.miniapp.metro.MiniAppSessionScope
 abstract class FruitMergeSessionBindings {
     @Binds
     internal abstract fun bindRules(impl: FruitMergeEngine): FruitMergeRules
+
+    @Binds
+    internal abstract fun bindSnapshotLoader(persistence: FruitMergePersistence): GameSnapshotLoader
+
+    @Binds
+    internal abstract fun bindCommitWriter(persistence: FruitMergePersistence): GameCommitWriter
+
+    @Binds
+    internal abstract fun bindTutorialSeen(persistence: FruitMergePersistence): TutorialSeenRepository
 
     @Binds
     internal abstract fun bindGameComponentFactory(

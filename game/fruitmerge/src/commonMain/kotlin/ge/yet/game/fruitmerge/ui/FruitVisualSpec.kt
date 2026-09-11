@@ -1,7 +1,7 @@
 package ge.yet.game.fruitmerge.ui
 
 import androidx.compose.ui.graphics.Color
-import ge.yet.game.fruitmerge.engine.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
 
 internal enum class FruitSilhouette { BERRY, CLUSTER, HEART, CITRUS, FLAT, LOBED, TEARDROP, SEAMED, CROWNED, STRIPED }
 internal enum class FruitDetail { STAR, DRUPELETS, SEEDS, WEDGES, SEGMENTS, LEAF, LONG_LEAF, SEAM, DIAMONDS, RIND }

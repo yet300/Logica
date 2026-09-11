@@ -1,12 +1,19 @@
 package ge.yet.game.fruitmerge.persistence
 
-import ge.yet.game.fruitmerge.engine.FruitBody
-import ge.yet.game.fruitmerge.engine.FruitLevel
-import ge.yet.game.fruitmerge.engine.FruitMergeState
-import ge.yet.game.fruitmerge.engine.MAX_BODIES
-import ge.yet.game.fruitmerge.engine.RandomState
-import ge.yet.game.fruitmerge.engine.RunPhase
-import ge.yet.game.fruitmerge.engine.Vec2
+import ge.yet.game.fruitmerge.data.BEST_SCORE_KEY
+import ge.yet.game.fruitmerge.data.FruitBodySnapshot
+import ge.yet.game.fruitmerge.data.FruitMergePersistence
+import ge.yet.game.fruitmerge.data.FruitMergeSnapshot
+import ge.yet.game.fruitmerge.data.FruitMergeSnapshotSpec
+import ge.yet.game.fruitmerge.data.SNAPSHOT_KEY
+import ge.yet.game.fruitmerge.data.TUTORIAL_SEEN_KEY
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.FruitMergeState
+import ge.yet.game.fruitmerge.domain.engine.MAX_BODIES
+import ge.yet.game.fruitmerge.domain.engine.RandomState
+import ge.yet.game.fruitmerge.domain.model.RunPhase
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals

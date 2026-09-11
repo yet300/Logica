@@ -1,7 +1,10 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.engine
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import kotlin.math.abs
 import kotlin.math.max

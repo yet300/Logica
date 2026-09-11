@@ -1,4 +1,6 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.model
+
+import ge.yet.game.fruitmerge.domain.engine.RandomState
 
 enum class RunPhase {
     PLAYING,

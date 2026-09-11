@@ -1,4 +1,6 @@
-package ge.yet.game.fruitmerge.engine
+package ge.yet.game.fruitmerge.domain.engine
+
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
 
 internal data class FruitPhysicsProfile(
     val massMultiplier: Float = 1f,
