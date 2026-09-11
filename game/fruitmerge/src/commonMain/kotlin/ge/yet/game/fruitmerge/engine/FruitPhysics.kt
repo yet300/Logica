@@ -1,5 +1,8 @@
 package ge.yet.game.fruitmerge.engine
 
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -10,7 +13,8 @@ data class PhysicsResult(
     val candidatePairCount: Int,
 )
 
-class FruitPhysics(
+@SingleIn(MiniAppSessionScope::class)
+class FruitPhysics @Inject constructor(
     private val grid: SpatialGrid = SpatialGrid(),
 ) {
     fun step(input: List<FruitBody>, dt: Float): PhysicsResult {

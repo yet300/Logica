@@ -1,5 +1,6 @@
 package ge.yet.game.fruitmerge.persistence
 
+import dev.zacsweers.metro.Inject
 import ge.yet.game.fruitmerge.engine.FruitMergeState
 import ge.yet.game.miniapp.api.MiniAppSnapshotMigration
 import ge.yet.game.miniapp.api.MiniAppSnapshotSpec
@@ -17,7 +18,7 @@ internal val FruitMergeSnapshotSpec = MiniAppSnapshotSpec(
     migrations = mapOf(1 to MiniAppSnapshotMigration { payload -> payload }),
 )
 
-internal class FruitMergePersistence(
+internal class FruitMergePersistence @Inject constructor(
     private val storage: MiniAppStorage,
 ) {
     suspend fun restore(): FruitMergeState {

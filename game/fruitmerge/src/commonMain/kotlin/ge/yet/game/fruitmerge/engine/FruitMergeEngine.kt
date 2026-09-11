@@ -1,5 +1,8 @@
 package ge.yet.game.fruitmerge.engine
 
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import kotlin.math.max
 
 enum class ActionRejection {
@@ -32,7 +35,8 @@ interface FruitMergeRules {
     fun newRun(state: FruitMergeState): FruitMergeState
 }
 
-class FruitMergeEngine(
+@SingleIn(MiniAppSessionScope::class)
+class FruitMergeEngine @Inject constructor(
     private val physics: FruitPhysics = FruitPhysics(),
 ) : FruitMergeRules {
     var diagnostics: EngineDiagnostics = EngineDiagnostics()

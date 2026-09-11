@@ -1,13 +1,17 @@
 package ge.yet.game.fruitmerge.audio
 
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import ge.yet.game.fruitmerge.engine.FruitLevel
 import ge.yet.game.fruitmerge.store.FruitMergeStore
 import ge.yet.game.miniapp.audio.AudioCommandRejection
 import ge.yet.game.miniapp.audio.AudioCommandResult
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
-internal class FruitMergeAudioAdapter(
+@SingleIn(MiniAppSessionScope::class)
+internal class FruitMergeAudioAdapter @Inject constructor(
     private val audio: MiniAppAudio,
 ) {
     private var started = false
