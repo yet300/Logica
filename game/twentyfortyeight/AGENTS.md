@@ -15,6 +15,24 @@ statistics. It performs no persistence, navigation, analytics, audio, host
 callbacks, Compose work, or delays. UI receives immutable models and actions;
 business mutation stays outside composables.
 
+## Boundaries
+
+- Keep engine, component, result, overlay and UI implementation details
+  `internal`. `TwentyFortyEightSession` is public only as the graph's unique
+  Metro binding type; its constructor and state remain internal.
+- Create session-owned components through `TwentyFortyEightSessionGraph`;
+  every level (`Session`, `Playing`, `Result`, `Overlay`) exposes a
+  `Factory` interface with a `Default` implementation. Factories and aliases
+  are unscoped `@Binds`; `@SingleIn(MiniAppSessionScope)` lives on stateful
+  classes (persistence coordinator, session ports, audio adapter) and on the
+  retained component/store/session providers.
+- The MVI store is playing-owned (`component/playing/store`) and retained by
+  the session for navigation. The result screen renders a detached
+  serializable `ResultSnapshot`, never the live store. Intent preconditions
+  (`Ready` bootstrap, `ACTIVE` visibility) are enforced inside the executor
+  via `acceptsGameInput`, not in components.
+- Replay remains a future host action and is not part of the public API.
+
 Every runtime session uses only the `MiniAppSessionContext.storage` and
 `MiniAppSessionContext.audio` facades supplied to its retained child graph.
 Persistent names are local snake-case names under the host-owned namespace;
