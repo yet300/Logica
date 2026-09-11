@@ -1,5 +1,6 @@
 package ge.yet.game.blockblast.domain.engine
 
+import dev.zacsweers.metro.Inject
 import ge.yet.game.blockblast.domain.model.Grid
 import ge.yet.game.blockblast.domain.model.Polyomino
 import kotlin.random.Random
@@ -20,6 +21,7 @@ internal interface ShapeGenerator {
  * constrained boards retain compact-piece weighting and always receive a
  * placeable shape when the catalog contains one.
  */
+@Inject
 internal class WeightedShapeGenerator : ShapeGenerator {
 
     private val defaultRandom = Random.Default

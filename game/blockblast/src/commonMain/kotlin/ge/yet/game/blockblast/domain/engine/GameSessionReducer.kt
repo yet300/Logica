@@ -1,5 +1,6 @@
 package ge.yet.game.blockblast.domain.engine
 
+import dev.zacsweers.metro.Inject
 import ge.yet.game.blockblast.domain.model.ClearEvent
 import ge.yet.game.blockblast.domain.model.FeedbackEvent
 import ge.yet.game.blockblast.domain.model.GameEvent
@@ -36,7 +37,7 @@ internal data class RoundStartTransition(
 )
 
 /** Stateless gameplay rules. Every mutation is represented by a returned snapshot. */
-internal class GameSessionReducer(
+internal class GameSessionReducer @Inject constructor(
     private val shapeGenerator: ShapeGenerator,
     private val scoreCalculator: ScoreCalculator,
 ) {
