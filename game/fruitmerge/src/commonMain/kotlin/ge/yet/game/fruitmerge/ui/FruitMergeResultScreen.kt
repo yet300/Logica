@@ -6,12 +6,9 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -39,15 +36,13 @@ internal fun FruitMergeResultScreen(
         label = "resultFaceTime",
     )
     val faceTimeSeconds = if (reducedMotion) 0f else animatedFaceTime
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        FruitMergeGameOverOverlay(
-            snapshot = model.snapshot,
-            faceTimeSeconds = faceTimeSeconds,
-            reducedMotion = reducedMotion,
-            onNewGame = component::onNewGame,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
+    FruitMergeResultContent(
+        snapshot = model.snapshot,
+        faceTimeSeconds = faceTimeSeconds,
+        reducedMotion = reducedMotion,
+        onNewGame = component::onNewGame,
+        modifier = modifier,
+    )
 }
 
 private const val FACE_CLOCK_WRAP_SECONDS: Float = 120f

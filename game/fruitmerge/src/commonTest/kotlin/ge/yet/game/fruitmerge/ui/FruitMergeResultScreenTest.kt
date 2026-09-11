@@ -13,7 +13,9 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
+import ge.yet.game.fruitmerge.domain.model.FruitBody
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -21,14 +23,22 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalTestApi::class)
 class FruitMergeResultScreenTest {
     @Test
-    fun `result snapshot drives score best and new game`() = runComposeUiTest {
+    fun `result snapshot drives board score best and new game`() = runComposeUiTest {
         val component = FakeResultComponent(
             FruitMergeResultSnapshot(
                 score = 12_500L,
                 bestScore = 20_000L,
                 bestImprovedInRun = false,
-                largestFruit = FruitLevel.APPLE,
                 runOrdinal = 7L,
+                bodies = listOf(
+                    FruitBody(
+                        id = 1L,
+                        level = FruitLevel.APPLE,
+                        position = Vec2(0.5f, 0.8f),
+                        hasJoinedPile = true,
+                    ),
+                ),
+                dangerSeconds = 1.5f,
             ),
         )
         setContent {
@@ -40,9 +50,9 @@ class FruitMergeResultScreenTest {
         }
 
         onNodeWithTag(FruitMergeTestTags.Result).assertIsDisplayed()
+        onNodeWithTag(FruitMergeTestTags.Board).assertIsDisplayed()
         onNodeWithTag(FruitMergeTestTags.ResultScore).assertIsDisplayed()
         onNodeWithTag(FruitMergeTestTags.ResultBest).assertIsDisplayed()
-        onNodeWithTag(FruitMergeTestTags.ResultLargestFruit).assertIsDisplayed()
         onNodeWithTag(FruitMergeTestTags.NewGame).performClick()
 
         assertEquals(1, component.newGameCalls)

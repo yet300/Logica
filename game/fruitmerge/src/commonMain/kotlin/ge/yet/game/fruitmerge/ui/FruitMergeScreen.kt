@@ -99,7 +99,6 @@ internal object FruitMergeTestTags {
     const val Result = "fruit_merge_result"
     const val ResultScore = "fruit_merge_result_score"
     const val ResultBest = "fruit_merge_result_best"
-    const val ResultLargestFruit = "fruit_merge_result_largest_fruit"
     const val NewGame = "fruit_merge_new_game"
     const val MarketCrate = Board
     const val NextBasket = Next

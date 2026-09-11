@@ -16,7 +16,6 @@ import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponen
 import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponentFactory
 import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
 import ge.yet.game.fruitmerge.data.FruitMergePersistence
-import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppStorage
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
@@ -96,8 +95,9 @@ class ComponentFactoryTest {
             score = 1_250L,
             bestScore = 2_000L,
             bestImprovedInRun = true,
-            largestFruit = FruitLevel.APPLE,
             runOrdinal = 3L,
+            bodies = emptyList(),
+            dangerSeconds = 1.5f,
         )
         var newGames = 0
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }

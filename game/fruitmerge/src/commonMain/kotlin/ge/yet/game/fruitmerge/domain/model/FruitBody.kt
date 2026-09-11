@@ -1,7 +1,9 @@
 package ge.yet.game.fruitmerge.domain.model
 
+import kotlinx.serialization.Serializable
 import kotlin.math.sqrt
 
+@Serializable
 data class Vec2(
     val x: Float,
     val y: Float,
@@ -21,6 +23,7 @@ data class Vec2(
     }
 }
 
+@Serializable
 data class FruitBody(
     val id: Long,
     val level: FruitLevel,

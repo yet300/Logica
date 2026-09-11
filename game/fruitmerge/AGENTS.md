@@ -30,8 +30,10 @@ callbacks, Compose work, or delays. UI receives immutable models and actions; bu
   (`component/game/store`, `isNewGame` bootstrap) and reports
   completion through an `onGameCompleted` callback with a detached
   serializable `FruitMergeResultSnapshot`. The result screen never
-  observes the live store. New Game replaces the stack with a fresh
-  `Playing` child; Back on Result stays host-owned.
+  observes the live store: it renders the frozen terminal board from
+  the snapshot (danger line included) so the loss reason stays visible.
+  New Game replaces the stack with a fresh `Playing` child; Back on
+  Result stays host-owned.
 - Pure step-label and result-reached decisions live in
   `FruitMergeTransitionPlanner` with focused unit tests; the executor
   keeps orchestration and side effects only.
