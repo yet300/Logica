@@ -11,6 +11,8 @@ import ge.yet.game.twentyfortyeight.component.overlay.DefaultOverlayComponentFac
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.DefaultPlayingComponentFactory
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
+import ge.yet.game.twentyfortyeight.component.playing.store.RandomNewGameSeedSource
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.result.DefaultResultComponentFactory
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
@@ -63,6 +65,9 @@ abstract class TwentyFortyEightSessionBindings {
     internal abstract fun bindSessionComponentFactory(
         impl: DefaultTwentyFortyEightSessionComponentFactory,
     ): TwentyFortyEightSessionComponent.Factory
+
+    @Binds
+    internal abstract fun bindSeedSource(impl: RandomNewGameSeedSource): NewGameSeedSource
 
     companion object {
         @Provides

@@ -53,8 +53,6 @@ internal interface InspectableTwentyFortyEightAppGraph {
     val persistence: TwentyFortyEightPersistence
     val analytics: TwentyFortyEightAnalytics
     val diagnostics: TwentyFortyEightDiagnostics
-    val engine: MoveEngine
-    val seedSource: NewGameSeedSource
 }
 
 @GraphExtension(
@@ -131,13 +129,11 @@ class TwentyFortyEightSessionGraphTest {
         assertSame(app.persistence, first.persistence)
         assertSame(app.analytics, first.analytics)
         assertSame(app.diagnostics, first.diagnostics)
-        assertSame(app.engine, first.engine)
-        assertSame(app.seedSource, first.seedSource)
         assertSame(first.persistence, second.persistence)
         assertSame(first.analytics, second.analytics)
         assertSame(first.diagnostics, second.diagnostics)
-        assertSame(first.engine, second.engine)
-        assertSame(first.seedSource, second.seedSource)
+        assertNotSame(first.engine, second.engine)
+        assertNotSame(first.seedSource, second.seedSource)
 
         assertSame(firstContext.componentContext, first.componentContext)
         assertSame(firstContext, first.context)

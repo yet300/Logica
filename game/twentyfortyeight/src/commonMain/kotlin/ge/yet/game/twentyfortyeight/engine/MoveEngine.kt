@@ -1,10 +1,10 @@
 package ge.yet.game.twentyfortyeight.engine
 
-import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
-@SingleIn(AppScope::class)
+@SingleIn(MiniAppSessionScope::class)
 internal class MoveEngine @Inject constructor(
     private val spawnPolicy: SpawnPolicy,
 ) {

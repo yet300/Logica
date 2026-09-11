@@ -1,8 +1,8 @@
 package ge.yet.game.twentyfortyeight.engine
 
-import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
 internal data class SpawnedValue(
     val position: Position,
@@ -10,7 +10,7 @@ internal data class SpawnedValue(
     val rngAfter: RngState,
 )
 
-@SingleIn(AppScope::class)
+@SingleIn(MiniAppSessionScope::class)
 internal class SpawnPolicy @Inject constructor(
     private val drawInt: (RngState, Int) -> Pair<Int, RngState> = SplitMix64::nextInt,
 ) {
