@@ -5,7 +5,7 @@ import ge.yet.game.twentyfortyeight.generated.resources.Res
 import ge.yet.game.twentyfortyeight.generated.resources.moves_count
 import ge.yet.game.twentyfortyeight.generated.resources.new_game_not_saved
 import ge.yet.game.twentyfortyeight.generated.resources.progress_not_saved
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 

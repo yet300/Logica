@@ -33,8 +33,8 @@ import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionCompon
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
-import ge.yet.game.twentyfortyeight.store.NewGameSeedSource
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore
+import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import kotlin.test.Test
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame

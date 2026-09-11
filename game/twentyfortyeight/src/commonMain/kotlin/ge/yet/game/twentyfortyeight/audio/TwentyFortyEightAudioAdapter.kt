@@ -1,9 +1,12 @@
 package ge.yet.game.twentyfortyeight.audio
 
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.audio.AudioCommandRejection
 import ge.yet.game.miniapp.audio.AudioCommandResult
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.engine.AudioControls
 import ge.yet.game.twentyfortyeight.engine.TileValue
 
@@ -22,7 +25,8 @@ internal sealed interface AudioEvent {
     data object GameOver : AudioEvent
 }
 
-internal class TwentyFortyEightAudioAdapter(
+@SingleIn(MiniAppSessionScope::class)
+internal class TwentyFortyEightAudioAdapter @Inject constructor(
     private val audio: MiniAppAudio,
 ) {
     private var started = false

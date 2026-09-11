@@ -28,13 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.app.common.utils.formatScore
-import ge.yet.game.twentyfortyeight.component.ResultComponent
+import ge.yet.game.twentyfortyeight.component.result.ResultComponent
 import ge.yet.game.twentyfortyeight.generated.resources.Res
 import ge.yet.game.twentyfortyeight.generated.resources.best
 import ge.yet.game.twentyfortyeight.generated.resources.game_over
 import ge.yet.game.twentyfortyeight.generated.resources.highest_tile
 import ge.yet.game.twentyfortyeight.generated.resources.new_game
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import ge.yet.game.twentyfortyeight.ui.common.errorText
 import ge.yet.game.twentyfortyeight.ui.common.movesValue
 import ge.yet.game.twentyfortyeight.ui.motion.MotionPolicy

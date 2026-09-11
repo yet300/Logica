@@ -1,5 +1,8 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 internal data class GameStatistics(
     val gamesStarted: Long = 0L,
     val gamesWon: Long = 0L,
@@ -27,6 +30,7 @@ internal data class GameStatistics(
     }
 }
 
+@Serializable
 internal data class ResultSnapshot(
     val score: Long,
     val bestScore: Long,

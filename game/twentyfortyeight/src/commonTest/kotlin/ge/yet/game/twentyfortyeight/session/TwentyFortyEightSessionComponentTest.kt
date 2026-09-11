@@ -23,7 +23,10 @@ import ge.yet.game.miniapp.testkit.NoopMiniAppStorage
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import ge.yet.game.twentyfortyeight.analytics.TwentyFortyEightAnalytics
 import ge.yet.game.twentyfortyeight.audio.TwentyFortyEightAudioAdapter
-import ge.yet.game.twentyfortyeight.component.OverlayComponent
+import ge.yet.game.twentyfortyeight.component.overlay.DefaultOverlayComponentFactory
+import ge.yet.game.twentyfortyeight.component.playing.DefaultPlayingComponentFactory
+import ge.yet.game.twentyfortyeight.component.result.DefaultResultComponentFactory
+import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightDiagnostics
 import ge.yet.game.twentyfortyeight.engine.GamePhase
 import ge.yet.game.twentyfortyeight.engine.GameStatistics
@@ -36,15 +39,15 @@ import ge.yet.game.twentyfortyeight.persistence.GameSnapshotLoader
 import ge.yet.game.twentyfortyeight.persistence.LoadResult
 import ge.yet.game.twentyfortyeight.persistence.RestoredGameData
 import ge.yet.game.twentyfortyeight.persistence.SessionPersistenceCoordinator
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
-import ge.yet.game.twentyfortyeight.store.NewGameSeedSource
-import ge.yet.game.twentyfortyeight.store.OverlayState
-import ge.yet.game.twentyfortyeight.store.StoreCommitWriter
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStoreFactory
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore.Label
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
-import ge.yet.game.twentyfortyeight.store.playableGame
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
+import ge.yet.game.twentyfortyeight.component.playing.store.OverlayState
+import ge.yet.game.twentyfortyeight.component.playing.store.StoreCommitWriter
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStoreFactory
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore.Label
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.playableGame
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -621,6 +624,8 @@ class TwentyFortyEightSessionComponentTest {
                 instanceKeeper = instanceKeeper,
                 backHandler = backDispatcher,
             ),
+            playingFactory = DefaultPlayingComponentFactory(DefaultOverlayComponentFactory()),
+            resultFactory = DefaultResultComponentFactory(),
             storeFactory = storeFactory,
             adapter = adapter,
             ports = ports,
@@ -656,7 +661,7 @@ class TwentyFortyEightSessionComponentTest {
         val visibility: MutableMiniAppVisibilitySource,
         val instanceKeeper: InstanceKeeperDispatcher,
     ) {
-        fun playing(): ge.yet.game.twentyfortyeight.component.PlayingComponent =
+        fun playing(): ge.yet.game.twentyfortyeight.component.playing.PlayingComponent =
             assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
                 component.stack.value.active.instance,
             ).component

@@ -21,7 +21,7 @@ import ge.yet.game.twentyfortyeight.engine.TileId
 import ge.yet.game.twentyfortyeight.engine.TileValue
 import ge.yet.game.twentyfortyeight.engine.UndoTileMotion
 import ge.yet.game.twentyfortyeight.engine.UndoTransition
-import ge.yet.game.twentyfortyeight.store.VisualTransition
+import ge.yet.game.twentyfortyeight.component.playing.store.VisualTransition
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals

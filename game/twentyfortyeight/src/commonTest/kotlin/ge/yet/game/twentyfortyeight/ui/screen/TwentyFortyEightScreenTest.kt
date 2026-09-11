@@ -37,13 +37,13 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.value.MutableValue
-import ge.yet.game.twentyfortyeight.component.OverlayComponent
-import ge.yet.game.twentyfortyeight.component.PlayingComponent
-import ge.yet.game.twentyfortyeight.component.ResultComponent
+import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
+import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.result.ResultComponent
 import ge.yet.game.twentyfortyeight.engine.Board
 import ge.yet.game.twentyfortyeight.engine.Direction
 import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import ge.yet.game.twentyfortyeight.ui.gameplay.PlayingContent
 import ge.yet.game.twentyfortyeight.ui.gameplay.ScoreBestRow
 import ge.yet.game.twentyfortyeight.ui.overlay.OverlayContent

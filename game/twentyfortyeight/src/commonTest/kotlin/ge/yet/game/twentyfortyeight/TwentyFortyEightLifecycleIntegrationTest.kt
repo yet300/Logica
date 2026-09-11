@@ -8,7 +8,7 @@ import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import ge.yet.game.miniapp.testkit.NoopMiniAppAudio
 import ge.yet.game.miniapp.testkit.RecordingMiniAppSessionHost
 import ge.yet.game.miniapp.testkit.TestMiniAppSessionContext
-import ge.yet.game.twentyfortyeight.component.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightAppGraph
 import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightSessionGraph
 import ge.yet.game.twentyfortyeight.engine.GameRules

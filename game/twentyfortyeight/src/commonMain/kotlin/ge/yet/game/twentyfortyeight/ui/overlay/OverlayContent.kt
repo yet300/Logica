@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.app.common.utils.formatScore
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ge.yet.game.twentyfortyeight.component.OverlayComponent
+import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.generated.resources.Res
 import ge.yet.game.twentyfortyeight.generated.resources.best
 import ge.yet.game.twentyfortyeight.generated.resources.cancel

@@ -26,7 +26,7 @@ import ge.yet.game.twentyfortyeight.engine.Position
 import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
 import ge.yet.game.twentyfortyeight.engine.TileId
 import ge.yet.game.twentyfortyeight.engine.UndoTransition
-import ge.yet.game.twentyfortyeight.store.VisualTransition
+import ge.yet.game.twentyfortyeight.component.playing.store.VisualTransition
 import ge.yet.game.twentyfortyeight.ui.motion.MotionPolicy
 import kotlin.math.roundToInt
 

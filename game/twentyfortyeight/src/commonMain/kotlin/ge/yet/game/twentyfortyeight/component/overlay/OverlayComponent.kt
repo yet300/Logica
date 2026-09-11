@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.component
+package ge.yet.game.twentyfortyeight.component.overlay
 
 import com.arkivanov.decompose.value.Value
 
@@ -37,5 +37,22 @@ internal sealed interface OverlayComponent {
     ) : OverlayComponent {
         fun onConfirmRequested() = onConfirm()
         override fun onDismissRequested() = onDismiss()
+    }
+
+    interface Factory {
+        fun createVictory(
+            score: Long,
+            bestScore: Long,
+            onContinue: () -> Unit,
+            onRestart: () -> Unit,
+            onDismiss: () -> Unit,
+        ): OverlayComponent
+
+        fun createRestartConfirmation(
+            score: Long,
+            successfulMovesInRun: Long,
+            onConfirm: () -> Unit,
+            onDismiss: () -> Unit,
+        ): OverlayComponent
     }
 }

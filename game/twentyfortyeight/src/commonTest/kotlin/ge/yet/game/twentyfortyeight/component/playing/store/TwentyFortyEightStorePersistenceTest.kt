@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.store
+package ge.yet.game.twentyfortyeight.component.playing.store
 
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure

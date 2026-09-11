@@ -2,11 +2,17 @@ package ge.yet.game.twentyfortyeight.session
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 
+// Mutable session-owned effect/navigation hub: one instance per session.
+@SingleIn(MiniAppSessionScope::class)
+@Inject
 internal class TwentyFortyEightSessionPorts : SessionNavigation, SessionUiEffects {
     private var navigateToResult: ((ResultSnapshot) -> Unit)? = null
     private var onNewGameCommitted: ((Long) -> Unit)? = null
@@ -33,8 +39,10 @@ internal class TwentyFortyEightSessionPorts : SessionNavigation, SessionUiEffect
 
     override fun announce(fact: AnnouncementFact) =
         publish { id -> TwentyFortyEightSessionComponent.Effect.Announcement(id, fact) }
+
     override fun requestFocus(target: FocusTarget) =
         publish { id -> TwentyFortyEightSessionComponent.Effect.Focus(id, target) }
+
     override fun showError(code: UiErrorCode) =
         publish { id -> TwentyFortyEightSessionComponent.Effect.Error(id, code) }
 

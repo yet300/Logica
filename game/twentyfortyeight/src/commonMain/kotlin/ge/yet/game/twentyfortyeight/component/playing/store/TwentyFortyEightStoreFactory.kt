@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.store
+package ge.yet.game.twentyfortyeight.component.playing.store
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper

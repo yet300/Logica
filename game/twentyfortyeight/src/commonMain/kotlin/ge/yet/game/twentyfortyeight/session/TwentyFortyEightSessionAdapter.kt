@@ -1,14 +1,15 @@
 package ge.yet.game.twentyfortyeight.session
 
+import dev.zacsweers.metro.Inject
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.twentyfortyeight.analytics.TwentyFortyEightAnalytics
 import ge.yet.game.twentyfortyeight.audio.TwentyFortyEightAudioAdapter
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightDiagnostics
 import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore.Label
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore.Label
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
@@ -23,7 +24,8 @@ internal interface SessionUiEffects {
     fun showError(code: UiErrorCode)
 }
 
-internal class TwentyFortyEightSessionAdapter(
+// Stateless label router: constructor-injected, no scope needed.
+internal class TwentyFortyEightSessionAdapter @Inject constructor(
     private val navigation: SessionNavigation,
     private val audio: TwentyFortyEightAudioAdapter,
     private val analytics: TwentyFortyEightAnalytics,

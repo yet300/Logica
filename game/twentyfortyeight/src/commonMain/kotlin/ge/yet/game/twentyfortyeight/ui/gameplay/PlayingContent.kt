@@ -26,11 +26,11 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import ge.yet.game.twentyfortyeight.component.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.engine.Direction
 import ge.yet.game.twentyfortyeight.generated.resources.Res
 import ge.yet.game.twentyfortyeight.generated.resources.loading_game
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import ge.yet.game.twentyfortyeight.ui.board.BoardModel
 import ge.yet.game.twentyfortyeight.ui.board.TwentyFortyEightBoard
 import ge.yet.game.twentyfortyeight.ui.common.errorText

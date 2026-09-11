@@ -1,6 +1,9 @@
 package ge.yet.game.twentyfortyeight.persistence
 
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.api.MiniAppStorage
+import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.diagnostics.InvariantCode
 import ge.yet.game.twentyfortyeight.diagnostics.StorageOperation
 import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
@@ -29,7 +32,8 @@ internal data class CoordinatorSnapshot(
         get() = if (inFlightRevision == null) 0 else 1
 }
 
-internal class SessionPersistenceCoordinator(
+@SingleIn(MiniAppSessionScope::class)
+internal class SessionPersistenceCoordinator @Inject constructor(
     private val storage: MiniAppStorage,
     private val writer: GameCommitWriter,
     private val loader: GameSnapshotLoader,

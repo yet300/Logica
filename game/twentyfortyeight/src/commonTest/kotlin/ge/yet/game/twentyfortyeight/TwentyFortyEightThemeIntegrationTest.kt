@@ -18,8 +18,8 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
-import ge.yet.game.twentyfortyeight.component.OverlayComponent
-import ge.yet.game.twentyfortyeight.component.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
+import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.engine.Direction
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.uikit.theme.LogicaTheme

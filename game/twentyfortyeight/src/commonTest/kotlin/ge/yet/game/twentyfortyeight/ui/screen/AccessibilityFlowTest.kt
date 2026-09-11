@@ -2,8 +2,8 @@ package ge.yet.game.twentyfortyeight.ui.screen
 
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

@@ -1,32 +1,14 @@
 package ge.yet.game.twentyfortyeight.session
 
-import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.mvikotlin.core.instancekeeper.getStore
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
-import ge.yet.game.twentyfortyeight.component.DefaultPlayingComponent
-import ge.yet.game.twentyfortyeight.component.DefaultResultComponent
-import ge.yet.game.twentyfortyeight.component.PlayingComponent
-import ge.yet.game.twentyfortyeight.component.ResultComponent
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStoreFactory
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
+import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
+import ge.yet.game.twentyfortyeight.component.result.ResultComponent
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 
 internal interface TwentyFortyEightSessionComponent {
     val stack: Value<ChildStack<*, Child>>
@@ -65,85 +47,10 @@ internal interface TwentyFortyEightSessionComponent {
     companion object {
         const val MaxPendingEffects: Int = 16
     }
-}
 
-@OptIn(DelicateDecomposeApi::class)
-internal class DefaultTwentyFortyEightSessionComponent(
-    componentContext: ComponentContext,
-    storeFactory: TwentyFortyEightStoreFactory,
-    adapter: TwentyFortyEightSessionAdapter,
-    private val ports: TwentyFortyEightSessionPorts,
-) : TwentyFortyEightSessionComponent,
-    ComponentContext by componentContext {
-
-    internal val retainedStore: TwentyFortyEightStore = instanceKeeper.getStore(storeFactory::create)
-    private val navigation = StackNavigation<Config>()
-
-    override val stack: Value<ChildStack<*, TwentyFortyEightSessionComponent.Child>> = childStack(
-        source = navigation,
-        serializer = Config.serializer(),
-        initialConfiguration = retainedStore.state.toInitialConfig(),
-        handleBackButton = false,
-        childFactory = ::createChild,
-    )
-
-    override val frameMode: Value<MiniAppFrameMode> = stack.map { MiniAppFrameMode.Standard }
-    override val effect: Value<TwentyFortyEightSessionComponent.EffectState> = ports.effect
-
-    override fun onEffectConsumed(effectId: Long) = ports.consumeEffect(effectId)
-
-    internal val labelCollector: Job
-
-    init {
-        ports.bind(::navigateToResult, ::onNewGameCommitted)
-        labelCollector = coroutineScope().launch(start = CoroutineStart.UNDISPATCHED) {
-            adapter.collect(retainedStore.labels)
-        }
-    }
-
-    override fun handleBack(): Boolean =
-        (stack.value.active.instance as? TwentyFortyEightSessionComponent.Child.Playing)
-            ?.component
-            ?.handleBack()
-            ?: false
-
-    internal fun navigateToResult(@Suppress("UNUSED_PARAMETER") snapshot: ResultSnapshot) {
-        if (stack.value.active.instance is TwentyFortyEightSessionComponent.Child.Result) return
-        navigation.replaceAll(Config.Result(retainedStore.state.game?.runOrdinal ?: 0L))
-    }
-
-    private fun onNewGameCommitted(runOrdinal: Long) {
-        if (stack.value.active.instance !is TwentyFortyEightSessionComponent.Child.Result) return
-        navigation.replaceAll(Config.Playing(runOrdinal))
-    }
-
-    private fun createChild(config: Config, componentContext: ComponentContext): TwentyFortyEightSessionComponent.Child =
-        when (config) {
-            is Config.Playing -> TwentyFortyEightSessionComponent.Child.Playing(
-                DefaultPlayingComponent(componentContext, retainedStore),
-            )
-            is Config.Result -> TwentyFortyEightSessionComponent.Child.Result(
-                DefaultResultComponent(retainedStore) {
-                    retainedStore.accept(TwentyFortyEightStore.Intent.NewGameFromResult)
-                },
-            )
-        }
-}
-
-@Serializable
-private sealed interface Config {
-    @Serializable
-    data class Playing(val runOrdinal: Long) : Config
-
-    @Serializable
-    data class Result(val runOrdinal: Long) : Config
-}
-
-private fun TwentyFortyEightStore.State.toInitialConfig(): Config {
-    val authoritativeGame = game
-    return if (authoritativeGame?.phase == GamePhase.GameOver) {
-        Config.Result(authoritativeGame.runOrdinal)
-    } else {
-        Config.Playing(authoritativeGame?.runOrdinal ?: 0L)
+    fun interface Factory {
+        fun create(
+            componentContext: ComponentContext,
+        ): TwentyFortyEightSessionComponent
     }
 }

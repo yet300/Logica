@@ -1,12 +1,17 @@
 package ge.yet.game.twentyfortyeight.engine
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+
 internal data class SpawnedValue(
     val position: Position,
     val value: TileValue,
     val rngAfter: RngState,
 )
 
-internal class SpawnPolicy(
+@SingleIn(AppScope::class)
+internal class SpawnPolicy @Inject constructor(
     private val drawInt: (RngState, Int) -> Pair<Int, RngState> = SplitMix64::nextInt,
 ) {
     fun spawn(board: Board, rng: RngState): SpawnedValue? {

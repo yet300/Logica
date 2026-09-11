@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.component
+package ge.yet.game.twentyfortyeight.component.playing
 
 import com.app.common.decompose.asValue
 import com.arkivanov.decompose.ComponentContext
@@ -7,84 +7,28 @@ import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import ge.yet.game.miniapp.api.MiniAppVisibility
+import dev.zacsweers.metro.Inject
+import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
+import ge.yet.game.twentyfortyeight.component.playing.integration.stateToModel
 import ge.yet.game.twentyfortyeight.engine.Direction
-import ge.yet.game.twentyfortyeight.engine.GamePhase
-import ge.yet.game.twentyfortyeight.engine.RuntimeBoard
-import ge.yet.game.twentyfortyeight.store.BootstrapState
-import ge.yet.game.twentyfortyeight.store.OverlayState
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore
-import ge.yet.game.twentyfortyeight.store.VisualTransition
+import ge.yet.game.twentyfortyeight.component.playing.store.OverlayState
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import kotlinx.serialization.Serializable
-
-internal interface PlayingComponent {
-    val model: Value<Model>
-    val overlay: Value<ChildSlot<*, OverlayComponent>>
-
-    fun onMove(direction: Direction)
-    fun onUndoRequested()
-    fun onRestartRequested()
-    fun onContinueAfterVictory()
-    fun onTutorialSkipped()
-    fun onAnimationCompleted(transitionId: Long)
-    fun handleBack(): Boolean
-
-    data class Model(
-        val board: RuntimeBoard?,
-        val transition: VisualTransition?,
-        val score: Long,
-        val bestScore: Long,
-        val bestImprovedInRun: Boolean = false,
-        val gesturesEnabled: Boolean,
-        val undoEnabled: Boolean,
-        val tutorialVisible: Boolean,
-        val overlay: OverlayState?,
-        val persistenceStatus: PersistenceStatus,
-    )
-
-    enum class PersistenceStatus { Clean, Saving, Dirty }
-}
 
 internal class DefaultPlayingComponent(
     componentContext: ComponentContext,
     private val store: TwentyFortyEightStore,
+    private val overlayFactory: OverlayComponent.Factory,
 ) : PlayingComponent,
     ComponentContext by componentContext {
 
     private val overlayNavigation = SlotNavigation<OverlayConfig>()
     private var componentAlive = true
 
-    override val model: Value<PlayingComponent.Model> = store.asValue().map { state ->
-        val game = state.game
-        PlayingComponent.Model(
-            board = game?.board,
-            transition = state.activeTransition,
-            score = game?.score ?: 0L,
-            bestScore = game?.bestScore ?: 0L,
-            bestImprovedInRun = game?.facts?.bestImprovedInRun == true,
-            gesturesEnabled = state.bootstrap == BootstrapState.Ready &&
-                state.visibility == MiniAppVisibility.ACTIVE &&
-                game?.phase == GamePhase.Playing &&
-                state.overlay == null,
-            undoEnabled = state.bootstrap == BootstrapState.Ready &&
-                state.visibility == MiniAppVisibility.ACTIVE &&
-                game?.phase == GamePhase.Playing &&
-                game.undo != null &&
-                state.activeTransition == null &&
-                state.overlay == null,
-            tutorialVisible = state.bootstrap == BootstrapState.Ready && !state.tutorialSeen,
-            overlay = state.overlay,
-            persistenceStatus = when {
-                state.persistenceDirty -> PlayingComponent.PersistenceStatus.Dirty
-                state.requestedRevision > state.durableRevision -> PlayingComponent.PersistenceStatus.Saving
-                else -> PlayingComponent.PersistenceStatus.Clean
-            },
-        )
-    }
+    override val model: Value<PlayingComponent.Model> = store.asValue().map(stateToModel)
 
     override val overlay: Value<ChildSlot<*, OverlayComponent>> = childSlot(
         source = overlayNavigation,
@@ -131,11 +75,10 @@ internal class DefaultPlayingComponent(
         val game = state.game
         return when (config) {
             OverlayConfig.Victory -> {
-                lateinit var origin: OverlayComponent.Victory
-                origin = OverlayComponent.Victory(
-                    model = MutableValue(
-                        OverlayComponent.Model.Victory(game?.score ?: 0L, game?.bestScore ?: 0L),
-                    ),
+                lateinit var origin: OverlayComponent
+                origin = overlayFactory.createVictory(
+                    score = game?.score ?: 0L,
+                    bestScore = game?.bestScore ?: 0L,
                     onContinue = {
                         acceptFromOverlay(origin, TwentyFortyEightStore.Intent.ContinueAfterVictory)
                     },
@@ -145,14 +88,10 @@ internal class DefaultPlayingComponent(
                 origin
             }
             OverlayConfig.RestartConfirmation -> {
-                lateinit var origin: OverlayComponent.RestartConfirmation
-                origin = OverlayComponent.RestartConfirmation(
-                    model = MutableValue(
-                        OverlayComponent.Model.RestartConfirmation(
-                            score = game?.score ?: 0L,
-                            successfulMovesInRun = game?.successfulMovesInRun ?: 0L,
-                        ),
-                    ),
+                lateinit var origin: OverlayComponent
+                origin = overlayFactory.createRestartConfirmation(
+                    score = game?.score ?: 0L,
+                    successfulMovesInRun = game?.successfulMovesInRun ?: 0L,
                     onConfirm = { acceptFromOverlay(origin, TwentyFortyEightStore.Intent.ConfirmRestart) },
                     onDismiss = { acceptFromOverlay(origin, TwentyFortyEightStore.Intent.CancelOverlay) },
                 )
@@ -164,6 +103,20 @@ internal class DefaultPlayingComponent(
     private fun acceptFromOverlay(origin: OverlayComponent, intent: TwentyFortyEightStore.Intent) {
         if (componentAlive && overlay.value.child?.instance === origin) store.accept(intent)
     }
+}
+
+@Inject
+internal class DefaultPlayingComponentFactory(
+    private val overlayFactory: OverlayComponent.Factory,
+) : PlayingComponent.Factory {
+    override fun create(
+        componentContext: ComponentContext,
+        store: TwentyFortyEightStore,
+    ): DefaultPlayingComponent = DefaultPlayingComponent(
+        componentContext = componentContext,
+        store = store,
+        overlayFactory = overlayFactory,
+    )
 }
 
 @Serializable

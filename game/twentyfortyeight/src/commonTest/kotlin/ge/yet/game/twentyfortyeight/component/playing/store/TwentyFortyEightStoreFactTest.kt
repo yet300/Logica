@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.store
+package ge.yet.game.twentyfortyeight.component.playing.store
 
 import ge.yet.game.twentyfortyeight.analytics.AnalyticsBucketPolicy
 import ge.yet.game.twentyfortyeight.analytics.AnalyticsFact

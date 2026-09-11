@@ -19,10 +19,10 @@ import ge.yet.game.twentyfortyeight.diagnostics.TwentyFortyEightFailure
 import ge.yet.game.twentyfortyeight.engine.AudioControls
 import ge.yet.game.twentyfortyeight.engine.GameStatistics
 import ge.yet.game.twentyfortyeight.engine.ResultSnapshot
-import ge.yet.game.twentyfortyeight.store.AnnouncementFact
-import ge.yet.game.twentyfortyeight.store.FocusTarget
-import ge.yet.game.twentyfortyeight.store.TwentyFortyEightStore.Label
-import ge.yet.game.twentyfortyeight.store.UiErrorCode
+import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
+import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
+import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore.Label
+import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
