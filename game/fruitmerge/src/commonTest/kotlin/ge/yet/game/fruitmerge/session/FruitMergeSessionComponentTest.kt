@@ -50,17 +50,18 @@ class FruitMergeSessionComponentTest {
         persistence.checkpoint(FruitMergeState(runOrdinal = 7L, phase = RunPhase.RESULT))
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
         val rules = TestFruitMergeRules()
-        val component = DefaultFruitMergeSessionComponent(
-            componentContext = lifecycle.componentContext,
+        val visibility = MutableMiniAppVisibilitySource()
+        val component = DefaultFruitMergeSessionComponentFactory(
+            gameFactory = DefaultFruitMergeComponentFactory(persistence, visibility),
             storeFactory = FruitMergeStoreFactory(
                 storeFactory = DefaultStoreFactory(),
                 rules = rules,
                 persistence = persistence,
             ),
             persistence = persistence,
-            visibility = MutableMiniAppVisibilitySource(),
+            visibility = visibility,
             audio = FruitMergeAudioAdapter(NoopMiniAppAudio),
-        )
+        ).create(lifecycle.componentContext)
 
         advanceUntilIdle()
         val game = component.game
@@ -82,17 +83,18 @@ class FruitMergeSessionComponentTest {
         val storage = MutableMiniAppStorage()
         val persistence = FruitMergePersistence(storage)
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
-        val component = DefaultFruitMergeSessionComponent(
-            componentContext = lifecycle.componentContext,
+        val visibility = MutableMiniAppVisibilitySource()
+        val component = DefaultFruitMergeSessionComponentFactory(
+            gameFactory = DefaultFruitMergeComponentFactory(persistence, visibility),
             storeFactory = FruitMergeStoreFactory(
                 storeFactory = DefaultStoreFactory(),
                 rules = TestFruitMergeRules(),
                 persistence = persistence,
             ),
             persistence = persistence,
-            visibility = MutableMiniAppVisibilitySource(),
+            visibility = visibility,
             audio = FruitMergeAudioAdapter(NoopMiniAppAudio),
-        )
+        ).create(lifecycle.componentContext)
         advanceUntilIdle()
         val playing = component.game
 
@@ -131,17 +133,18 @@ class FruitMergeSessionComponentTest {
         )
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
         val rules = TestFruitMergeRules()
-        val component = DefaultFruitMergeSessionComponent(
-            componentContext = lifecycle.componentContext,
+        val visibility = MutableMiniAppVisibilitySource()
+        val component = DefaultFruitMergeSessionComponentFactory(
+            gameFactory = DefaultFruitMergeComponentFactory(persistence, visibility),
             storeFactory = FruitMergeStoreFactory(
                 storeFactory = DefaultStoreFactory(),
                 rules = rules,
                 persistence = persistence,
             ),
             persistence = persistence,
-            visibility = MutableMiniAppVisibilitySource(),
+            visibility = visibility,
             audio = FruitMergeAudioAdapter(NoopMiniAppAudio),
-        )
+        ).create(lifecycle.componentContext)
         advanceUntilIdle()
         val playing = component.game
 
@@ -161,13 +164,14 @@ class FruitMergeSessionComponentTest {
         val storage = MutableMiniAppStorage()
         val persistence = FruitMergePersistence(storage)
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
-        val component = DefaultFruitMergeSessionComponent(
-            componentContext = lifecycle.componentContext,
+        val visibility = MutableMiniAppVisibilitySource()
+        val component = DefaultFruitMergeSessionComponentFactory(
+            gameFactory = DefaultFruitMergeComponentFactory(persistence, visibility),
             storeFactory = FruitMergeStoreFactory(DefaultStoreFactory(), TestFruitMergeRules(), persistence),
             persistence = persistence,
-            visibility = MutableMiniAppVisibilitySource(),
+            visibility = visibility,
             audio = FruitMergeAudioAdapter(NoopMiniAppAudio),
-        )
+        ).create(lifecycle.componentContext)
         advanceUntilIdle()
         assertTrue(component.game.model.value.visible)
         val collector = async(start = CoroutineStart.UNDISPATCHED) {
