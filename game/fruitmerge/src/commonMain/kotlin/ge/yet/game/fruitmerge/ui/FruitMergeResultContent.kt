@@ -146,7 +146,16 @@ private fun ResultValue(label: String, value: Long, tag: String) {
         },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(label.uppercase(), style = MaterialTheme.typography.labelSmall)
-        Text(compactScore(value), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+        Text(
+            label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            compactScore(value),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Black,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
     }
 }
