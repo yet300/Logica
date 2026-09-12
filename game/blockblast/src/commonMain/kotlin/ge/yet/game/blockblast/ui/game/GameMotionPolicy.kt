@@ -1,9 +1,5 @@
 package ge.yet.game.blockblast.ui.game
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.MotionDurationScale
-
 /**
  * Central decisions for optional game-screen motion.
  *
@@ -61,11 +57,3 @@ internal fun gameMotionPolicy(
     animateBorderGlow = comboLevel > 0 && !reducedMotion,
     spatialMotionEnabled = !reducedMotion,
 )
-
-internal fun MotionDurationScale?.isReducedMotion(): Boolean =
-    this?.scaleFactor == 0f
-
-/** Reads the duration scale installed in Compose's coroutine context. */
-@Composable
-internal fun rememberReducedMotion(): Boolean =
-    rememberCoroutineScope().coroutineContext[MotionDurationScale].isReducedMotion()

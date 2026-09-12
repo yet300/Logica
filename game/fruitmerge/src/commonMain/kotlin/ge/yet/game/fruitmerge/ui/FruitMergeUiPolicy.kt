@@ -10,14 +10,6 @@ internal data class ShakeVisualTransform(
 
 internal data class MergeSqueeze(val scaleX: Float, val scaleY: Float)
 
-internal enum class ScoreCardState { SCORE_ONLY, SCORE_AND_BEST, BEST_ONLY }
-
-internal fun scoreCardState(bestScore: Long, bestImprovedInRun: Boolean): ScoreCardState = when {
-    bestImprovedInRun -> ScoreCardState.BEST_ONLY
-    bestScore > 0L -> ScoreCardState.SCORE_AND_BEST
-    else -> ScoreCardState.SCORE_ONLY
-}
-
 internal fun mergePresentationProgress(elapsedSeconds: Float): Float =
     (elapsedSeconds / MERGE_PRESENTATION_SECONDS).coerceIn(0f, 1f)
 

@@ -32,7 +32,9 @@ import ge.yet.game.fruitmerge.generated.resources.game_over
 import ge.yet.game.fruitmerge.generated.resources.game_over_supporting
 import ge.yet.game.fruitmerge.generated.resources.new_game
 import ge.yet.game.fruitmerge.generated.resources.score
+import ge.yet.game.uikit.components.score.ScoreCardState
 import ge.yet.game.uikit.components.score.compactScore
+import ge.yet.game.uikit.components.score.scoreCardState
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -102,16 +104,16 @@ internal fun FruitMergeResultContent(
                 Alignment.CenterHorizontally,
             ),
         ) {
-            if (scoreState != ScoreCardState.BEST_ONLY) {
+            if (scoreState != ScoreCardState.BestOnly) {
                 ResultValue(
                     label = stringResource(Res.string.score),
                     value = snapshot.score,
                     tag = FruitMergeTestTags.ResultScore,
                 )
             }
-            if (scoreState != ScoreCardState.SCORE_ONLY) {
+            if (scoreState != ScoreCardState.ScoreOnly) {
                 ResultValue(
-                    label = if (scoreState == ScoreCardState.BEST_ONLY) {
+                    label = if (scoreState == ScoreCardState.BestOnly) {
                         "♛ " + stringResource(Res.string.best_score)
                     } else {
                         stringResource(Res.string.best_score)

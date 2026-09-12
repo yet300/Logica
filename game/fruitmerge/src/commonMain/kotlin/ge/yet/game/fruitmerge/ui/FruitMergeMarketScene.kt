@@ -35,7 +35,9 @@ import ge.yet.game.fruitmerge.generated.resources.Res
 import ge.yet.game.fruitmerge.generated.resources.best_score
 import ge.yet.game.fruitmerge.generated.resources.score
 import ge.yet.game.uikit.components.background.AmbientMeshBackground
+import ge.yet.game.uikit.components.score.ScoreCardState
 import ge.yet.game.uikit.components.score.compactScore
+import ge.yet.game.uikit.components.score.scoreCardState
 import ge.yet.game.uikit.theme.PieceColors
 import org.jetbrains.compose.resources.stringResource
 
@@ -135,11 +137,11 @@ internal fun MarketPriceTag(
             horizontalArrangement = Arrangement.spacedBy(18.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (state != ScoreCardState.BEST_ONLY) {
+            if (state != ScoreCardState.BestOnly) {
                 PriceValue(scoreLabel, score, palette, Modifier.weight(1f))
             }
-            if (state != ScoreCardState.SCORE_ONLY) {
-                PriceValue(bestLabel, bestScore, palette, Modifier.weight(1f), crowned = state == ScoreCardState.BEST_ONLY)
+            if (state != ScoreCardState.ScoreOnly) {
+                PriceValue(bestLabel, bestScore, palette, Modifier.weight(1f), crowned = state == ScoreCardState.BestOnly)
             }
         }
     }

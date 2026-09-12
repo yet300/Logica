@@ -30,12 +30,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -81,6 +79,7 @@ import ge.yet.game.uikit.adaptive.AdaptiveGameLayoutPolicy
 import ge.yet.game.uikit.adaptive.AdaptiveGameScaffold
 import ge.yet.game.uikit.components.icon.BombFilled
 import ge.yet.game.uikit.components.icon.Vibration
+import ge.yet.game.uikit.motion.rememberReducedMotion
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -116,7 +115,7 @@ internal fun FruitMergeScreen(
     modifier: Modifier = Modifier,
 ) {
     val model by component.model.subscribeAsState()
-    val reducedMotion = rememberCoroutineScope().coroutineContext[MotionDurationScale]?.scaleFactor == 0f
+    val reducedMotion = rememberReducedMotion()
     var faceTimeSeconds by remember(component) { mutableFloatStateOf(0f) }
     var presentationTimeSeconds by remember(component) { mutableFloatStateOf(0f) }
     var viewportOriginInRoot by remember { mutableStateOf(Offset.Zero) }

@@ -8,11 +8,10 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
+import ge.yet.game.uikit.motion.rememberReducedMotion
 
 @Composable
 internal fun FruitMergeResultScreen(
@@ -20,7 +19,7 @@ internal fun FruitMergeResultScreen(
     modifier: Modifier = Modifier,
 ) {
     val model by component.model.subscribeAsState()
-    val reducedMotion = rememberCoroutineScope().coroutineContext[MotionDurationScale]?.scaleFactor == 0f
+    val reducedMotion = rememberReducedMotion()
     // Infinite transitions stay idle-friendly for UI tests, unlike a raw frame loop.
     val faceTransition = rememberInfiniteTransition(label = "resultFace")
     val animatedFaceTime by faceTransition.animateFloat(

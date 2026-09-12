@@ -1,5 +1,7 @@
 package ge.yet.game.twentyfortyeight.ui.gameplay
 
+import ge.yet.game.uikit.components.score.ScoreCardState
+import ge.yet.game.uikit.components.score.scoreCardState
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

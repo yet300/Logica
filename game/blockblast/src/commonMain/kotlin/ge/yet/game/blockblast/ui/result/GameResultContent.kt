@@ -34,7 +34,7 @@ import ge.yet.game.blockblast.generated.resources.new_game
 import ge.yet.game.blockblast.generated.resources.revive
 import ge.yet.game.blockblast.generated.resources.score
 import ge.yet.game.blockblast.ui.game.GameGrid
-import ge.yet.game.blockblast.ui.game.rememberReducedMotion
+import ge.yet.game.uikit.motion.rememberReducedMotion
 import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
 import org.jetbrains.compose.resources.stringResource
 

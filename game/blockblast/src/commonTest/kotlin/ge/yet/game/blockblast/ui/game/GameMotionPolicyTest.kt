@@ -1,6 +1,7 @@
 package ge.yet.game.blockblast.ui.game
 
 import androidx.compose.ui.MotionDurationScale
+import ge.yet.game.uikit.motion.isReducedMotion
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

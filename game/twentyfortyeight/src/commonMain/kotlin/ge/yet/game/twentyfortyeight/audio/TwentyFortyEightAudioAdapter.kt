@@ -2,10 +2,9 @@ package ge.yet.game.twentyfortyeight.audio
 
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
-import ge.yet.game.miniapp.audio.AudioCommandRejection
-import ge.yet.game.miniapp.audio.AudioCommandResult
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.audio.consumeSilently
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
 import ge.yet.game.twentyfortyeight.domain.model.TileValue
@@ -35,7 +34,7 @@ internal class TwentyFortyEightAudioAdapter @Inject constructor(
     fun start() {
         if (started) return
         started = true
-        consume(audio.playMusic(TwentyFortyEightAudio.program))
+        audio.playMusic(TwentyFortyEightAudio.program).consumeSilently()
     }
 
     fun updateControls(controls: AudioControls) {
@@ -43,9 +42,9 @@ internal class TwentyFortyEightAudioAdapter @Inject constructor(
         if (controls == lastAttemptedControls) return
         lastAttemptedControls = controls
 
-        consume(audio.setControl(TwentyFortyEightAudio.Progress, controls.progress))
-        consume(audio.setControl(TwentyFortyEightAudio.Danger, controls.danger))
-        consume(audio.setControl(TwentyFortyEightAudio.Momentum, controls.momentum))
+        audio.setControl(TwentyFortyEightAudio.Progress, controls.progress).consumeSilently()
+        audio.setControl(TwentyFortyEightAudio.Danger, controls.danger).consumeSilently()
+        audio.setControl(TwentyFortyEightAudio.Momentum, controls.momentum).consumeSilently()
     }
 
     fun play(event: AudioEvent) {
@@ -74,22 +73,6 @@ internal class TwentyFortyEightAudioAdapter @Inject constructor(
     }
 
     private fun playSfx(name: SfxName) {
-        consume(audio.playSfx(TwentyFortyEightAudio.program, name))
-    }
-
-    private fun consume(result: AudioCommandResult) {
-        when (result) {
-            AudioCommandResult.Accepted -> Unit
-            is AudioCommandResult.Rejected -> when (result.reason) {
-                AudioCommandRejection.INVALID_PROGRAM -> Unit
-                AudioCommandRejection.UNKNOWN_SFX -> Unit
-                AudioCommandRejection.UNKNOWN_CONTROL -> Unit
-                AudioCommandRejection.CONTROL_OUT_OF_RANGE -> Unit
-                AudioCommandRejection.PLAYBACK_SUPPRESSED -> Unit
-                AudioCommandRejection.SESSION_CLOSED -> Unit
-                AudioCommandRejection.COMMAND_QUEUE_FULL -> Unit
-                AudioCommandRejection.BACKEND_UNAVAILABLE -> Unit
-            }
-        }
+        audio.playSfx(TwentyFortyEightAudio.program, name).consumeSilently()
     }
 }

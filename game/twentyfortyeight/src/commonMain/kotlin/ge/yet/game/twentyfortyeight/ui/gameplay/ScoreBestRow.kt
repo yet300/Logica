@@ -42,22 +42,9 @@ import ge.yet.game.twentyfortyeight.generated.resources.score_description
 import ge.yet.game.twentyfortyeight.ui.motion.MotionPolicy
 import ge.yet.game.twentyfortyeight.ui.motion.rememberMotionPolicy
 import ge.yet.game.uikit.components.icon.Crown
+import ge.yet.game.uikit.components.score.ScoreCardState
+import ge.yet.game.uikit.components.score.scoreCardState
 import org.jetbrains.compose.resources.stringResource
-
-internal enum class ScoreCardState {
-    ScoreOnly,
-    ScoreAndBest,
-    BestOnly,
-}
-
-internal fun scoreCardState(
-    bestScore: Long,
-    bestImprovedInRun: Boolean,
-): ScoreCardState = when {
-    bestImprovedInRun -> ScoreCardState.BestOnly
-    bestScore > 0L -> ScoreCardState.ScoreAndBest
-    else -> ScoreCardState.ScoreOnly
-}
 
 @Composable
 internal fun ScoreBestRow(

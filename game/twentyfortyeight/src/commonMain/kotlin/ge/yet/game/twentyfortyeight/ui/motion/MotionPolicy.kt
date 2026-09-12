@@ -6,11 +6,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import ge.yet.game.uikit.motion.rememberReducedMotion
 import kotlinx.coroutines.delay
 
 internal sealed interface MotionPolicy {
@@ -48,13 +47,8 @@ internal fun motionPolicy(durationScale: Float): MotionPolicy =
     if (durationScale == 0f) MotionPolicy.Reduced else MotionPolicy.Normal
 
 @Composable
-internal fun rememberMotionPolicy(): MotionPolicy {
-    val durationScale = rememberCoroutineScope()
-        .coroutineContext[MotionDurationScale]
-        ?.scaleFactor
-        ?: 1f
-    return motionPolicy(durationScale)
-}
+internal fun rememberMotionPolicy(): MotionPolicy =
+    if (rememberReducedMotion()) MotionPolicy.Reduced else MotionPolicy.Normal
 
 @Composable
 internal fun Modifier.finiteEntryReveal(

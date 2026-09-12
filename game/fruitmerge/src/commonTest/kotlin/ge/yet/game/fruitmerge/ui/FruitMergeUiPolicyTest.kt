@@ -1,6 +1,8 @@
 package ge.yet.game.fruitmerge.ui
 
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.uikit.components.score.ScoreCardState
+import ge.yet.game.uikit.components.score.scoreCardState
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -10,9 +12,9 @@ import kotlin.math.abs
 class FruitMergeUiPolicyTest {
     @Test
     fun `new record presents one crowned value like 2048`() {
-        assertEquals(ScoreCardState.BEST_ONLY, scoreCardState(bestScore = 1_200, bestImprovedInRun = true))
-        assertEquals(ScoreCardState.SCORE_AND_BEST, scoreCardState(bestScore = 1_200, bestImprovedInRun = false))
-        assertEquals(ScoreCardState.SCORE_ONLY, scoreCardState(bestScore = 0, bestImprovedInRun = false))
+        assertEquals(ScoreCardState.BestOnly, scoreCardState(bestScore = 1_200, bestImprovedInRun = true))
+        assertEquals(ScoreCardState.ScoreAndBest, scoreCardState(bestScore = 1_200, bestImprovedInRun = false))
+        assertEquals(ScoreCardState.ScoreOnly, scoreCardState(bestScore = 0, bestImprovedInRun = false))
     }
     @Test
     fun `active shake uses a smaller transform for reduced motion`() {

@@ -4,10 +4,9 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
-import ge.yet.game.miniapp.audio.AudioCommandRejection
-import ge.yet.game.miniapp.audio.AudioCommandResult
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.audio.consumeSilently
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
 @SingleIn(MiniAppSessionScope::class)
@@ -19,7 +18,7 @@ internal class FruitMergeAudioAdapter @Inject constructor(
     fun start() {
         if (started) return
         started = true
-        consume(audio.playMusic(FruitMergeAudio.program))
+        audio.playMusic(FruitMergeAudio.program).consumeSilently()
     }
 
     fun play(label: FruitMergeStore.Label) {
@@ -73,22 +72,6 @@ internal class FruitMergeAudioAdapter @Inject constructor(
     }
 
     private fun playSfx(name: SfxName) {
-        consume(audio.playSfx(FruitMergeAudio.program, name))
-    }
-
-    private fun consume(result: AudioCommandResult) {
-        when (result) {
-            AudioCommandResult.Accepted -> Unit
-            is AudioCommandResult.Rejected -> when (result.reason) {
-                AudioCommandRejection.INVALID_PROGRAM -> Unit
-                AudioCommandRejection.UNKNOWN_SFX -> Unit
-                AudioCommandRejection.UNKNOWN_CONTROL -> Unit
-                AudioCommandRejection.CONTROL_OUT_OF_RANGE -> Unit
-                AudioCommandRejection.PLAYBACK_SUPPRESSED -> Unit
-                AudioCommandRejection.SESSION_CLOSED -> Unit
-                AudioCommandRejection.COMMAND_QUEUE_FULL -> Unit
-                AudioCommandRejection.BACKEND_UNAVAILABLE -> Unit
-            }
-        }
+        audio.playSfx(FruitMergeAudio.program, name).consumeSilently()
     }
 }
