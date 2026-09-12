@@ -1,6 +1,8 @@
 package ge.yet.game.miniapp.integration
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -76,6 +78,14 @@ class CounterFrameAndroidTest {
                                         hostBottomPrimary = primary
                                         hostBottomLocal = owner
                                     }
+                                    // Sized fake creative: the frame must measure actual
+                                    // content, never a hardcoded banner height.
+                                    Box(
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(37.dp)
+                                            .testTag("fake_creative"),
+                                    )
                                 }
                             } else {
                                 null
@@ -112,7 +122,7 @@ class CounterFrameAndroidTest {
                 .getUnclippedBoundsInRoot()
             assertTrue(withBanner.top >= toolbar.bottom)
             assertTrue(withBanner.bottom <= banner.top)
-            assertEquals(50.dp, banner.height)
+            assertEquals(37.dp, banner.height)
 
             composeRule.runOnIdle { bannerPresent = false }
             composeRule.waitForIdle()
@@ -120,7 +130,7 @@ class CounterFrameAndroidTest {
             val withoutBanner = composeRule.onNodeWithTag("counter_viewport")
                 .getUnclippedBoundsInRoot()
             composeRule.onNodeWithTag("miniapp_banner_container").assertDoesNotExist()
-            assertEquals(50.dp, withoutBanner.height - withBanner.height)
+            assertEquals(37.dp, withoutBanner.height - withBanner.height)
             assertEquals(Color.Red, pluginPrimary)
             assertEquals(Color.Blue, hostTopPrimary)
             assertEquals(Color.Blue, hostBottomPrimary)

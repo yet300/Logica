@@ -20,8 +20,10 @@ means that evidence is attached to the change or can be reproduced locally.
 - [ ] Dependencies flow inward and pass `validateMiniAppDependencies`.
 - [ ] No feature, application, native-ad, platform-audio, raw Settings or
       sibling-game dependency was introduced.
-- [ ] Host-owned navigation, Back, Settings, toolbar, visibility and ads remain
-      outside the plugin.
+- [ ] Host-owned navigation, Back, Settings, toolbar, system-region contrast,
+      safe-area handling and ads remain outside the plugin.
+- [ ] The plugin supplies at most partial inherited Material colors and optional
+      decorative background; it does not manage platform bars or ad spacing.
 - [ ] Session-owned state and child graph are destroyed with the session.
 - [ ] No production allowlist change is mixed into contributor implementation.
 

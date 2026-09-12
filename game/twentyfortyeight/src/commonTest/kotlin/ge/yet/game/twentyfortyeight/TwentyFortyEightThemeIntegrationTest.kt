@@ -30,16 +30,24 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalTestApi::class)
 class TwentyFortyEightThemeIntegrationTest {
     @Test
-    fun `session Background fills the host light and dark backgrounds`() = runComposeUiTest {
-        val session = TwentyFortyEightSession(FakeSessionComponent())
+    fun `default Background emits nothing and the host base paints the background`() =
+        runComposeUiTest {
+            val session = TwentyFortyEightSession(FakeSessionComponent())
 
-        val light = renderBackground(session, darkTheme = false)
-        val dark = renderBackground(session, darkTheme = true)
+            setContent {
+                LogicaTheme(darkTheme = false) {
+                    session.Background(
+                        Modifier
+                            .size(32.dp)
+                            .testTag(BackgroundTag),
+                    )
+                }
+            }
 
-        assertEquals(light.expected, light.actual)
-        assertEquals(dark.expected, dark.actual)
-        assertNotEquals(light.actual, dark.actual)
-    }
+            // No solid-only override remains: the host frame's opaque base
+            // (covered by RootContentTest background-bounds tests) supplies this.
+            onNodeWithTag(BackgroundTag).assertDoesNotExist()
+        }
 
     @Test
     fun `session Content inherits the host light and dark backgrounds`() = runComposeUiTest {
@@ -51,25 +59,6 @@ class TwentyFortyEightThemeIntegrationTest {
         assertEquals(light.expected, light.actual)
         assertEquals(dark.expected, dark.actual)
         assertNotEquals(light.actual, dark.actual)
-    }
-
-    private fun androidx.compose.ui.test.ComposeUiTest.renderBackground(
-        session: TwentyFortyEightSession,
-        darkTheme: Boolean,
-    ): RenderedColors {
-        var expected = Color.Unspecified
-        setContent {
-            LogicaTheme(darkTheme = darkTheme) {
-                expected = MaterialTheme.colorScheme.background
-                session.Background(
-                    Modifier
-                        .size(32.dp)
-                        .testTag(BackgroundTag),
-                )
-            }
-        }
-        val actual = onNodeWithTag(BackgroundTag).captureToImage().toPixelMap()[0, 0]
-        return RenderedColors(expected, actual)
     }
 
     private fun androidx.compose.ui.test.ComposeUiTest.renderContent(

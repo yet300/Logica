@@ -336,9 +336,10 @@ The frame, not the plugin:
   optional center content from the session;
 - maps toolbar Back and system Back to the same Root action;
 - presents global Settings without destroying the session;
-- reserves space for the bottom banner when it is eligible;
-- removes the banner container completely when advertising is not eligible, so
-  the viewport expands into the released space.
+- reserves space for the bottom banner only when a renderable native creative
+  is mounted (measured content, no fixed height); loading, failure, no-fill
+  and ineligibility mount no container, so the viewport expands into the
+  released space. (Supersedes the pre-2026-09-12 eligibility reservation.)
 
 Banner policy, consent, entitlement, ad unit configuration, SDK initialization,
 and rendering stay in the host and monetization adapter. No advertising SDK
@@ -346,11 +347,14 @@ type crosses the plugin boundary. Catalog advertising, if ever desired, is a
 separate host product decision; this design places the common banner in the
 running mini-app frame.
 
-The application uses a host-level `LogicaTheme` for Catalog, Back, Settings,
-Review, error states, and the banner area. A plugin may wrap only its viewport
-in a local theme such as `BlockBlastGameTheme`. Plugin theming cannot alter the
-common chrome. Root renders one ambient background behind both its child stack
-and sheets, so child transitions never duplicate or restart that background.
+The application uses `LogicaTheme` as the base for Catalog, Settings, Review,
+error states and sheets. A running session declares a `ColorScheme`; Root
+resolves it against that base and applies it to the complete MiniApp frame, so
+Back, Settings and the banner surface match the game. A plugin may still wrap
+its viewport in a nested theme such as `BlockBlastGameTheme`, but that nested
+theme remains local to `MiniAppSession.Content`. Root paints an opaque resolved
+base beneath decorative game art. System bars stay transparent for edge-to-edge
+rendering, while Android and iOS update only their system-icon appearance.
 
 ## Navigation and Product Behavior
 
@@ -862,9 +866,11 @@ There is no intermediate hard-coded multi-game catalog.
   not leave a half-active session.
 - A failed save must follow the concrete game's existing recovery policy and
   must not corrupt the catalog or registry.
-- Banner ineligibility removes the banner container. Once policy marks a banner
-  eligible, loading and retry may retain its stable reserved height to prevent
-  viewport jumps; an SDK failure never blocks game navigation.
+- Banner ineligibility removes the banner container. A null (not renderable)
+  banner also mounts no container: loading, retry, failure and no-fill consume
+  zero ad layout space and the viewport expands; only a mounted native creative
+  consumes its measured height. (Supersedes the pre-2026-09-12 stable-height
+  reservation during loading/retry.) An SDK failure never blocks game navigation.
 - Review suppression or store API failure leaves the game session unchanged.
 - A callback carrying an inactive internal session key is ignored; repeated
   close requests are idempotent.

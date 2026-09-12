@@ -30,7 +30,7 @@ The game becomes a small warm fruit-market stall. Its primary differentiator is 
 - The next fruit rests in a small woven basket near the upper-right edge of the crate.
 - The clear tool is a friendly fruit slicer attached to the left outer edge of the crate.
 - The shake tool is the crate's physical handle attached to the right outer edge.
-- The permanent host-owned banner remains below the MiniApp viewport when monetization policy permits it. The game scene ends cleanly above the reserved banner slot; the ad itself is neither masked nor visually restyled.
+- A host-owned banner sits below the MiniApp viewport only while a renderable native creative is mounted. The game scene ends cleanly above the measured banner; the ad itself is neither masked nor visually restyled.
 
 ### Art bible
 
@@ -136,7 +136,7 @@ Motion derives from body velocity, impact, angle, trait, and short bounded visua
 - Compact portrait prioritizes crate height and stacks auxiliary content vertically.
 - Wider viewports cap the crate width and attach tools to side rails.
 - All interactive targets remain at least `48 dp`.
-- The banner's host-reserved height is stable before and after ad content loads.
+- The banner occupies only its measured mounted height; while loading or absent it consumes zero ad layout space and the viewport expands.
 - The game continues to use the shared adaptive game scaffold and existing UIKit components where they are genuinely reusable; market-specific props remain game-owned.
 
 ## Tutorial

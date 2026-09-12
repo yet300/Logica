@@ -157,19 +157,25 @@ contribute game-specific bindings globally to the shared session scope. Game plu
 `MiniAppInterstitialCapability` and must not depend on a MiniApp host,
 `:feature:root`, `:composeApp`, native application modules or native-ad modules.
 `:composeApp` renders every running session inside one host-owned frame. Back,
-Settings, toolbar sizing and accessibility, safe-area ownership and the
-conditional banner stay host-owned. A session may contribute optional center
-content through `MiniAppSession.TopBarContent`; that content renders in the
-host theme, outside the plugin viewport. Plugin-local themes therefore remain
-confined to `MiniAppSession.Content` and cannot leak into host chrome. Sessions
+Settings, toolbar sizing and accessibility, safe-area ownership, system-icon
+appearance and the conditional banner stay host-owned. A banner occupies
+layout space only while a renderable native creative is mounted; loading, failure,
+no-fill and ineligibility occupy zero ad space. A session may contribute optional
+center content through `MiniAppSession.TopBarContent`; that content renders in the
+resolved session color scheme, outside the plugin viewport. A session may override
+only the needed Material color roles through `MiniAppSession.colorScheme`; all
+other roles, typography and shapes inherit from Logica. Arbitrary themes nested
+inside `MiniAppSession.Content` remain confined to the viewport and cannot leak
+into host chrome. Sessions
 publish a Decompose `Value<MiniAppFrameMode>` derived from their active internal
 child; the default is `Standard`, while screens such as results can select
 `ContentOnly` without imperative visibility flags on `MiniAppPlugin` or leaking
-game-specific navigation types into the host. Root owns navigation and sheets,
-but does not impose a background or color theme on its children. Catalog owns
-its ambient background. A MiniApp session may draw its background through the
-host's full-frame background layer so it also sits behind common chrome, while
-the plugin-local content theme remains confined to the viewport; Root
+game-specific navigation types into the host. Root owns navigation and sheets.
+Catalog owns its ambient background. The host always paints the resolved opaque
+session background, then lets a MiniApp draw optional decorative art through the
+full-frame background layer. System bars remain transparent so the frame and
+top app bar draw edge-to-edge beneath system icons; games never manage platform
+bars or insets. Root
 transitions must preserve those boundaries.
 
 Every plugin receives one `MiniAppSessionContext`, including its lifecycle,

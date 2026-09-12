@@ -104,8 +104,11 @@ recording host, mutable visibility source, storage and guaranteed teardown.
 ## 3. Implement within the boundaries
 
 Game code owns rules, game-specific state, persistence policy, components and
-UI. The host owns catalog navigation, Back, Settings, toolbar, banners, safe
-areas and session visibility.
+UI. The host owns catalog navigation, Back, Settings, toolbar, system-region
+contrast, banner occupancy, safe areas and session visibility. A game may override
+only the Material color roles it needs through `MiniAppSession.colorScheme`; it
+never manages platform bars or insets. Loading, failed and absent banners occupy
+zero game-viewport space.
 
 Use:
 

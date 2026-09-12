@@ -1,5 +1,7 @@
 package ge.yet.game.miniapp.compose
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.Cancellation
@@ -20,6 +22,9 @@ private object StandardMiniAppFrameMode : Value<MiniAppFrameMode>() {
 }
 
 interface MiniAppSession {
+
+    @Composable
+    fun colorScheme(): ColorScheme = MaterialTheme.colorScheme
 
     val frameMode: Value<MiniAppFrameMode>
         get() = StandardMiniAppFrameMode

@@ -1,5 +1,6 @@
 package ge.yet.game.miniapp.metro
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.value.Value
@@ -10,6 +11,9 @@ class RetainedMiniAppSession<G : Any>(
     internal val graph: G,
     private val delegate: MiniAppSession,
 ) : MiniAppSession {
+    @Composable
+    override fun colorScheme(): ColorScheme = delegate.colorScheme()
+
     override val frameMode: Value<MiniAppFrameMode> = delegate.frameMode
 
     override fun handleBack(): Boolean = delegate.handleBack()

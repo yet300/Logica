@@ -1,7 +1,12 @@
 package ge.yet.game.miniapp.metro
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.v2.runComposeUiTest
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
@@ -51,13 +56,31 @@ class RetainedMiniAppSessionTest {
         assertEquals(2, delegate.handleBackCount)
     }
 
+    @Test
+    @OptIn(ExperimentalTestApi::class)
+    fun color_scheme_forwards_to_the_delegate() = runComposeUiTest {
+        val custom = lightColorScheme(primary = Color.Red)
+        var resolved: ColorScheme? = null
+        val handle = RetainedMiniAppSession(Any(), FakeSession(scheme = custom))
+        setContent {
+            resolved = handle.colorScheme()
+        }
+
+        waitForIdle()
+        assertEquals(Color.Red, resolved?.primary)
+    }
+
     private class FakeSession(
         override val frameMode: Value<MiniAppFrameMode> =
             MutableValue(MiniAppFrameMode.Standard),
         private val backResponses: ArrayDeque<Boolean> = ArrayDeque(),
+        private val scheme: ColorScheme? = null,
     ) : MiniAppSession {
         var handleBackCount = 0
             private set
+
+        @Composable
+        override fun colorScheme(): ColorScheme = scheme ?: super.colorScheme()
 
         override fun handleBack(): Boolean {
             handleBackCount += 1

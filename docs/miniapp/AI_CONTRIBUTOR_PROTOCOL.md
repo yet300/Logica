@@ -92,9 +92,11 @@ The agent's final report must include:
 The plugin receives one `MiniAppSessionContext`. Persistent values use the
 session storage facade and local snake-case names. New procedural audio uses
 the public audio API or reusable presets. Root owns navigation, visibility,
-Back, Settings, toolbar and ad containers. The game owns its rules and game
-state. A session's Metro child graph is retained by the session and destroyed
-with it.
+Back, Settings, toolbar, system-region contrast, safe areas and ad containers.
+Only a mounted renderable banner occupies layout space. A game may provide a
+partial inherited Material color scheme and decorative full-frame background,
+but never handles platform bars or insets. The game owns its rules and game state.
+A session's Metro child graph is retained by the session and destroyed with it.
 
 The repository's [ADR-0001](../adr/0001-miniapp-contribution-and-shipping.md)
 and [human contributor guide](../../CONTRIBUTING_MINIAPP.md) are normative

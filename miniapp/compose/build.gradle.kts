@@ -9,6 +9,7 @@ kotlin {
             api(projects.miniapp.api)
             api(projects.miniapp.audio)
             api(libs.compose.runtime)
+            api(libs.compose.material3)
             api(libs.compose.ui)
             api(libs.compose.components.resources)
             api(libs.decompose)

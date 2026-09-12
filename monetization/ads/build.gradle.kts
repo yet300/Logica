@@ -38,5 +38,8 @@ kotlin {
             implementation(libs.play.services.ads)
             implementation(libs.user.messaging.platform)
         }
+        commonTest.dependencies {
+            implementation(libs.compose.ui.test)
+        }
     }
 }

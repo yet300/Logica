@@ -5,17 +5,20 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -23,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
 import logica.composeapp.generated.resources.Res
 import logica.composeapp.generated.resources.cd_back
 import logica.composeapp.generated.resources.cd_settings
@@ -39,6 +41,7 @@ fun MiniAppFrame(
     onBack: () -> Unit,
     onSettings: () -> Unit,
     frameMode: MiniAppFrameMode = MiniAppFrameMode.Standard,
+    contentWindowInsets: WindowInsets = WindowInsets.safeDrawing,
     modifier: Modifier = Modifier,
     background: (@Composable (Modifier) -> Unit)? = null,
     topBar: @Composable () -> Unit = {},
@@ -50,12 +53,14 @@ fun MiniAppFrame(
             .fillMaxSize()
             .testTag("miniapp_frame"),
     ) {
+        // Resolved semantic base, always opaque and always under decorative art.
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
         background?.invoke(Modifier.fillMaxSize())
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             containerColor = Color.Transparent,
-            contentWindowInsets = WindowInsets.safeDrawing,
+            contentWindowInsets = contentWindowInsets,
             topBar = {
                 AnimatedVisibility(
                     visible = frameMode == MiniAppFrameMode.Standard,
@@ -88,11 +93,16 @@ fun MiniAppFrame(
             },
             bottomBar = {
                 if (bottomBar != null) {
+                    // No reserved height: measures only actually mounted banner content.
+                    // Null banner mounts no container and consumes zero ad layout space.
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .windowInsetsPadding(WindowInsets.navigationBars)
-                            .height(MINI_APP_BANNER_HEIGHT_DP.dp)
+                            .windowInsetsPadding(
+                                contentWindowInsets.only(
+                                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
+                                ),
+                            )
                             .testTag("miniapp_banner_container"),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -104,6 +114,7 @@ fun MiniAppFrame(
             content(
                 Modifier
                     .padding(padding)
+                    .consumeWindowInsets(padding)
                     .fillMaxSize(),
             )
         }

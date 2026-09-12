@@ -1,12 +1,17 @@
 package ge.yet.game.screen.root
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -20,6 +25,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
+import androidx.compose.ui.unit.width
 import com.arkivanov.decompose.value.MutableValue
 import ge.yet.game.feature.catalog.CatalogComponent
 import ge.yet.game.feature.root.RootComponent
@@ -27,6 +33,7 @@ import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.compose.MiniAppSession
 import ge.yet.game.screen.miniapp.MiniAppFrame
+import ge.yet.game.screen.miniapp.LocalSystemChromeReporter
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
@@ -34,6 +41,29 @@ import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class)
 class RootContentTest {
+
+    @Test
+    fun active_catalog_restores_base_system_chrome() = runComposeUiTest {
+        val baseBackground = Color(0xFFF2EFE7)
+        var reportedBackground: Color? = null
+        setContent {
+            MaterialTheme(colorScheme = lightColorScheme(background = baseBackground)) {
+                CompositionLocalProvider(
+                    LocalSystemChromeReporter provides { reportedBackground = it },
+                ) {
+                    RootChildContent(
+                        child = RootComponent.Child.Catalog(FakeCatalogComponent),
+                        onBack = {},
+                        onSettings = {},
+                        isActive = true,
+                    )
+                }
+            }
+        }
+
+        waitForIdle()
+        assertEquals(baseBackground, reportedBackground)
+    }
 
     @Test
     fun catalog_has_no_banner_frame() = runComposeUiTest {
@@ -228,23 +258,100 @@ class RootContentTest {
     }
 
     @Test
-    fun eligible_empty_banner_slot_keeps_reserved_height() = runComposeUiTest {
+    fun absent_banner_mounts_no_container() = runComposeUiTest {
         setContent {
             MiniAppFrame(
                 onBack = {},
                 onSettings = {},
-                bottomBar = {},
+                bottomBar = null,
             ) { viewport ->
-                Box(viewport)
+                Box(viewport.testTag("bare_viewport"))
             }
         }
 
-        assertEquals(
-            50.dp,
-            onNodeWithTag("miniapp_banner_container")
-                .getUnclippedBoundsInRoot()
-                .height,
+        onNodeWithTag("miniapp_banner_container").assertDoesNotExist()
+        onNodeWithTag("bare_viewport").assertIsDisplayed()
+    }
+
+    @Test
+    fun loaded_banner_consumes_only_its_measured_height() = runComposeUiTest {
+        setContent {
+            MiniAppFrame(
+                onBack = {},
+                onSettings = {},
+                bottomBar = {
+                    Box(Modifier.size(width = 120.dp, height = 37.dp).testTag("fake_creative"))
+                },
+            ) { viewport ->
+                Box(viewport.testTag("loaded_viewport"))
+            }
+        }
+
+        val bannerBounds = onNodeWithTag("miniapp_banner_container").getUnclippedBoundsInRoot()
+        val viewportBounds = onNodeWithTag("loaded_viewport").getUnclippedBoundsInRoot()
+        assertEquals(37.dp, bannerBounds.height)
+        assertTrue(
+            viewportBounds.bottom <= bannerBounds.top,
+            "viewport=$viewportBounds banner=$bannerBounds",
         )
+    }
+
+    @Test
+    fun session_color_scheme_reaches_background_top_bar_and_content() = runComposeUiTest {
+        var backgroundPrimary: Color? = null
+        var topBarPrimary: Color? = null
+        var contentPrimary: Color? = null
+        val custom = lightColorScheme(primary = Color.Red)
+        setContent {
+            RootChildContent(
+                child = running(
+                    ThemedSession(
+                        scheme = custom,
+                        onBackground = { backgroundPrimary = it },
+                        onTopBar = { topBarPrimary = it },
+                        onContent = { contentPrimary = it },
+                    ),
+                ),
+                onBack = {},
+                onSettings = {},
+                bottomBar = null,
+            )
+        }
+
+        waitForIdle()
+        assertEquals(Color.Red, backgroundPrimary)
+        assertEquals(Color.Red, topBarPrimary)
+        assertEquals(Color.Red, contentPrimary)
+        onNodeWithTag("miniapp_back_control").assertIsDisplayed()
+        onNodeWithTag("miniapp_settings_control").assertIsDisplayed()
+    }
+
+    @Test
+    fun viewport_consumes_host_insets_before_game_content() = runComposeUiTest {
+        val safeInsets = WindowInsets(bottom = 16.dp)
+        setContent {
+            Box(Modifier.size(width = 200.dp, height = 300.dp)) {
+                MiniAppFrame(
+                    onBack = {},
+                    onSettings = {},
+                    frameMode = MiniAppFrameMode.ContentOnly,
+                    contentWindowInsets = safeInsets,
+                    bottomBar = null,
+                ) { viewport ->
+                    Box(viewport) {
+                        Box(Modifier.fillMaxSize().testTag("host_viewport"))
+                        Box(Modifier.fillMaxSize().windowInsetsPadding(safeInsets)) {
+                            Box(Modifier.fillMaxSize().testTag("inset_aware_viewport"))
+                        }
+                    }
+                }
+            }
+        }
+
+        val hostViewport = onNodeWithTag("host_viewport").getUnclippedBoundsInRoot()
+        val insetAwareViewport = onNodeWithTag("inset_aware_viewport").getUnclippedBoundsInRoot()
+        assertEquals(284.dp, hostViewport.height)
+        assertEquals(hostViewport, insetAwareViewport)
     }
 
     private fun running(session: MiniAppSession): RootComponent.Child.RunningMiniApp =
@@ -294,6 +401,36 @@ class RootContentTest {
 
         @Composable
         override fun Content(modifier: Modifier) {
+            Box(modifier)
+        }
+    }
+
+    private class ThemedSession(
+        private val scheme: ColorScheme,
+        private val onBackground: (Color) -> Unit,
+        private val onTopBar: (Color) -> Unit,
+        private val onContent: (Color) -> Unit,
+    ) : MiniAppSession {
+        @Composable
+        override fun colorScheme(): ColorScheme = scheme
+
+        @Composable
+        override fun TopBarContent() {
+            val primary = MaterialTheme.colorScheme.primary
+            SideEffect { onTopBar(primary) }
+        }
+
+        @Composable
+        override fun Background(modifier: Modifier) {
+            val primary = MaterialTheme.colorScheme.primary
+            SideEffect { onBackground(primary) }
+            Box(modifier)
+        }
+
+        @Composable
+        override fun Content(modifier: Modifier) {
+            val primary = MaterialTheme.colorScheme.primary
+            SideEffect { onContent(primary) }
             Box(modifier)
         }
     }
