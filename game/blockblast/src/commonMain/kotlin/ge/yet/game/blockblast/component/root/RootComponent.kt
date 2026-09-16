@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.session
+package ge.yet.game.blockblast.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -9,7 +9,7 @@ import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 
-internal interface BlockBlastSessionComponent {
+internal interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
     val frameMode: Value<MiniAppFrameMode>
 
@@ -23,6 +23,6 @@ internal interface BlockBlastSessionComponent {
             componentContext: ComponentContext,
             visibility: MiniAppVisibilitySource,
             host: MiniAppSessionHost,
-        ): BlockBlastSessionComponent
+        ): RootComponent
     }
 }

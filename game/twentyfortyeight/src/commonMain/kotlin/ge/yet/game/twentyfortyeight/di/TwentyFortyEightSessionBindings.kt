@@ -19,11 +19,11 @@ import ge.yet.game.twentyfortyeight.component.result.ResultComponent
 import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
 import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
 import ge.yet.game.twentyfortyeight.data.TwentyFortyEightPersistence
-import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponent
-import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponentFactory
+import ge.yet.game.twentyfortyeight.component.root.DefaultRootComponent
+import ge.yet.game.twentyfortyeight.component.root.DefaultRootComponentFactory
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.session.SessionNavigation
 import ge.yet.game.twentyfortyeight.session.SessionUiEffects
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 
 @BindingContainer
@@ -43,8 +43,8 @@ abstract class TwentyFortyEightSessionBindings {
 
     @Binds
     internal abstract fun bindComponentContract(
-        component: DefaultTwentyFortyEightSessionComponent,
-    ): TwentyFortyEightSessionComponent
+        component: DefaultRootComponent,
+    ): RootComponent
 
     @Binds
     internal abstract fun bindOverlayComponentFactory(
@@ -63,8 +63,8 @@ abstract class TwentyFortyEightSessionBindings {
 
     @Binds
     internal abstract fun bindSessionComponentFactory(
-        impl: DefaultTwentyFortyEightSessionComponentFactory,
-    ): TwentyFortyEightSessionComponent.Factory
+        impl: DefaultRootComponentFactory,
+    ): RootComponent.Factory
 
     @Binds
     internal abstract fun bindSeedSource(impl: RandomNewGameSeedSource): NewGameSeedSource
@@ -73,22 +73,22 @@ abstract class TwentyFortyEightSessionBindings {
         @Provides
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideComponent(
-            factory: TwentyFortyEightSessionComponent.Factory,
+            factory: RootComponent.Factory,
             componentContext: ComponentContext,
-        ): DefaultTwentyFortyEightSessionComponent =
-            // Safe: the only Factory binding in this scope is DefaultTwentyFortyEightSessionComponentFactory,
+        ): DefaultRootComponent =
+            // Safe: the only Factory binding in this scope is DefaultRootComponentFactory,
             // whose create() returns the Default type (covariant override). Concrete type is kept
             // because provideStore exposes the retained store for graph inspection.
-            factory.create(componentContext) as DefaultTwentyFortyEightSessionComponent
+            factory.create(componentContext) as DefaultRootComponent
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)
-        internal fun provideStore(component: DefaultTwentyFortyEightSessionComponent): TwentyFortyEightStore =
+        internal fun provideStore(component: DefaultRootComponent): TwentyFortyEightStore =
             component.retainedStore
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)
-        internal fun provideSession(component: TwentyFortyEightSessionComponent): TwentyFortyEightSession =
+        internal fun provideSession(component: RootComponent): TwentyFortyEightSession =
             TwentyFortyEightSession(component)
     }
 }

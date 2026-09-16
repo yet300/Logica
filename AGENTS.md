@@ -151,7 +151,11 @@ app-scoped registry and its empty-capable compile-time plugin aggregation; its
 session-scope marker is a child lifecycle, not a second game-specific scope.
 Block Blast implements `MiniAppPlugin` through a retained Metro child graph;
 session-owned components and reducers live in `MiniAppSessionScope`, while save,
-best-score and preference repositories remain app-scoped. Each game includes
+best-score and preference repositories remain app-scoped. Each game keeps its
+session-owned Decompose root in `component/root/RootComponent.kt` (`RootComponent`
++ `DefaultRootComponent` with a nested `Factory` and `Child` stack) and its
+session UI entry in `ui/screen/root/RootContent.kt`; child screens live under
+`component/game`, `component/result` and `ui/screen/...`. Each game includes
 its own session binding container explicitly on its `@GraphExtension`; do not
 contribute game-specific bindings globally to the shared session scope. Game plugins consume
 `MiniAppInterstitialCapability` and must not depend on a MiniApp host,

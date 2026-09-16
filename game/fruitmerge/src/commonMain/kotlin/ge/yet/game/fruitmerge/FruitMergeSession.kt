@@ -7,7 +7,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.root.RootComponent
+import ge.yet.game.fruitmerge.ui.screen.root.RootContent
 import ge.yet.game.fruitmerge.ui.FruitMergeTestTags
 import ge.yet.game.fruitmerge.ui.MarketStallBackground
 import ge.yet.game.fruitmerge.ui.MarketPriceTag
@@ -17,7 +18,7 @@ import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
 import ge.yet.game.miniapp.compose.MiniAppSession
 
 class FruitMergeSession internal constructor(
-    private val component: FruitMergeSessionComponent,
+    private val component: RootComponent,
     private val interstitials: MiniAppInterstitialCapability,
 ) : MiniAppSession {
     override val frameMode: Value<MiniAppFrameMode> = component.frameMode
@@ -46,7 +47,7 @@ class FruitMergeSession internal constructor(
     override fun Content(modifier: Modifier) {
         val clearGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_CLEAR)
         val shakeGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_SHAKE)
-        FruitMergeContent(
+        RootContent(
             component = component,
             requestClearAd = { token ->
                 clearGate.request { component.completePaidAction(token) }

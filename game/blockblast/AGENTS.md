@@ -14,6 +14,9 @@ MiniApp contracts.
   its constructor and state remain internal.
 - Create session-owned components through `BlockBlastSessionGraph`; app-scoped
   repositories and resource providers belong in `BlockBlastAppBindings`.
+  The session-owned Decompose root is `component/root/RootComponent`
+  (`RootComponent` + `DefaultRootComponent`); its UI entry is
+  `ui/screen/root/RootContent`.
 - Consume `MiniAppVisibilitySource` and typed capabilities supplied at session
   creation. Do not add host navigation, Back, Settings, catalog-card or banner
   behavior to the plugin.

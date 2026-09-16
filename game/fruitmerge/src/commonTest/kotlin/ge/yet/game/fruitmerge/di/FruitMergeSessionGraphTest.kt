@@ -15,8 +15,8 @@ import ge.yet.game.fruitmerge.domain.engine.FruitMergeRules
 import ge.yet.game.fruitmerge.domain.engine.FruitPhysics
 import ge.yet.game.fruitmerge.data.FruitMergePersistence
 import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponent
-import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.root.DefaultRootComponent
+import ge.yet.game.fruitmerge.component.root.RootComponent
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppStorage
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
@@ -51,8 +51,8 @@ internal interface InspectableFruitMergeAppGraph {
 )
 internal interface InspectableFruitMergeSessionGraph {
     val session: FruitMergeSession
-    val component: FruitMergeSessionComponent
-    val concreteComponent: DefaultFruitMergeSessionComponent
+    val component: RootComponent
+    val concreteComponent: DefaultRootComponent
     val engine: FruitMergeEngine
     val rules: FruitMergeRules
     val physics: FruitPhysics

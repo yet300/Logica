@@ -5,10 +5,11 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.compose.MiniAppSession
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
+import ge.yet.game.twentyfortyeight.ui.screen.root.RootContent
 
 class TwentyFortyEightSession internal constructor(
-    internal val component: TwentyFortyEightSessionComponent,
+    internal val component: RootComponent,
 ) : MiniAppSession {
     override val frameMode: Value<MiniAppFrameMode> = component.frameMode
 
@@ -16,6 +17,6 @@ class TwentyFortyEightSession internal constructor(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        TwentyFortyEightContent(component = component, modifier = modifier)
+        RootContent(component = component, modifier = modifier)
     }
 }

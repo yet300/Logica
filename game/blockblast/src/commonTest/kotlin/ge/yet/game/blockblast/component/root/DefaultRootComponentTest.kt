@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.session
+package ge.yet.game.blockblast.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
@@ -65,7 +65,7 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DefaultBlockBlastSessionComponentTest {
+class DefaultRootComponentTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -369,7 +369,7 @@ class DefaultBlockBlastSessionComponentTest {
         val lifecycle = LifecycleRegistry()
         val host = RecordingMiniAppSessionHost()
         val recordingResultFactory = resultFactory as? RecordingResultFactory
-        val component = DefaultBlockBlastSessionComponent(
+        val component = DefaultRootComponent(
             componentContext = DefaultComponentContext(lifecycle),
             gameFactory = gameFactory,
             resultFactory = resultFactory,
@@ -386,12 +386,12 @@ class DefaultBlockBlastSessionComponentTest {
     }
 
     private fun playing(setup: Setup): FakeGame =
-        assertIs<BlockBlastSessionComponent.Child.Playing>(
+        assertIs<RootComponent.Child.Playing>(
             setup.component.stack.value.items.first().instance,
         ).component as FakeGame
 
     private fun result(setup: Setup): GameResultComponent =
-        assertIs<BlockBlastSessionComponent.Child.Result>(
+        assertIs<RootComponent.Child.Result>(
             setup.component.stack.value.active.instance,
         ).component
 
@@ -441,7 +441,7 @@ class DefaultBlockBlastSessionComponentTest {
     }
 
     private data class Setup(
-        val component: DefaultBlockBlastSessionComponent,
+        val component: DefaultRootComponent,
         val lifecycle: LifecycleRegistry,
         val host: RecordingMiniAppSessionHost,
         val resultFactory: RecordingResultFactory,

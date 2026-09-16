@@ -21,7 +21,7 @@ import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.domain.model.Direction
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -84,14 +84,14 @@ class TwentyFortyEightThemeIntegrationTest {
 
     private data class RenderedColors(val expected: Color, val actual: Color)
 
-    private class FakeSessionComponent : TwentyFortyEightSessionComponent {
+    private class FakeSessionComponent : RootComponent {
         private val playing = FakePlayingComponent()
-        override val stack: Value<ChildStack<*, TwentyFortyEightSessionComponent.Child>> = MutableValue(
-            ChildStack(Unit, TwentyFortyEightSessionComponent.Child.Playing(playing)),
+        override val stack: Value<ChildStack<*, RootComponent.Child>> = MutableValue(
+            ChildStack(Unit, RootComponent.Child.Playing(playing)),
         )
         override val frameMode: Value<MiniAppFrameMode> = MutableValue(MiniAppFrameMode.Standard)
-        override val effect: Value<TwentyFortyEightSessionComponent.EffectState> =
-            MutableValue(TwentyFortyEightSessionComponent.EffectState())
+        override val effect: Value<RootComponent.EffectState> =
+            MutableValue(RootComponent.EffectState())
 
         override fun onEffectConsumed(effectId: Long) = Unit
         override fun handleBack(): Boolean = false

@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.component.session
+package ge.yet.game.fruitmerge.component.root
 
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.fruitmerge.TestFruitMergeRules
@@ -41,7 +41,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FruitMergeSessionComponentTest {
+class RootComponentTest {
     @BeforeTest
     fun setUp() = Dispatchers.setMain(StandardTestDispatcher())
 
@@ -60,7 +60,7 @@ class FruitMergeSessionComponentTest {
         )
         val component = harness.component
 
-        val result = assertIs<FruitMergeSessionComponent.Child.Result>(component.stack.value.active.instance)
+        val result = assertIs<RootComponent.Child.Result>(component.stack.value.active.instance)
         assertEquals(900L, result.component.model.value.snapshot.score)
         assertEquals(7L, result.component.model.value.snapshot.runOrdinal)
         assertEquals(MiniAppFrameMode.ContentOnly, component.frameMode.value)
@@ -75,14 +75,14 @@ class FruitMergeSessionComponentTest {
         )
         val component = harness.component
         val firstGame = component.game
-        assertIs<FruitMergeSessionComponent.Child.Result>(component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Result>(component.stack.value.active.instance)
 
-        val result = assertIs<FruitMergeSessionComponent.Child.Result>(component.stack.value.active.instance)
+        val result = assertIs<RootComponent.Child.Result>(component.stack.value.active.instance)
         result.component.onNewGame()
         advanceUntilIdle()
 
         val secondGame = component.game
-        assertIs<FruitMergeSessionComponent.Child.Playing>(component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Playing>(component.stack.value.active.instance)
         assertNotSame(firstGame, secondGame)
         assertEquals(RunPhase.PLAYING, secondGame.model.value.game.phase)
         assertEquals(8L, secondGame.model.value.game.runOrdinal)
@@ -199,7 +199,7 @@ class FruitMergeSessionComponentTest {
         persistence.checkpoint(initial)
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
         val visibility = MutableMiniAppVisibilitySource()
-        val component = DefaultFruitMergeSessionComponentFactory(
+        val component = DefaultRootComponentFactory(
             gameFactory = DefaultFruitMergeComponentFactory(
                 gameStoreFactory = FruitMergeStoreFactory(
                     storeFactory = DefaultStoreFactory(),
@@ -212,13 +212,13 @@ class FruitMergeSessionComponentTest {
                 visibility = visibility,
             ),
             resultFactory = DefaultFruitMergeResultComponentFactory(),
-        ).create(lifecycle.componentContext) as DefaultFruitMergeSessionComponent
+        ).create(lifecycle.componentContext) as DefaultRootComponent
         advanceUntilIdle()
         return Harness(component, lifecycle, storage)
     }
 
     private data class Harness(
-        val component: DefaultFruitMergeSessionComponent,
+        val component: DefaultRootComponent,
         val lifecycle: MiniAppLifecycleHarness,
         val storage: MutableMiniAppStorage,
     )

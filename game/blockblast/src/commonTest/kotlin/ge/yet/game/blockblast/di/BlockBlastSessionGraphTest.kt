@@ -28,7 +28,7 @@ import ge.yet.game.blockblast.domain.model.Position
 import ge.yet.game.blockblast.domain.repository.BestScoreRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
 import ge.yet.game.blockblast.session.BlockBlastSession
-import ge.yet.game.blockblast.session.BlockBlastSessionComponent
+import ge.yet.game.blockblast.component.root.RootComponent
 import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.domain.repository.AudioRepository
 import ge.yet.game.domain.repository.FeedbackPreferences
@@ -102,7 +102,7 @@ internal interface BlockBlastPluginTestGraph {
 )
 internal interface InspectableBlockBlastSessionGraph {
     val session: BlockBlastSession
-    val sessionComponent: BlockBlastSessionComponent
+    val sessionComponent: RootComponent
     val gameReducer: GameSessionReducer
     val saveRepository: GameSaveRepository
     val bestScoreRepository: BestScoreRepository
@@ -305,10 +305,10 @@ class BlockBlastSessionGraphTest {
 
             assertEquals(firstBefore, firstGame.model.value.game)
             assertTrue(secondGame.model.value.game.score > secondBefore.score)
-            assertIs<BlockBlastSessionComponent.Child.Playing>(
+            assertIs<RootComponent.Child.Playing>(
                 first.sessionComponent.stack.value.active.instance,
             )
-            assertIs<BlockBlastSessionComponent.Child.Result>(
+            assertIs<RootComponent.Child.Result>(
                 second.sessionComponent.stack.value.active.instance,
             )
             assertTrue(firstHost.reviewRequests.isEmpty())
@@ -407,8 +407,8 @@ class BlockBlastSessionGraphTest {
 
 private fun InspectableBlockBlastSessionGraph.playing(): GameComponent = sessionComponent.playing()
 
-private fun BlockBlastSessionComponent.playing(): GameComponent =
-    assertIs<BlockBlastSessionComponent.Child.Playing>(stack.value.active.instance).component
+private fun RootComponent.playing(): GameComponent =
+    assertIs<RootComponent.Child.Playing>(stack.value.active.instance).component
 
 internal fun BlockBlastPluginTestGraph.destroySessionsAndCancelAppScope(
     vararg lifecycles: MiniAppLifecycleHarness,

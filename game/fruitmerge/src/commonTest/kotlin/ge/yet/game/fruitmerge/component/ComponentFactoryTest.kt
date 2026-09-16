@@ -12,9 +12,9 @@ import ge.yet.game.fruitmerge.component.result.DefaultFruitMergeResultComponent
 import ge.yet.game.fruitmerge.component.result.DefaultFruitMergeResultComponentFactory
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
-import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
-import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponentFactory
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.root.DefaultRootComponent
+import ge.yet.game.fruitmerge.component.root.DefaultRootComponentFactory
+import ge.yet.game.fruitmerge.component.root.RootComponent
 import ge.yet.game.fruitmerge.data.FruitMergePersistence
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppStorage
@@ -117,7 +117,7 @@ class ComponentFactoryTest {
         val persistence = FruitMergePersistence(storage)
         val visibility = MutableMiniAppVisibilitySource()
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
-        val factory: FruitMergeSessionComponent.Factory = DefaultFruitMergeSessionComponentFactory(
+        val factory: RootComponent.Factory = DefaultRootComponentFactory(
             gameFactory = DefaultFruitMergeComponentFactory(
                 gameStoreFactory = FruitMergeStoreFactory(
                     storeFactory = DefaultStoreFactory(),
@@ -134,10 +134,10 @@ class ComponentFactoryTest {
 
         val session = factory.create(lifecycle.componentContext)
 
-        assertIs<DefaultFruitMergeSessionComponent>(session)
+        assertIs<DefaultRootComponent>(session)
         advanceUntilIdle()
         assertSame(session.gameComponent, session.game)
-        assertIs<FruitMergeSessionComponent.Child.Playing>(session.stack.value.active.instance)
+        assertIs<RootComponent.Child.Playing>(session.stack.value.active.instance)
         lifecycle.destroy()
         session.gameComponent.store.dispose()
     }

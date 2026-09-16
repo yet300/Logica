@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.session
+package ge.yet.game.twentyfortyeight.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -10,7 +10,7 @@ import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 
-internal interface TwentyFortyEightSessionComponent {
+internal interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
     val frameMode: Value<MiniAppFrameMode>
     val effect: Value<EffectState>
@@ -51,6 +51,6 @@ internal interface TwentyFortyEightSessionComponent {
     fun interface Factory {
         fun create(
             componentContext: ComponentContext,
-        ): TwentyFortyEightSessionComponent
+        ): RootComponent
     }
 }

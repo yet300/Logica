@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.Value
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
@@ -16,10 +17,10 @@ import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 internal class TwentyFortyEightSessionPorts : SessionNavigation, SessionUiEffects {
     private var navigateToResult: ((ResultSnapshot) -> Unit)? = null
     private var onNewGameCommitted: ((Long) -> Unit)? = null
-    private val mutableEffect = MutableValue(TwentyFortyEightSessionComponent.EffectState())
+    private val mutableEffect = MutableValue(RootComponent.EffectState())
     private val effectIds = EffectIdAllocator()
 
-    val effect: Value<TwentyFortyEightSessionComponent.EffectState> = mutableEffect
+    val effect: Value<RootComponent.EffectState> = mutableEffect
 
     fun bind(
         navigateToResult: (ResultSnapshot) -> Unit,
@@ -38,29 +39,29 @@ internal class TwentyFortyEightSessionPorts : SessionNavigation, SessionUiEffect
     }
 
     override fun announce(fact: AnnouncementFact) =
-        publish { id -> TwentyFortyEightSessionComponent.Effect.Announcement(id, fact) }
+        publish { id -> RootComponent.Effect.Announcement(id, fact) }
 
     override fun requestFocus(target: FocusTarget) =
-        publish { id -> TwentyFortyEightSessionComponent.Effect.Focus(id, target) }
+        publish { id -> RootComponent.Effect.Focus(id, target) }
 
     override fun showError(code: UiErrorCode) =
-        publish { id -> TwentyFortyEightSessionComponent.Effect.Error(id, code) }
+        publish { id -> RootComponent.Effect.Error(id, code) }
 
     fun consumeEffect(effectId: Long) {
         val pending = mutableEffect.value.effects
         if (pending.firstOrNull()?.id != effectId) return
-        mutableEffect.value = TwentyFortyEightSessionComponent.EffectState(pending.drop(1))
+        mutableEffect.value = RootComponent.EffectState(pending.drop(1))
     }
 
     private inline fun publish(
-        createEffect: (Long) -> TwentyFortyEightSessionComponent.Effect,
+        createEffect: (Long) -> RootComponent.Effect,
     ) {
         val pending = mutableEffect.value.effects
-        check(pending.size < TwentyFortyEightSessionComponent.MaxPendingEffects) {
+        check(pending.size < RootComponent.MaxPendingEffects) {
             "Pending UI effect capacity exceeded"
         }
         val effect = createEffect(effectIds.next())
-        mutableEffect.value = TwentyFortyEightSessionComponent.EffectState(pending + effect)
+        mutableEffect.value = RootComponent.EffectState(pending + effect)
     }
 }
 

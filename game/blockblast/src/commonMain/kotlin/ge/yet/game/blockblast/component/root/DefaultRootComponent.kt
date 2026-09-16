@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.session
+package ge.yet.game.blockblast.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -18,19 +18,19 @@ import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 
-internal class DefaultBlockBlastSessionComponent(
+internal class DefaultRootComponent(
     componentContext: ComponentContext,
     private val gameFactory: GameComponent.Factory,
     private val resultFactory: GameResultComponent.Factory,
     @Suppress("UNUSED_PARAMETER") visibility: MiniAppVisibilitySource,
     private val host: MiniAppSessionHost,
-) : BlockBlastSessionComponent,
+) : RootComponent,
     ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
     private var lastGameInstanceId = 1L
 
-    override val stack: Value<ChildStack<*, BlockBlastSessionComponent.Child>> = childStack(
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
         serializer = null,
         initialConfiguration = Config.Playing(
@@ -44,18 +44,18 @@ internal class DefaultBlockBlastSessionComponent(
 
     override val frameMode: Value<MiniAppFrameMode> = stack.map { childStack ->
         when (childStack.active.instance) {
-            is BlockBlastSessionComponent.Child.Playing -> MiniAppFrameMode.Standard
-            is BlockBlastSessionComponent.Child.Result -> MiniAppFrameMode.ContentOnly
+            is RootComponent.Child.Playing -> MiniAppFrameMode.Standard
+            is RootComponent.Child.Result -> MiniAppFrameMode.ContentOnly
         }
     }
 
     private fun createChild(
         config: Config,
         componentContext: ComponentContext,
-    ): BlockBlastSessionComponent.Child = when (config) {
+    ): RootComponent.Child = when (config) {
         is Config.Playing -> {
             lastGameInstanceId = maxOf(lastGameInstanceId, config.instanceId)
-            BlockBlastSessionComponent.Child.Playing(
+            RootComponent.Child.Playing(
                 gameFactory.create(
                     componentContext = componentContext,
                     isNewGame = config.isNewGame,
@@ -76,7 +76,7 @@ internal class DefaultBlockBlastSessionComponent(
             )
         }
 
-        is Config.Result -> BlockBlastSessionComponent.Child.Result(
+        is Config.Result -> RootComponent.Child.Result(
             resultFactory.create(
                 componentContext = componentContext,
                 snapshot = BlockBlastResultSnapshot.from(config.finalState),
@@ -94,7 +94,7 @@ internal class DefaultBlockBlastSessionComponent(
             .firstNotNullOfOrNull { child ->
                 val config = child.configuration as? Config.Playing
                 if (config?.instanceId == resultConfig.gameInstanceId) {
-                    (child.instance as? BlockBlastSessionComponent.Child.Playing)?.component
+                    (child.instance as? RootComponent.Child.Playing)?.component
                 } else {
                     null
                 }
@@ -126,7 +126,7 @@ internal class DefaultBlockBlastSessionComponent(
         val active = stack.value.active
         val config = active.configuration as? Config.Result
         if (config?.gameInstanceId != gameInstanceId) return
-        (active.instance as? BlockBlastSessionComponent.Child.Result)
+        (active.instance as? RootComponent.Child.Result)
             ?.component
             ?.onContinueFailed()
     }
@@ -184,15 +184,15 @@ internal class DefaultBlockBlastSessionComponent(
 }
 
 @Inject
-internal class DefaultBlockBlastSessionComponentFactory(
+internal class DefaultRootComponentFactory(
     private val gameFactory: GameComponent.Factory,
     private val resultFactory: GameResultComponent.Factory,
-) : BlockBlastSessionComponent.Factory {
+) : RootComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
         visibility: MiniAppVisibilitySource,
         host: MiniAppSessionHost,
-    ): BlockBlastSessionComponent = DefaultBlockBlastSessionComponent(
+    ): RootComponent = DefaultRootComponent(
         componentContext = componentContext,
         gameFactory = gameFactory,
         resultFactory = resultFactory,

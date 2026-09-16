@@ -14,7 +14,7 @@ import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightSessionGraph
 import ge.yet.game.twentyfortyeight.domain.engine.GameRules
 import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
 import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -131,7 +131,7 @@ class TwentyFortyEightLifecycleIntegrationTest {
 }
 
 private fun InspectableTwentyFortyEightSessionGraph.playing(): PlayingComponent =
-    assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+    assertIs<RootComponent.Child.Playing>(
         component.stack.value.active.instance,
     ).component
 

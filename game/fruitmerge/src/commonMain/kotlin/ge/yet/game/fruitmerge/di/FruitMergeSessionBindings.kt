@@ -13,12 +13,12 @@ import ge.yet.game.fruitmerge.domain.repository.GameSnapshotLoader
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.fruitmerge.FruitMergeSession
 import ge.yet.game.fruitmerge.component.game.DefaultFruitMergeComponentFactory
+import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
 import ge.yet.game.fruitmerge.component.result.DefaultFruitMergeResultComponentFactory
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
-import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponent
-import ge.yet.game.fruitmerge.component.session.DefaultFruitMergeSessionComponentFactory
-import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.root.DefaultRootComponent
+import ge.yet.game.fruitmerge.component.root.DefaultRootComponentFactory
+import ge.yet.game.fruitmerge.component.root.RootComponent
 import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
@@ -48,30 +48,30 @@ abstract class FruitMergeSessionBindings {
 
     @Binds
     internal abstract fun bindSessionComponentFactory(
-        impl: DefaultFruitMergeSessionComponentFactory,
-    ): FruitMergeSessionComponent.Factory
+        impl: DefaultRootComponentFactory,
+    ): RootComponent.Factory
 
     @Binds
     internal abstract fun bindComponentContract(
-        component: DefaultFruitMergeSessionComponent,
-    ): FruitMergeSessionComponent
+        component: DefaultRootComponent,
+    ): RootComponent
 
     companion object {
         @Provides
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideComponent(
-            factory: FruitMergeSessionComponent.Factory,
+            factory: RootComponent.Factory,
             componentContext: ComponentContext,
-        ): DefaultFruitMergeSessionComponent =
-            // Safe: the only Factory binding in this scope is DefaultFruitMergeSessionComponentFactory,
+        ): DefaultRootComponent =
+            // Safe: the only Factory binding in this scope is DefaultRootComponentFactory,
             // whose create() returns the Default type (covariant override). Concrete type is kept
             // because provideSession exposes the graph-retained session.
-            factory.create(componentContext) as DefaultFruitMergeSessionComponent
+            factory.create(componentContext) as DefaultRootComponent
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideSession(
-            component: FruitMergeSessionComponent,
+            component: RootComponent,
             interstitials: MiniAppInterstitialCapability,
         ): FruitMergeSession = FruitMergeSession(component, interstitials)
     }

@@ -6,9 +6,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.value.Value
-import ge.yet.game.blockblast.ui.BlockBlastSessionContent
-import ge.yet.game.blockblast.ui.BlockBlastSessionBackground
-import ge.yet.game.blockblast.ui.BlockBlastSessionTopBarContent
+import ge.yet.game.blockblast.component.root.RootComponent
+import ge.yet.game.blockblast.ui.screen.root.RootBackground
+import ge.yet.game.blockblast.ui.screen.root.RootContent
+import ge.yet.game.blockblast.ui.screen.root.RootTopBarContent
 import ge.yet.game.blockblast.ui.LocalSoundEnabled
 import ge.yet.game.blockblast.ui.LocalVibrationEnabled
 import ge.yet.game.domain.repository.FeedbackPreferences
@@ -17,7 +18,7 @@ import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.compose.MiniAppSession
 
 class BlockBlastSession internal constructor(
-    internal val component: BlockBlastSessionComponent,
+    internal val component: RootComponent,
     private val interstitials: MiniAppInterstitialCapability,
     internal val feedback: FeedbackPreferences,
 ) : MiniAppSession {
@@ -25,12 +26,12 @@ class BlockBlastSession internal constructor(
 
     @Composable
     override fun TopBarContent() {
-        BlockBlastSessionTopBarContent(component)
+        RootTopBarContent(component)
     }
 
     @Composable
     override fun Background(modifier: Modifier) {
-        BlockBlastSessionBackground(modifier)
+        RootBackground(modifier)
     }
 
     @Composable
@@ -42,7 +43,7 @@ class BlockBlastSession internal constructor(
             LocalVibrationEnabled provides vibrationEnabled,
             LocalSoundEnabled provides soundEnabled,
         ) {
-            BlockBlastSessionContent(
+            RootContent(
                 component = component,
                 interstitials = interstitials,
                 modifier = modifier,
