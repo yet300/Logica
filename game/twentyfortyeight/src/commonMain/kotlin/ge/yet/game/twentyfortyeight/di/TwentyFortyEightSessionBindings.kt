@@ -13,7 +13,6 @@ import ge.yet.game.twentyfortyeight.component.playing.DefaultPlayingComponentFac
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
 import ge.yet.game.twentyfortyeight.component.playing.store.RandomNewGameSeedSource
-import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.result.DefaultResultComponentFactory
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
 import ge.yet.game.twentyfortyeight.domain.repository.GameCommitWriter
@@ -77,14 +76,8 @@ abstract class TwentyFortyEightSessionBindings {
             componentContext: ComponentContext,
         ): DefaultRootComponent =
             // Safe: the only Factory binding in this scope is DefaultRootComponentFactory,
-            // whose create() returns the Default type (covariant override). Concrete type is kept
-            // because provideStore exposes the retained store for graph inspection.
+            // whose create() returns the Default type (covariant override).
             factory.create(componentContext) as DefaultRootComponent
-
-        @Provides
-        @SingleIn(MiniAppSessionScope::class)
-        internal fun provideStore(component: DefaultRootComponent): TwentyFortyEightStore =
-            component.retainedStore
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)

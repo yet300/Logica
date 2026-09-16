@@ -34,7 +34,6 @@ import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import ge.yet.game.twentyfortyeight.component.playing.store.NewGameSeedSource
-import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import kotlin.test.Test
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
@@ -63,7 +62,6 @@ internal interface InspectableTwentyFortyEightSessionGraph {
     val session: TwentyFortyEightSession
     val component: RootComponent
     val concreteComponent: DefaultRootComponent
-    val store: TwentyFortyEightStore
     val coordinator: SessionPersistenceCoordinator
     val adapter: TwentyFortyEightSessionAdapter
     val audioAdapter: TwentyFortyEightAudioAdapter
@@ -116,11 +114,10 @@ class TwentyFortyEightSessionGraphTest {
         val second = app.factory.createInspectableTwentyFortyEightSessionGraph(secondContext)
 
         assertSame(first.component, first.concreteComponent)
-        assertSame(first.store, first.concreteComponent.retainedStore)
         assertSame(first.session.component, first.component)
         assertNotSame(first.session, second.session)
         assertNotSame(first.component, second.component)
-        assertNotSame(first.store, second.store)
+        assertNotSame(first.concreteComponent.retainedStore, second.concreteComponent.retainedStore)
         assertNotSame(first.coordinator, second.coordinator)
         assertNotSame(first.adapter, second.adapter)
         assertNotSame(first.audioAdapter, second.audioAdapter)
