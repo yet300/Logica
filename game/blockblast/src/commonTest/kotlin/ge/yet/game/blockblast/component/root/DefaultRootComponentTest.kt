@@ -424,6 +424,7 @@ class DefaultRootComponentTest {
             bestScoreRepository = FakeBestScoreRepository(),
             tutorialRepository = tutorial,
             analytics = RecordingAnalytics(),
+            visibility = visibility,
         )
         return DefaultGameComponent(
             componentContext = DefaultComponentContext(lifecycle),

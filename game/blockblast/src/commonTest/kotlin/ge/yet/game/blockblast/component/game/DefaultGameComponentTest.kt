@@ -74,6 +74,7 @@ class DefaultGameComponentTest {
             bestScoreRepository = bestScoreRepository,
             tutorialRepository = tutorial,
             analytics = analytics,
+            visibility = visibility,
         )
         val completions = mutableListOf<Triple<GameState, Boolean, Boolean>>()
         val reviveCompletions = mutableListOf<GameState>()

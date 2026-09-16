@@ -13,6 +13,7 @@ import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
 import ge.yet.game.blockblast.domain.repository.BlockBlastTutorialRepository
 import ge.yet.game.blockblast.domain.repository.BestScoreRepository
+import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +55,7 @@ class GameStoreOwnershipTest {
             bestScoreRepository = MemoryBestScoreRepository(),
             tutorialRepository = MemoryTutorialRepository(),
             analytics = SilentAnalyticsRepository(),
+            visibility = MutableMiniAppVisibilitySource(),
         )
         val first = factory.create(isNewGame = true, newGameSeed = 7)
         val second = factory.create(isNewGame = true, newGameSeed = 7)

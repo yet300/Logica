@@ -27,7 +27,9 @@ business mutation stays outside composables.
   its UI entry is `ui/screen/root/RootContent`. Factories and aliases
   are unscoped `@Binds`; `@SingleIn(MiniAppSessionScope)` lives on stateful
   classes (persistence coordinator, session ports, audio adapter) and on the
-  retained component/store/session providers.
+  retained component/session providers. The store itself is owned by
+  `DefaultRootComponent.instanceKeeper`, never exposed as a session-scoped
+  Metro binding.
 - The MVI store is playing-owned (`component/playing/store`) and retained by
   the session for navigation. The result screen renders a detached
   serializable `ResultSnapshot`, never the live store. Intent preconditions
