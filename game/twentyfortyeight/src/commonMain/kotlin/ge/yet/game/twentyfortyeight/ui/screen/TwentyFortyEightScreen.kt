@@ -21,7 +21,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.component.result.ResultComponent
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
 import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
@@ -38,14 +38,14 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun TwentyFortyEightScreen(
-    component: TwentyFortyEightSessionComponent,
+    component: RootComponent,
     modifier: Modifier = Modifier,
 ) {
     val stack by component.stack.subscribeAsState()
     val effectState by component.effect.subscribeAsState()
     var error by remember(component) { mutableStateOf<UiErrorCode?>(null) }
     var announcement by remember(component) {
-        mutableStateOf<TwentyFortyEightSessionComponent.Effect.Announcement?>(null)
+        mutableStateOf<RootComponent.Effect.Announcement?>(null)
     }
     val boardFocusRequester = remember(component) { FocusRequester() }
     val victoryFocusRequester = remember(component) { FocusRequester() }
@@ -53,12 +53,12 @@ internal fun TwentyFortyEightScreen(
     val effect = effectState.effect
     LaunchedEffect(effect?.id) {
         when (effect) {
-            is TwentyFortyEightSessionComponent.Effect.Announcement -> {
+            is RootComponent.Effect.Announcement -> {
                 announcement = null
                 withFrameNanos { }
                 announcement = effect
             }
-            is TwentyFortyEightSessionComponent.Effect.Focus -> {
+            is RootComponent.Effect.Focus -> {
                 withFrameNanos { }
                 when (effect.target) {
                     FocusTarget.Board -> boardFocusRequester
@@ -66,7 +66,7 @@ internal fun TwentyFortyEightScreen(
                     FocusTarget.Result -> resultFocusRequester
                 }.requestFocus()
             }
-            is TwentyFortyEightSessionComponent.Effect.Error -> error = effect.code
+            is RootComponent.Effect.Error -> error = effect.code
             null -> Unit
         }
         effect?.let { component.onEffectConsumed(it.id) }
@@ -74,14 +74,14 @@ internal fun TwentyFortyEightScreen(
 
     AnnouncementLiveRegion(announcement)
     when (val instance = stack.active.instance) {
-        is TwentyFortyEightSessionComponent.Child.Playing -> PlayingRoute(
+        is RootComponent.Child.Playing -> PlayingRoute(
             component = instance.component,
             error = error,
             boardFocusRequester = boardFocusRequester,
             victoryFocusRequester = victoryFocusRequester,
             modifier = modifier.fillMaxSize(),
         )
-        is TwentyFortyEightSessionComponent.Child.Result -> ResultRoute(
+        is RootComponent.Child.Result -> ResultRoute(
             component = instance.component,
             error = error,
             resultFocusRequester = resultFocusRequester,
@@ -135,7 +135,7 @@ private fun ResultRoute(
 
 @Composable
 private fun AnnouncementLiveRegion(
-    effect: TwentyFortyEightSessionComponent.Effect.Announcement?,
+    effect: RootComponent.Effect.Announcement?,
 ) {
     val text = effect?.let { announcementText(it.fact) } ?: return
     Box(

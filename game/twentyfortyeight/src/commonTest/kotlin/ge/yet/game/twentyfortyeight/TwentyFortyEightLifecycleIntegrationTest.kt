@@ -14,7 +14,7 @@ import ge.yet.game.twentyfortyeight.di.InspectableTwentyFortyEightSessionGraph
 import ge.yet.game.twentyfortyeight.domain.engine.GameRules
 import ge.yet.game.twentyfortyeight.domain.model.GameStatistics
 import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -59,14 +59,14 @@ class TwentyFortyEightLifecycleIntegrationTest {
         val session = graph.session
         advanceUntilIdle()
         val playing = graph.playing()
-        val initial = graph.store.state
+        val initial = graph.concreteComponent.retainedStore.state
         val direction = GameRules.legalDirections(requireNotNull(initial.game).board).first()
 
         visibility.set(MiniAppVisibility.OBSCURED)
         runCurrent()
         playing.onMove(direction)
         advanceUntilIdle()
-        assertEquals(initial.game, graph.store.state.game)
+        assertEquals(initial.game, graph.concreteComponent.retainedStore.state.game)
 
         visibility.set(MiniAppVisibility.BACKGROUND)
         runCurrent()
@@ -77,7 +77,7 @@ class TwentyFortyEightLifecycleIntegrationTest {
 
         assertEquals(
             requireNotNull(initial.game).successfulMovesInRun + 1L,
-            requireNotNull(graph.store.state.game).successfulMovesInRun,
+            requireNotNull(graph.concreteComponent.retainedStore.state.game).successfulMovesInRun,
         )
         assertSame(session, graph.session)
         lifecycle.destroy()
@@ -96,13 +96,13 @@ class TwentyFortyEightLifecycleIntegrationTest {
         val secondLifecycle = MiniAppLifecycleHarness().also { it.resume() }
         val second = app.sessionGraph(secondLifecycle, host)
         advanceUntilIdle()
-        val secondInitial = second.store.state
+        val secondInitial = second.concreteComponent.retainedStore.state
 
         stalePlaying.onAnimationCompleted(Long.MAX_VALUE)
         stalePlaying.onTutorialSkipped()
         advanceUntilIdle()
 
-        assertEquals(secondInitial, second.store.state)
+        assertEquals(secondInitial, second.concreteComponent.retainedStore.state)
         assertEquals(0, host.closeCount)
         assertEquals(emptyList(), host.reviewRequests)
         secondLifecycle.destroy()
@@ -131,7 +131,7 @@ class TwentyFortyEightLifecycleIntegrationTest {
 }
 
 private fun InspectableTwentyFortyEightSessionGraph.playing(): PlayingComponent =
-    assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+    assertIs<RootComponent.Child.Playing>(
         component.stack.value.active.instance,
     ).component
 

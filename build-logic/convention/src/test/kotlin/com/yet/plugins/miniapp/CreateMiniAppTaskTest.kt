@@ -20,8 +20,8 @@ class CreateMiniAppTaskTest {
         assertEquals(
             setOf(
                 "AGENTS.md", "build.gradle.kts", "src/commonMain/composeResources/drawable/miniapp_icon.xml",
-                "src/commonMain/composeResources/values/strings.xml", "src/commonMain/kotlin/ge/yet/game/snake/SnakeComponent.kt",
-                "src/commonMain/kotlin/ge/yet/game/snake/SnakeContent.kt", "src/commonMain/kotlin/ge/yet/game/snake/SnakePlugin.kt",
+                "src/commonMain/composeResources/values/strings.xml", "src/commonMain/kotlin/ge/yet/game/snake/component/root/RootComponent.kt",
+                "src/commonMain/kotlin/ge/yet/game/snake/ui/screen/root/RootContent.kt", "src/commonMain/kotlin/ge/yet/game/snake/SnakePlugin.kt",
                 "src/commonMain/kotlin/ge/yet/game/snake/SnakeSession.kt", "src/commonMain/kotlin/ge/yet/game/snake/SnakeSessionGraph.kt",
                 "src/commonTest/kotlin/ge/yet/game/snake/SnakePluginContractTest.kt",
             ),
@@ -42,16 +42,25 @@ class CreateMiniAppTaskTest {
         assertContains(plugin, "graphFactory.createGameSnakeSessionGraph(")
         val sessionGraph = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeSessionGraph.kt").readText()
         assertContains(sessionGraph, "val session: SnakeSession")
-        assertContains(sessionGraph, "fun provideSession(component: SnakeComponent): SnakeSession")
+        assertContains(sessionGraph, "fun provideSession(component: RootComponent): SnakeSession")
+        assertContains(sessionGraph, "fun provideComponent(componentContext: ComponentContext): RootComponent")
+        assertContains(sessionGraph, "DefaultRootComponent(componentContext)")
+        assertContains(sessionGraph, "import ge.yet.game.snake.component.root.RootComponent")
         assertContains(sessionGraph, "fun createGameSnakeSessionGraph(")
         assertEquals(false, sessionGraph.contains("Named"))
         val session = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeSession.kt").readText()
         assertContains(session, "class SnakeSession internal constructor(")
         assertEquals(false, session.contains("internal class SnakeSession"))
-        assertContains(session, "SnakeContent(component = component, modifier = modifier)")
-        val content = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeContent.kt").readText()
+        assertContains(session, "RootContent(component = component, modifier = modifier)")
+        assertContains(session, "import ge.yet.game.snake.component.root.RootComponent")
+        val content = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/ui/screen/root/RootContent.kt").readText()
+        assertContains(content, "package ge.yet.game.snake.ui.screen.root")
+        assertContains(content, "internal fun RootContent(component: RootComponent")
         assertContains(content, "Box(modifier = modifier)")
-        val component = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeComponent.kt").readText()
+        val component = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/component/root/RootComponent.kt").readText()
+        assertContains(component, "package ge.yet.game.snake.component.root")
+        assertContains(component, "interface RootComponent")
+        assertContains(component, "internal class DefaultRootComponent")
         assertContains(component, "componentContext.lifecycle.doOnDestroy")
         assertContains(target.resolve("AGENTS.md").readText(), "not shipped until a maintainer adds it to the production allowlist")
         assertContains(target.resolve("AGENTS.md").readText(), "docs/miniapp/AI_CONTRIBUTOR_PROTOCOL.md")
@@ -131,7 +140,9 @@ class CreateMiniAppTaskTest {
         assertContains(engine, "SnakeGameAction.Reset -> SnakeGameState()")
         assertContains(engine, "SnakeGameAction.Tick -> state")
 
-        val component = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakeComponent.kt").readText()
+        val component = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/component/root/RootComponent.kt").readText()
+        assertContains(component, "interface RootComponent")
+        assertContains(component, "internal class DefaultRootComponent")
         assertContains(component, "fun dispatch(action: SnakeGameAction)")
         assertContains(component, "private val engine: SnakeGameEngine")
         assertContains(component, "engine.reduce(current.state, action)")

@@ -37,6 +37,7 @@ internal class MiniAppScaffoldRenderer(
             Use `MiniAppId("$id").storageKey(localName)` for every new persistent key. Never copy another plugin's key prefix.
             This project is discovered on the next Gradle invocation, but is not shipped until a maintainer adds it to the production allowlist.
             Verify it with `./gradlew :${projectPath.removePrefix(":").replace(':', ':')}:verifyMiniApp`.
+            The session-owned Decompose component lives in `component/root/RootComponent.kt` (`RootComponent` + `DefaultRootComponent`); session UI lives in `ui/screen/root/RootContent.kt`.
             $gameProfileGuidance
         """.trimIndent() + "\n")
         write(root, "src/commonMain/composeResources/values/strings.xml", """
@@ -52,7 +53,7 @@ internal class MiniAppScaffoldRenderer(
         """.trimIndent() + "\n")
         write(
             root,
-            "src/commonMain/kotlin/${packageName.replace('.', '/')}/${classPrefix}Component.kt",
+            "src/commonMain/kotlin/${packageName.replace('.', '/')}/component/root/RootComponent.kt",
             componentSource(),
         )
         if (profile == MiniAppScaffoldProfile.GAME) {
@@ -61,15 +62,16 @@ internal class MiniAppScaffoldRenderer(
             write(root, "src/commonTest/kotlin/${packageName.replace('.', '/')}/${classPrefix}GameEngineTest.kt", gameEngineTestSource())
             write(root, "src/commonTest/kotlin/${packageName.replace('.', '/')}/${classPrefix}ComponentTest.kt", componentTestSource())
         }
-        write(root, "src/commonMain/kotlin/${packageName.replace('.', '/')}/${classPrefix}Content.kt", """
-            package $packageName
+        write(root, "src/commonMain/kotlin/${packageName.replace('.', '/')}/ui/screen/root/RootContent.kt", """
+            package $packageName.ui.screen.root
 
             import androidx.compose.foundation.layout.Box
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
+            import $packageName.component.root.RootComponent
 
             @Composable
-            internal fun ${classPrefix}Content(component: ${classPrefix}Component, modifier: Modifier = Modifier) {
+            internal fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
                 Box(modifier = modifier)
             }
         """.trimIndent() + "\n")
@@ -79,13 +81,15 @@ internal class MiniAppScaffoldRenderer(
             import androidx.compose.runtime.Composable
             import androidx.compose.ui.Modifier
             import ge.yet.game.miniapp.compose.MiniAppSession
+            import $packageName.component.root.RootComponent
+            import $packageName.ui.screen.root.RootContent
 
             class ${classPrefix}Session internal constructor(
-                private val component: ${classPrefix}Component,
+                private val component: RootComponent,
             ) : MiniAppSession {
                 @Composable
                 override fun Content(modifier: Modifier) {
-                    ${classPrefix}Content(component = component, modifier = modifier)
+                    RootContent(component = component, modifier = modifier)
                 }
             }
         """.trimIndent() + "\n")
@@ -145,15 +149,19 @@ internal class MiniAppScaffoldRenderer(
 
     private fun componentSource() = if (profile == MiniAppScaffoldProfile.GAME) {
         """
-            package $packageName
+            package $packageName.component.root
 
             import com.arkivanov.decompose.ComponentContext
             import com.arkivanov.decompose.value.MutableValue
             import com.arkivanov.decompose.value.Value
             import com.arkivanov.decompose.value.update
             import com.arkivanov.essenty.lifecycle.doOnDestroy
+            import $packageName.${classPrefix}GameAction
+            import $packageName.${classPrefix}GameEngine
+            import $packageName.${classPrefix}GameState
+            import $packageName.Default${classPrefix}GameEngine
 
-            interface ${classPrefix}Component {
+            interface RootComponent {
                 val model: Value<Model>
 
                 fun dispatch(action: ${classPrefix}GameAction)
@@ -163,12 +171,12 @@ internal class MiniAppScaffoldRenderer(
                 )
             }
 
-            internal class Default${classPrefix}Component(
+            internal class DefaultRootComponent(
                 componentContext: ComponentContext,
                 private val engine: ${classPrefix}GameEngine = Default${classPrefix}GameEngine,
-            ) : ${classPrefix}Component, ComponentContext by componentContext {
-                private val mutableModel = MutableValue(${classPrefix}Component.Model())
-                override val model: Value<${classPrefix}Component.Model> = mutableModel
+            ) : RootComponent, ComponentContext by componentContext {
+                private val mutableModel = MutableValue(RootComponent.Model())
+                override val model: Value<RootComponent.Model> = mutableModel
 
                 init { componentContext.lifecycle.doOnDestroy { } }
 
@@ -181,14 +189,14 @@ internal class MiniAppScaffoldRenderer(
         """.trimIndent() + "\n"
     } else {
         """
-            package $packageName
+            package $packageName.component.root
 
             import com.arkivanov.decompose.ComponentContext
             import com.arkivanov.essenty.lifecycle.doOnDestroy
 
-            interface ${classPrefix}Component
+            interface RootComponent
 
-            internal class Default${classPrefix}Component(componentContext: ComponentContext) : ${classPrefix}Component,
+            internal class DefaultRootComponent(componentContext: ComponentContext) : RootComponent,
                 ComponentContext by componentContext {
                 init { componentContext.lifecycle.doOnDestroy { } }
             }
@@ -260,6 +268,7 @@ internal class MiniAppScaffoldRenderer(
         package $packageName
 
         import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
+        import $packageName.component.root.DefaultRootComponent
         import kotlin.test.Test
         import kotlin.test.assertEquals
 
@@ -267,7 +276,7 @@ internal class MiniAppScaffoldRenderer(
             @Test
             fun `component delegates typed actions to the engine`() {
                 val lifecycle = MiniAppLifecycleHarness()
-                val component = Default${classPrefix}Component(
+                val component = DefaultRootComponent(
                     componentContext = lifecycle.componentContext,
                     engine = Incrementing${classPrefix}GameEngine,
                 )
@@ -301,16 +310,18 @@ internal class MiniAppScaffoldRenderer(
         import dev.zacsweers.metro.SingleIn
         import ge.yet.game.miniapp.compose.MiniAppSessionContext
         import ge.yet.game.miniapp.metro.MiniAppSessionScope
+        import $packageName.component.root.DefaultRootComponent
+        import $packageName.component.root.RootComponent
 
         @GraphExtension(MiniAppSessionScope::class)
         interface ${classPrefix}SessionGraph {
             val session: ${classPrefix}Session
 
             @Provides @SingleIn(MiniAppSessionScope::class)
-            fun provideComponent(componentContext: ComponentContext): ${classPrefix}Component = Default${classPrefix}Component(componentContext)
+            fun provideComponent(componentContext: ComponentContext): RootComponent = DefaultRootComponent(componentContext)
 
             @Provides @SingleIn(MiniAppSessionScope::class)
-            fun provideSession(component: ${classPrefix}Component): ${classPrefix}Session = ${classPrefix}Session(component)
+            fun provideSession(component: RootComponent): ${classPrefix}Session = ${classPrefix}Session(component)
 
             @ContributesTo(AppScope::class)
             @GraphExtension.Factory

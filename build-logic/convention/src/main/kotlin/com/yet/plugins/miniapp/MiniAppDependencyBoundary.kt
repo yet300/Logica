@@ -43,7 +43,7 @@ internal object MiniAppDependencyBoundary {
         if (dependencyPath == ":miniapp:testkit" && configuration.contains("test", ignoreCase = true)) return null
         if (dependencyPath in allowedMainProjects) return null
         if (dependencyPath == ":miniapp:testkit") return violation(projectPath, configuration, dependencyPath, ":miniapp:api")
-        if (dependencyPath == ":monetization:ads") return violation(projectPath, configuration, dependencyPath, ":miniapp:compose MiniAppInterstitialCapability")
+        if (dependencyPath == ":monetization:ads") return violation(projectPath, configuration, dependencyPath, ":miniapp:compose MiniAppAdsCapability")
         if (dependencyPath in forbiddenExact || forbiddenPrefixes.any(dependencyPath::startsWith)) {
             return violation(projectPath, configuration, dependencyPath, replacementFor(dependencyPath))
         }

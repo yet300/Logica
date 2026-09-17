@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.ui
+package ge.yet.game.blockblast.ui.screen.root
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -9,17 +9,17 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ge.yet.game.blockblast.session.BlockBlastSessionComponent
+import ge.yet.game.blockblast.component.root.RootComponent
 import ge.yet.game.blockblast.ui.game.BlockBlastGameContent
 import ge.yet.game.blockblast.ui.result.GameResultContent
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.uikit.components.background.AmbientMeshBackground
 
 @Composable
-internal fun BlockBlastSessionContent(
-    component: BlockBlastSessionComponent,
-    interstitials: MiniAppInterstitialCapability,
+internal fun RootContent(
+    component: RootComponent,
+    interstitials: MiniAppAdsCapability,
     modifier: Modifier = Modifier,
 ) {
     val stack by component.stack.subscribeAsState()
@@ -30,14 +30,14 @@ internal fun BlockBlastSessionContent(
         animation = stackAnimation(fade()),
     ) { child ->
         when (val instance = child.instance) {
-            is BlockBlastSessionComponent.Child.Playing -> BlockBlastGameContent(
+            is RootComponent.Child.Playing -> BlockBlastGameContent(
                 component = instance.component,
                 modifier = Modifier,
             )
 
-            is BlockBlastSessionComponent.Child.Result -> {
+            is RootComponent.Child.Result -> {
                 val gate = interstitials.rememberGate(
-                    MiniAppInterstitialPlacement.CONTINUE_AFTER_GAME_OVER,
+                    MiniAppAdKind.Fullscreen("continue_after_game_over"),
                 )
                 GameResultContent(
                     component = instance.component,
@@ -50,7 +50,7 @@ internal fun BlockBlastSessionContent(
 }
 
 @Composable
-internal fun BlockBlastSessionBackground(
+internal fun RootBackground(
     modifier: Modifier = Modifier,
 ) {
     AmbientMeshBackground(

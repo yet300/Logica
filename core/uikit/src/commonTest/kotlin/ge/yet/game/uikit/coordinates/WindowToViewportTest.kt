@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.ui.game
+package ge.yet.game.uikit.coordinates
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect

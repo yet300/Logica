@@ -43,6 +43,3 @@ internal fun FruitMergeResultScreen(
         modifier = modifier,
     )
 }
-
-private const val FACE_CLOCK_WRAP_SECONDS: Float = 120f
-private const val FACE_CLOCK_PERIOD_MILLIS: Int = 120_000

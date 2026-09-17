@@ -16,6 +16,8 @@ class RetainedMiniAppSession<G : Any>(
 
     override val frameMode: Value<MiniAppFrameMode> = delegate.frameMode
 
+    override val wantsBanner: Boolean = delegate.wantsBanner
+
     override fun handleBack(): Boolean = delegate.handleBack()
 
     @Composable

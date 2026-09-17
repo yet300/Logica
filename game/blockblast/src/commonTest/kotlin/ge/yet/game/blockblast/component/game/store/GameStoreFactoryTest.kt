@@ -16,6 +16,8 @@ import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
 import ge.yet.game.blockblast.domain.repository.BlockBlastTutorialRepository
 import ge.yet.game.blockblast.domain.repository.BestScoreRepository
+import ge.yet.game.miniapp.api.MiniAppVisibility
+import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -119,6 +121,21 @@ class GameStoreFactoryTest {
 
         assertEquals(before, store.state)
         assertTrue(deps.analytics.has("piece_place_failed"))
+    }
+
+    @Test
+    fun backgrounded_place_is_dropped_by_the_executor() = runTest {
+        val visibility = MutableMiniAppVisibilitySource(MiniAppVisibility.OBSCURED)
+        val deps = TestDependencies(saved = playableState(), visibility = visibility)
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+        val before = store.state
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 2, y = 2))
+        runCurrent()
+
+        assertEquals(before, store.state)
+        assertFalse(deps.analytics.has("piece_place_attempt"))
     }
 
     @Test
@@ -283,6 +300,7 @@ class GameStoreFactoryTest {
         saved: GameState? = null,
         bestScore: Long = 0,
         failSaves: Boolean = false,
+        visibility: MutableMiniAppVisibilitySource = MutableMiniAppVisibilitySource(),
     ) {
         val save = RecordingSaveRepository(saved, failSaves)
         val bestScoreRepository = RecordingBestScoreRepository(bestScore)
@@ -297,6 +315,7 @@ class GameStoreFactoryTest {
             bestScoreRepository = bestScoreRepository,
             tutorialRepository = tutorial,
             analytics = analytics,
+            visibility = visibility,
         )
     }
 

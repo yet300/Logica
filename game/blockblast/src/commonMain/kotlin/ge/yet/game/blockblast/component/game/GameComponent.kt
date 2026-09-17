@@ -22,6 +22,7 @@ internal interface GameComponent {
     fun onCellClicked(pieceId: Long, x: Int, y: Int)
     fun onReviveClicked()
     fun onTutorialSeen()
+    fun handleBack(): Boolean
 
 
     fun interface Factory {

@@ -6,8 +6,8 @@ import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphPrivate
 import ge.yet.game.feature.settings.libraries.LibrariesProvider
-import ge.yet.game.miniapp.AdMobMiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
+import ge.yet.game.miniapp.AdMobMiniAppAdsCapability
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 
 @ContributesTo(AppScope::class)
 @BindingContainer
@@ -17,6 +17,6 @@ abstract class ComposeAppBindings {
     internal abstract val ComposeLibrariesProvider.bindLibrariesProvider: LibrariesProvider
 
     @Binds
-    internal abstract val AdMobMiniAppInterstitialCapability.bindMiniAppInterstitialCapability:
-        MiniAppInterstitialCapability
+    internal abstract val AdMobMiniAppAdsCapability.bindMiniAppAdsCapability:
+        MiniAppAdsCapability
 }

@@ -52,6 +52,7 @@ import ge.yet.game.blockblast.ui.game.effects.rememberParticleBurstState
 import ge.yet.game.blockblast.ui.game.effects.rememberGlitchState
 import ge.yet.game.uikit.theme.pieceColor
 import ge.yet.game.uikit.motion.rememberReducedMotion
+import ge.yet.game.uikit.coordinates.windowToViewport
 import ge.yet.game.blockblast.ui.LocalVibrationEnabled
 import kotlinx.coroutines.launch
 

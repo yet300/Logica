@@ -21,11 +21,15 @@ business mutation stays outside composables.
   `internal`. `TwentyFortyEightSession` is public only as the graph's unique
   Metro binding type; its constructor and state remain internal.
 - Create session-owned components through `TwentyFortyEightSessionGraph`;
-  every level (`Session`, `Playing`, `Result`, `Overlay`) exposes a
-  `Factory` interface with a `Default` implementation. Factories and aliases
+  every level (`component/root/RootComponent`, `Playing`, `Result`, `Overlay`) exposes a
+  `Factory` interface with a `Default` implementation. The session-owned Decompose
+  root is `component/root/RootComponent` (`RootComponent` + `DefaultRootComponent`);
+  its UI entry is `ui/screen/root/RootContent`. Factories and aliases
   are unscoped `@Binds`; `@SingleIn(MiniAppSessionScope)` lives on stateful
   classes (persistence coordinator, session ports, audio adapter) and on the
-  retained component/store/session providers.
+  retained component/session providers. The store itself is owned by
+  `DefaultRootComponent.instanceKeeper`, never exposed as a session-scoped
+  Metro binding.
 - The MVI store is playing-owned (`component/playing/store`) and retained by
   the session for navigation. The result screen renders a detached
   serializable `ResultSnapshot`, never the live store. Intent preconditions

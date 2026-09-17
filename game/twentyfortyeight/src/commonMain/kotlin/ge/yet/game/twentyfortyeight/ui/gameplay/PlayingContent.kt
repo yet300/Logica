@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +37,7 @@ import ge.yet.game.twentyfortyeight.ui.common.errorText
 import ge.yet.game.twentyfortyeight.ui.motion.rememberMotionPolicy
 import ge.yet.game.twentyfortyeight.ui.overlay.TutorialOverlay
 import ge.yet.game.uikit.adaptive.AdaptiveGameScaffold
+import ge.yet.game.uikit.coordinates.windowToViewport
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -50,15 +51,17 @@ internal fun PlayingContent(
     modifier: Modifier = Modifier,
     error: UiErrorCode? = null,
 ) {
-    var viewportOriginInRoot by remember { mutableStateOf(Offset.Zero) }
-    var supportBoundsInRoot by remember { mutableStateOf<Rect?>(null) }
-    val supportBoundsInViewport = supportBoundsInRoot?.translate(-viewportOriginInRoot)
+    var viewportOriginInWindow by remember { mutableStateOf(Offset.Zero) }
+    var supportBoundsInWindow by remember { mutableStateOf<Rect?>(null) }
+    val supportBoundsInViewport = supportBoundsInWindow?.let {
+        windowToViewport(it, viewportOriginInWindow)
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .onGloballyPositioned { viewportOriginInRoot = it.positionInRoot() }
+            .onGloballyPositioned { viewportOriginInWindow = it.positionInWindow() }
             .detectTwentyFortyEightSwipes(
                 enabled = model.gesturesEnabled,
                 supportBoundsInViewport = supportBoundsInViewport,
@@ -70,7 +73,7 @@ internal fun PlayingContent(
         AdaptiveGameScaffold(
             modifier = Modifier.fillMaxSize(),
             supportingPaneModifier = Modifier
-                .onGloballyPositioned { supportBoundsInRoot = it.boundsInRoot() }
+                .onGloballyPositioned { supportBoundsInWindow = it.boundsInWindow() }
                 .testTag("supporting_column"),
             primary = {
                 BoardOrLoading(

@@ -87,6 +87,8 @@ internal class DefaultGameComponent(
         lifecycleScope.launch { tutorialRepository.markSeen() }
     }
 
+    override fun handleBack(): Boolean = false
+
     private inline fun whenActive(action: () -> Unit) {
         if (visibility.visibility.value == MiniAppVisibility.ACTIVE) action()
     }

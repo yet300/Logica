@@ -6,23 +6,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arkivanov.decompose.value.Value
-import ge.yet.game.fruitmerge.component.session.FruitMergeSessionComponent
+import ge.yet.game.fruitmerge.component.root.RootComponent
+import ge.yet.game.fruitmerge.ui.screen.root.RootContent
 import ge.yet.game.fruitmerge.ui.FruitMergeTestTags
 import ge.yet.game.fruitmerge.ui.MarketStallBackground
 import ge.yet.game.fruitmerge.ui.MarketPriceTag
+import ge.yet.game.miniapp.compose.DelegatingMiniAppSession
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
-import ge.yet.game.miniapp.compose.MiniAppSession
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 
 class FruitMergeSession internal constructor(
-    private val component: FruitMergeSessionComponent,
-    private val interstitials: MiniAppInterstitialCapability,
-) : MiniAppSession {
-    override val frameMode: Value<MiniAppFrameMode> = component.frameMode
-
-    override fun handleBack(): Boolean = component.handleBack()
+    private val component: RootComponent,
+    private val interstitials: MiniAppAdsCapability,
+) : DelegatingMiniAppSession(
+    frameMode = component.frameMode,
+    wantsBanner = true,
+    onBack = component::handleBack,
+) {
 
     @Composable
     override fun TopBarContent() {
@@ -44,9 +45,9 @@ class FruitMergeSession internal constructor(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        val clearGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_CLEAR)
-        val shakeGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_SHAKE)
-        FruitMergeContent(
+        val clearGate = interstitials.rememberGate(MiniAppAdKind.Fullscreen("fruit_merge_clear"))
+        val shakeGate = interstitials.rememberGate(MiniAppAdKind.Fullscreen("fruit_merge_shake"))
+        RootContent(
             component = component,
             requestClearAd = { token ->
                 clearGate.request { component.completePaidAction(token) }

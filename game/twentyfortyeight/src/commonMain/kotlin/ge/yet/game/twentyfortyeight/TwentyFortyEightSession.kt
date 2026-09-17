@@ -2,20 +2,19 @@ package ge.yet.game.twentyfortyeight
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.value.Value
-import ge.yet.game.miniapp.compose.MiniAppFrameMode
-import ge.yet.game.miniapp.compose.MiniAppSession
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.miniapp.compose.DelegatingMiniAppSession
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
+import ge.yet.game.twentyfortyeight.ui.screen.root.RootContent
 
 class TwentyFortyEightSession internal constructor(
-    internal val component: TwentyFortyEightSessionComponent,
-) : MiniAppSession {
-    override val frameMode: Value<MiniAppFrameMode> = component.frameMode
-
-    override fun handleBack(): Boolean = component.handleBack()
-
+    internal val component: RootComponent,
+) : DelegatingMiniAppSession(
+    frameMode = component.frameMode,
+    wantsBanner = true,
+    onBack = component::handleBack,
+) {
     @Composable
     override fun Content(modifier: Modifier) {
-        TwentyFortyEightContent(component = component, modifier = modifier)
+        RootContent(component = component, modifier = modifier)
     }
 }

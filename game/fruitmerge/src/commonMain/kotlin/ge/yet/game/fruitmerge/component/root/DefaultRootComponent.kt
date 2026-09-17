@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.component.session
+package ge.yet.game.fruitmerge.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -17,17 +17,17 @@ import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import kotlinx.serialization.Serializable
 
-internal class DefaultFruitMergeSessionComponent(
+internal class DefaultRootComponent(
     componentContext: ComponentContext,
     private val gameFactory: FruitMergeComponent.Factory,
     private val resultFactory: FruitMergeResultComponent.Factory,
-) : FruitMergeSessionComponent,
+) : RootComponent,
     ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
     private var lastRunId = 1L
 
-    override val stack: Value<ChildStack<*, FruitMergeSessionComponent.Child>> = childStack(
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
         serializer = Config.serializer(),
         initialConfiguration = Config.Playing(runId = 1L, isNewGame = false),
@@ -37,8 +37,8 @@ internal class DefaultFruitMergeSessionComponent(
 
     override val frameMode: Value<MiniAppFrameMode> = stack.map { childStack ->
         when (childStack.active.instance) {
-            is FruitMergeSessionComponent.Child.Playing -> MiniAppFrameMode.Standard
-            is FruitMergeSessionComponent.Child.Result -> MiniAppFrameMode.ContentOnly
+            is RootComponent.Child.Playing -> MiniAppFrameMode.Standard
+            is RootComponent.Child.Result -> MiniAppFrameMode.ContentOnly
         }
     }
 
@@ -47,15 +47,15 @@ internal class DefaultFruitMergeSessionComponent(
 
     internal val gameComponent: DefaultFruitMergeComponent
         get() = stack.value.items
-            .mapNotNull { child -> child.instance as? FruitMergeSessionComponent.Child.Playing }
+            .mapNotNull { child -> child.instance as? RootComponent.Child.Playing }
             .last()
             .component as DefaultFruitMergeComponent
 
     private fun createChild(
         config: Config,
         componentContext: ComponentContext,
-    ): FruitMergeSessionComponent.Child = when (config) {
-        is Config.Playing -> FruitMergeSessionComponent.Child.Playing(
+    ): RootComponent.Child = when (config) {
+        is Config.Playing -> RootComponent.Child.Playing(
             gameFactory.create(
                 componentContext = componentContext,
                 isNewGame = config.isNewGame,
@@ -63,7 +63,7 @@ internal class DefaultFruitMergeSessionComponent(
             ) as DefaultFruitMergeComponent,
         )
 
-        is Config.Result -> FruitMergeSessionComponent.Child.Result(
+        is Config.Result -> RootComponent.Child.Result(
             resultFactory.create(
                 componentContext = componentContext,
                 snapshot = config.snapshot,
@@ -91,20 +91,20 @@ internal class DefaultFruitMergeSessionComponent(
     }
 
     override fun handleBack(): Boolean =
-        (stack.value.active.instance as? FruitMergeSessionComponent.Child.Playing)
+        (stack.value.active.instance as? RootComponent.Child.Playing)
             ?.component
             ?.handleBack()
             ?: false
 }
 
 @Inject
-internal class DefaultFruitMergeSessionComponentFactory(
+internal class DefaultRootComponentFactory(
     private val gameFactory: FruitMergeComponent.Factory,
     private val resultFactory: FruitMergeResultComponent.Factory,
-) : FruitMergeSessionComponent.Factory {
+) : RootComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
-    ): DefaultFruitMergeSessionComponent = DefaultFruitMergeSessionComponent(
+    ): DefaultRootComponent = DefaultRootComponent(
         componentContext = componentContext,
         gameFactory = gameFactory,
         resultFactory = resultFactory,

@@ -6,20 +6,16 @@ import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
-import ge.yet.game.miniapp.audio.consumeSilently
+import ge.yet.game.miniapp.audio.presets.SessionAudioProgram
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
 @SingleIn(MiniAppSessionScope::class)
 internal class FruitMergeAudioAdapter @Inject constructor(
-    private val audio: MiniAppAudio,
+    audio: MiniAppAudio,
 ) {
-    private var started = false
+    private val music = SessionAudioProgram(audio, FruitMergeAudio.program)
 
-    fun start() {
-        if (started) return
-        started = true
-        audio.playMusic(FruitMergeAudio.program).consumeSilently()
-    }
+    fun start() = music.start()
 
     fun play(label: FruitMergeStore.Label) {
         val name = when (label) {
@@ -71,7 +67,5 @@ internal class FruitMergeAudioAdapter @Inject constructor(
         -> FruitMergeAudio.MergeHigh
     }
 
-    private fun playSfx(name: SfxName) {
-        audio.playSfx(FruitMergeAudio.program, name).consumeSilently()
-    }
+    private fun playSfx(name: SfxName) = music.playSfx(name)
 }

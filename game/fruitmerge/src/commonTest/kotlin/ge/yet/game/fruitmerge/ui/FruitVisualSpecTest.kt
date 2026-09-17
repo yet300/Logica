@@ -64,6 +64,59 @@ class FruitVisualSpecTest {
     }
 
     @Test
+    fun `peach and pineapple blink calmly twice as rarely`() {
+        val peach = fruitVisualSpec(FruitLevel.PEACH)
+        val pineapple = fruitVisualSpec(FruitLevel.PINEAPPLE)
+        val blueberry = fruitVisualSpec(FruitLevel.BLUEBERRY)
+
+        assertEquals(CALM_BLINK_INTERVAL_SECONDS, peach.blinkIntervalSeconds)
+        assertEquals(CALM_BLINK_INTERVAL_SECONDS, pineapple.blinkIntervalSeconds)
+        assertEquals(DEFAULT_BLINK_INTERVAL_SECONDS, blueberry.blinkIntervalSeconds)
+
+        val calmDuty = CALM_BLINK_CLOSED_SECONDS / CALM_BLINK_INTERVAL_SECONDS
+        val defaultDuty = DEFAULT_BLINK_CLOSED_SECONDS / DEFAULT_BLINK_INTERVAL_SECONDS
+        assertTrue(calmDuty < defaultDuty, "Calm duty $calmDuty must be below default $defaultDuty")
+    }
+
+    @Test
+    fun `isFruitBlinking respects per-level window and finite input`() {
+        // Default 4.2s / 0.14s window.
+        assertTrue(isFruitBlinking(FruitLevel.BLUEBERRY, 0f))
+        assertTrue(isFruitBlinking(FruitLevel.BLUEBERRY, 0.13f))
+        assertTrue(!isFruitBlinking(FruitLevel.BLUEBERRY, 0.15f))
+        assertTrue(!isFruitBlinking(FruitLevel.BLUEBERRY, 2.1f))
+        // Negative phases wrap instead of blinking constantly.
+        assertTrue(!isFruitBlinking(FruitLevel.BLUEBERRY, -1f))
+        // Non-finite never blinks.
+        assertTrue(!isFruitBlinking(FruitLevel.BLUEBERRY, Float.NaN))
+
+        // Calm 8.4s / 0.20s window: still open at the old default re-blink point.
+        assertTrue(!isFruitBlinking(FruitLevel.PEACH, 4.25f))
+        assertTrue(!isFruitBlinking(FruitLevel.PINEAPPLE, 4.25f))
+        assertTrue(isFruitBlinking(FruitLevel.PEACH, 0.1f))
+        assertTrue(!isFruitBlinking(FruitLevel.PEACH, 4.2f))
+    }
+
+    @Test
+    fun `blink offsets are deterministic bounded and decorrelated`() {
+        for (level in FruitLevel.entries) {
+            val interval = fruitVisualSpec(level).blinkIntervalSeconds
+            val offsets = (1L..32L).map { fruitBlinkOffset(it, level) }
+            assertTrue(offsets.all { it >= 0f && it < interval }, "Offsets must stay in [0, interval) for $level")
+            assertEquals(offsets, (1L..32L).map { fruitBlinkOffset(it, level) })
+            val steps = offsets.zipWithNext { a, b -> kotlin.math.abs(b - a) }
+            assertTrue(steps.any { it > 0.01f }, "Neighbour ids must not march as a fixed wave for $level")
+        }
+    }
+
+    @Test
+    fun `resting phase never blinks`() {
+        for (level in FruitLevel.entries) {
+            assertTrue(!isFruitBlinking(level, fruitRestingPhase(level)), "Resting phase must be open for $level")
+        }
+    }
+
+    @Test
     fun `all fruits have distinct base colors and defined character blush tones`() {
         val specs = FruitLevel.entries.map(::fruitVisualSpec)
 

@@ -28,7 +28,7 @@ import ge.yet.game.blockblast.domain.model.Position
 import ge.yet.game.blockblast.domain.repository.BestScoreRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
 import ge.yet.game.blockblast.session.BlockBlastSession
-import ge.yet.game.blockblast.session.BlockBlastSessionComponent
+import ge.yet.game.blockblast.component.root.RootComponent
 import ge.yet.game.domain.repository.AnalyticRepository
 import ge.yet.game.domain.repository.AudioRepository
 import ge.yet.game.domain.repository.FeedbackPreferences
@@ -38,9 +38,9 @@ import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppStorageProvider
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdGate
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppMetroBindings
@@ -102,7 +102,7 @@ internal interface BlockBlastPluginTestGraph {
 )
 internal interface InspectableBlockBlastSessionGraph {
     val session: BlockBlastSession
-    val sessionComponent: BlockBlastSessionComponent
+    val sessionComponent: RootComponent
     val gameReducer: GameSessionReducer
     val saveRepository: GameSaveRepository
     val bestScoreRepository: BestScoreRepository
@@ -169,7 +169,7 @@ internal object BlockBlastGraphTestBindings {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideInterstitialCapability(): MiniAppInterstitialCapability = NoOpInterstitialCapability
+    fun provideInterstitialCapability(): MiniAppAdsCapability = NoOpInterstitialCapability
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -305,10 +305,10 @@ class BlockBlastSessionGraphTest {
 
             assertEquals(firstBefore, firstGame.model.value.game)
             assertTrue(secondGame.model.value.game.score > secondBefore.score)
-            assertIs<BlockBlastSessionComponent.Child.Playing>(
+            assertIs<RootComponent.Child.Playing>(
                 first.sessionComponent.stack.value.active.instance,
             )
-            assertIs<BlockBlastSessionComponent.Child.Result>(
+            assertIs<RootComponent.Child.Result>(
                 second.sessionComponent.stack.value.active.instance,
             )
             assertTrue(firstHost.reviewRequests.isEmpty())
@@ -407,8 +407,8 @@ class BlockBlastSessionGraphTest {
 
 private fun InspectableBlockBlastSessionGraph.playing(): GameComponent = sessionComponent.playing()
 
-private fun BlockBlastSessionComponent.playing(): GameComponent =
-    assertIs<BlockBlastSessionComponent.Child.Playing>(stack.value.active.instance).component
+private fun RootComponent.playing(): GameComponent =
+    assertIs<RootComponent.Child.Playing>(stack.value.active.instance).component
 
 internal fun BlockBlastPluginTestGraph.destroySessionsAndCancelAppScope(
     vararg lifecycles: MiniAppLifecycleHarness,
@@ -491,10 +491,10 @@ private class TestFeedbackPreferences : FeedbackPreferences {
     override val vibrationEnabled: StateFlow<Boolean> = vibration.asStateFlow()
 }
 
-private data object NoOpInterstitialCapability : MiniAppInterstitialCapability {
+private data object NoOpInterstitialCapability : MiniAppAdsCapability {
     @Composable
-    override fun rememberGate(placement: MiniAppInterstitialPlacement): MiniAppInterstitialGate =
-        MiniAppInterstitialGate(
+    override fun rememberGate(kind: MiniAppAdKind): MiniAppAdGate =
+        MiniAppAdGate(
             willShowAd = false,
             request = { onComplete -> onComplete() },
         )

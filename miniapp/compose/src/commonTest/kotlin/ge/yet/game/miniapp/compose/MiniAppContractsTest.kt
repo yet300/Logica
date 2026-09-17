@@ -3,6 +3,7 @@ package ge.yet.game.miniapp.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.value.MutableValue
 import ge.yet.game.miniapp.api.MiniAppCategoryId
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppSessionHost
@@ -52,22 +53,61 @@ class MiniAppContractsTest {
     fun `interstitial gate request completes immediately when no ad will show`() {
         var completed = false
 
-        MiniAppInterstitialGate(willShowAd = false) { onComplete -> onComplete() }
+        MiniAppAdGate(willShowAd = false) { onComplete -> onComplete() }
             .request { completed = true }
 
         assertTrue(completed)
     }
 
     @Test
-    fun `fruit merge action placements remain explicit host contracts`() {
+    fun `ad kinds stay generic without game-specific subtypes`() {
         assertEquals(
-            setOf(
-                MiniAppInterstitialPlacement.CONTINUE_AFTER_GAME_OVER,
-                MiniAppInterstitialPlacement.FRUIT_MERGE_CLEAR,
-                MiniAppInterstitialPlacement.FRUIT_MERGE_SHAKE,
-            ),
-            MiniAppInterstitialPlacement.entries.toSet(),
+            MiniAppAdKind.Fullscreen("continue_after_game_over"),
+            MiniAppAdKind.Fullscreen("continue_after_game_over"),
         )
+        assertEquals(MiniAppAdKind.Banner, MiniAppAdKind.Banner)
+    }
+
+    @Test
+    fun `sessions opt out of the host banner by default`() {
+        val session = object : MiniAppSession {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertFalse(session.wantsBanner)
+    }
+
+    @Test
+    fun `delegating session forwards frame mode banner opt-in and back`() {
+        var backCalls = 0
+        val session = object : DelegatingMiniAppSession(
+            frameMode = MutableValue(MiniAppFrameMode.ContentOnly),
+            wantsBanner = true,
+            onBack = { backCalls += 1; true },
+        ) {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertEquals(MiniAppFrameMode.ContentOnly, session.frameMode.value)
+        assertTrue(session.wantsBanner)
+        assertTrue(session.handleBack())
+        assertEquals(1, backCalls)
+    }
+
+    @Test
+    fun `delegating session does not consume Back by default`() {
+        val session = object : DelegatingMiniAppSession(
+            frameMode = MutableValue(MiniAppFrameMode.Standard),
+            wantsBanner = false,
+        ) {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertFalse(session.wantsBanner)
+        assertFalse(session.handleBack())
     }
 
     private class FakePlugin : MiniAppPlugin {

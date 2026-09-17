@@ -17,9 +17,11 @@ callbacks, Compose work, or delays. UI receives immutable models and actions; bu
   `internal`. `FruitMergeSession` is public only as the graph's unique
   Metro binding type; its constructor and state remain internal.
 - Create session-owned components through `FruitMergeSessionGraph`
-  (`di/`); every level (`component/session`, `component/game`,
+  (`di/`); every level (`component/root`, `component/game`,
   `component/result`) exposes a `Factory` interface with a `Default`
-  implementation. Factories and aliases are unscoped `@Binds`;
+  implementation. The session-owned Decompose root is `component/root/RootComponent`
+  (`RootComponent` + `DefaultRootComponent`); its UI entry is `ui/screen/root/RootContent`.
+  Factories and aliases are unscoped `@Binds`;
   `@SingleIn(MiniAppSessionScope)` lives on stateful classes (engine,
   physics, audio adapter) and on the retained component/session
   providers. The stateless persistence stays unscoped and plays all

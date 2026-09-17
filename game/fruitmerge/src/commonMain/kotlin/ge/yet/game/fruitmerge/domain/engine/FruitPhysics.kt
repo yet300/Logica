@@ -109,10 +109,14 @@ class FruitPhysics @Inject constructor(
             position = body.position + velocity * dt,
             velocity = velocity,
             angle = body.angle + body.angularVelocity * dt,
-            angularVelocity = (body.angularVelocity * ANGULAR_DAMPING).coerceIn(-MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED),
+            angularVelocity = restAngular((body.angularVelocity * ANGULAR_DAMPING).coerceIn(-MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED)),
             wallGripSecondsRemaining = gripSecondsRemaining,
         )
     }
+
+    /** Sleep for spin: residual creep below the threshold snaps to rest. */
+    private fun restAngular(angularVelocity: Float): Float =
+        if (abs(angularVelocity) < ANGULAR_REST_SPEED) 0f else angularVelocity
 
     private fun constrainToContainer(body: FruitBody): FruitBody {
         val profile = fruitPhysicsProfile(body.level)
@@ -242,14 +246,15 @@ class FruitPhysics @Inject constructor(
 
         private const val GRAVITY: Float = 1.65f
         private const val AIR_DAMPING: Float = 0.998f
-        private const val ANGULAR_DAMPING: Float = 0.996f
+        private const val ANGULAR_DAMPING: Float = 0.985f
         private const val WALL_RESTITUTION: Float = 0.18f
         private const val POSITION_CORRECTION: Float = 0.82f
         private const val CONTACT_EPSILON: Float = 0.000_01f
         private const val CONTACT_SLOP: Float = 0.000_1f
         private const val REST_SPEED: Float = 0.018f
         private const val MAX_SPEED: Float = 3.5f
-        private const val MAX_ANGULAR_SPEED: Float = 8f
+        private const val MAX_ANGULAR_SPEED: Float = 2.5f
+        private const val ANGULAR_REST_SPEED: Float = 0.08f
         private const val MAX_IMPACT: Float = 2f
         private const val IMPACT_DECAY: Float = 0.88f
         private const val WATERMELON_SHOCK_IMPACT_THRESHOLD: Float = 0.55f

@@ -94,7 +94,10 @@ Only direct `:game:<name>` and `:miniapp:samples:<name>` projects are accepted.
 The command must not overwrite an existing project.
 
 The generated module contains the plugin, retained session, Metro child graph,
-minimal Compose content, resources and a contract test. Keep the generated
+minimal Compose content, resources and a contract test. The session-owned
+Decompose component is generated as `component/root/RootComponent.kt`
+(`RootComponent` + `DefaultRootComponent`) with its UI entry in
+`ui/screen/root/RootContent.kt`. Keep the generated
 framework wiring unless the game requires a documented extension.
 
 For lifecycle and contract tests, use the shared

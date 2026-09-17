@@ -1,6 +1,9 @@
 package ge.yet.game.fruitmerge.ui
 
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.uikit.components.score.ScoreCardState
 import ge.yet.game.uikit.components.score.scoreCardState
 import kotlin.test.Test
@@ -38,6 +41,49 @@ class FruitMergeUiPolicyTest {
         val middle = mergeSqueeze(0.5f)
         assertTrue(middle.scaleX > 1f)
         assertTrue(middle.scaleY < 1f)
+    }
+
+    @Test
+    fun `visual tilt clamps physical spin to a gentle wobble`() {
+        assertEquals(0f, visualTiltDegrees(0f))
+        assertEquals(0f, visualTiltDegrees(Float.NaN))
+        assertTrue(abs(visualTiltDegrees(10f)) <= MAX_VISUAL_TILT_DEGREES)
+        assertTrue(abs(visualTiltDegrees(-10f)) <= MAX_VISUAL_TILT_DEGREES)
+        // Small angles pass through unwrapped.
+        assertTrue(abs(visualTiltDegrees(0.2f) - 0.2f * (180f / kotlin.math.PI.toFloat())) < 0.001f)
+        // Full turns wrap back to rest instead of snapping.
+        assertTrue(abs(visualTiltDegrees(2f * kotlin.math.PI.toFloat())) < 0.001f)
+    }
+
+    @Test
+    fun `face only leans a little with the body tilt`() {
+        assertEquals(0f, faceTiltDegrees(0f))
+        assertEquals(
+            MAX_VISUAL_TILT_DEGREES * FACE_TILT_FOLLOW,
+            faceTiltDegrees(MAX_VISUAL_TILT_DEGREES),
+        )
+        assertTrue(abs(faceTiltDegrees(100f)) <= MAX_FACE_TILT_DEGREES)
+        assertTrue(abs(faceTiltDegrees(-100f)) <= MAX_FACE_TILT_DEGREES)
+    }
+
+    @Test
+    fun `small fruits draw after big ones so they stay visible`() {
+        val bodies = listOf(
+            FruitBody(id = 1, level = FruitLevel.BLUEBERRY, position = Vec2(0.5f, 0.5f)),
+            FruitBody(id = 2, level = FruitLevel.PINEAPPLE, position = Vec2(0.5f, 0.7f)),
+            FruitBody(id = 3, level = FruitLevel.WATERMELON, position = Vec2(0.5f, 0.8f)),
+        )
+
+        assertEquals(listOf(3L, 2L, 1L), fruitDrawOrder(bodies).map { it.id })
+    }
+
+    @Test
+    fun `face clock wrap is a multiple of every blink interval`() {
+        assertEquals((FACE_CLOCK_WRAP_SECONDS * 1000).toInt(), FACE_CLOCK_PERIOD_MILLIS)
+        val defaultRemainder = FACE_CLOCK_WRAP_SECONDS % DEFAULT_BLINK_INTERVAL_SECONDS
+        val calmRemainder = FACE_CLOCK_WRAP_SECONDS % CALM_BLINK_INTERVAL_SECONDS
+        assertTrue(defaultRemainder < 0.001f, "Wrap must not jump the default blink phase")
+        assertTrue(calmRemainder < 0.001f, "Wrap must not jump the calm blink phase")
     }
 
     @Test

@@ -25,9 +25,9 @@ class MiniAppDependencyBoundaryTest {
         assertEquals(":miniapp:compose or a stable :core contract", MiniAppDependencyBoundary.violationFor(":game:snake", "commonMainApi", ":composeApp")?.replacement)
     }
     @Test
-    fun `ads maps to the compose interstitial capability`() {
+    fun `ads maps to the compose ads capability`() {
         assertEquals(
-            ":game:snake: commonMainImplementation may not depend on :monetization:ads; use :miniapp:compose MiniAppInterstitialCapability",
+            ":game:snake: commonMainImplementation may not depend on :monetization:ads; use :miniapp:compose MiniAppAdsCapability",
             MiniAppDependencyBoundary.violationFor(":game:snake", "commonMainImplementation", ":monetization:ads")?.message(),
         )
     }

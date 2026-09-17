@@ -26,12 +26,12 @@ private val FruitPhysicsProfiles = listOf(
     FruitPhysicsProfile(
         contactRestitution = 0.10f,
         floorRetention = 0.86f,
-        spinTransfer = 0.58f,
+        spinTransfer = 0.34f,
     ),
     FruitPhysicsProfile(
         contactRestitution = 0.09f,
         floorRetention = 0.94f,
-        spinTransfer = 0.30f,
+        spinTransfer = 0.16f,
     ),
     FruitPhysicsProfile(
         massMultiplier = 1.24f,
@@ -42,7 +42,7 @@ private val FruitPhysicsProfiles = listOf(
         massMultiplier = 1.05f,
         contactRestitution = 0.07f,
         floorRetention = 0.73f,
-        balanceTorque = 0.28f,
+        balanceTorque = 0.12f,
     ),
     FruitPhysicsProfile(
         massMultiplier = 0.65f,

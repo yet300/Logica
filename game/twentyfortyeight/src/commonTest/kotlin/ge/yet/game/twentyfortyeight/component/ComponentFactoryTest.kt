@@ -17,7 +17,8 @@ import ge.yet.game.twentyfortyeight.domain.engine.MoveEngine
 import ge.yet.game.twentyfortyeight.domain.engine.SpawnPolicy
 import ge.yet.game.twentyfortyeight.domain.repository.GameSnapshotLoader
 import ge.yet.game.twentyfortyeight.data.SessionPersistenceCoordinator
-import ge.yet.game.twentyfortyeight.session.DefaultTwentyFortyEightSessionComponentFactory
+import ge.yet.game.twentyfortyeight.component.root.DefaultRootComponentFactory
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import ge.yet.game.twentyfortyeight.component.playing.store.ImmediateCommitWriter
@@ -133,8 +134,8 @@ class ComponentFactoryTest {
     @Test
     fun `session factory creates independent session components`() {
         val ports = TwentyFortyEightSessionPorts()
-        val factory: ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent.Factory =
-            DefaultTwentyFortyEightSessionComponentFactory(
+        val factory: RootComponent.Factory =
+            DefaultRootComponentFactory(
                 playingFactory = DefaultPlayingComponentFactory(DefaultOverlayComponentFactory()),
                 resultFactory = DefaultResultComponentFactory(),
                 storeFactory = testStoreFactory(),

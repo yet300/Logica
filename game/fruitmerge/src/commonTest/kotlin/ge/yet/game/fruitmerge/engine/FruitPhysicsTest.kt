@@ -214,6 +214,26 @@ class FruitPhysicsTest {
         assertFalse(second.first { it.id == 1L }.shockAvailable)
     }
 
+    @Test
+    fun `spin stays bounded and decays instead of pinwheeling`() {
+        var body = FruitBody(
+            id = 1,
+            level = FruitLevel.LIME,
+            position = Vec2(0.5f, 0.5f),
+            angularVelocity = 8f,
+        )
+
+        body = FruitPhysics().step(listOf(body), 1f / 60f).bodies.single()
+        assertTrue(kotlin.math.abs(body.angularVelocity) <= 2.5f)
+
+        repeat(120) { body = FruitPhysics().step(listOf(body), 1f / 60f).bodies.single() }
+        assertTrue(kotlin.math.abs(body.angularVelocity) < 0.5f)
+        assertTrue(body.angle.isFinite())
+
+        repeat(480) { body = FruitPhysics().step(listOf(body), 1f / 60f).bodies.single() }
+        assertEquals(0f, body.angularVelocity)
+    }
+
     private fun floorImpact(
         level: FruitLevel,
         velocity: Vec2 = Vec2(0f, 1f),

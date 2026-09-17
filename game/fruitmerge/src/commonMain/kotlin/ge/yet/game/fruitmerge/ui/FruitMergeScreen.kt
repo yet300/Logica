@@ -39,9 +39,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -79,6 +79,7 @@ import ge.yet.game.uikit.adaptive.AdaptiveGameLayoutPolicy
 import ge.yet.game.uikit.adaptive.AdaptiveGameScaffold
 import ge.yet.game.uikit.components.icon.BombFilled
 import ge.yet.game.uikit.components.icon.Vibration
+import ge.yet.game.uikit.coordinates.windowToViewport
 import ge.yet.game.uikit.motion.rememberReducedMotion
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -118,8 +119,8 @@ internal fun FruitMergeScreen(
     val reducedMotion = rememberReducedMotion()
     var faceTimeSeconds by remember(component) { mutableFloatStateOf(0f) }
     var presentationTimeSeconds by remember(component) { mutableFloatStateOf(0f) }
-    var viewportOriginInRoot by remember { mutableStateOf(Offset.Zero) }
-    var boardBoundsInRoot by remember { mutableStateOf(Rect.Zero) }
+    var viewportOriginInWindow by remember { mutableStateOf(Offset.Zero) }
+    var boardBoundsInWindow by remember { mutableStateOf(Rect.Zero) }
     var nextFruitAnchor by remember { mutableStateOf<FruitAnchor?>(null) }
     var transfer by remember(component) { mutableStateOf<FruitTransfer?>(null) }
     var transferSequence by remember(component) { mutableIntStateOf(0) }
@@ -161,15 +162,15 @@ internal fun FruitMergeScreen(
         game.dropCooldownSeconds <= 0f && transfer == null
     val latestDropHandler = rememberUpdatedState<(Boolean) -> Unit> { dragged ->
         val anchor = nextFruitAnchor
-        if (!reducedMotion && anchor != null && boardBoundsInRoot.width > 0f && boardBoundsInRoot.height > 0f) {
+        if (!reducedMotion && anchor != null && boardBoundsInWindow.width > 0f && boardBoundsInWindow.height > 0f) {
             transferSequence += 1
             transfer = FruitTransfer(
                 id = transferSequence,
                 level = game.nextPreviewLevel,
-                sourceCenterInRoot = anchor.centerInRoot,
+                sourceCenterInWindow = anchor.centerInWindow,
                 sourceRadius = anchor.radius,
-                targetCenterInRoot = fruitPreviewCenterInRoot(boardBoundsInRoot, game.previewX),
-                targetRadius = game.nextPreviewLevel.radius * minOf(boardBoundsInRoot.width, boardBoundsInRoot.height),
+                targetCenterInWindow = fruitPreviewCenterInWindow(boardBoundsInWindow, game.previewX),
+                targetRadius = game.nextPreviewLevel.radius * minOf(boardBoundsInWindow.width, boardBoundsInWindow.height),
             )
         }
         component.drop(dragged)
@@ -181,7 +182,7 @@ internal fun FruitMergeScreen(
         modifier = modifier
             .fillMaxSize()
             .onGloballyPositioned { coordinates ->
-                viewportOriginInRoot = coordinates.positionInRoot()
+                viewportOriginInWindow = coordinates.positionInWindow()
             }
             .fruitMergeDropInput(
                 enabled = dropEnabled,
@@ -242,7 +243,7 @@ internal fun FruitMergeScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .onGloballyPositioned { coordinates ->
-                                boardBoundsInRoot = coordinates.boundsInRoot()
+                                boardBoundsInWindow = coordinates.boundsInWindow()
                             }
                             .semantics { testTag = FruitMergeTestTags.Board },
                     )
@@ -254,17 +255,15 @@ internal fun FruitMergeScreen(
                 )
             },
         )
-        val boardBoundsInViewport = Rect(
-            left = boardBoundsInRoot.left - viewportOriginInRoot.x,
-            top = boardBoundsInRoot.top - viewportOriginInRoot.y,
-            right = boardBoundsInRoot.right - viewportOriginInRoot.x,
-            bottom = boardBoundsInRoot.bottom - viewportOriginInRoot.y,
+        val boardBoundsInViewport = windowToViewport(
+            rectInWindow = boardBoundsInWindow,
+            viewportOriginInWindow = viewportOriginInWindow,
         )
         val activeTransfer = transfer
         if (activeTransfer != null) {
             FruitTransferOverlay(
                 transfer = activeTransfer,
-                viewportOriginInRoot = viewportOriginInRoot,
+                viewportOriginInWindow = viewportOriginInWindow,
                 faceTimeSeconds = faceTimeSeconds,
                 onFinished = { finishedId ->
                     if (transfer?.id == finishedId) transfer = null
@@ -385,10 +384,10 @@ private fun NextFruitCard(
                 modifier = Modifier
                     .size(46.dp)
                     .onGloballyPositioned { coordinates ->
-                        val bounds = coordinates.boundsInRoot()
+                        val bounds = coordinates.boundsInWindow()
                         onFruitAnchorChanged(
                             FruitAnchor(
-                                centerInRoot = bounds.center,
+                                centerInWindow = bounds.center,
                                 radius = minOf(bounds.width, bounds.height) * FRUIT_PREVIEW_RADIUS_FRACTION,
                             ),
                         )
@@ -426,7 +425,7 @@ private fun NextFruitCard(
 @Composable
 private fun FruitTransferOverlay(
     transfer: FruitTransfer,
-    viewportOriginInRoot: Offset,
+    viewportOriginInWindow: Offset,
     faceTimeSeconds: Float,
     onFinished: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -447,8 +446,8 @@ private fun FruitTransferOverlay(
     Canvas(modifier) {
         val t = progress.value
         val oneMinusT = 1f - t
-        val source = transfer.sourceCenterInRoot - viewportOriginInRoot
-        val target = transfer.targetCenterInRoot - viewportOriginInRoot
+        val source = transfer.sourceCenterInWindow - viewportOriginInWindow
+        val target = transfer.targetCenterInWindow - viewportOriginInWindow
         val control = Offset(
             x = (source.x + target.x) * 0.5f,
             y = minOf(source.y, target.y) - 54.dp.toPx(),
@@ -572,7 +571,7 @@ private fun FruitEvolutionStrip(
                     angleRadians = 0f,
                     verticalVelocity = 0f,
                     impact = 0f,
-                    facePhase = level.ordinal.toFloat(),
+                    facePhase = fruitRestingPhase(level),
                     danger = DangerVisual(0f, false),
                     alpha = 1f,
                 )
@@ -622,21 +621,20 @@ private fun Modifier.fruitMergeDropInput(
 }
 
 private data class FruitAnchor(
-    val centerInRoot: Offset,
+    val centerInWindow: Offset,
     val radius: Float,
 )
 
 private data class FruitTransfer(
     val id: Int,
     val level: FruitLevel,
-    val sourceCenterInRoot: Offset,
+    val sourceCenterInWindow: Offset,
     val sourceRadius: Float,
-    val targetCenterInRoot: Offset,
+    val targetCenterInWindow: Offset,
     val targetRadius: Float,
 )
 
 private const val NANOS_PER_SECOND: Float = 1_000_000_000f
 private const val MAX_FRAME_SECONDS: Float = 0.05f
-private const val FACE_CLOCK_WRAP_SECONDS: Float = 120f
 private const val FRUIT_PREVIEW_RADIUS_FRACTION: Float = 0.34f
 private const val FRUIT_TRANSFER_DURATION_MILLIS: Int = 340

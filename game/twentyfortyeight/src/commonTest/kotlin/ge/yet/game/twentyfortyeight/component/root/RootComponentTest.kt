@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.session
+package ge.yet.game.twentyfortyeight.component.root
 
 import ge.yet.game.twentyfortyeight.domain.model.Board
 import ge.yet.game.twentyfortyeight.domain.model.GameState
@@ -52,6 +52,9 @@ import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStor
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore.Label
 import ge.yet.game.twentyfortyeight.component.playing.store.UiErrorCode
 import ge.yet.game.twentyfortyeight.component.playing.store.playableGame
+import ge.yet.game.twentyfortyeight.session.EffectIdAllocator
+import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
+import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -74,7 +77,7 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TwentyFortyEightSessionComponentTest {
+class RootComponentTest {
     private val dispatcher = StandardTestDispatcher()
 
     @BeforeTest
@@ -89,7 +92,7 @@ class TwentyFortyEightSessionComponentTest {
             unfinishedData(playableGame(score = 4L).copy(successfulMovesInRun = 1L)),
         )
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
 
@@ -109,7 +112,7 @@ class TwentyFortyEightSessionComponentTest {
         val harness = componentHarness(terminalData())
         advanceUntilIdle()
 
-        val first = assertIs<TwentyFortyEightSessionComponent.Child.Result>(
+        val first = assertIs<RootComponent.Child.Result>(
             harness.component.stack.value.active.instance,
         )
         assertEquals(MiniAppFrameMode.Standard, harness.component.frameMode.value)
@@ -141,7 +144,7 @@ class TwentyFortyEightSessionComponentTest {
             val restored = terminalData(terminalGame, statistics)
             val first = componentHarness(restored, instanceKeeper = keeper)
             advanceUntilIdle()
-            assertIs<TwentyFortyEightSessionComponent.Child.Result>(first.component.stack.value.active.instance)
+            assertIs<RootComponent.Child.Result>(first.component.stack.value.active.instance)
             val retained = first.component.retainedStore
             first.destroy()
 
@@ -151,7 +154,7 @@ class TwentyFortyEightSessionComponentTest {
                 visibility = first.visibility,
             )
             assertSame(retained, second.component.retainedStore)
-            val result = assertIs<TwentyFortyEightSessionComponent.Child.Result>(
+            val result = assertIs<RootComponent.Child.Result>(
                 second.component.stack.value.active.instance,
             )
             val model = result.component.model.value
@@ -171,18 +174,18 @@ class TwentyFortyEightSessionComponentTest {
         val writer = StoreCommitWriter(controlled = true)
         val harness = componentHarness(terminalData(), writer)
         advanceUntilIdle()
-        val result = assertIs<TwentyFortyEightSessionComponent.Child.Result>(
+        val result = assertIs<RootComponent.Child.Result>(
             harness.component.stack.value.active.instance,
         ).component
 
         result.onNewGameRequested()
         runCurrent()
         writer.awaitStarted(1L)
-        assertIs<TwentyFortyEightSessionComponent.Child.Result>(harness.component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Result>(harness.component.stack.value.active.instance)
 
         writer.complete(1L)
         advanceUntilIdle()
-        assertIs<TwentyFortyEightSessionComponent.Child.Playing>(harness.component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Playing>(harness.component.stack.value.active.instance)
         harness.destroy()
     }
 
@@ -193,7 +196,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val harness = componentHarness(unfinishedData(victorious))
         advanceUntilIdle()
-        val playingChild = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playingChild = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         )
         assertIs<OverlayComponent.Model.Victory>(playingChild.component.overlay.value.child?.instance?.model?.value)
@@ -215,7 +218,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val harness = componentHarness(unfinishedData(victorious))
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
         assertIs<OverlayComponent.Model.Victory>(playing.overlay.value.child?.instance?.model?.value)
@@ -237,7 +240,7 @@ class TwentyFortyEightSessionComponentTest {
         val progressed = playableGame(score = 4L).copy(successfulMovesInRun = 1L)
         val harness = componentHarness(unfinishedData(progressed), writer)
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
 
@@ -265,7 +268,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val harness = componentHarness(unfinishedData(victorious))
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
         val victory = assertIs<OverlayComponent.Victory>(playing.overlay.value.child?.instance)
@@ -289,7 +292,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val harness = componentHarness(unfinishedData(victorious))
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
         assertIs<OverlayComponent.Victory>(playing.overlay.value.child?.instance).onRestartRequested()
@@ -314,7 +317,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val harness = componentHarness(unfinishedData(victorious))
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             harness.component.stack.value.active.instance,
         ).component
         val firstVictory = assertIs<OverlayComponent.Victory>(playing.overlay.value.child?.instance)
@@ -357,14 +360,14 @@ class TwentyFortyEightSessionComponentTest {
             stateKeeper = StateKeeperDispatcher(saved),
         )
         assertSame(retained, second.component.retainedStore)
-        assertIs<TwentyFortyEightSessionComponent.Child.Playing>(second.component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Playing>(second.component.stack.value.active.instance)
         second.visibility.set(MiniAppVisibility.OBSCURED)
         runCurrent()
         assertEquals(MiniAppVisibility.OBSCURED, second.component.retainedStore.state.visibility)
         second.visibility.set(MiniAppVisibility.BACKGROUND)
         runCurrent()
         assertEquals(MiniAppVisibility.BACKGROUND, second.component.retainedStore.state.visibility)
-        assertIs<TwentyFortyEightSessionComponent.Child.Playing>(second.component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Playing>(second.component.stack.value.active.instance)
         assertEquals(1, second.component.stack.value.items.size)
         second.destroy()
         keeper.destroy()
@@ -391,7 +394,7 @@ class TwentyFortyEightSessionComponentTest {
             stateKeeper = stateKeeper,
         )
         advanceUntilIdle()
-        assertIs<TwentyFortyEightSessionComponent.Child.Result>(first.component.stack.value.active.instance)
+        assertIs<RootComponent.Child.Result>(first.component.stack.value.active.instance)
         val saved = stateKeeper.save()
         first.destroy()
 
@@ -401,7 +404,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         advanceUntilIdle()
 
-        val result = assertIs<TwentyFortyEightSessionComponent.Child.Result>(
+        val result = assertIs<RootComponent.Child.Result>(
             restored.component.stack.value.active.instance,
         )
         assertEquals(1, restored.component.stack.value.items.size)
@@ -525,15 +528,15 @@ class TwentyFortyEightSessionComponentTest {
         assertEquals(listOf(1L, 2L, 3L), observed.map { it.id })
         assertEquals(
             AnnouncementFact.Move(scoreDelta = 8L, largestMerge = 8L),
-            assertIs<TwentyFortyEightSessionComponent.Effect.Announcement>(observed[0]).fact,
+            assertIs<RootComponent.Effect.Announcement>(observed[0]).fact,
         )
         assertEquals(
             FocusTarget.Board,
-            assertIs<TwentyFortyEightSessionComponent.Effect.Focus>(observed[1]).target,
+            assertIs<RootComponent.Effect.Focus>(observed[1]).target,
         )
         assertEquals(
             UiErrorCode.ProgressNotSaved,
-            assertIs<TwentyFortyEightSessionComponent.Effect.Error>(observed[2]).code,
+            assertIs<RootComponent.Effect.Error>(observed[2]).code,
         )
         harness.destroy()
     }
@@ -551,7 +554,7 @@ class TwentyFortyEightSessionComponentTest {
     fun `Undo model is enabled only when an undo exists and no modal is active`() = runTest(dispatcher) {
         val absent = componentHarness(unfinishedData())
         advanceUntilIdle()
-        val absentPlaying = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val absentPlaying = assertIs<RootComponent.Child.Playing>(
             absent.component.stack.value.active.instance,
         ).component
         assertFalse(absentPlaying.model.value.undoEnabled)
@@ -569,7 +572,7 @@ class TwentyFortyEightSessionComponentTest {
         )
         val present = componentHarness(unfinishedData(withUndo))
         advanceUntilIdle()
-        val playing = assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+        val playing = assertIs<RootComponent.Child.Playing>(
             present.component.stack.value.active.instance,
         ).component
         assertTrue(playing.model.value.undoEnabled)
@@ -621,7 +624,7 @@ class TwentyFortyEightSessionComponentTest {
             host = NoOpHost,
             uiEffects = ports,
         )
-        val component = DefaultTwentyFortyEightSessionComponent(
+        val component = DefaultRootComponent(
             componentContext = DefaultComponentContext(
                 lifecycle = lifecycle,
                 stateKeeper = stateKeeper,
@@ -659,14 +662,14 @@ class TwentyFortyEightSessionComponentTest {
     }
 
     private data class Harness(
-        val component: DefaultTwentyFortyEightSessionComponent,
+        val component: DefaultRootComponent,
         val adapter: TwentyFortyEightSessionAdapter,
         val lifecycle: LifecycleRegistry,
         val visibility: MutableMiniAppVisibilitySource,
         val instanceKeeper: InstanceKeeperDispatcher,
     ) {
         fun playing(): ge.yet.game.twentyfortyeight.component.playing.PlayingComponent =
-            assertIs<TwentyFortyEightSessionComponent.Child.Playing>(
+            assertIs<RootComponent.Child.Playing>(
                 component.stack.value.active.instance,
             ).component
 

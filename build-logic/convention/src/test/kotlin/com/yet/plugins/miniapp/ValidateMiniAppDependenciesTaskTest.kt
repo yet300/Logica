@@ -78,7 +78,7 @@ class ValidateMiniAppDependenciesTaskTest {
             ":game:blockblast: commonMainImplementation may not depend on :game:other; use :miniapp:api",
             ":game:blockblast: commonMainImplementation may not depend on :miniapp:samples:discovered; use :miniapp:api",
             ":game:blockblast: commonMainImplementation may not depend on :miniapp:testkit; use :miniapp:api",
-            ":game:blockblast: commonMainImplementation may not depend on :monetization:ads; use :miniapp:compose MiniAppInterstitialCapability",
+            ":game:blockblast: commonMainImplementation may not depend on :monetization:ads; use :miniapp:compose MiniAppAdsCapability",
         ).sorted()
         assertContains(failure.output, "Mini-app dependency boundary violations:\n")
         expected.forEach { assertContains(failure.output, it) }

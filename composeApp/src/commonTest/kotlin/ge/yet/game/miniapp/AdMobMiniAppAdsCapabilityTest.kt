@@ -6,12 +6,12 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class AdMobMiniAppInterstitialCapabilityTest {
+class AdMobMiniAppAdsCapabilityTest {
 
     @Test
     fun `ineligible ads complete without presenting`() {
         var completions = 0
-        val gate = miniAppInterstitialGate(
+        val gate = miniAppAdGate(
             canShowAds = false,
             presenter = { error("presenter must not run") },
         )
@@ -26,7 +26,7 @@ class AdMobMiniAppInterstitialCapabilityTest {
     fun `eligible ads delegate and preserve exactly once completion`() {
         var sdkCompletion: (() -> Unit)? = null
         var completions = 0
-        val gate = miniAppInterstitialGate(true) { sdkCompletion = it }
+        val gate = miniAppAdGate(true) { sdkCompletion = it }
 
         gate.request { completions += 1 }
         val completion = assertNotNull(sdkCompletion)

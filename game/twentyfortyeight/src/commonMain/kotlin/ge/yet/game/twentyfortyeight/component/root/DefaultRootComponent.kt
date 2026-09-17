@@ -1,4 +1,4 @@
-package ge.yet.game.twentyfortyeight.session
+package ge.yet.game.twentyfortyeight.component.root
 
 import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
@@ -19,26 +19,28 @@ import ge.yet.game.twentyfortyeight.domain.model.GamePhase
 import ge.yet.game.twentyfortyeight.domain.model.ResultSnapshot
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStore
 import ge.yet.game.twentyfortyeight.component.playing.store.TwentyFortyEightStoreFactory
+import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionAdapter
+import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @OptIn(DelicateDecomposeApi::class)
-internal class DefaultTwentyFortyEightSessionComponent(
+internal class DefaultRootComponent(
     componentContext: ComponentContext,
     private val playingFactory: PlayingComponent.Factory,
     private val resultFactory: ResultComponent.Factory,
     storeFactory: TwentyFortyEightStoreFactory,
     adapter: TwentyFortyEightSessionAdapter,
     private val ports: TwentyFortyEightSessionPorts,
-) : TwentyFortyEightSessionComponent,
+) : RootComponent,
     ComponentContext by componentContext {
 
     internal val retainedStore: TwentyFortyEightStore = instanceKeeper.getStore(storeFactory::create)
     private val navigation = StackNavigation<Config>()
 
-    override val stack: Value<ChildStack<*, TwentyFortyEightSessionComponent.Child>> = childStack(
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
         serializer = Config.serializer(),
         initialConfiguration = retainedStore.state.toInitialConfig(),
@@ -47,7 +49,7 @@ internal class DefaultTwentyFortyEightSessionComponent(
     )
 
     override val frameMode: Value<MiniAppFrameMode> = stack.map { MiniAppFrameMode.Standard }
-    override val effect: Value<TwentyFortyEightSessionComponent.EffectState> = ports.effect
+    override val effect: Value<RootComponent.EffectState> = ports.effect
 
     override fun onEffectConsumed(effectId: Long) = ports.consumeEffect(effectId)
 
@@ -61,27 +63,27 @@ internal class DefaultTwentyFortyEightSessionComponent(
     }
 
     override fun handleBack(): Boolean =
-        (stack.value.active.instance as? TwentyFortyEightSessionComponent.Child.Playing)
+        (stack.value.active.instance as? RootComponent.Child.Playing)
             ?.component
             ?.handleBack()
             ?: false
 
     internal fun navigateToResult(snapshot: ResultSnapshot) {
-        if (stack.value.active.instance is TwentyFortyEightSessionComponent.Child.Result) return
+        if (stack.value.active.instance is RootComponent.Child.Result) return
         navigation.replaceAll(Config.Result(retainedStore.state.game?.runOrdinal ?: 0L, snapshot))
     }
 
     private fun onNewGameCommitted(runOrdinal: Long) {
-        if (stack.value.active.instance !is TwentyFortyEightSessionComponent.Child.Result) return
+        if (stack.value.active.instance !is RootComponent.Child.Result) return
         navigation.replaceAll(Config.Playing(runOrdinal))
     }
 
-    private fun createChild(config: Config, componentContext: ComponentContext): TwentyFortyEightSessionComponent.Child =
+    private fun createChild(config: Config, componentContext: ComponentContext): RootComponent.Child =
         when (config) {
-            is Config.Playing -> TwentyFortyEightSessionComponent.Child.Playing(
+            is Config.Playing -> RootComponent.Child.Playing(
                 playingFactory.create(componentContext, retainedStore),
             )
-            is Config.Result -> TwentyFortyEightSessionComponent.Child.Result(
+            is Config.Result -> RootComponent.Child.Result(
                 resultFactory.create(config.snapshot) {
                     retainedStore.accept(TwentyFortyEightStore.Intent.NewGameFromResult)
                 },
@@ -90,16 +92,16 @@ internal class DefaultTwentyFortyEightSessionComponent(
 }
 
 @Inject
-internal class DefaultTwentyFortyEightSessionComponentFactory(
+internal class DefaultRootComponentFactory(
     private val playingFactory: PlayingComponent.Factory,
     private val resultFactory: ResultComponent.Factory,
     private val storeFactory: TwentyFortyEightStoreFactory,
     private val adapter: TwentyFortyEightSessionAdapter,
     private val ports: TwentyFortyEightSessionPorts,
-) : TwentyFortyEightSessionComponent.Factory {
+) : RootComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
-    ): DefaultTwentyFortyEightSessionComponent = DefaultTwentyFortyEightSessionComponent(
+    ): DefaultRootComponent = DefaultRootComponent(
         componentContext = componentContext,
         playingFactory = playingFactory,
         resultFactory = resultFactory,

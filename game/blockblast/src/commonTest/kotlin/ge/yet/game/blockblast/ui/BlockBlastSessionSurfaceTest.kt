@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
+import ge.yet.game.blockblast.ui.screen.root.RootBackground
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,7 +29,7 @@ class BlockBlastSessionSurfaceTest {
                         .size(width = 320.dp, height = 480.dp)
                         .testTag("blockblast_session_host"),
                 ) {
-                    BlockBlastSessionBackground(
+                    RootBackground(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }

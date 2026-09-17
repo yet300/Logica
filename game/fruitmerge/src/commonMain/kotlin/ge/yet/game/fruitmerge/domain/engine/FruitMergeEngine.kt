@@ -305,11 +305,11 @@ class FruitMergeEngine @Inject constructor(
         private const val MAX_SHAKE_HORIZONTAL: Float = 1.05f
         private const val MAX_SHAKE_VERTICAL_JITTER: Float = 0.12f
         private const val MAX_SHAKE_ASCENT_SPEED: Float = 0.22f
-        private const val MAX_SHAKE_ANGULAR: Float = 5.5f
+        private const val MAX_SHAKE_ANGULAR: Float = 2.0f
         private const val MAX_SHAKE_SPEED: Float = 1.75f
-        private const val MAX_SHAKE_ANGULAR_SPEED: Float = 8f
+        private const val MAX_SHAKE_ANGULAR_SPEED: Float = 2.5f
         private const val MIN_SHAKE_ENVELOPE: Float = 0.45f
         private const val MAX_MERGE_SPEED: Float = 2f
-        private const val MAX_MERGE_ANGULAR_SPEED: Float = 6f
+        private const val MAX_MERGE_ANGULAR_SPEED: Float = 2.0f
     }
 }

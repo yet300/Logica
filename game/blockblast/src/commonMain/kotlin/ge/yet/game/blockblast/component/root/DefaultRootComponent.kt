@@ -1,4 +1,4 @@
-package ge.yet.game.blockblast.session
+package ge.yet.game.blockblast.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -17,26 +17,26 @@ import ge.yet.game.miniapp.api.MiniAppReviewOpportunity
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
+import kotlinx.serialization.Serializable
 
-internal class DefaultBlockBlastSessionComponent(
+internal class DefaultRootComponent(
     componentContext: ComponentContext,
     private val gameFactory: GameComponent.Factory,
     private val resultFactory: GameResultComponent.Factory,
     @Suppress("UNUSED_PARAMETER") visibility: MiniAppVisibilitySource,
     private val host: MiniAppSessionHost,
-) : BlockBlastSessionComponent,
+) : RootComponent,
     ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
     private var lastGameInstanceId = 1L
 
-    override val stack: Value<ChildStack<*, BlockBlastSessionComponent.Child>> = childStack(
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
-        serializer = null,
+        serializer = Config.serializer(),
         initialConfiguration = Config.Playing(
             instanceId = 1L,
             isNewGame = false,
-            restoredResultState = null,
         ),
         handleBackButton = false,
         childFactory = ::createChild,
@@ -44,22 +44,28 @@ internal class DefaultBlockBlastSessionComponent(
 
     override val frameMode: Value<MiniAppFrameMode> = stack.map { childStack ->
         when (childStack.active.instance) {
-            is BlockBlastSessionComponent.Child.Playing -> MiniAppFrameMode.Standard
-            is BlockBlastSessionComponent.Child.Result -> MiniAppFrameMode.ContentOnly
+            is RootComponent.Child.Playing -> MiniAppFrameMode.Standard
+            is RootComponent.Child.Result -> MiniAppFrameMode.ContentOnly
         }
     }
+
+    override fun handleBack(): Boolean =
+        (stack.value.active.instance as? RootComponent.Child.Playing)
+            ?.component
+            ?.handleBack()
+            ?: false
 
     private fun createChild(
         config: Config,
         componentContext: ComponentContext,
-    ): BlockBlastSessionComponent.Child = when (config) {
+    ): RootComponent.Child = when (config) {
         is Config.Playing -> {
             lastGameInstanceId = maxOf(lastGameInstanceId, config.instanceId)
-            BlockBlastSessionComponent.Child.Playing(
+            RootComponent.Child.Playing(
                 gameFactory.create(
                     componentContext = componentContext,
                     isNewGame = config.isNewGame,
-                    restoredResultState = config.restoredResultState,
+                    restoredResultState = null,
                     onGameCompleted = { finalState, canContinue, reviewOpportunity ->
                         showResult(
                             gameInstanceId = config.instanceId,
@@ -76,10 +82,10 @@ internal class DefaultBlockBlastSessionComponent(
             )
         }
 
-        is Config.Result -> BlockBlastSessionComponent.Child.Result(
+        is Config.Result -> RootComponent.Child.Result(
             resultFactory.create(
                 componentContext = componentContext,
-                snapshot = BlockBlastResultSnapshot.from(config.finalState),
+                snapshot = config.snapshot,
                 canContinue = config.canContinue,
                 onContinueRequested = { continueGame(config) },
                 onNewGameRequested = { startNewGame(config) },
@@ -94,7 +100,7 @@ internal class DefaultBlockBlastSessionComponent(
             .firstNotNullOfOrNull { child ->
                 val config = child.configuration as? Config.Playing
                 if (config?.instanceId == resultConfig.gameInstanceId) {
-                    (child.instance as? BlockBlastSessionComponent.Child.Playing)?.component
+                    (child.instance as? RootComponent.Child.Playing)?.component
                 } else {
                     null
                 }
@@ -126,7 +132,7 @@ internal class DefaultBlockBlastSessionComponent(
         val active = stack.value.active
         val config = active.configuration as? Config.Result
         if (config?.gameInstanceId != gameInstanceId) return
-        (active.instance as? BlockBlastSessionComponent.Child.Result)
+        (active.instance as? RootComponent.Child.Result)
             ?.component
             ?.onContinueFailed()
     }
@@ -137,7 +143,6 @@ internal class DefaultBlockBlastSessionComponent(
             Config.Playing(
                 instanceId = ++lastGameInstanceId,
                 isNewGame = true,
-                restoredResultState = null,
             ),
         )
     }
@@ -152,6 +157,7 @@ internal class DefaultBlockBlastSessionComponent(
         reviewOpportunity: Boolean,
     ) {
         var added = false
+        val snapshot = BlockBlastResultSnapshot.from(finalState)
         navigation.navigate { configurations ->
             if (configurations.lastOrNull() is Config.Result) return@navigate configurations
             if (
@@ -162,13 +168,7 @@ internal class DefaultBlockBlastSessionComponent(
                 return@navigate configurations
             }
             added = true
-            configurations.map { config ->
-                if (config is Config.Playing && config.instanceId == gameInstanceId) {
-                    config.copy(restoredResultState = finalState)
-                } else {
-                    config
-                }
-            } + Config.Result(gameInstanceId, finalState, canContinue)
+            configurations + Config.Result(gameInstanceId, snapshot, canContinue)
         }
         if (added && reviewOpportunity) {
             host.requestReview(
@@ -184,15 +184,15 @@ internal class DefaultBlockBlastSessionComponent(
 }
 
 @Inject
-internal class DefaultBlockBlastSessionComponentFactory(
+internal class DefaultRootComponentFactory(
     private val gameFactory: GameComponent.Factory,
     private val resultFactory: GameResultComponent.Factory,
-) : BlockBlastSessionComponent.Factory {
+) : RootComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
         visibility: MiniAppVisibilitySource,
         host: MiniAppSessionHost,
-    ): BlockBlastSessionComponent = DefaultBlockBlastSessionComponent(
+    ): RootComponent = DefaultRootComponent(
         componentContext = componentContext,
         gameFactory = gameFactory,
         resultFactory = resultFactory,
@@ -201,16 +201,18 @@ internal class DefaultBlockBlastSessionComponentFactory(
     )
 }
 
+@Serializable
 private sealed interface Config {
+    @Serializable
     data class Playing(
         val instanceId: Long,
         val isNewGame: Boolean,
-        val restoredResultState: GameState?,
     ) : Config
 
+    @Serializable
     data class Result(
         val gameInstanceId: Long,
-        val finalState: GameState,
+        val snapshot: BlockBlastResultSnapshot,
         val canContinue: Boolean,
     ) : Config
 }

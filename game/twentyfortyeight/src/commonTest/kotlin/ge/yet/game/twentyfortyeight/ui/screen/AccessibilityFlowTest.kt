@@ -2,7 +2,7 @@ package ge.yet.game.twentyfortyeight.ui.screen
 
 import ge.yet.game.twentyfortyeight.domain.model.Board
 
-import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionComponent
+import ge.yet.game.twentyfortyeight.component.root.RootComponent
 import ge.yet.game.twentyfortyeight.session.TwentyFortyEightSessionPorts
 import ge.yet.game.twentyfortyeight.component.playing.store.AnnouncementFact
 import ge.yet.game.twentyfortyeight.component.playing.store.FocusTarget
@@ -19,13 +19,13 @@ class AccessibilityFlowTest {
         ports.announce(AnnouncementFact.Move(scoreDelta = 8L, largestMerge = 8L))
         ports.requestFocus(FocusTarget.Victory)
 
-        val announcement = assertIs<TwentyFortyEightSessionComponent.Effect.Announcement>(
+        val announcement = assertIs<RootComponent.Effect.Announcement>(
             ports.effect.value.effect,
         )
         assertEquals(AnnouncementFact.Move(8L, 8L), announcement.fact)
 
         ports.consumeEffect(announcement.id)
-        val focus = assertIs<TwentyFortyEightSessionComponent.Effect.Focus>(
+        val focus = assertIs<RootComponent.Effect.Focus>(
             ports.effect.value.effect,
         )
         assertEquals(FocusTarget.Victory, focus.target)
@@ -45,7 +45,7 @@ class AccessibilityFlowTest {
     @Test
     fun `pending accessibility effects are bounded and never silently replaced`() {
         val ports = TwentyFortyEightSessionPorts()
-        repeat(TwentyFortyEightSessionComponent.MaxPendingEffects) {
+        repeat(RootComponent.MaxPendingEffects) {
             ports.requestFocus(FocusTarget.Board)
         }
 
@@ -53,7 +53,7 @@ class AccessibilityFlowTest {
             ports.requestFocus(FocusTarget.Board)
         }
         assertEquals(
-            TwentyFortyEightSessionComponent.MaxPendingEffects,
+            RootComponent.MaxPendingEffects,
             ports.effect.value.effects.size,
         )
     }

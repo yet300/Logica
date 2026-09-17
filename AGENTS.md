@@ -151,11 +151,21 @@ app-scoped registry and its empty-capable compile-time plugin aggregation; its
 session-scope marker is a child lifecycle, not a second game-specific scope.
 Block Blast implements `MiniAppPlugin` through a retained Metro child graph;
 session-owned components and reducers live in `MiniAppSessionScope`, while save,
-best-score and preference repositories remain app-scoped. Each game includes
+best-score and preference repositories remain app-scoped. Each game keeps its
+session-owned Decompose root in `component/root/RootComponent.kt` (`RootComponent`
++ `DefaultRootComponent` with a nested `Factory` and `Child` stack) and its
+session UI entry in `ui/screen/root/RootContent.kt`; child screens live under
+`component/game`, `component/result` and `ui/screen/...`. Each game includes
 its own session binding container explicitly on its `@GraphExtension`; do not
 contribute game-specific bindings globally to the shared session scope. Game plugins consume
-`MiniAppInterstitialCapability` and must not depend on a MiniApp host,
+`MiniAppAdsCapability` with the generic `MiniAppAdKind` hierarchy (`Fullscreen` with
+an opaque game-local reason, `Banner` as eligibility only) and must not depend on
+a MiniApp host,
 `:feature:root`, `:composeApp`, native application modules or native-ad modules.
+Never add game-specific ad subtypes, placements or names to `:miniapp:compose`:
+game semantics travel only in `Fullscreen.reason`, which the host never interprets.
+A session opts into the host banner through `MiniAppSession.wantsBanner`; mounting,
+sizing, safe-area handling and the zero-space policy stay host-owned.
 `:composeApp` renders every running session inside one host-owned frame. Back,
 Settings, toolbar sizing and accessibility, safe-area ownership, system-icon
 appearance and the conditional banner stay host-owned. A banner occupies
@@ -241,7 +251,7 @@ through a sibling staging directory. Discovery makes every project under
 invocation. There is no server, runtime catalog download or remote plugin
 loading.
 
-Generated projects apply only `logica.miniapp`. That convention supplies KMP, Compose resources, Metro, one direct `:miniapp:metro` framework edge, reusable `:miniapp:audio-presets` as an implementation dependency, and dependency-boundary validation. Contributors can use `MiniAppSessionContext.audio` and shared audio presets without declaring audio dependencies. They may use stable `:miniapp:*` contracts and the allowed inward core contracts, but must not depend on feature, application, concrete game/sample, data/telemetry, native-ad modules, platform audio APIs or external audio engines. Use `:miniapp:compose MiniAppInterstitialCapability` rather than `:monetization:ads`.
+Generated projects apply only `logica.miniapp`. That convention supplies KMP, Compose resources, Metro, one direct `:miniapp:metro` framework edge, reusable `:miniapp:audio-presets` as an implementation dependency, and dependency-boundary validation. Contributors can use `MiniAppSessionContext.audio` and shared audio presets without declaring audio dependencies. They may use stable `:miniapp:*` contracts and the allowed inward core contracts, but must not depend on feature, application, concrete game/sample, data/telemetry, native-ad modules, platform audio APIs or external audio engines. Use `:miniapp:compose MiniAppAdsCapability` rather than `:monetization:ads`. Never add game-specific ad subtypes, placements or names to `:miniapp:compose`.
 
 Do not inject or call the legacy `AudioRepository` from a generated MiniApp.
 Its bundled-file path is retained only for Block Blast and is not part of the

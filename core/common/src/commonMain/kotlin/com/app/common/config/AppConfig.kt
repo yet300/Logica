@@ -24,10 +24,10 @@ object AppConfig {
     const val BANNER_UNIT_ID_ANDROID: String = "ca-app-pub-1829375480261561/8506212995"
     const val BANNER_UNIT_ID_IOS: String = "ca-app-pub-1829375480261561/9561597181"
 
-    /** Interstitial shown after Game Over. TEST unit. */
-    const val GAME_OVER_INTERSTITIAL_UNIT_ID_ANDROID: String =
+    /** Fullscreen interstitial shown at a natural game transition. TEST unit. */
+    const val FULLSCREEN_INTERSTITIAL_UNIT_ID_ANDROID: String =
         "ca-app-pub-1829375480261561/8963087579"
-    const val GAME_OVER_INTERSTITIAL_UNIT_ID_IOS: String =
+    const val FULLSCREEN_INTERSTITIAL_UNIT_ID_IOS: String =
         "ca-app-pub-1829375480261561/5009161004"
 
     // ── In-app review ──────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-package ge.yet.game.fruitmerge.component.session
+package ge.yet.game.fruitmerge.component.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -8,7 +8,7 @@ import ge.yet.game.fruitmerge.component.game.PaidActionToken
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 
-internal interface FruitMergeSessionComponent {
+internal interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
     val frameMode: Value<MiniAppFrameMode>
     val game: FruitMergeComponent
@@ -24,6 +24,6 @@ internal interface FruitMergeSessionComponent {
     fun interface Factory {
         fun create(
             componentContext: ComponentContext,
-        ): FruitMergeSessionComponent
+        ): RootComponent
     }
 }

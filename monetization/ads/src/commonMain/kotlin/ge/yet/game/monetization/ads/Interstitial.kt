@@ -12,17 +12,17 @@ import ge.yet.game.monetization.core.shouldShowInterstitial
 
 @OptIn(DependsOnGoogleMobileAds::class)
 @Composable
-fun rememberGameOverInterstitial(): (onDismiss: () -> Unit) -> Unit {
+fun rememberFullscreenInterstitial(): (onDismiss: () -> Unit) -> Unit {
     val state = LocalMonetizationState.current
     if (!state.canShowAds) {
         return remember { { onDismiss -> onDismiss() } }
     }
     val configuration = checkNotNull(LocalAdMobConfiguration.current) {
-        "rememberGameOverInterstitial must be used inside AdMobProvider"
+        "rememberFullscreenInterstitial must be used inside AdMobProvider"
     }
     val adUnitId = AdUnitId.autoSelect(
-        androidAdUnitId = configuration.gameOverInterstitialAndroidUnitId,
-        iosAdUnitId = configuration.gameOverInterstitialIosUnitId,
+        androidAdUnitId = configuration.fullscreenInterstitialAndroidUnitId,
+        iosAdUnitId = configuration.fullscreenInterstitialIosUnitId,
     )
     val interstitialAd by rememberInterstitialAd(adUnitId = adUnitId)
 

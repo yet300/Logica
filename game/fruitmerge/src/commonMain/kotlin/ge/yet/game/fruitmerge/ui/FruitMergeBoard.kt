@@ -152,7 +152,7 @@ internal fun FruitMergeBoard(
             }
         }
 
-        for (body in game.bodies) {
+        for (body in fruitDrawOrder(game.bodies)) {
             val danger = dangerVisual(
                 topY = body.position.y - body.level.radius,
                 dangerY = FruitMergeEngine.DANGER_Y,
@@ -162,10 +162,14 @@ internal fun FruitMergeBoard(
                 level = body.level,
                 center = transform.world(body.position.x, body.position.y),
                 radius = body.level.radius * transform.side,
-                angleRadians = body.angle,
+                angleRadians = if (reducedMotion) 0f else body.angle,
                 verticalVelocity = body.velocity.y,
                 impact = body.impact,
-                facePhase = if (reducedMotion) body.id.toFloat() else faceTimeSeconds + body.id * 0.37f,
+                facePhase = if (reducedMotion) {
+                    fruitRestingPhase(body.level)
+                } else {
+                    faceTimeSeconds + fruitBlinkOffset(body.id, body.level)
+                },
                 danger = danger,
                 alpha = 1f,
             )
@@ -199,7 +203,7 @@ internal fun FruitPreview(
             angleRadians = 0f,
             verticalVelocity = 0f,
             impact = 0f,
-            facePhase = if (reducedMotion) level.ordinal.toFloat() else faceTimeSeconds + level.ordinal,
+            facePhase = if (reducedMotion) fruitRestingPhase(level) else faceTimeSeconds + level.ordinal,
             danger = DangerVisual(0f, false),
             alpha = 1f,
         )
@@ -251,11 +255,11 @@ private data class BoardTransform(val canvasSize: Size) {
     fun worldY(y: Float): Float = origin.y + y * side
 }
 
-internal fun fruitPreviewCenterInRoot(boardBoundsInRoot: androidx.compose.ui.geometry.Rect, previewX: Float): Offset {
-    val side = min(boardBoundsInRoot.width, boardBoundsInRoot.height).coerceAtLeast(1f)
+internal fun fruitPreviewCenterInWindow(boardBoundsInWindow: androidx.compose.ui.geometry.Rect, previewX: Float): Offset {
+    val side = min(boardBoundsInWindow.width, boardBoundsInWindow.height).coerceAtLeast(1f)
     val origin = Offset(
-        x = boardBoundsInRoot.left + (boardBoundsInRoot.width - side) * 0.5f,
-        y = boardBoundsInRoot.top + (boardBoundsInRoot.height - side) * 0.5f,
+        x = boardBoundsInWindow.left + (boardBoundsInWindow.width - side) * 0.5f,
+        y = boardBoundsInWindow.top + (boardBoundsInWindow.height - side) * 0.5f,
     )
     return Offset(
         x = origin.x + previewX.coerceIn(0f, 1f) * side,

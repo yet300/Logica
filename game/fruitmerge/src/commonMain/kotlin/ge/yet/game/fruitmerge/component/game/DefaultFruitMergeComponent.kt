@@ -1,5 +1,6 @@
 package ge.yet.game.fruitmerge.component.game
 
+import com.app.common.decompose.asValue
 import com.app.common.decompose.coroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
@@ -8,9 +9,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import com.arkivanov.mvikotlin.extensions.coroutines.states
 import dev.zacsweers.metro.Inject
 import ge.yet.game.fruitmerge.audio.FruitMergeAudioAdapter
+import ge.yet.game.fruitmerge.component.game.integration.toModel
 import ge.yet.game.fruitmerge.component.game.store.FruitMergeStore
 import ge.yet.game.fruitmerge.component.game.store.FruitMergeStoreFactory
 import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
@@ -20,7 +21,6 @@ import ge.yet.game.fruitmerge.domain.model.TargetingMode
 import ge.yet.game.fruitmerge.domain.repository.TutorialSeenRepository
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -40,11 +40,18 @@ internal class DefaultFruitMergeComponent(
     internal val store: FruitMergeStore = instanceKeeper.getStore {
         gameStoreFactory.create(isNewGame)
     }
+    // UI-local flags merged with store state via integration/Mappers.toModel.
+    // Kept in the component (not the store) because they mirror host/session
+    // sources: visibility gate, one-shot tutorial overlay. The store stays the
+    // single owner of game/initialized/active.
+    private var visibleFlag: Boolean = visibility.visibility.value == MiniAppVisibility.ACTIVE
+    private var tutorialReadyFlag: Boolean = false
+    private var tutorialStepFlag: TutorialStep? = null
     private val mutableModel = MutableValue(
-        FruitMergeComponent.Model(
-            game = store.state.game,
-            initialized = store.state.initialized,
-            visible = visibility.visibility.value == MiniAppVisibility.ACTIVE,
+        store.state.toModel(
+            visible = visibleFlag,
+            tutorialReady = tutorialReadyFlag,
+            tutorialStep = tutorialStepFlag,
         ),
     )
     override val model: Value<FruitMergeComponent.Model> = mutableModel
@@ -60,19 +67,15 @@ internal class DefaultFruitMergeComponent(
 
     init {
         audio.start()
-        val scope = coroutineScope()
-        scope.launch(start = CoroutineStart.UNDISPATCHED) {
-            store.states.collect { state ->
-                mutableModel.value = mutableModel.value.copy(
-                    game = state.game,
-                    initialized = state.initialized,
-                )
-                if (state.initialized && state.game.phase == RunPhase.RESULT) {
-                    reportCompletion(state.game)
-                }
+        val storeValue = store.asValue()
+        val subscription = storeValue.subscribe { state ->
+            refreshModel(state)
+            if (state.initialized && state.game.phase == RunPhase.RESULT) {
+                reportCompletion(state.game)
             }
         }
-        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+        val scope = coroutineScope()
+        scope.launch {
             store.labels.collect { label ->
                 onStoreLabel(label)
                 audio.play(label)
@@ -81,27 +84,40 @@ internal class DefaultFruitMergeComponent(
                 }
             }
         }
-        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+        scope.launch {
             visibility.visibility.collect { value ->
                 val active = value == MiniAppVisibility.ACTIVE
-                mutableModel.value = mutableModel.value.copy(visible = active)
+                visibleFlag = active
+                refreshModel()
                 store.accept(FruitMergeStore.Intent.VisibilityChanged(active))
             }
         }
         scope.launch {
             val seen = tutorial.isTutorialSeen()
             if (alive) {
-                mutableModel.value = mutableModel.value.copy(
-                    tutorialReady = true,
-                    tutorialStep = if (seen) null else TutorialStep.Gesture,
-                )
+                tutorialReadyFlag = true
+                tutorialStepFlag = if (seen) null else TutorialStep.Gesture
+                refreshModel()
             }
         }
         lifecycle.doOnDestroy {
             alive = false
             pendingToken = null
+            subscription.cancel()
             presentationChannel.close()
         }
+    }
+
+    private fun refreshModel() {
+        refreshModel(store.state)
+    }
+
+    private fun refreshModel(state: FruitMergeStore.State) {
+        mutableModel.value = state.toModel(
+            visible = visibleFlag,
+            tutorialReady = tutorialReadyFlag,
+            tutorialStep = tutorialStepFlag,
+        )
     }
 
     override fun frame(elapsedSeconds: Float) {
@@ -114,9 +130,10 @@ internal class DefaultFruitMergeComponent(
 
     override fun drop(dragged: Boolean) {
         if (!alive || !model.value.tutorialReady) return
-        val previousNextBodyId = store.state.game.nextBodyId
+        // Accepted-drop detection is label-driven (DropReleased -> Gesture-to-Merge
+        // in onStoreLabel). Never read store.state synchronously after accept:
+        // MVIKotlin dispatch is asynchronous and the read would race.
         store.accept(FruitMergeStore.Intent.Drop)
-        if (store.state.game.nextBodyId != previousNextBodyId) onDropAccepted()
     }
 
     override fun requestClearGate(): PaidActionToken? {
@@ -178,8 +195,13 @@ internal class DefaultFruitMergeComponent(
     }
 
     internal fun onStoreLabel(label: FruitMergeStore.Label) {
-        if (alive && label is FruitMergeStore.Label.MergeResolved && model.value.tutorialStep == TutorialStep.Merge) {
-            mutableModel.value = mutableModel.value.copy(tutorialStep = TutorialStep.Traits)
+        if (alive && label is FruitMergeStore.Label.DropReleased && tutorialStepFlag == TutorialStep.Gesture) {
+            tutorialStepFlag = TutorialStep.Merge
+            refreshModel()
+        }
+        if (alive && label is FruitMergeStore.Label.MergeResolved && tutorialStepFlag == TutorialStep.Merge) {
+            tutorialStepFlag = TutorialStep.Traits
+            refreshModel()
         }
         if (!alive || !model.value.visible) return
         val event = when (label) {
@@ -221,14 +243,9 @@ internal class DefaultFruitMergeComponent(
         return token
     }
 
-    private fun onDropAccepted() {
-        if (model.value.tutorialStep == TutorialStep.Gesture) {
-            mutableModel.value = mutableModel.value.copy(tutorialStep = TutorialStep.Merge)
-        }
-    }
-
     private fun finishTutorial() {
-        mutableModel.value = mutableModel.value.copy(tutorialStep = null)
+        tutorialStepFlag = null
+        refreshModel()
         coroutineScope().launch { tutorial.markTutorialSeen() }
     }
 }

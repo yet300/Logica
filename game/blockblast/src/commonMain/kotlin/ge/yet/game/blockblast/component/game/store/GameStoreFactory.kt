@@ -17,6 +17,8 @@ import ge.yet.game.blockblast.domain.repository.BestScoreRepository
 import ge.yet.game.blockblast.domain.repository.BlockBlastTutorialRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
 import ge.yet.game.domain.repository.AnalyticRepository
+import ge.yet.game.miniapp.api.MiniAppVisibility
+import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
@@ -29,6 +31,7 @@ internal class GameStoreFactory(
     private val bestScoreRepository: BestScoreRepository,
     private val tutorialRepository: BlockBlastTutorialRepository,
     private val analytics: AnalyticRepository,
+    private val visibility: MiniAppVisibilitySource,
 ) {
     fun create(
         isNewGame: Boolean,
@@ -81,6 +84,11 @@ internal class GameStoreFactory(
         }
 
         override fun executeIntent(intent: GameStore.Intent) {
+            // Input precondition lives in the executor (not the component), mirroring
+            // TwentyFortyEight's acceptsGameInput: backgrounded intents are dropped
+            // where they can be unit-tested. The component's whenActive gate stays
+            // as the first line of defense.
+            if (visibility.visibility.value != MiniAppVisibility.ACTIVE) return
             when (intent) {
                 is GameStore.Intent.Place -> place(intent)
                 GameStore.Intent.Revive -> revive()

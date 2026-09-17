@@ -16,11 +16,11 @@ import ge.yet.game.blockblast.domain.engine.WeightedShapeGenerator
 import ge.yet.game.domain.repository.FeedbackPreferences
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
+import ge.yet.game.blockblast.component.root.DefaultRootComponentFactory
+import ge.yet.game.blockblast.component.root.RootComponent
 import ge.yet.game.blockblast.session.BlockBlastSession
-import ge.yet.game.blockblast.session.BlockBlastSessionComponent
-import ge.yet.game.blockblast.session.DefaultBlockBlastSessionComponentFactory
 
 @BindingContainer
 abstract class BlockBlastSessionBindings {
@@ -40,24 +40,24 @@ abstract class BlockBlastSessionBindings {
 
     @Binds
     internal abstract fun bindSessionComponentFactory(
-        impl: DefaultBlockBlastSessionComponentFactory,
-    ): BlockBlastSessionComponent.Factory
+        impl: DefaultRootComponentFactory,
+    ): RootComponent.Factory
 
     companion object {
         @Provides
         @SingleIn(MiniAppSessionScope::class)
-        internal fun provideBlockBlastSessionComponent(
-            factory: BlockBlastSessionComponent.Factory,
+        internal fun provideRootComponent(
+            factory: RootComponent.Factory,
             componentContext: ComponentContext,
             visibility: MiniAppVisibilitySource,
             host: MiniAppSessionHost,
-        ): BlockBlastSessionComponent = factory.create(componentContext, visibility, host)
+        ): RootComponent = factory.create(componentContext, visibility, host)
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideMiniAppSession(
-            component: BlockBlastSessionComponent,
-            interstitials: MiniAppInterstitialCapability,
+            component: RootComponent,
+            interstitials: MiniAppAdsCapability,
             feedback: FeedbackPreferences,
         ): BlockBlastSession = BlockBlastSession(component, interstitials, feedback)
     }
