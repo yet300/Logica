@@ -26,6 +26,8 @@ class BlockBlastSession internal constructor(
 
     override val wantsBanner: Boolean = true
 
+    override fun handleBack(): Boolean = component.handleBack()
+
     @Composable
     override fun TopBarContent() {
         RootTopBarContent(component)

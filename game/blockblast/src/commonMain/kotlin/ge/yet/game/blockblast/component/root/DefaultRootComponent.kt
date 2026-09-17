@@ -17,6 +17,7 @@ import ge.yet.game.miniapp.api.MiniAppReviewOpportunity
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
+import kotlinx.serialization.Serializable
 
 internal class DefaultRootComponent(
     componentContext: ComponentContext,
@@ -32,11 +33,10 @@ internal class DefaultRootComponent(
 
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
-        serializer = null,
+        serializer = Config.serializer(),
         initialConfiguration = Config.Playing(
             instanceId = 1L,
             isNewGame = false,
-            restoredResultState = null,
         ),
         handleBackButton = false,
         childFactory = ::createChild,
@@ -49,6 +49,12 @@ internal class DefaultRootComponent(
         }
     }
 
+    override fun handleBack(): Boolean =
+        (stack.value.active.instance as? RootComponent.Child.Playing)
+            ?.component
+            ?.handleBack()
+            ?: false
+
     private fun createChild(
         config: Config,
         componentContext: ComponentContext,
@@ -59,7 +65,7 @@ internal class DefaultRootComponent(
                 gameFactory.create(
                     componentContext = componentContext,
                     isNewGame = config.isNewGame,
-                    restoredResultState = config.restoredResultState,
+                    restoredResultState = null,
                     onGameCompleted = { finalState, canContinue, reviewOpportunity ->
                         showResult(
                             gameInstanceId = config.instanceId,
@@ -79,7 +85,7 @@ internal class DefaultRootComponent(
         is Config.Result -> RootComponent.Child.Result(
             resultFactory.create(
                 componentContext = componentContext,
-                snapshot = BlockBlastResultSnapshot.from(config.finalState),
+                snapshot = config.snapshot,
                 canContinue = config.canContinue,
                 onContinueRequested = { continueGame(config) },
                 onNewGameRequested = { startNewGame(config) },
@@ -137,7 +143,6 @@ internal class DefaultRootComponent(
             Config.Playing(
                 instanceId = ++lastGameInstanceId,
                 isNewGame = true,
-                restoredResultState = null,
             ),
         )
     }
@@ -152,6 +157,7 @@ internal class DefaultRootComponent(
         reviewOpportunity: Boolean,
     ) {
         var added = false
+        val snapshot = BlockBlastResultSnapshot.from(finalState)
         navigation.navigate { configurations ->
             if (configurations.lastOrNull() is Config.Result) return@navigate configurations
             if (
@@ -162,13 +168,7 @@ internal class DefaultRootComponent(
                 return@navigate configurations
             }
             added = true
-            configurations.map { config ->
-                if (config is Config.Playing && config.instanceId == gameInstanceId) {
-                    config.copy(restoredResultState = finalState)
-                } else {
-                    config
-                }
-            } + Config.Result(gameInstanceId, finalState, canContinue)
+            configurations + Config.Result(gameInstanceId, snapshot, canContinue)
         }
         if (added && reviewOpportunity) {
             host.requestReview(
@@ -201,16 +201,18 @@ internal class DefaultRootComponentFactory(
     )
 }
 
+@Serializable
 private sealed interface Config {
+    @Serializable
     data class Playing(
         val instanceId: Long,
         val isNewGame: Boolean,
-        val restoredResultState: GameState?,
     ) : Config
 
+    @Serializable
     data class Result(
         val gameInstanceId: Long,
-        val finalState: GameState,
+        val snapshot: BlockBlastResultSnapshot,
         val canContinue: Boolean,
     ) : Config
 }

@@ -57,6 +57,20 @@ class RetainedMiniAppSessionTest {
     }
 
     @Test
+    fun wants_banner_true_delegates() {
+        val handle = RetainedMiniAppSession(Any(), FakeSession(wantsBanner = true))
+
+        assertTrue(handle.wantsBanner)
+    }
+
+    @Test
+    fun wants_banner_false_delegates() {
+        val handle = RetainedMiniAppSession(Any(), FakeSession(wantsBanner = false))
+
+        assertFalse(handle.wantsBanner)
+    }
+
+    @Test
     @OptIn(ExperimentalTestApi::class)
     fun color_scheme_forwards_to_the_delegate() = runComposeUiTest {
         val custom = lightColorScheme(primary = Color.Red)
@@ -73,6 +87,7 @@ class RetainedMiniAppSessionTest {
     private class FakeSession(
         override val frameMode: Value<MiniAppFrameMode> =
             MutableValue(MiniAppFrameMode.Standard),
+        override val wantsBanner: Boolean = false,
         private val backResponses: ArrayDeque<Boolean> = ArrayDeque(),
         private val scheme: ColorScheme? = null,
     ) : MiniAppSession {

@@ -13,6 +13,8 @@ internal interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
     val frameMode: Value<MiniAppFrameMode>
 
+    fun handleBack(): Boolean
+
     sealed interface Child {
         class Playing(val component: GameComponent) : Child
         class Result(val component: GameResultComponent) : Child

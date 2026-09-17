@@ -6,6 +6,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.destroy
 import com.arkivanov.essenty.lifecycle.resume
+import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import ge.yet.game.blockblast.component.game.DefaultGameComponent
 import ge.yet.game.blockblast.component.game.GameComponent
@@ -141,6 +142,71 @@ class DefaultRootComponentTest {
         fakeResult(setup).newGameRequested()
         assertEquals(MiniAppFrameMode.Standard, setup.component.frameMode.value)
         setup.destroy()
+    }
+
+    @Test
+    fun handle_back_on_playing_delegates_and_keeps_stack() {
+        val setup = build()
+
+        assertFalse(setup.component.handleBack())
+        assertEquals(1, setup.component.stack.value.items.size)
+        assertEquals(1, playing(setup).handleBackCount)
+        setup.destroy()
+    }
+
+    @Test
+    fun handle_back_on_result_returns_false_without_popping() {
+        val setup = build()
+        playing(setup).complete(resultState(), canContinue = true)
+        val activeResult = fakeResult(setup)
+
+        assertFalse(setup.component.handleBack())
+
+        assertEquals(2, setup.component.stack.value.items.size)
+        assertSame(activeResult, fakeResult(setup))
+        assertEquals(0, activeResult.continueFailureCount)
+        setup.destroy()
+    }
+
+    @Test
+    fun state_keeper_restores_playing_without_result() {
+        val stateKeeper = StateKeeperDispatcher()
+        val setup = build(stateKeeper = stateKeeper)
+
+        val saved = stateKeeper.save()
+        setup.destroy()
+
+        val restored = build(stateKeeper = StateKeeperDispatcher(saved))
+
+        assertEquals(1, restored.component.stack.value.items.size)
+        assertIs<RootComponent.Child.Playing>(
+            restored.component.stack.value.active.instance,
+        )
+        assertEquals(MiniAppFrameMode.Standard, restored.component.frameMode.value)
+        restored.destroy()
+    }
+
+    @Test
+    fun state_keeper_restores_result_with_detached_snapshot() {
+        val stateKeeper = StateKeeperDispatcher()
+        val setup = build(stateKeeper = stateKeeper)
+        val finalState = resultState()
+        playing(setup).complete(finalState, canContinue = true)
+        val expected = BlockBlastResultSnapshot.from(finalState)
+
+        val saved = stateKeeper.save()
+        setup.destroy()
+
+        val restored = build(stateKeeper = StateKeeperDispatcher(saved))
+
+        assertEquals(2, restored.component.stack.value.items.size)
+        val result = assertIs<RootComponent.Child.Result>(
+            restored.component.stack.value.active.instance,
+        )
+        assertEquals(expected, result.component.model.value.snapshot)
+        assertTrue(result.component.model.value.canContinue)
+        assertEquals(MiniAppFrameMode.ContentOnly, restored.component.frameMode.value)
+        restored.destroy()
     }
 
     @Test
@@ -365,12 +431,13 @@ class DefaultRootComponentTest {
         gameFactory: GameComponent.Factory = RecordingGameFactory(),
         resultFactory: GameResultComponent.Factory = RecordingResultFactory(),
         visibility: MutableMiniAppVisibilitySource = MutableMiniAppVisibilitySource(),
+        stateKeeper: StateKeeperDispatcher = StateKeeperDispatcher(),
     ): Setup {
         val lifecycle = LifecycleRegistry()
         val host = RecordingMiniAppSessionHost()
         val recordingResultFactory = resultFactory as? RecordingResultFactory
         val component = DefaultRootComponent(
-            componentContext = DefaultComponentContext(lifecycle),
+            componentContext = DefaultComponentContext(lifecycle, stateKeeper),
             gameFactory = gameFactory,
             resultFactory = resultFactory,
             visibility = visibility,
@@ -519,6 +586,7 @@ class DefaultRootComponentTest {
         private val onGameCompleted: (GameState, Boolean, Boolean) -> Unit,
         private val onReviveCompleted: (GameState) -> Unit,
         private val onReviveFailed: () -> Unit,
+        private val backResponses: ArrayDeque<Boolean> = ArrayDeque(),
     ) : GameComponent {
         private val playablePiece = Piece(
             pieceId = 1L,
@@ -552,6 +620,14 @@ class DefaultRootComponentTest {
         }
 
         override fun onTutorialSeen() = Unit
+
+        var handleBackCount = 0
+            private set
+
+        override fun handleBack(): Boolean {
+            handleBackCount += 1
+            return backResponses.removeFirstOrNull() ?: false
+        }
 
         fun setState(state: GameState) {
             gameState = state
