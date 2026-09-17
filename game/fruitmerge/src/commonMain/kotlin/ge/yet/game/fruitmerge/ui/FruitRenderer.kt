@@ -832,15 +832,15 @@ private fun DrawScope.drawFruitCrownAndStem(
             }
 
             FruitLevel.PINEAPPLE -> {
-                // Spiky 5-frond green royal crown
+                // Spiky 5-frond green royal crown (compact: small fruits must stay visible)
                 for (index in -2..2) {
                     val angle = index * 18f
-                    val spireH = radius * (0.68f - abs(index) * 0.10f)
+                    val spireH = radius * (0.48f - abs(index) * 0.12f)
                     rotate(degrees = angle, pivot = center + Offset(0f, -radius * 0.70f)) {
                         drawOval(
                             color = (if (abs(index) == 2) spec.leafShadow else spec.leaf).copy(alpha = alpha),
-                            topLeft = Offset(center.x - radius * 0.16f, center.y - radius * 0.70f - spireH),
-                            size = Size(radius * 0.32f, spireH * 1.15f),
+                            topLeft = Offset(center.x - radius * 0.13f, center.y - radius * 0.70f - spireH),
+                            size = Size(radius * 0.26f, spireH * 1.15f),
                         )
                     }
                 }

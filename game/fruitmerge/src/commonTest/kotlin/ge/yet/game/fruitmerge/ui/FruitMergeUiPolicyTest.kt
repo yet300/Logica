@@ -1,6 +1,9 @@
 package ge.yet.game.fruitmerge.ui
 
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.model.FruitBody
+import ge.yet.game.fruitmerge.domain.model.FruitLevel
+import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.uikit.components.score.ScoreCardState
 import ge.yet.game.uikit.components.score.scoreCardState
 import kotlin.test.Test
@@ -61,6 +64,17 @@ class FruitMergeUiPolicyTest {
         )
         assertTrue(abs(faceTiltDegrees(100f)) <= MAX_FACE_TILT_DEGREES)
         assertTrue(abs(faceTiltDegrees(-100f)) <= MAX_FACE_TILT_DEGREES)
+    }
+
+    @Test
+    fun `small fruits draw after big ones so they stay visible`() {
+        val bodies = listOf(
+            FruitBody(id = 1, level = FruitLevel.BLUEBERRY, position = Vec2(0.5f, 0.5f)),
+            FruitBody(id = 2, level = FruitLevel.PINEAPPLE, position = Vec2(0.5f, 0.7f)),
+            FruitBody(id = 3, level = FruitLevel.WATERMELON, position = Vec2(0.5f, 0.8f)),
+        )
+
+        assertEquals(listOf(3L, 2L, 1L), fruitDrawOrder(bodies).map { it.id })
     }
 
     @Test

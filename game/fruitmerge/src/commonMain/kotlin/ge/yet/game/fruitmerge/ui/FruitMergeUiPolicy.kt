@@ -1,6 +1,7 @@
 package ge.yet.game.fruitmerge.ui
 
 import ge.yet.game.fruitmerge.domain.engine.FruitMergeEngine
+import ge.yet.game.fruitmerge.domain.model.FruitBody
 import kotlin.math.sin
 
 internal data class ShakeVisualTransform(
@@ -39,6 +40,16 @@ internal fun visualTiltDegrees(angleRadians: Float): Float {
 /** Faces stay upright and only lean a little with the body tilt. */
 internal fun faceTiltDegrees(bodyTiltDegrees: Float): Float =
     (bodyTiltDegrees * FACE_TILT_FOLLOW).coerceIn(-MAX_FACE_TILT_DEGREES, MAX_FACE_TILT_DEGREES)
+
+/**
+ * Back-to-front draw order: big fruits first, small fruits last so a small
+ * fruit is never fully hidden under a big neighbour's body or crown
+ * (e.g. a blueberry resting on a pineapple). Stable for equal sizes.
+ */
+internal fun fruitDrawOrder(bodies: List<FruitBody>): List<FruitBody> =
+    bodies.sortedWith(
+        compareByDescending<FruitBody> { it.level.radius }.thenBy { it.id },
+    )
 
 internal fun crateHandleRotation(stepsRemaining: Int, reducedMotion: Boolean): Float =
     shakeVisualTransform(stepsRemaining, reducedMotion).rotationDegrees * 7f

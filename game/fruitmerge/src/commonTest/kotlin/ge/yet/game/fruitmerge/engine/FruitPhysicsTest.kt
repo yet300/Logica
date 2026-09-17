@@ -229,6 +229,9 @@ class FruitPhysicsTest {
         repeat(120) { body = FruitPhysics().step(listOf(body), 1f / 60f).bodies.single() }
         assertTrue(kotlin.math.abs(body.angularVelocity) < 0.5f)
         assertTrue(body.angle.isFinite())
+
+        repeat(480) { body = FruitPhysics().step(listOf(body), 1f / 60f).bodies.single() }
+        assertEquals(0f, body.angularVelocity)
     }
 
     private fun floorImpact(

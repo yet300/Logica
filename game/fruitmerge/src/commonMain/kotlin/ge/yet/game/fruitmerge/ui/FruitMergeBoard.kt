@@ -152,7 +152,7 @@ internal fun FruitMergeBoard(
             }
         }
 
-        for (body in game.bodies) {
+        for (body in fruitDrawOrder(game.bodies)) {
             val danger = dangerVisual(
                 topY = body.position.y - body.level.radius,
                 dangerY = FruitMergeEngine.DANGER_Y,
