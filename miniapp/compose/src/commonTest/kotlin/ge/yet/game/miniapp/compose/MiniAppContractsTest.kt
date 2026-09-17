@@ -3,6 +3,7 @@ package ge.yet.game.miniapp.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.value.MutableValue
 import ge.yet.game.miniapp.api.MiniAppCategoryId
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppSessionHost
@@ -75,6 +76,38 @@ class MiniAppContractsTest {
         }
 
         assertFalse(session.wantsBanner)
+    }
+
+    @Test
+    fun `delegating session forwards frame mode banner opt-in and back`() {
+        var backCalls = 0
+        val session = object : DelegatingMiniAppSession(
+            frameMode = MutableValue(MiniAppFrameMode.ContentOnly),
+            wantsBanner = true,
+            onBack = { backCalls += 1; true },
+        ) {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertEquals(MiniAppFrameMode.ContentOnly, session.frameMode.value)
+        assertTrue(session.wantsBanner)
+        assertTrue(session.handleBack())
+        assertEquals(1, backCalls)
+    }
+
+    @Test
+    fun `delegating session does not consume Back by default`() {
+        val session = object : DelegatingMiniAppSession(
+            frameMode = MutableValue(MiniAppFrameMode.Standard),
+            wantsBanner = false,
+        ) {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertFalse(session.wantsBanner)
+        assertFalse(session.handleBack())
     }
 
     private class FakePlugin : MiniAppPlugin {

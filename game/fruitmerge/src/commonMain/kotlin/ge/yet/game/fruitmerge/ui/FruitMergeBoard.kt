@@ -255,11 +255,11 @@ private data class BoardTransform(val canvasSize: Size) {
     fun worldY(y: Float): Float = origin.y + y * side
 }
 
-internal fun fruitPreviewCenterInRoot(boardBoundsInRoot: androidx.compose.ui.geometry.Rect, previewX: Float): Offset {
-    val side = min(boardBoundsInRoot.width, boardBoundsInRoot.height).coerceAtLeast(1f)
+internal fun fruitPreviewCenterInWindow(boardBoundsInWindow: androidx.compose.ui.geometry.Rect, previewX: Float): Offset {
+    val side = min(boardBoundsInWindow.width, boardBoundsInWindow.height).coerceAtLeast(1f)
     val origin = Offset(
-        x = boardBoundsInRoot.left + (boardBoundsInRoot.width - side) * 0.5f,
-        y = boardBoundsInRoot.top + (boardBoundsInRoot.height - side) * 0.5f,
+        x = boardBoundsInWindow.left + (boardBoundsInWindow.width - side) * 0.5f,
+        y = boardBoundsInWindow.top + (boardBoundsInWindow.height - side) * 0.5f,
     )
     return Offset(
         x = origin.x + previewX.coerceIn(0f, 1f) * side,

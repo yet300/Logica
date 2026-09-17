@@ -6,26 +6,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arkivanov.decompose.value.Value
 import ge.yet.game.fruitmerge.component.root.RootComponent
 import ge.yet.game.fruitmerge.ui.screen.root.RootContent
 import ge.yet.game.fruitmerge.ui.FruitMergeTestTags
 import ge.yet.game.fruitmerge.ui.MarketStallBackground
 import ge.yet.game.fruitmerge.ui.MarketPriceTag
+import ge.yet.game.miniapp.compose.DelegatingMiniAppSession
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.compose.MiniAppAdKind
 import ge.yet.game.miniapp.compose.MiniAppAdsCapability
-import ge.yet.game.miniapp.compose.MiniAppSession
 
 class FruitMergeSession internal constructor(
     private val component: RootComponent,
     private val interstitials: MiniAppAdsCapability,
-) : MiniAppSession {
-    override val frameMode: Value<MiniAppFrameMode> = component.frameMode
-
-    override val wantsBanner: Boolean = true
-
-    override fun handleBack(): Boolean = component.handleBack()
+) : DelegatingMiniAppSession(
+    frameMode = component.frameMode,
+    wantsBanner = true,
+    onBack = component::handleBack,
+) {
 
     @Composable
     override fun TopBarContent() {

@@ -5,6 +5,7 @@ import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
 import ge.yet.game.miniapp.audio.consumeSilently
+import ge.yet.game.miniapp.audio.presets.SessionAudioProgram
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.twentyfortyeight.domain.engine.AudioControls
 import ge.yet.game.twentyfortyeight.domain.model.TileValue
@@ -28,14 +29,10 @@ internal sealed interface AudioEvent {
 internal class TwentyFortyEightAudioAdapter @Inject constructor(
     private val audio: MiniAppAudio,
 ) {
-    private var started = false
+    private val music = SessionAudioProgram(audio, TwentyFortyEightAudio.program)
     private var lastAttemptedControls: AudioControls? = null
 
-    fun start() {
-        if (started) return
-        started = true
-        audio.playMusic(TwentyFortyEightAudio.program).consumeSilently()
-    }
+    fun start() = music.start()
 
     fun updateControls(controls: AudioControls) {
         start()
@@ -72,7 +69,5 @@ internal class TwentyFortyEightAudioAdapter @Inject constructor(
         if (mergeSfx != null) playSfx(mergeSfx)
     }
 
-    private fun playSfx(name: SfxName) {
-        audio.playSfx(TwentyFortyEightAudio.program, name).consumeSilently()
-    }
+    private fun playSfx(name: SfxName) = music.playSfx(name)
 }
