@@ -29,6 +29,16 @@ interface MiniAppSession {
     val frameMode: Value<MiniAppFrameMode>
         get() = StandardMiniAppFrameMode
 
+    /**
+     * Whether the host may mount its banner under this session.
+     *
+     * This is only an opt-in declaration: rendering, sizing, safe-area handling
+     * and the zero-space-when-empty policy stay host-owned. Defaults to false,
+     * so games without ads stay banner-free without any extra work.
+     */
+    val wantsBanner: Boolean
+        get() = false
+
     fun handleBack(): Boolean = false
 
     @Composable

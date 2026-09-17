@@ -24,10 +24,10 @@ fun App(rootComponent: RootComponent) {
         AdMobConfiguration(
             bannerAndroidUnitId = AppConfig.BANNER_UNIT_ID_ANDROID,
             bannerIosUnitId = AppConfig.BANNER_UNIT_ID_IOS,
-            gameOverInterstitialAndroidUnitId =
-                AppConfig.GAME_OVER_INTERSTITIAL_UNIT_ID_ANDROID,
-            gameOverInterstitialIosUnitId =
-                AppConfig.GAME_OVER_INTERSTITIAL_UNIT_ID_IOS,
+            fullscreenInterstitialAndroidUnitId =
+                AppConfig.FULLSCREEN_INTERSTITIAL_UNIT_ID_ANDROID,
+            fullscreenInterstitialIosUnitId =
+                AppConfig.FULLSCREEN_INTERSTITIAL_UNIT_ID_IOS,
         )
     }
     val darkTheme by rootComponent.darkTheme.collectAsState()

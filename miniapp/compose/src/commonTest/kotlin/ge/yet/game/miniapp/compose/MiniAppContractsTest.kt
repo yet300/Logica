@@ -52,22 +52,29 @@ class MiniAppContractsTest {
     fun `interstitial gate request completes immediately when no ad will show`() {
         var completed = false
 
-        MiniAppInterstitialGate(willShowAd = false) { onComplete -> onComplete() }
+        MiniAppAdGate(willShowAd = false) { onComplete -> onComplete() }
             .request { completed = true }
 
         assertTrue(completed)
     }
 
     @Test
-    fun `fruit merge action placements remain explicit host contracts`() {
+    fun `ad kinds stay generic without game-specific subtypes`() {
         assertEquals(
-            setOf(
-                MiniAppInterstitialPlacement.CONTINUE_AFTER_GAME_OVER,
-                MiniAppInterstitialPlacement.FRUIT_MERGE_CLEAR,
-                MiniAppInterstitialPlacement.FRUIT_MERGE_SHAKE,
-            ),
-            MiniAppInterstitialPlacement.entries.toSet(),
+            MiniAppAdKind.Fullscreen("continue_after_game_over"),
+            MiniAppAdKind.Fullscreen("continue_after_game_over"),
         )
+        assertEquals(MiniAppAdKind.Banner, MiniAppAdKind.Banner)
+    }
+
+    @Test
+    fun `sessions opt out of the host banner by default`() {
+        val session = object : MiniAppSession {
+            @Composable
+            override fun Content(modifier: Modifier) = Unit
+        }
+
+        assertFalse(session.wantsBanner)
     }
 
     private class FakePlugin : MiniAppPlugin {

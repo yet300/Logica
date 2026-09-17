@@ -28,9 +28,9 @@ import ge.yet.game.fruitmerge.generated.resources.miniapp_icon
 import ge.yet.game.fruitmerge.generated.resources.miniapp_title
 import ge.yet.game.miniapp.api.MiniAppCategoryId
 import ge.yet.game.miniapp.api.MiniAppId
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdGate
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import ge.yet.game.miniapp.metro.MiniAppMetroBindings
 import ge.yet.game.miniapp.testkit.MiniAppContractAssertions
@@ -59,7 +59,7 @@ internal interface FruitMergePluginTestGraph {
 internal object FruitMergeGraphTestBindings {
     @Provides
     @SingleIn(AppScope::class)
-    fun provideInterstitials(): MiniAppInterstitialCapability = NoOpInterstitialCapability
+    fun provideInterstitials(): MiniAppAdsCapability = NoOpInterstitialCapability
 }
 
 @OptIn(ExperimentalTestApi::class)
@@ -173,8 +173,8 @@ class FruitMergePluginContractTest {
     }
 }
 
-private data object NoOpInterstitialCapability : MiniAppInterstitialCapability {
+private data object NoOpInterstitialCapability : MiniAppAdsCapability {
     @Composable
-    override fun rememberGate(placement: MiniAppInterstitialPlacement): MiniAppInterstitialGate =
-        MiniAppInterstitialGate(willShowAd = false) { onComplete -> onComplete() }
+    override fun rememberGate(kind: MiniAppAdKind): MiniAppAdGate =
+        MiniAppAdGate(willShowAd = false) { onComplete -> onComplete() }
 }

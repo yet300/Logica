@@ -38,9 +38,9 @@ import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppStorageProvider
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdGate
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppMetroBindings
@@ -169,7 +169,7 @@ internal object BlockBlastGraphTestBindings {
 
     @Provides
     @SingleIn(AppScope::class)
-    fun provideInterstitialCapability(): MiniAppInterstitialCapability = NoOpInterstitialCapability
+    fun provideInterstitialCapability(): MiniAppAdsCapability = NoOpInterstitialCapability
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -491,10 +491,10 @@ private class TestFeedbackPreferences : FeedbackPreferences {
     override val vibrationEnabled: StateFlow<Boolean> = vibration.asStateFlow()
 }
 
-private data object NoOpInterstitialCapability : MiniAppInterstitialCapability {
+private data object NoOpInterstitialCapability : MiniAppAdsCapability {
     @Composable
-    override fun rememberGate(placement: MiniAppInterstitialPlacement): MiniAppInterstitialGate =
-        MiniAppInterstitialGate(
+    override fun rememberGate(kind: MiniAppAdKind): MiniAppAdGate =
+        MiniAppAdGate(
             willShowAd = false,
             request = { onComplete -> onComplete() },
         )

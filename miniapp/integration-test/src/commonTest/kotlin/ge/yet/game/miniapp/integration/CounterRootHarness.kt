@@ -24,9 +24,9 @@ import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdGate
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppPlugin
 import ge.yet.game.miniapp.compose.MiniAppRegistry
 import ge.yet.game.miniapp.compose.MiniAppSession
@@ -90,12 +90,12 @@ internal object CounterRootHostBindings {
     fun librariesProvider(): LibrariesProvider = LibrariesProvider { emptyList() }
 
     @Provides
-    fun interstitialCapability(): MiniAppInterstitialCapability =
-        object : MiniAppInterstitialCapability {
+    fun interstitialCapability(): MiniAppAdsCapability =
+        object : MiniAppAdsCapability {
             @Composable
             override fun rememberGate(
-                placement: MiniAppInterstitialPlacement,
-            ): MiniAppInterstitialGate = MiniAppInterstitialGate(
+                kind: MiniAppAdKind,
+            ): MiniAppAdGate = MiniAppAdGate(
                 willShowAd = false,
                 request = { onComplete -> onComplete() },
             )

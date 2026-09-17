@@ -13,16 +13,18 @@ import ge.yet.game.blockblast.ui.screen.root.RootTopBarContent
 import ge.yet.game.blockblast.ui.LocalSoundEnabled
 import ge.yet.game.blockblast.ui.LocalVibrationEnabled
 import ge.yet.game.domain.repository.FeedbackPreferences
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.compose.MiniAppSession
 
 class BlockBlastSession internal constructor(
     internal val component: RootComponent,
-    private val interstitials: MiniAppInterstitialCapability,
+    private val interstitials: MiniAppAdsCapability,
     internal val feedback: FeedbackPreferences,
 ) : MiniAppSession {
     override val frameMode: Value<MiniAppFrameMode> = component.frameMode
+
+    override val wantsBanner: Boolean = true
 
     @Composable
     override fun TopBarContent() {

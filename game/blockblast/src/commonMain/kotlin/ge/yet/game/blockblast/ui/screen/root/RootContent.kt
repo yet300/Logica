@@ -12,14 +12,14 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.blockblast.component.root.RootComponent
 import ge.yet.game.blockblast.ui.game.BlockBlastGameContent
 import ge.yet.game.blockblast.ui.result.GameResultContent
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.uikit.components.background.AmbientMeshBackground
 
 @Composable
 internal fun RootContent(
     component: RootComponent,
-    interstitials: MiniAppInterstitialCapability,
+    interstitials: MiniAppAdsCapability,
     modifier: Modifier = Modifier,
 ) {
     val stack by component.stack.subscribeAsState()
@@ -37,7 +37,7 @@ internal fun RootContent(
 
             is RootComponent.Child.Result -> {
                 val gate = interstitials.rememberGate(
-                    MiniAppInterstitialPlacement.CONTINUE_AFTER_GAME_OVER,
+                    MiniAppAdKind.Fullscreen("continue_after_game_over"),
                 )
                 GameResultContent(
                     component = instance.component,

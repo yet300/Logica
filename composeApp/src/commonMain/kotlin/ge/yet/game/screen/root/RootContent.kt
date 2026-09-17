@@ -77,6 +77,9 @@ internal fun RootChildContent(
                 background = opaqueBackground(declaredScheme.background, baseBackground),
             )
             val bannerContent = rememberBannerContent()
+            // The banner slot stays host-owned: a game only opts in through
+            // MiniAppSession.wantsBanner, mounting and zero-space policy live here.
+            val bottomBanner = if (session?.wantsBanner == true) bannerContent else null
             val chromeReporter = LocalSystemChromeReporter.current
             // Only the active route drives native system-icon appearance; outgoing
             // entries during transitions must not race it.
@@ -94,7 +97,7 @@ internal fun RootChildContent(
                         { backgroundModifier -> currentSession.Background(backgroundModifier) }
                     },
                     topBar = { session?.TopBarContent() },
-                    bottomBar = bottomBar ?: bannerContent,
+                    bottomBar = bottomBar ?: bottomBanner,
                 ) { viewport ->
                     when (val state = child.state) {
                         is RootComponent.MiniAppState.Content -> state.session.Content(viewport)

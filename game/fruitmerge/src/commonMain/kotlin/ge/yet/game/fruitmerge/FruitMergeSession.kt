@@ -13,15 +13,17 @@ import ge.yet.game.fruitmerge.ui.FruitMergeTestTags
 import ge.yet.game.fruitmerge.ui.MarketStallBackground
 import ge.yet.game.fruitmerge.ui.MarketPriceTag
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
-import ge.yet.game.miniapp.compose.MiniAppInterstitialPlacement
+import ge.yet.game.miniapp.compose.MiniAppAdKind
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.compose.MiniAppSession
 
 class FruitMergeSession internal constructor(
     private val component: RootComponent,
-    private val interstitials: MiniAppInterstitialCapability,
+    private val interstitials: MiniAppAdsCapability,
 ) : MiniAppSession {
     override val frameMode: Value<MiniAppFrameMode> = component.frameMode
+
+    override val wantsBanner: Boolean = true
 
     override fun handleBack(): Boolean = component.handleBack()
 
@@ -45,8 +47,8 @@ class FruitMergeSession internal constructor(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        val clearGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_CLEAR)
-        val shakeGate = interstitials.rememberGate(MiniAppInterstitialPlacement.FRUIT_MERGE_SHAKE)
+        val clearGate = interstitials.rememberGate(MiniAppAdKind.Fullscreen("fruit_merge_clear"))
+        val shakeGate = interstitials.rememberGate(MiniAppAdKind.Fullscreen("fruit_merge_shake"))
         RootContent(
             component = component,
             requestClearAd = { token ->

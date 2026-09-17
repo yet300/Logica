@@ -35,13 +35,13 @@ import ge.yet.game.blockblast.generated.resources.revive
 import ge.yet.game.blockblast.generated.resources.score
 import ge.yet.game.blockblast.ui.game.GameGrid
 import ge.yet.game.uikit.motion.rememberReducedMotion
-import ge.yet.game.miniapp.compose.MiniAppInterstitialGate
+import ge.yet.game.miniapp.compose.MiniAppAdGate
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun GameResultContent(
     component: GameResultComponent,
-    interstitialGate: MiniAppInterstitialGate,
+    interstitialGate: MiniAppAdGate,
     modifier: Modifier = Modifier,
 ) {
     val model by component.model.subscribeAsState()

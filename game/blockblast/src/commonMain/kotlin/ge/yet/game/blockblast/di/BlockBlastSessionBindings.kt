@@ -16,7 +16,7 @@ import ge.yet.game.blockblast.domain.engine.WeightedShapeGenerator
 import ge.yet.game.domain.repository.FeedbackPreferences
 import ge.yet.game.miniapp.api.MiniAppSessionHost
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import ge.yet.game.blockblast.component.root.DefaultRootComponentFactory
 import ge.yet.game.blockblast.component.root.RootComponent
@@ -57,7 +57,7 @@ abstract class BlockBlastSessionBindings {
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideMiniAppSession(
             component: RootComponent,
-            interstitials: MiniAppInterstitialCapability,
+            interstitials: MiniAppAdsCapability,
             feedback: FeedbackPreferences,
         ): BlockBlastSession = BlockBlastSession(component, interstitials, feedback)
     }

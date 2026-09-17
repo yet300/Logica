@@ -26,6 +26,9 @@ means that evidence is attached to the change or can be reproduced locally.
       decorative background; it does not manage platform bars or ad spacing.
 - [ ] Session-owned state and child graph are destroyed with the session.
 - [ ] No production allowlist change is mixed into contributor implementation.
+- [ ] No game-specific ad subtype, placement or name was added to
+      `:miniapp:compose`; fullscreen requests use `MiniAppAdKind.Fullscreen`
+      with an opaque reason, banner opt-in uses `MiniAppSession.wantsBanner`.
 
 ## Gameplay and state
 

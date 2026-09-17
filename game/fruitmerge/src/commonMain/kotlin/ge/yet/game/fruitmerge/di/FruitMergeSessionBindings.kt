@@ -19,7 +19,7 @@ import ge.yet.game.fruitmerge.component.result.FruitMergeResultComponent
 import ge.yet.game.fruitmerge.component.root.DefaultRootComponent
 import ge.yet.game.fruitmerge.component.root.DefaultRootComponentFactory
 import ge.yet.game.fruitmerge.component.root.RootComponent
-import ge.yet.game.miniapp.compose.MiniAppInterstitialCapability
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
 @BindingContainer
@@ -72,7 +72,7 @@ abstract class FruitMergeSessionBindings {
         @SingleIn(MiniAppSessionScope::class)
         internal fun provideSession(
             component: RootComponent,
-            interstitials: MiniAppInterstitialCapability,
+            interstitials: MiniAppAdsCapability,
         ): FruitMergeSession = FruitMergeSession(component, interstitials)
     }
 }

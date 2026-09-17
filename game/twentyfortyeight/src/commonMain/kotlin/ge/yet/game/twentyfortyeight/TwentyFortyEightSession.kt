@@ -13,6 +13,8 @@ class TwentyFortyEightSession internal constructor(
 ) : MiniAppSession {
     override val frameMode: Value<MiniAppFrameMode> = component.frameMode
 
+    override val wantsBanner: Boolean = true
+
     override fun handleBack(): Boolean = component.handleBack()
 
     @Composable
