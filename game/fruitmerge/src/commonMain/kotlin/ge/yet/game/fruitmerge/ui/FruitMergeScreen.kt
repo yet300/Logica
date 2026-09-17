@@ -637,6 +637,5 @@ private data class FruitTransfer(
 
 private const val NANOS_PER_SECOND: Float = 1_000_000_000f
 private const val MAX_FRAME_SECONDS: Float = 0.05f
-private const val FACE_CLOCK_WRAP_SECONDS: Float = 120f
 private const val FRUIT_PREVIEW_RADIUS_FRACTION: Float = 0.34f
 private const val FRUIT_TRANSFER_DURATION_MILLIS: Int = 340

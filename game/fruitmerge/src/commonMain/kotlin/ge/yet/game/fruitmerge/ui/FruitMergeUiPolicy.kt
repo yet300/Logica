@@ -77,3 +77,11 @@ private const val GUIDE_FADE_SECONDS: Float = 0.25f
 internal const val MAX_VISUAL_TILT_DEGREES: Float = 20f
 internal const val FACE_TILT_FOLLOW: Float = 0.25f
 internal const val MAX_FACE_TILT_DEGREES: Float = 8f
+
+/**
+ * Face-clock wrap shared by the game and result screens. Must stay an exact
+ * multiple of every blink interval so wrapping never jumps a blink phase.
+ * 117.6 = 28 * 4.2 = 14 * 8.4.
+ */
+internal const val FACE_CLOCK_WRAP_SECONDS: Float = 117.6f
+internal const val FACE_CLOCK_PERIOD_MILLIS: Int = 117_600

@@ -78,6 +78,15 @@ class FruitMergeUiPolicyTest {
     }
 
     @Test
+    fun `face clock wrap is a multiple of every blink interval`() {
+        assertEquals((FACE_CLOCK_WRAP_SECONDS * 1000).toInt(), FACE_CLOCK_PERIOD_MILLIS)
+        val defaultRemainder = FACE_CLOCK_WRAP_SECONDS % DEFAULT_BLINK_INTERVAL_SECONDS
+        val calmRemainder = FACE_CLOCK_WRAP_SECONDS % CALM_BLINK_INTERVAL_SECONDS
+        assertTrue(defaultRemainder < 0.001f, "Wrap must not jump the default blink phase")
+        assertTrue(calmRemainder < 0.001f, "Wrap must not jump the calm blink phase")
+    }
+
+    @Test
     fun `guide fades during cooldown and handle follows shared shake phase`() {
         assertEquals(1f, guideAlpha(0f))
         assertEquals(0f, guideAlpha(0.25f))
