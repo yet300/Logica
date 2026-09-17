@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
-import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.sin
 
@@ -63,8 +62,11 @@ internal fun DrawScope.drawFruit(
         )
     }
 
-    val angleDegrees = angleRadians * (180f / PI.toFloat())
-    rotate(degrees = angleDegrees, pivot = center) {
+    // Gentle wobble: the body leans with a clamped tilt while the face stays
+    // upright (slight lean only) so characters never pinwheel when spinning.
+    val bodyTiltDegrees = visualTiltDegrees(angleRadians)
+    val faceTilt = faceTiltDegrees(bodyTiltDegrees)
+    rotate(degrees = bodyTiltDegrees, pivot = center) {
         // 2. Fruit Body: Volume Gradient, Silhouette, Details & Glossy Highlights
         drawFruitSquishyBody(
             level = level,
@@ -84,7 +86,9 @@ internal fun DrawScope.drawFruit(
             spec = spec,
             alpha = alpha,
         )
+    }
 
+    rotate(degrees = faceTilt, pivot = center) {
         // 4. Character Faces with Emotional Expressions & Dynamic Reactions
         drawFruitFace(
             level = level,

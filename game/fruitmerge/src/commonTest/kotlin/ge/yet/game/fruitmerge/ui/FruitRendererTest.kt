@@ -1,11 +1,10 @@
 package ge.yet.game.fruitmerge.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -15,39 +14,29 @@ import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import kotlin.math.PI
-import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class)
 class FruitRendererTest {
     @Test
-    fun `physical angle rotates the complete fruit character`() = runComposeUiTest {
-        setContent {
-            Row {
+    fun `face stays upright while the body takes the tilt`() {
+        runComposeUiTest {
+            setContent {
                 FruitCanvas(angleRadians = 0f, tag = "fruit_zero")
-                FruitCanvas(angleRadians = PI.toFloat(), tag = "fruit_half_turn")
+                FruitCanvas(angleRadians = PI.toFloat() / 2f, tag = "fruit_quarter_turn")
             }
+
+            val zero = onNodeWithTag("fruit_zero").captureToImage()
+            val turned = onNodeWithTag("fruit_quarter_turn").captureToImage()
+
+            // APPLE has open PROUD eyes at (±0.28R, -0.02R). A 90° body tilt must
+            // not drag them along: both eyes stay dark in both renders.
+            assertTrue(eyeIsDark(zero, left = true), "Left eye must be drawn at rest")
+            assertTrue(eyeIsDark(zero, left = false), "Right eye must be drawn at rest")
+            assertTrue(eyeIsDark(turned, left = true), "Left eye must stay put on a 90° tilt")
+            assertTrue(eyeIsDark(turned, left = false), "Right eye must stay put on a 90° tilt")
         }
-
-        val zero = onNodeWithTag("fruit_zero").captureToImage().toPixelMap()
-        val halfTurn = onNodeWithTag("fruit_half_turn").captureToImage().toPixelMap()
-        var mismatchedPixels = 0
-        val pixelCount = zero.width * zero.height
-
-        for (y in 0 until zero.height) {
-            for (x in 0 until zero.width) {
-                val expected = zero[zero.width - 1 - x, zero.height - 1 - y]
-                val actual = halfTurn[x, y]
-                if (expected.distanceFrom(actual) > 0.15f) mismatchedPixels += 1
-            }
-        }
-
-        val mismatchRatio = mismatchedPixels.toFloat() / pixelCount
-        assertTrue(
-            mismatchRatio < 0.05f,
-            "A half turn must rotate body, face, and stem together; mismatch ratio was $mismatchRatio",
-        )
     }
 }
 
@@ -71,6 +60,25 @@ private fun FruitCanvas(
     }
 }
 
-private fun Color.distanceFrom(other: Color): Float =
-    abs(red - other.red) + abs(green - other.green) +
-        abs(blue - other.blue) + abs(alpha - other.alpha)
+/** Samples a small patch around the expected eye position; the white eye-shine dot sits near the eye center, so the darkest pixel decides. Face ink (0xFF471111) is dark, body (0xE53935) is bright red. */
+private fun eyeIsDark(image: ImageBitmap, left: Boolean): Boolean {
+    val pixels = image.toPixelMap()
+    val cx = pixels.width / 2f
+    val cy = pixels.height / 2f
+    val radius = minOf(pixels.width, pixels.height) * 0.30f
+    val eyeX = cx + (if (left) -0.28f else 0.28f) * radius
+    val eyeY = cy - 0.02f * radius
+    val step = radius * 0.05f
+    var minRed = Float.POSITIVE_INFINITY
+    var minGreen = Float.POSITIVE_INFINITY
+    for (dx in listOf(-step, 0f, step)) {
+        for (dy in listOf(-step, 0f, step)) {
+            val x = (eyeX + dx).toInt().coerceIn(0, pixels.width - 1)
+            val y = (eyeY + dy).toInt().coerceIn(0, pixels.height - 1)
+            val color = pixels[x, y]
+            minRed = minOf(minRed, color.red)
+            minGreen = minOf(minGreen, color.green)
+        }
+    }
+    return minRed < 0.5f && minGreen < 0.35f
+}

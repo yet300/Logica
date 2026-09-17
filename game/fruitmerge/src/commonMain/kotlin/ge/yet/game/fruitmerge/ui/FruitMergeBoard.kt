@@ -162,7 +162,7 @@ internal fun FruitMergeBoard(
                 level = body.level,
                 center = transform.world(body.position.x, body.position.y),
                 radius = body.level.radius * transform.side,
-                angleRadians = body.angle,
+                angleRadians = if (reducedMotion) 0f else body.angle,
                 verticalVelocity = body.velocity.y,
                 impact = body.impact,
                 facePhase = if (reducedMotion) {

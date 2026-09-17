@@ -41,6 +41,29 @@ class FruitMergeUiPolicyTest {
     }
 
     @Test
+    fun `visual tilt clamps physical spin to a gentle wobble`() {
+        assertEquals(0f, visualTiltDegrees(0f))
+        assertEquals(0f, visualTiltDegrees(Float.NaN))
+        assertTrue(abs(visualTiltDegrees(10f)) <= MAX_VISUAL_TILT_DEGREES)
+        assertTrue(abs(visualTiltDegrees(-10f)) <= MAX_VISUAL_TILT_DEGREES)
+        // Small angles pass through unwrapped.
+        assertTrue(abs(visualTiltDegrees(0.2f) - 0.2f * (180f / kotlin.math.PI.toFloat())) < 0.001f)
+        // Full turns wrap back to rest instead of snapping.
+        assertTrue(abs(visualTiltDegrees(2f * kotlin.math.PI.toFloat())) < 0.001f)
+    }
+
+    @Test
+    fun `face only leans a little with the body tilt`() {
+        assertEquals(0f, faceTiltDegrees(0f))
+        assertEquals(
+            MAX_VISUAL_TILT_DEGREES * FACE_TILT_FOLLOW,
+            faceTiltDegrees(MAX_VISUAL_TILT_DEGREES),
+        )
+        assertTrue(abs(faceTiltDegrees(100f)) <= MAX_FACE_TILT_DEGREES)
+        assertTrue(abs(faceTiltDegrees(-100f)) <= MAX_FACE_TILT_DEGREES)
+    }
+
+    @Test
     fun `guide fades during cooldown and handle follows shared shake phase`() {
         assertEquals(1f, guideAlpha(0f))
         assertEquals(0f, guideAlpha(0.25f))

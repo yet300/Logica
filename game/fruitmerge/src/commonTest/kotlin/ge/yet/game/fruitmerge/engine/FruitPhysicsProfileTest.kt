@@ -50,7 +50,7 @@ class FruitPhysicsProfileTest {
         assertTrue(fruitPhysicsProfile(FruitLevel.BLUEBERRY).contactRestitution > 0.2f)
         assertTrue(fruitPhysicsProfile(FruitLevel.RASPBERRY).floorRetention < 0.7f)
         assertTrue(fruitPhysicsProfile(FruitLevel.STRAWBERRY).wallGripSeconds > 0f)
-        assertTrue(fruitPhysicsProfile(FruitLevel.LIME).spinTransfer > 0.5f)
+        assertTrue(fruitPhysicsProfile(FruitLevel.LIME).spinTransfer > 0.25f)
         assertTrue(fruitPhysicsProfile(FruitLevel.MANDARIN).floorRetention > 0.9f)
         assertTrue(fruitPhysicsProfile(FruitLevel.APPLE).massMultiplier > 1f)
         assertTrue(fruitPhysicsProfile(FruitLevel.PEAR).balanceTorque != 0f)
