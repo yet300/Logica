@@ -150,6 +150,35 @@ class FruitMergeScreenTest {
     }
 
     @Test
+    fun `price tag values stay on one line in a narrow slot with enlarged text`() = runComposeUiTest {
+        setContent {
+            val density = LocalDensity.current
+            CompositionLocalProvider(
+                LocalDensity provides Density(density.density, fontScale = 1.3f),
+            ) {
+                LogicaTheme(darkTheme = false) {
+                    // Narrow top-bar center slot, like a 402pt phone with crowded chrome.
+                    Box(Modifier.size(200.dp, 120.dp)) {
+                        MarketPriceTag(score = 8_765_432_100, bestScore = 12_500_000_000)
+                    }
+                }
+            }
+        }
+
+        val scoreLines = mutableListOf<TextLayoutResult>()
+        onNodeWithText("8.7B").performSemanticsAction(SemanticsActions.GetTextLayoutResult) {
+            it(scoreLines)
+        }
+        val bestLines = mutableListOf<TextLayoutResult>()
+        onNodeWithText("12.5B").performSemanticsAction(SemanticsActions.GetTextLayoutResult) {
+            it(bestLines)
+        }
+
+        assertEquals(1, scoreLines.single().lineCount)
+        assertEquals(1, bestLines.single().lineCount)
+    }
+
+    @Test
     fun `terminal phase keeps the board interactive behind the result stack`() = runComposeUiTest {
         val base = playingModel()
         val component = FakeFruitMergeComponent(
