@@ -25,9 +25,47 @@ internal data class FruitVisualSpec(
     val leafShadow: Color = Color(0xFF2E7D32),
     val stem: Color = Color(0xFF6D4C41),
     val lightDirection: FruitLightDirection = FruitLightDirection.UPPER_LEFT,
+    val blinkIntervalSeconds: Float = DEFAULT_BLINK_INTERVAL_SECONDS,
+    val blinkClosedSeconds: Float = DEFAULT_BLINK_CLOSED_SECONDS,
 ) {
     val identityKey: String = "${silhouette.name}:${detail.name}:${face.name}"
 }
+
+internal const val DEFAULT_BLINK_INTERVAL_SECONDS: Float = 4.2f
+internal const val DEFAULT_BLINK_CLOSED_SECONDS: Float = 0.14f
+
+/** Calm blink for large, rarely-blinking characters (PEACH, PINEAPPLE). */
+internal const val CALM_BLINK_INTERVAL_SECONDS: Float = 8.4f
+internal const val CALM_BLINK_CLOSED_SECONDS: Float = 0.20f
+
+internal fun isFruitBlinking(level: FruitLevel, facePhase: Float): Boolean {
+    val spec = fruitVisualSpec(level)
+    if (!facePhase.isFinite()) return false
+    val interval = spec.blinkIntervalSeconds.coerceAtLeast(0.5f)
+    val closed = spec.blinkClosedSeconds.coerceIn(0f, interval * 0.5f)
+    if (closed <= 0f) return false
+    val phase = ((facePhase % interval) + interval) % interval
+    return phase < closed
+}
+
+/**
+ * Deterministic per-body blink offset in [0, interval), decorrelates neighbours.
+ * Replaces the old `body.id * 0.37f` ramp which blinked adjacent ids as a wave.
+ */
+internal fun fruitBlinkOffset(bodyId: Long, level: FruitLevel): Float {
+    val interval = fruitVisualSpec(level).blinkIntervalSeconds.coerceAtLeast(0.5f)
+    // SplitMix64-style avalanche, then map to [0, interval).
+    var hash = bodyId + -0x614C96B94D9488E9L
+    hash = (hash xor (hash ushr 30)) * -0x40B6CB32AE4D5E43L
+    hash = (hash xor (hash ushr 27)) * -0x6B7E434BD6E46FDFL
+    hash = hash xor (hash ushr 31)
+    val fraction = ((hash ushr 11) % 1000L).toFloat() / 1000f
+    return fraction * interval
+}
+
+/** Phase that never blinks: mid-interval. Used for reduced-motion and static previews. */
+internal fun fruitRestingPhase(level: FruitLevel): Float =
+    fruitVisualSpec(level).blinkIntervalSeconds.coerceAtLeast(0.5f) * 0.5f
 
 internal fun fruitVisualSpec(level: FruitLevel): FruitVisualSpec = FruitVisualSpecs[level.ordinal]
 
@@ -156,6 +194,8 @@ private val FruitVisualSpecs = listOf(
         leaf = Color(0xFF66BB6A),
         leafShadow = Color(0xFF388E3C),
         stem = Color(0xFF6D4C41),
+        blinkIntervalSeconds = CALM_BLINK_INTERVAL_SECONDS,
+        blinkClosedSeconds = CALM_BLINK_CLOSED_SECONDS,
     ),
     // 8. PINEAPPLE (Very Large, Bold / Royal)
     FruitVisualSpec(
@@ -172,6 +212,8 @@ private val FruitVisualSpecs = listOf(
         leaf = Color(0xFF2E7D32),
         leafShadow = Color(0xFF1B5E20),
         stem = Color(0xFF4E2C04),
+        blinkIntervalSeconds = CALM_BLINK_INTERVAL_SECONDS,
+        blinkClosedSeconds = CALM_BLINK_CLOSED_SECONDS,
     ),
     // 9. WATERMELON (Giant, Zen Master / Jolly)
     FruitVisualSpec(

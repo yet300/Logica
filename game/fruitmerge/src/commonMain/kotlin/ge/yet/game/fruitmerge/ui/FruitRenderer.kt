@@ -502,24 +502,26 @@ private fun DrawScope.drawFruitFace(
         size = Size(blushRadius * 1.8f, blushRadius * 1.1f),
     )
 
-    // Dynamic Blinking check
-    val isBlinking = (facePhase % 4.2f) < 0.14f
+    // Dynamic blinking check (per-level calm policy: PEACH/PINEAPPLE blink 2x rarer)
+    val isBlinking = isFruitBlinking(level, facePhase)
+    val hasClosedEyes = spec.face == FruitFace.SLEEPY ||
+        spec.face == FruitFace.SERENE ||
+        spec.face == FruitFace.GENTLE
 
     // Draw Eyes
-    if (isBlinking || expression == FruitExpression.IMPACT || expression == FruitExpression.MERGING) {
-        // Squint / squeeze eyes (> < or closed horizontal arcs)
+    if (expression == FruitExpression.IMPACT || expression == FruitExpression.MERGING) {
+        // Sparkly squeeze (> <)
         val halfW = radius * 0.11f
-        if (expression == FruitExpression.IMPACT || expression == FruitExpression.MERGING) {
-            // Sparkly squeeze (> <)
-            drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY - halfW * 0.7f), Offset(leftEyeCenter.x + halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
-            drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY + halfW * 0.7f), Offset(leftEyeCenter.x + halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
-            drawLine(faceInk, Offset(rightEyeCenter.x + halfW, eyeY - halfW * 0.7f), Offset(rightEyeCenter.x - halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
-            drawLine(faceInk, Offset(rightEyeCenter.x + halfW, eyeY + halfW * 0.7f), Offset(rightEyeCenter.x - halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
-        } else {
-            // Calm closed sleeping/blinking line
-            drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY), Offset(leftEyeCenter.x + halfW, eyeY), strokeWidth, StrokeCap.Round)
-            drawLine(faceInk, Offset(rightEyeCenter.x - halfW, eyeY), Offset(rightEyeCenter.x + halfW, eyeY), strokeWidth, StrokeCap.Round)
-        }
+        drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY - halfW * 0.7f), Offset(leftEyeCenter.x + halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
+        drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY + halfW * 0.7f), Offset(leftEyeCenter.x + halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
+        drawLine(faceInk, Offset(rightEyeCenter.x + halfW, eyeY - halfW * 0.7f), Offset(rightEyeCenter.x - halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
+        drawLine(faceInk, Offset(rightEyeCenter.x + halfW, eyeY + halfW * 0.7f), Offset(rightEyeCenter.x - halfW * 0.6f, eyeY), strokeWidth, StrokeCap.Round)
+    } else if (isBlinking && !hasClosedEyes) {
+        // Calm closed blinking line. Closed-eye faces (SLEEPY/SERENE/GENTLE)
+        // intentionally keep their ◡ arcs here so blinking never reads as "opening".
+        val halfW = radius * 0.11f
+        drawLine(faceInk, Offset(leftEyeCenter.x - halfW, eyeY), Offset(leftEyeCenter.x + halfW, eyeY), strokeWidth, StrokeCap.Round)
+        drawLine(faceInk, Offset(rightEyeCenter.x - halfW, eyeY), Offset(rightEyeCenter.x + halfW, eyeY), strokeWidth, StrokeCap.Round)
     } else when (spec.face) {
         FruitFace.SLEEPY, FruitFace.SERENE, FruitFace.GENTLE -> {
             // Calm happy closed curved smiling eyes ( ◡  ◡ )

@@ -572,7 +572,7 @@ private fun FruitEvolutionStrip(
                     angleRadians = 0f,
                     verticalVelocity = 0f,
                     impact = 0f,
-                    facePhase = level.ordinal.toFloat(),
+                    facePhase = fruitRestingPhase(level),
                     danger = DangerVisual(0f, false),
                     alpha = 1f,
                 )

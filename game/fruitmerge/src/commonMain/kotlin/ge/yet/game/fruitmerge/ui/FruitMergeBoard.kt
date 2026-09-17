@@ -165,7 +165,11 @@ internal fun FruitMergeBoard(
                 angleRadians = body.angle,
                 verticalVelocity = body.velocity.y,
                 impact = body.impact,
-                facePhase = if (reducedMotion) body.id.toFloat() else faceTimeSeconds + body.id * 0.37f,
+                facePhase = if (reducedMotion) {
+                    fruitRestingPhase(body.level)
+                } else {
+                    faceTimeSeconds + fruitBlinkOffset(body.id, body.level)
+                },
                 danger = danger,
                 alpha = 1f,
             )
@@ -199,7 +203,7 @@ internal fun FruitPreview(
             angleRadians = 0f,
             verticalVelocity = 0f,
             impact = 0f,
-            facePhase = if (reducedMotion) level.ordinal.toFloat() else faceTimeSeconds + level.ordinal,
+            facePhase = if (reducedMotion) fruitRestingPhase(level) else faceTimeSeconds + level.ordinal,
             danger = DangerVisual(0f, false),
             alpha = 1f,
         )
