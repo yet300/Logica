@@ -47,6 +47,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.resetMain
@@ -550,6 +551,42 @@ class MiniAppRuntimeCoordinatorTest {
         allowCleanupToFinish.complete(Unit)
         reset.join()
         assertEquals(true, clearStarted.isCompleted)
+    }
+
+    @Test
+    fun reset_proceeds_to_clear_when_teardown_times_out() = runTest {
+        val clearStarted = CompletableDeferred<Unit>()
+        val setup = build(
+            dataResetter = dataResetter {
+                clearStarted.complete(Unit)
+                MiniAppDataResetResult.Success
+            },
+            // Detached session never tears down: navigate-away does not destroy
+            // the child, so awaitTeardown() would hang without the reset bound.
+            afterClose = {},
+        )
+        val parent = lifecycle().also(LifecycleRegistry::resume)
+        setup.launchAndCreate(FIRST_ID, DefaultComponentContext(parent))
+
+        val reset = backgroundScope.launch { setup.coordinator.clearMiniAppData() }
+        runCurrent()
+        assertFalse(clearStarted.isCompleted)
+
+        // Past the 5s teardown bound: reset must stop waiting and clear anyway.
+        advanceTimeBy(5_001L)
+        reset.join()
+        assertEquals(true, clearStarted.isCompleted)
+        assertEquals(
+            listOf("miniapp_reset_teardown_timeout id=game.alpha key=1"),
+            setup.crashlytics.messages.filter { it.startsWith("miniapp_reset_teardown_timeout") },
+        )
+
+        // Gate is released once the timed-out reset finishes.
+        parent.destroy()
+        setup.coordinator.launch(SECOND_ID) { key ->
+            setup.coordinator.createSessionWithChildScope(SECOND_ID, key, componentContext())
+        }
+        assertEquals(1, setup.secondPlugin.createCount)
     }
 
     @Test
