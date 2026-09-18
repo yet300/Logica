@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.graphicsLayer
  * Call [ShakeState.shake] to trigger; the Modifier reads
  * [ShakeState.offsetX] each frame.
  */
-class ShakeState {
+internal class ShakeState {
     val offsetX = Animatable(0f)
 
     suspend fun shake(strength: Float = 18f) {
@@ -34,7 +34,7 @@ class ShakeState {
 }
 
 @Composable
-fun rememberShakeState(): ShakeState = remember { ShakeState() }
+internal fun rememberShakeState(): ShakeState = remember { ShakeState() }
 
-fun Modifier.shake(state: ShakeState): Modifier =
+internal fun Modifier.shake(state: ShakeState): Modifier =
     this.graphicsLayer { translationX = state.offsetX.value }

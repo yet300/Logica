@@ -53,7 +53,7 @@ private val GAP_DP = 2.dp
 private val GRID_PADDING_DP = 6.dp
 
 @Composable
-fun GameGrid(
+internal fun GameGrid(
     grid: Grid,
     selectedPiece: Piece?,
     onCellTapped: (x: Int, y: Int) -> Unit,

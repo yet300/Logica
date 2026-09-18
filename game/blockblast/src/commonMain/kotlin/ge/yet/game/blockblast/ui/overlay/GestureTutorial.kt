@@ -77,7 +77,7 @@ private val GHOST_LIFT = 30.dp
  * [trayBoundsInViewport] and [gridBoundsInViewport] are viewport-local pixels.
  */
 @Composable
-fun GestureTutorial(
+internal fun GestureTutorial(
     trayBoundsInViewport: Rect,
     gridBoundsInViewport: Rect,
     piece: Piece?,

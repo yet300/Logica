@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
  * Call [ComboStripesState.sweep] to trigger; the Modifier renders the
  * sweeping bar at [ComboStripesState.progress] (0f–1f).
  */
-class ComboStripesState {
+internal class ComboStripesState {
     private val mutationMutex = MutatorMutex()
 
     val progress = Animatable(0f)
@@ -50,13 +50,13 @@ class ComboStripesState {
 }
 
 @Composable
-fun rememberComboStripesState(): ComboStripesState = remember { ComboStripesState() }
+internal fun rememberComboStripesState(): ComboStripesState = remember { ComboStripesState() }
 
 /**
  * Draws a horizontal sweep bar across the composable.
  * The bar is positioned at [state.progress] fraction of the width.
  */
-fun Modifier.comboStripes(
+internal fun Modifier.comboStripes(
     state: ComboStripesState,
     stripeColor: Color = Color.White,
 ): Modifier = this.drawWithContent {

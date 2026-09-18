@@ -15,7 +15,7 @@ import ge.yet.game.uikit.theme.PieceColors
 import kotlin.math.sin
 
 @Composable
-fun Modifier.gridBorderGlow(comboLevel: Int, animate: Boolean): Modifier = composed {
+internal fun Modifier.gridBorderGlow(comboLevel: Int, animate: Boolean): Modifier = composed {
     val phaseState = if (animate) {
         rememberInfiniteTransition(label = "gridBorderGlow").animateFloat(
             initialValue = 0f,

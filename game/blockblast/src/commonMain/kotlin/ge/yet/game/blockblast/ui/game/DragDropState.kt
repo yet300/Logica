@@ -10,7 +10,7 @@ import ge.yet.game.blockblast.domain.model.Grid
 import ge.yet.game.blockblast.domain.model.Piece
 import ge.yet.game.blockblast.domain.model.Polyomino
 
-enum class DragPresentation {
+internal enum class DragPresentation {
     Idle,
     Dragging,
     Returning,
@@ -25,7 +25,7 @@ enum class DragPresentation {
  * - the grid anchor cell the piece would snap to (if valid)
  * - whether the current anchor is a valid placement
  */
-class DragDropState {
+internal class DragDropState {
     var presentation by mutableStateOf(DragPresentation.Idle)
         private set
 
@@ -166,12 +166,12 @@ class DragDropState {
 private const val DRAG_SENSITIVITY = 1.15f
 
 @Composable
-fun rememberDragDropState(): DragDropState = remember { DragDropState() }
+internal fun rememberDragDropState(): DragDropState = remember { DragDropState() }
 
 /**
  * UI-side placement validity check — mirrors the domain placement rule.
  */
-fun canPlacePiece(shape: Polyomino, x: Int, y: Int, grid: Grid): Boolean {
+internal fun canPlacePiece(shape: Polyomino, x: Int, y: Int, grid: Grid): Boolean {
     for (cell in shape.cells) {
         val gx = x + cell.x
         val gy = y + cell.y

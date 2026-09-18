@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
  * applied to the whole game container, fired on combo ≥ 2 to amplify the
  * "satisfying" payoff of chained line clears.
  */
-class ComboPunchState {
+internal class ComboPunchState {
     val flashAlpha = Animatable(0f)
     val zoom = Animatable(1f)
     /**
@@ -54,10 +54,10 @@ class ComboPunchState {
 }
 
 @Composable
-fun rememberComboPunchState(): ComboPunchState = remember { ComboPunchState() }
+internal fun rememberComboPunchState(): ComboPunchState = remember { ComboPunchState() }
 
 /** Applies the camera-zoom factor of [state] to a container. */
-fun Modifier.comboZoom(state: ComboPunchState): Modifier = this.graphicsLayer {
+internal fun Modifier.comboZoom(state: ComboPunchState): Modifier = this.graphicsLayer {
     val z = state.zoom.value
     scaleX = z
     scaleY = z
@@ -69,7 +69,7 @@ fun Modifier.comboZoom(state: ComboPunchState): Modifier = this.graphicsLayer {
  * shrinking to a point with combo level boosting the radius. Otherwise it
  * falls back to a full-bounds white wash.
  */
-fun Modifier.comboFlash(state: ComboPunchState): Modifier = this.drawWithContent {
+internal fun Modifier.comboFlash(state: ComboPunchState): Modifier = this.drawWithContent {
     drawContent()
     val a = state.flashAlpha.value
     if (a <= 0f) return@drawWithContent

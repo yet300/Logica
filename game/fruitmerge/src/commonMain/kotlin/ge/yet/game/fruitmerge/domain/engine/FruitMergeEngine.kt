@@ -14,7 +14,7 @@ import ge.yet.game.fruitmerge.domain.model.Vec2
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 import kotlin.math.max
 
-interface FruitMergeRules {
+internal interface FruitMergeRules {
     fun movePreview(state: FruitMergeState, normalizedX: Float): FruitMergeState
     fun drop(state: FruitMergeState): ActionResult
     fun step(state: FruitMergeState, elapsedSeconds: Float): FruitMergeState
@@ -26,7 +26,7 @@ interface FruitMergeRules {
 }
 
 @SingleIn(MiniAppSessionScope::class)
-class FruitMergeEngine @Inject constructor(
+internal class FruitMergeEngine @Inject constructor(
     private val physics: FruitPhysics = FruitPhysics(),
 ) : FruitMergeRules {
     var diagnostics: EngineDiagnostics = EngineDiagnostics()

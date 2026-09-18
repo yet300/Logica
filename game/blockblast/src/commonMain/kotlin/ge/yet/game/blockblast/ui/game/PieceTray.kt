@@ -84,7 +84,7 @@ private const val SLOT_COUNT = 3
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun PieceTray(
+internal fun PieceTray(
     tray: PieceTrayComponent,
     modifier: Modifier = Modifier,
     dragEnabled: Boolean = true,

@@ -11,5 +11,5 @@ import androidx.compose.runtime.staticCompositionLocalOf
  */
 // staticCompositionLocalOf: these flip rarely; avoiding the per-read observer cost
 // of compositionLocalOf is worth the full-subtree recomposition on flip.
-val LocalVibrationEnabled = staticCompositionLocalOf { true }
-val LocalSoundEnabled = staticCompositionLocalOf { true }
+internal val LocalVibrationEnabled = staticCompositionLocalOf { true }
+internal val LocalSoundEnabled = staticCompositionLocalOf { true }

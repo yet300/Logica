@@ -7,12 +7,12 @@ internal const val MAX_BODIES: Int = 80
 internal const val MAX_CONTACT_PASSES: Int = 4
 internal const val MAX_CANDIDATE_PAIRS: Int = 960
 
-data class BodyPair(
+internal data class BodyPair(
     val firstIndex: Int,
     val secondIndex: Int,
 )
 
-class SpatialGrid {
+internal class SpatialGrid {
     private val buckets = HashMap<Int, MutableList<Int>>(128)
     private val pairKeys = HashSet<Long>(MAX_CANDIDATE_PAIRS)
     private val pairs = ArrayList<BodyPair>(MAX_CANDIDATE_PAIRS)

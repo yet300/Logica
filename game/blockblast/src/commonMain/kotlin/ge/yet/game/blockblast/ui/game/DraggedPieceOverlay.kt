@@ -33,7 +33,7 @@ import ge.yet.game.uikit.coordinates.windowToViewport
  * here besides rendering.
  */
 @Composable
-fun DraggedPieceOverlay(
+internal fun DraggedPieceOverlay(
     piece: Piece,
     color: Color,
     cellSize: Dp,

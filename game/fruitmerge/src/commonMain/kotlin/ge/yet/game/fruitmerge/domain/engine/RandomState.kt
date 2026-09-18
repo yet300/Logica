@@ -2,13 +2,13 @@ package ge.yet.game.fruitmerge.domain.engine
 
 import kotlin.jvm.JvmInline
 
-data class RandomValue(
+internal data class RandomValue(
     val state: RandomState,
     val value: Int,
 )
 
 @JvmInline
-value class RandomState(val bits: Long) {
+internal value class RandomState(val bits: Long) {
     fun nextInt(): RandomValue {
         var nextBits = if (bits == 0L) NON_ZERO_SEED else bits
         nextBits = nextBits xor (nextBits shl 13)

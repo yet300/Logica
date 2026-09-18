@@ -31,7 +31,7 @@ import com.app.common.utils.formatScore
  * value vs. the previous one — increases roll up, decreases roll down.
  */
 @Composable
-fun AnimatedCounter(
+internal fun AnimatedCounter(
     value: Long,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.headlineLarge,

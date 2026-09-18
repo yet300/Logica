@@ -29,7 +29,7 @@ import ge.yet.game.uikit.components.modifier.whisperShadow
  * cuts the recomposition count per score event from ~500 to ~1.
  */
 @Composable
-fun ScoreChip(
+internal fun ScoreChip(
     label: String,
     value: Long,
     modifier: Modifier = Modifier,
