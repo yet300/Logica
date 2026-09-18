@@ -44,7 +44,10 @@ internal class DefaultMiniAppAudio(
             is AudioCompilationResult.Success -> result.program
         }
         return submit { it.playMusic(compiled) }.also { result ->
-            if (result === AudioCommandResult.Accepted) updateState { it.copy(currentMusic = program) }
+            if (result === AudioCommandResult.Accepted) {
+                updateState { it.copy(currentMusic = program, musicGainOverride = null, adPaused = false) }
+                updateBackendPolicy()
+            }
         }
     }
 
@@ -53,7 +56,10 @@ internal class DefaultMiniAppAudio(
         val activeBackend = existingBackend() ?: return AudioCommandResult.Accepted
         val fadeFrames = (fadeOut.seconds * activeBackend.sampleRate).roundToInt()
         return submit { it.stopMusic(fadeFrames) }.also { result ->
-            if (result === AudioCommandResult.Accepted) updateState { it.copy(currentMusic = null) }
+            if (result === AudioCommandResult.Accepted) {
+                updateState { it.copy(currentMusic = null, musicGainOverride = null, adPaused = false) }
+                updateBackendPolicy()
+            }
         }
     }
 
@@ -99,9 +105,61 @@ internal class DefaultMiniAppAudio(
         }
     }
 
+    fun attachAdJob(job: Job) {
+        while (true) {
+            val current = state.value
+            if (current.closed) {
+                job.cancel()
+                return
+            }
+            if (state.compareAndSet(current, current.copy(adJob = job))) return
+        }
+    }
+
     fun updateVisibility(value: MiniAppVisibility) {
         val updated = updateOpenState { current ->
             if (current.visibility == value) current else current.copy(visibility = value)
+        } ?: return
+        updateBackendPolicy(updated)
+    }
+
+    /**
+     * Smooth music-gain override for the ad supervisor. Null restores
+     * authority to visibility/settings; an absolute value temporarily wins.
+     */
+    fun setMusicGainOverride(gain: Float?) {
+        require(gain == null || (gain.isFinite() && gain in 0f..1f))
+        val updated = updateOpenState { current ->
+            if (current.musicGainOverride == gain) current else current.copy(musicGainOverride = gain)
+        } ?: return
+        updateBackendPolicy(updated)
+    }
+
+    /**
+     * Pauses music scheduling without forgetting the program, so a later
+     * unpause resumes mid-track with no recompile.
+     */
+    fun setAdPaused(paused: Boolean) {
+        val updated = updateOpenState { current ->
+            if (current.adPaused == paused) current else current.copy(adPaused = paused)
+        } ?: return
+        updateBackendPolicy(updated)
+    }
+
+    /** Effective music gain for fade supervisors to ramp from/to. */
+    fun effectiveMusicGain(): Float = policy(state.value).musicGain
+
+    /** Visibility/settings music gain ignoring any supervisor override. */
+    fun baseMusicGain(): Float = baseMusicGainOf(state.value)
+
+    /**
+     * Suppresses new SFX while a fullscreen ad is showing. Music itself is
+     * faded by the supervisor through [setMusicGainOverride]; this only gates
+     * commands.
+     */
+    fun setAdSuppressed(suppressed: Boolean) {
+        val updated = updateOpenState { current ->
+            if (current.adSuppressed == suppressed) current else current.copy(adSuppressed = suppressed)
         } ?: return
         updateBackendPolicy(updated)
     }
@@ -129,6 +187,7 @@ internal class DefaultMiniAppAudio(
     fun close() {
         val previous = closeState() ?: return
         previous.visibilityJob?.cancel()
+        previous.adJob?.cancel()
         try {
             existingBackend()?.release()
         } catch (error: Exception) {
@@ -152,15 +211,23 @@ internal class DefaultMiniAppAudio(
     }
 
     private fun policy(current: State): AudioSessionPolicy {
-        val visibilityPolicy = when (current.visibility) {
-            MiniAppVisibility.ACTIVE -> AudioSessionPolicy.Active
-            MiniAppVisibility.OBSCURED -> AudioSessionPolicy.Obscured
-            MiniAppVisibility.BACKGROUND -> AudioSessionPolicy.Background
-        }
+        val visibilityPolicy = visibilityPolicyOf(current)
         return visibilityPolicy.copy(
-            musicGain = if (current.musicEnabled) visibilityPolicy.musicGain else 0f,
-            acceptsNewSfx = current.sfxEnabled && visibilityPolicy.acceptsNewSfx,
+            musicGain = current.musicGainOverride ?: baseMusicGainOf(current),
+            acceptsNewSfx = current.sfxEnabled && visibilityPolicy.acceptsNewSfx && !current.adSuppressed,
+            schedulingPaused = visibilityPolicy.schedulingPaused || current.adPaused,
         )
+    }
+
+    private fun visibilityPolicyOf(current: State): AudioSessionPolicy = when (current.visibility) {
+        MiniAppVisibility.ACTIVE -> AudioSessionPolicy.Active
+        MiniAppVisibility.OBSCURED -> AudioSessionPolicy.Obscured
+        MiniAppVisibility.BACKGROUND -> AudioSessionPolicy.Background
+    }
+
+    private fun baseMusicGainOf(current: State): Float {
+        val visibilityPolicy = visibilityPolicyOf(current)
+        return if (current.musicEnabled) visibilityPolicy.musicGain else 0f
     }
 
     private fun updateState(transform: (State) -> State) {
@@ -184,7 +251,7 @@ internal class DefaultMiniAppAudio(
         while (true) {
             val current = state.value
             if (current.closed) return null
-            if (state.compareAndSet(current, current.copy(closed = true, visibilityJob = null))) return current
+            if (state.compareAndSet(current, current.copy(closed = true, visibilityJob = null, adJob = null))) return current
         }
     }
 
@@ -225,6 +292,10 @@ internal class DefaultMiniAppAudio(
         val sfxEnabled: Boolean,
         val currentMusic: AudioProgram? = null,
         val visibilityJob: Job? = null,
+        val adJob: Job? = null,
+        val adSuppressed: Boolean = false,
+        val musicGainOverride: Float? = null,
+        val adPaused: Boolean = false,
         val closed: Boolean = false,
     )
 }

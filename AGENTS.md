@@ -99,8 +99,8 @@ BlockBlast/
 | `:game:blockblast` | Block Blast rules, models, persistence, bundled-audio filename mapping, Metro child graph, MiniApp plugin/session, components, tests and Compose UI | `logica.miniapp` convention; MiniApp/core contracts, ConfettiKit and MVIKotlin; no raw Settings, platform-audio or native-ad dependency |
 | `:game:twentyfortyeight` | Allowlisted 2048 MiniApp with game-owned rules, persistence, session graph, UI and tests | `logica.miniapp` convention; approved inward core and MVI dependencies; included in the production bundle |
 | `:monetization:core` | SDK-neutral entitlement state and advertising policy | no project dependency declared |
-| `:monetization:ads` | AdMob/UMP integration, ATT bridge, banners and interstitials | `:monetization:core` |
-| `:miniapp:api` | Stable Compose-free IDs, storage-key helpers, review/session and visibility contracts | kotlinx serialization, coroutines |
+| `:monetization:ads` | AdMob/UMP integration, ATT bridge, banners and interstitials | `:monetization:core`, `:miniapp:api` |
+| `:miniapp:api` | Stable Compose-free IDs, storage-key helpers, review/session and visibility contracts, fullscreen-ad signal | kotlinx serialization, coroutines |
 | `:miniapp:compose` | Compose-facing MiniApp plugin, session, audio-bound session context, optional host-toolbar content, manifest, registry and interstitial-capability contracts | `:miniapp:api`, `:miniapp:audio`, Compose, resources, Decompose |
 | `:miniapp:metro` | Immutable app-scoped MiniApp registry, empty-capable Metro set bindings, session-scope marker and retained graph handle | `:miniapp:compose`, Metro |
 | `:miniapp:storage` | App infrastructure for namespace-bound storage, legacy aliases and best-effort all-game-data reset | `:miniapp:api`, `:core:common`, `:core:domain`, Multiplatform Settings |
@@ -143,6 +143,12 @@ Keep monetization policy in `:monetization:core`; it must not depend on Compose,
 Firebase, advertising SDKs, or either application shell. Native AdMob and UMP
 dependencies belong in `:monetization:ads`. Product configuration, such
 as ad unit IDs and the current entitlement, enters through `:composeApp`.
+Fullscreen interstitial presentation is bracketed by the shared app-scoped
+`FullscreenAdVisibility` signal (enter before show, exit on every terminal
+callback); the procedural `MiniAppAudioEngine` suppresses game sound while
+it is showing, so ad muting is uniform on Android and iOS — including iOS,
+where presenting an ad never backgrounds the app and visibility alone
+cannot observe it.
 
 MiniApp dependencies also flow inward. `:miniapp:api` is Compose-free and owns
 only stable portable contracts. `:miniapp:compose` depends on that API and owns

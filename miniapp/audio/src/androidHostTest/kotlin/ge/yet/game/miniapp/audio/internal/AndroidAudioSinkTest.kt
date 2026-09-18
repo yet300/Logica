@@ -148,6 +148,21 @@ class AndroidAudioSinkTest {
     }
 
     @Test
+    fun `denied focus retries while music is pending and resumes on grant`() {
+        val platform = RecordingAndroidAudioPlatform(
+            nativeSampleRate = 8_000,
+            minimumBuffers = mapOf(AndroidPcmEncoding.Float to 1_024),
+        ).also { it.focusResults += listOf(false, false, true) }
+        val session = AndroidAudioSink(platform).openSession(MiniAppId("game.audio-test"), 6L)
+        session.playMusic(compiledAndroidTone())
+
+        assertTrue(platform.output.firstWrite.await(5, TimeUnit.SECONDS))
+        assertTrue(platform.requestFocusCount >= 3)
+
+        session.release()
+    }
+
+    @Test
     fun `platform write failure is contained in diagnostics and releases writer`() {
         val platform = RecordingAndroidAudioPlatform(
             nativeSampleRate = 8_000,
@@ -180,6 +195,7 @@ private class RecordingAndroidAudioPlatform(
     var writerThread: Thread? = null
     var abandonFocusCount = 0
     var requestFocusCount = 0
+    val focusResults = ArrayDeque<Boolean>()
     private var focusListener: ((AndroidAudioFocusChange) -> Unit)? = null
 
     override fun nativeOutputSampleRate(): Int = nativeSampleRate
@@ -199,7 +215,7 @@ private class RecordingAndroidAudioPlatform(
     override fun requestAudioFocus(listener: (AndroidAudioFocusChange) -> Unit): Boolean {
         requestFocusCount += 1
         focusListener = listener
-        return true
+        return if (focusResults.isEmpty()) true else focusResults.removeFirst()
     }
 
     override fun abandonAudioFocus() {

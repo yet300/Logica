@@ -28,6 +28,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.monetization.core)
+            implementation(projects.miniapp.api)
 
             implementation(libs.basic.ads)
             implementation(libs.compose.runtime)

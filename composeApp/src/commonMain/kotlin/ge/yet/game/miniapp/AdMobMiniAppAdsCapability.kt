@@ -8,13 +8,16 @@ import dev.zacsweers.metro.SingleIn
 import ge.yet.game.miniapp.compose.MiniAppAdGate
 import ge.yet.game.miniapp.compose.MiniAppAdKind
 import ge.yet.game.miniapp.compose.MiniAppAdsCapability
+import ge.yet.game.miniapp.api.FullscreenAdVisibility
 import ge.yet.game.monetization.ads.LocalMonetizationState
 import ge.yet.game.monetization.ads.rememberFullscreenInterstitial
 import ge.yet.game.monetization.core.once
 
 @SingleIn(AppScope::class)
 @Inject
-internal class AdMobMiniAppAdsCapability : MiniAppAdsCapability {
+internal class AdMobMiniAppAdsCapability(
+    private val adVisibility: FullscreenAdVisibility,
+) : MiniAppAdsCapability {
     @Composable
     override fun rememberGate(kind: MiniAppAdKind): MiniAppAdGate {
         val state = LocalMonetizationState.current
@@ -23,6 +26,7 @@ internal class AdMobMiniAppAdsCapability : MiniAppAdsCapability {
                 val presenter = rememberFullscreenInterstitial()
                 remember(state.canShowAds, presenter, kind.reason) {
                     miniAppAdGate(state.canShowAds, presenter)
+                        .withFullscreenAdVisibility(adVisibility)
                 }
             }
             // Banner eligibility only: the host owns mounting, sizing and the
@@ -46,5 +50,24 @@ internal fun miniAppAdGate(
     request = { completion ->
         val completeOnce = once(completion)
         if (canShowAds) presenter(completeOnce) else completeOnce()
+    },
+)
+
+/**
+ * Brackets every gate request with the shared fullscreen-ad signal so audio
+ * layers suppress game sound for the exact native presentation window on
+ * every platform. Balanced by construction: the wrapped completion runs
+ * exactly once on every terminal path (dismissed, failure, or immediate).
+ */
+internal fun MiniAppAdGate.withFullscreenAdVisibility(
+    adVisibility: FullscreenAdVisibility,
+): MiniAppAdGate = MiniAppAdGate(
+    willShowAd = willShowAd,
+    request = { onComplete ->
+        adVisibility.enterFullscreenAd()
+        request {
+            adVisibility.exitFullscreenAd()
+            onComplete()
+        }
     },
 )
