@@ -1,60 +1,93 @@
 package ge.yet.game.blockblast.data.audio
 
+import ge.yet.game.blockblast.audio.BlockBlastAudio
 import ge.yet.game.blockblast.domain.model.FeedbackType
-import ge.yet.game.domain.repository.AudioRepository
+import ge.yet.game.miniapp.audio.AudioCommandResult
+import ge.yet.game.miniapp.audio.AudioControlName
+import ge.yet.game.miniapp.audio.AudioDuration
+import ge.yet.game.miniapp.audio.AudioProgram
+import ge.yet.game.miniapp.audio.MiniAppAudio
+import ge.yet.game.miniapp.audio.SfxName
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class BlockBlastAudioTest {
     @Test
-    fun playlist_contains_the_three_existing_tracks() {
+    fun every_feedback_type_maps_to_its_own_voice() {
+        val audio = RecordingMiniAppAudio()
+        val player = ProceduralBlockBlastAudioPlayer(audio)
+
+        player.playFeedback(FeedbackType.GOOD)
+        player.playFeedback(FeedbackType.GREAT)
+        player.playFeedback(FeedbackType.AMAZING)
+        player.playFeedback(FeedbackType.EXCELLENT)
+        player.playFeedback(FeedbackType.UNBELIEVABLE)
+
         assertEquals(
-            listOf("block.mp3", "feltwood.mp3", "mossy.mp3"),
-            BlockBlastAudioAssets.music,
+            listOf<Command>(
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.VoiceGood),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.VoiceGreat),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.VoiceAmazing),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.VoiceExcellent),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.VoiceUnbelievable),
+            ),
+            audio.commands,
         )
     }
 
     @Test
-    fun every_feedback_type_maps_to_its_existing_voice_asset() {
-        assertEquals("voice_good.mp3", BlockBlastAudioAssets.voice(FeedbackType.GOOD))
-        assertEquals("voice_great.mp3", BlockBlastAudioAssets.voice(FeedbackType.GREAT))
-        assertEquals("voice_amazing.mp3", BlockBlastAudioAssets.voice(FeedbackType.AMAZING))
-        assertEquals("voice_excellent.mp3", BlockBlastAudioAssets.voice(FeedbackType.EXCELLENT))
-        assertEquals("voice_unbelievable.mp3", BlockBlastAudioAssets.voice(FeedbackType.UNBELIEVABLE))
+    fun event_roles_map_to_their_own_sfx() {
+        val audio = RecordingMiniAppAudio()
+        val player = ProceduralBlockBlastAudioPlayer(audio)
+
+        player.playPlace()
+        player.playClear(lines = 1)
+        player.playClear(lines = 3)
+        player.playGameOver()
+        player.playRevive()
+        player.playNewBest()
+
+        assertEquals(
+            listOf<Command>(
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.Place),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.ClearPop),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.ClearPop),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.GameOver),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.Revive),
+                Command.PlaySfx(BlockBlastAudio.program, BlockBlastAudio.NewBest),
+            ),
+            audio.commands,
+        )
     }
 
     @Test
-    fun player_routes_game_semantics_to_bundled_files() {
-        val audio = RecordingAudioRepository()
-        val player = DefaultBlockBlastAudioPlayer(audio)
+    fun clear_with_no_lines_stays_silent() {
+        val audio = RecordingMiniAppAudio()
+        val player = ProceduralBlockBlastAudioPlayer(audio)
 
-        player.startMusic()
-        player.playFeedback(FeedbackType.EXCELLENT)
-        player.stopMusic()
+        player.playClear(lines = 0)
 
-        assertEquals(listOf(BlockBlastAudioAssets.music), audio.musicStarts)
-        assertEquals(listOf("voice_excellent.mp3"), audio.sounds)
-        assertEquals(1, audio.stopCount)
+        assertTrue(audio.commands.isEmpty())
     }
 
-    private class RecordingAudioRepository : AudioRepository {
-        val sounds = mutableListOf<String>()
-        val musicStarts = mutableListOf<List<String>>()
-        var stopCount = 0
+    private sealed interface Command {
+        data class PlaySfx(val program: AudioProgram, val name: SfxName) : Command
+    }
 
-        override fun playSound(filename: String) {
-            sounds += filename
-        }
+    private class RecordingMiniAppAudio : MiniAppAudio {
+        val commands = mutableListOf<Command>()
 
-        override fun startMusic(tracks: List<String>) {
-            musicStarts += tracks.toList()
-        }
+        override fun playMusic(program: AudioProgram): AudioCommandResult =
+            AudioCommandResult.Accepted
 
-        override fun stopMusic() {
-            stopCount += 1
-        }
+        override fun stopMusic(fadeOut: AudioDuration): AudioCommandResult =
+            AudioCommandResult.Accepted
 
-        override fun onAppBackground() = Unit
-        override fun onAppForeground() = Unit
+        override fun playSfx(program: AudioProgram, name: SfxName): AudioCommandResult =
+            AudioCommandResult.Accepted.also { commands += Command.PlaySfx(program, name) }
+
+        override fun setControl(name: AudioControlName, value: Float): AudioCommandResult =
+            AudioCommandResult.Accepted
     }
 }

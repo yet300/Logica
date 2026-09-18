@@ -6,7 +6,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import dev.zacsweers.metro.Inject
@@ -16,7 +15,6 @@ import ge.yet.game.blockblast.component.game.store.GameStore
 import ge.yet.game.blockblast.component.game.store.GameStoreFactory
 import ge.yet.game.blockblast.component.tray.DefaultPieceTrayComponent
 import ge.yet.game.blockblast.component.tray.PieceTrayComponent
-import ge.yet.game.blockblast.data.audio.BlockBlastAudioPlayer
 import ge.yet.game.blockblast.domain.model.GameState
 import ge.yet.game.blockblast.domain.repository.BlockBlastTutorialRepository
 import ge.yet.game.domain.repository.AnalyticRepository
@@ -28,7 +26,6 @@ internal class DefaultGameComponent(
     componentContext: ComponentContext,
     analytics: AnalyticRepository,
     private val gameStoreFactory: GameStoreFactory,
-    private val audio: BlockBlastAudioPlayer,
     private val tutorialRepository: BlockBlastTutorialRepository,
     private val visibility: MiniAppVisibilitySource,
     private val isNewGame: Boolean,
@@ -57,8 +54,6 @@ internal class DefaultGameComponent(
     override val tutorialSeen = tutorialRepository.tutorialSeen
 
     init {
-        // Stop music when the user navigates away (back button or exit)
-        lifecycle.doOnDestroy(audio::stopMusic)
         // One-shot effects from the store. Per the mvikotlin-code skill,
         // navigation/SDK calls live in the component, not the executor.
         lifecycleScope.launch {
@@ -100,7 +95,6 @@ internal class DefaultGameComponent(
 @Inject
 internal class DefaultGameComponentFactory(
     private val gameStoreFactory: GameStoreFactory,
-    private val audio: BlockBlastAudioPlayer,
     private val tutorialRepository: BlockBlastTutorialRepository,
     private val analytics: AnalyticRepository,
     private val visibility: MiniAppVisibilitySource,
@@ -115,7 +109,6 @@ internal class DefaultGameComponentFactory(
     ): GameComponent = DefaultGameComponent(
         componentContext = componentContext,
         gameStoreFactory = gameStoreFactory,
-        audio = audio,
         tutorialRepository = tutorialRepository,
         analytics = analytics,
         visibility = visibility,

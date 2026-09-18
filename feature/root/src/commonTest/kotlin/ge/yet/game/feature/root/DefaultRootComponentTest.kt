@@ -17,7 +17,6 @@ import com.arkivanov.essenty.lifecycle.stop
 import com.arkivanov.essenty.statekeeper.StateKeeper
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
 import ge.yet.game.domain.repository.AnalyticRepository
-import ge.yet.game.domain.repository.AudioRepository
 import ge.yet.game.domain.repository.CrashlyticsRepository
 import ge.yet.game.domain.repository.SettingsRepository
 import ge.yet.game.feature.catalog.CatalogComponent
@@ -486,19 +485,6 @@ class DefaultRootComponentTest {
     }
 
     @Test
-    fun app_start_and_stop_still_forward_to_audio_without_recreating_session() = runTest {
-        val setup = build()
-        setup.lifecycle.resume()
-        setup.play(FIRST_ID)
-        setup.lifecycle.stop()
-        setup.lifecycle.resume()
-        runCurrent()
-        assertEquals(1, setup.audio.backgroundCount)
-        assertEquals(2, setup.audio.foregroundCount)
-        assertEquals(1, setup.firstPlugin.createCount)
-    }
-
-    @Test
     fun root_back_handler_is_disabled_on_plain_catalog() {
         val setup = build()
         assertFalse(setup.backDispatcher.isEnabled)
@@ -519,7 +505,6 @@ class DefaultRootComponentTest {
         val catalogFactory = RecordingCatalogFactory(registry.manifests)
         val reviewFactory = RecordingReviewFactory()
         val settingsFactory = RecordingSettingsFactory()
-        val audio = RecordingAudio()
         val settings = FakeSettings()
         val analytics = RecordingAnalytics()
         val crashlytics = RecordingCrashlytics()
@@ -530,7 +515,6 @@ class DefaultRootComponentTest {
             reviewFactory = reviewFactory,
             reviewPolicy = reviewPolicy,
             miniAppRegistry = registry,
-            audio = audio,
             settingsRepository = settings,
             analytics = analytics,
             crashlytics = crashlytics,
@@ -539,7 +523,7 @@ class DefaultRootComponentTest {
             miniAppAudioEngine = NoopMiniAppAudioEngine,
         )
         return Setup(component, lifecycle, backDispatcher, catalogFactory, settingsFactory, registry,
-            firstPlugin, secondPlugin, reviewFactory, reviewPolicy, audio, analytics, crashlytics).also(setups::add)
+            firstPlugin, secondPlugin, reviewFactory, reviewPolicy, analytics, crashlytics).also(setups::add)
     }
 
     private data class Setup(
@@ -553,7 +537,6 @@ class DefaultRootComponentTest {
         val secondPlugin: RecordingPlugin,
         val reviewFactory: RecordingReviewFactory,
         val reviewPolicy: RecordingReviewPolicy,
-        val audio: RecordingAudio,
         val analytics: RecordingAnalytics,
         val crashlytics: RecordingCrashlytics,
     ) {
@@ -702,16 +685,6 @@ class DefaultRootComponentTest {
             return allow
         }
         override suspend fun releasePrompt() { releaseCalls += 1 }
-    }
-
-    private class RecordingAudio : AudioRepository {
-        var foregroundCount = 0
-        var backgroundCount = 0
-        override fun onAppForeground() { foregroundCount += 1 }
-        override fun onAppBackground() { backgroundCount += 1 }
-        override fun playSound(filename: String) = Unit
-        override fun startMusic(tracks: List<String>) = Unit
-        override fun stopMusic() = Unit
     }
 
     private class FakeSettings : SettingsRepository {

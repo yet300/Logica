@@ -193,11 +193,12 @@ visibility, host callbacks, an ID-bound `MiniAppStorage` and a stale-safe
 `MiniAppAudio` facade. Root opens audio before plugin session creation and
 closes provisional or destroyed sessions with the same ID/key. MiniApps use
 that facade for procedural playback rather than importing platform audio or
-reading Settings. Counter is the copyable authoring example. Block Blast is a
-legacy exception: its semantic `BlockBlastAudioPlayer` maps game events to its
-existing bundled filenames and delegates to the app-owned `AudioRepository`;
-its Store still handles neither filenames nor DSP commands. The shared
-file-audio pipeline is not a public MiniApp authoring capability.
+reading Settings. Counter is the copyable authoring example. Block Blast maps
+game events to its original `BlockBlastAudio` program through the semantic
+`BlockBlastAudioPlayer` seam and delegates to the session-bound `MiniAppAudio`
+facade; its Store still handles neither SFX names nor DSP commands. The legacy
+bundled-file pipeline (`AudioRepository` file playback) is retired for games
+and is not a public MiniApp authoring capability.
 Persistent values use local snake-case keys and versioned snapshot specs;
 MiniApps must not import
 `com.russhwolf.settings` or construct physical storage keys. The host-side

@@ -13,7 +13,6 @@ import ge.yet.game.blockblast.data.repository.BLOCK_BLAST_ID
 import ge.yet.game.blockblast.domain.repository.BestScoreRepository
 import ge.yet.game.blockblast.domain.repository.BlockBlastTutorialRepository
 import ge.yet.game.blockblast.domain.repository.GameSaveRepository
-import ge.yet.game.domain.repository.AudioFileProvider
 import ge.yet.game.miniapp.api.MiniAppLegacyStorageKeys
 
 @ContributesTo(AppScope::class)
@@ -29,9 +28,6 @@ abstract class BlockBlastAppBindings {
     @Binds
     internal abstract val SettingsBackedBlockBlastTutorialRepository.bindBlockBlastTutorialRepository:
         BlockBlastTutorialRepository
-
-    @Binds
-    internal abstract val ComposeAudioFileProvider.bindAudioFileProvider: AudioFileProvider
 
     companion object {
         @Provides

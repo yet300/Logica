@@ -11,10 +11,8 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphPrivate
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import ge.yet.game.data.repository.DefaultAudioRepository
 import ge.yet.game.data.repository.DefaultVibrationRepository
 import ge.yet.game.data.repository.SettingsBackedSettingsRepository
-import ge.yet.game.domain.repository.AudioRepository
 import ge.yet.game.domain.repository.FeedbackPreferences
 import ge.yet.game.domain.repository.SettingsRepository
 import ge.yet.game.domain.repository.VibrationRepository
@@ -25,8 +23,8 @@ import ge.yet.game.domain.repository.VibrationRepository
  * Every binding here is `internal`: the concrete implementation classes never
  * leak out to composeApp / feature modules — only the domain interfaces do.
  *
- * Platform-specific bindings ([ge.yet.game.data.platform.PlatformSoundPlayer],
- * [ge.yet.game.data.platform.PlatformVibrator], concrete [ObservableSettings])
+ * Platform-specific bindings ([ge.yet.game.data.platform.PlatformVibrator],
+ * concrete [ObservableSettings])
  * are contributed by sibling `androidMain` / `nativeMain` binding containers.
  */
 @OptIn(ExperimentalSettingsApi::class)
@@ -40,9 +38,6 @@ abstract class DataBindings {
 
     @Binds
     internal abstract val SettingsBackedSettingsRepository.bindFeedbackPreferences: FeedbackPreferences
-
-    @Binds
-    internal abstract val DefaultAudioRepository.bindAudioRepository: AudioRepository
 
     @GraphPrivate
     @Binds

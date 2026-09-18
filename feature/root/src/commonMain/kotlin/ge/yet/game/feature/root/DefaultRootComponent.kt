@@ -20,7 +20,6 @@ import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
 import dev.zacsweers.metro.Inject
 import ge.yet.game.domain.repository.AnalyticRepository
-import ge.yet.game.domain.repository.AudioRepository
 import ge.yet.game.domain.repository.CrashlyticsRepository
 import ge.yet.game.domain.repository.SettingsRepository
 import ge.yet.game.feature.catalog.CatalogComponent
@@ -48,7 +47,6 @@ internal class DefaultRootComponent(
     private val catalogFactory: CatalogComponent.Factory,
     private val settingsFactory: SettingsComponent.Factory,
     private val reviewFactory: AppReviewComponent.Factory,
-    private val audio: AudioRepository,
 ) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -128,11 +126,9 @@ internal class DefaultRootComponent(
         }
         lifecycle.doOnStart {
             runtimeCoordinator.setForeground(true)
-            audio.onAppForeground()
         }
         lifecycle.doOnStop {
             runtimeCoordinator.setForeground(false)
-            audio.onAppBackground()
         }
         lifecycle.doOnDestroy {
             stackSubscription.cancel()
@@ -261,7 +257,6 @@ internal class DefaultRootComponentFactory(
     private val reviewFactory: AppReviewComponent.Factory,
     private val reviewPolicy: AppReviewPolicy,
     private val miniAppRegistry: MiniAppRegistry,
-    private val audio: AudioRepository,
     private val settingsRepository: SettingsRepository,
     private val analytics: AnalyticRepository,
     private val crashlytics: CrashlyticsRepository,
@@ -276,7 +271,6 @@ internal class DefaultRootComponentFactory(
         reviewFactory = reviewFactory,
         reviewPolicy = reviewPolicy,
         miniAppRegistry = miniAppRegistry,
-        audio = audio,
         settingsRepository = settingsRepository,
         analytics = analytics,
         crashlytics = crashlytics,
