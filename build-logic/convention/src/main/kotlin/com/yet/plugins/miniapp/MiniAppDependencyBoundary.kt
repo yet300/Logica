@@ -37,6 +37,23 @@ internal object MiniAppDependencyBoundary {
     )
     private val forbiddenExternalAudioGroups = setOf("androidx.media3", "com.google.oboe")
     private const val AUDIO_REPLACEMENT = "MiniAppSessionContext.audio and :miniapp:audio-presets"
+    private val forbiddenMiniAppAudioInternalImportPrefixes = setOf(
+        "ge.yet.game.miniapp.audio.internal.",
+    )
+    private val forbiddenMiniAppAudioEngineImports = setOf(
+        "ge.yet.game.miniapp.audio.MiniAppAudioEngine",
+    )
+    private val forbiddenHapticsImportPrefixes = setOf(
+        "androidx.compose.ui.hapticfeedback.",
+    )
+    private val forbiddenHapticsExactImports = setOf(
+        "androidx.compose.ui.platform.LocalHapticFeedback",
+    )
+    // BlockBlast predates the procedural-audio contract and keeps its haptics;
+    // every new MiniApp must use audio feedback without haptics instead.
+    private const val LEGACY_HAPTICS_PROJECT = ":game:blockblast"
+    private const val HAPTICS_REPLACEMENT =
+        "audio feedback via MiniAppSessionContext.audio instead of haptics (legacy :game:blockblast exception)"
 
     fun violationFor(projectPath: String, configuration: String, dependencyPath: String): MiniAppDependencyViolation? {
         if (dependencyPath == projectPath) return null
@@ -74,8 +91,22 @@ internal object MiniAppDependencyBoundary {
         sourcePath: String,
         importPath: String,
     ): MiniAppSourceImportViolation? {
-        if (forbiddenPlatformAudioImportPrefixes.none(importPath::startsWith)) return null
-        return MiniAppSourceImportViolation(projectPath, sourcePath, importPath, AUDIO_REPLACEMENT)
+        if (forbiddenPlatformAudioImportPrefixes.any(importPath::startsWith)) {
+            return MiniAppSourceImportViolation(projectPath, sourcePath, importPath, AUDIO_REPLACEMENT)
+        }
+        if (
+            forbiddenMiniAppAudioInternalImportPrefixes.any(importPath::startsWith) ||
+                importPath in forbiddenMiniAppAudioEngineImports
+        ) {
+            return MiniAppSourceImportViolation(projectPath, sourcePath, importPath, AUDIO_REPLACEMENT)
+        }
+        if (
+            projectPath != LEGACY_HAPTICS_PROJECT &&
+                (forbiddenHapticsImportPrefixes.any(importPath::startsWith) || importPath in forbiddenHapticsExactImports)
+        ) {
+            return MiniAppSourceImportViolation(projectPath, sourcePath, importPath, HAPTICS_REPLACEMENT)
+        }
+        return null
     }
 
     private fun violation(project: String, configuration: String, dependency: String, replacement: String) =
