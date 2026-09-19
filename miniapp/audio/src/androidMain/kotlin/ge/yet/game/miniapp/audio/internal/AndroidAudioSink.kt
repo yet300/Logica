@@ -8,11 +8,13 @@ import android.media.AudioManager
 import android.media.AudioTrack
 import android.os.Build
 import android.os.Process
+import android.util.Log
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.audio.AudioControlName
 import ge.yet.game.miniapp.audio.CompiledAudioProgram
 import ge.yet.game.miniapp.audio.SfxName
 import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
@@ -187,6 +189,7 @@ private class AndroidAudioSinkSession(
                 val shouldPause = currentPolicy.schedulingPaused || currentFocus == AndroidAudioFocusChange.Loss
                 if (shouldPause) {
                     if (playing) {
+                        debugLog { "pausing output (policy=$currentPolicy, focus=$currentFocus)" }
                         track.pause()
                         track.flush()
                         playing = false
@@ -224,13 +227,24 @@ private class AndroidAudioSinkSession(
                     focus = AndroidAudioFocusChange.Gain
                     focusHeld = platform.requestAudioFocus { change ->
                         if (!released.get()) {
+                            debugLog { "audio focus changed: $change" }
                             focus = change
                             wakeSignal.release()
                         }
                     }
                     appliedFocus = null
                     if (!focusHeld) {
-                        awaitWork()
+                        // Focus denied (e.g. the ad still holds it on dismiss):
+                        // retry on a timer while output is desired instead of
+                        // sleeping until the next command, which may never come
+                        // if the user only watches the resumed game.
+                        debugLog { "audio focus denied; output desired=${renderer.hasActiveAudio}" }
+                        if (renderer.hasActiveAudio) {
+                            wakeSignal.tryAcquire(FOCUS_RETRY_DELAY_MS, TimeUnit.MILLISECONDS)
+                            wakeSignal.drainPermits()
+                        } else {
+                            awaitWork()
+                        }
                         continue
                     }
                 }
@@ -245,6 +259,17 @@ private class AndroidAudioSinkSession(
                         outputStarted.set(false)
                         continue
                     }
+                    // Prime one block before starting the track so the first
+                    // consumption deadline already has PCM queued. Without this
+                    // the cold start after pause (e.g. ad return) underruns and
+                    // the framework has to restart the track mid-phrase.
+                    renderer.render(left, right, frameCapacity)
+                    val primed = when (configuration.encoding) {
+                        AndroidPcmEncoding.Float -> writeFloatBlock()
+                        AndroidPcmEncoding.Pcm16 -> writePcm16Block()
+                    }
+                    if (primed < frameCapacity * STEREO_CHANNEL_COUNT) incrementSaturated(underruns)
+                    debugLog { "resuming output" }
                     track.play()
                     playing = true
                 }
@@ -450,6 +475,21 @@ private fun incrementSaturated(counter: AtomicLong) {
 private fun saturatedAdd(left: Long, right: Long): Long =
     if (left > Long.MAX_VALUE - right) Long.MAX_VALUE else left + right
 
+private const val TAG = "MiniappAudio"
+private const val FOCUS_RETRY_DELAY_MS = 500L
+
+/**
+ * Best-effort debug logging. `android.util.Log` is a throwing stub on plain
+ * host-unit-test JVMs, so a direct call would kill the writer thread there;
+ * swallow that case and keep real-device logcat output.
+ */
+private inline fun debugLog(message: () -> String) {
+    try {
+        Log.d(TAG, message())
+    } catch (_: RuntimeException) {
+        // No-op: host unit tests run against the android.jar stub.
+    }
+}
 private const val DEFAULT_SAMPLE_RATE = 48_000
 private const val MIN_SAMPLE_RATE = 8_000
 private const val MAX_SAMPLE_RATE = 192_000

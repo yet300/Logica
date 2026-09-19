@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlin.math.sqrt
 
 @Serializable
-data class Vec2(
+internal data class Vec2(
     val x: Float,
     val y: Float,
 ) {
@@ -24,7 +24,7 @@ data class Vec2(
 }
 
 @Serializable
-data class FruitBody(
+internal data class FruitBody(
     val id: Long,
     val level: FruitLevel,
     val position: Vec2,

@@ -2,6 +2,7 @@ package ge.yet.game.miniapp.audio.internal
 
 import ge.yet.game.miniapp.audio.AudioCompilationResult
 import ge.yet.game.miniapp.audio.AudioMobileBudget
+import ge.yet.game.miniapp.audio.AudioNote
 import ge.yet.game.miniapp.audio.MidiNote
 import ge.yet.game.miniapp.audio.OscillatorShape
 import ge.yet.game.miniapp.audio.SfxName
@@ -9,6 +10,8 @@ import ge.yet.game.miniapp.audio.audioProgram
 import ge.yet.game.miniapp.audio.compile
 import ge.yet.game.miniapp.audio.hz
 import ge.yet.game.miniapp.audio.ms
+import ge.yet.game.miniapp.audio.noteFrequency
+import ge.yet.game.pattern.sequence
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -17,6 +20,58 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class RealtimeAudioRendererTest {
+    @Test
+    fun `note velocity scales rms without changing pitch or start frame`() {
+        val full = renderVelocity(1f)
+        val quiet = renderVelocity(0.25f)
+
+        assertTrue(rms(quiet) < rms(full) * 0.35f)
+        assertEquals(zeroCrossings(full, 0, full.size), zeroCrossings(quiet, 0, quiet.size))
+        assertEquals(full.indexOfFirst { abs(it) > 0.0001f }, quiet.indexOfFirst { abs(it) > 0.0001f })
+    }
+
+    @Test
+    fun `note following low pass opens for higher notes`() {
+        val low = renderNoteFollowingFilter(MidiNote.of(36))
+        val high = renderNoteFollowingFilter(MidiNote.of(84))
+
+        assertTrue(highFrequencyEnergy(high) > highFrequencyEnergy(low) * 1.5f)
+    }
+
+    @Test
+    fun `realtime renderer applies declared track delay`() {
+        fun render(withDelay: Boolean): FloatArray {
+            val renderer = RealtimeAudioRenderer(8_000, 512)
+            val program = audioProgram {
+                tempo(240f)
+                instrument("tone") { oscillator(OscillatorShape.SINE, gain = 0.2f) }
+                musicTrack("music") {
+                    instrument("tone")
+                    notes(sequence<AudioNote>(listOf(AudioNote.Pitched(MidiNote.of(69)), AudioNote.Rest)))
+                    if (withDelay) delay(50.ms, feedback = 0.4f)
+                }
+            }
+            val compiled = assertIs<AudioCompilationResult.Success>(program.compile()).program
+            val output = FloatArray(4_512)
+            val left = FloatArray(512)
+            val right = FloatArray(512)
+            renderer.playMusic(compiled)
+            var offset = 0
+            while (offset < output.size) {
+                val count = minOf(512, output.size - offset)
+                renderer.render(left, right, count)
+                left.copyInto(output, offset, endIndex = count)
+                offset += count
+            }
+            return output
+        }
+
+        val dry = render(false)
+        val wet = render(true)
+        assertTrue(!dry.contentEquals(wet))
+        assertTrue(rms(wet) > rms(dry) * 1.01f)
+    }
+
     @Test
     fun `music commands reset one preallocated scheduler`() {
         val renderer = RealtimeAudioRenderer(sampleRate = 8_000, blockCapacity = 128)
@@ -38,7 +93,10 @@ class RealtimeAudioRendererTest {
                 musicTrack("music") {
                     instrument("tone")
                     notes(MidiNote.of(69))
+                    delay(10.ms, feedback = 0.2f)
                 }
+                musicBus { reverb(0.1f); limiter(0.9f, 50.ms) }
+                sfxBus { compressor(0.7f, 2f, 2.ms, 40.ms) }
                 sfx("click") {
                     oscillator(OscillatorShape.SQUARE, gain = 0.4f)
                     envelope(attack = 1.ms, release = 10.ms)
@@ -50,8 +108,11 @@ class RealtimeAudioRendererTest {
 
         assertEquals(AudioMobileBudget.MAX_VOICES, renderer.voiceStateAllocationCount)
         assertEquals(AudioMobileBudget.MAX_VOICES, renderer.scratchBufferAllocationCount)
+        assertEquals(AudioMobileBudget.MAX_TRACKS, renderer.trackBufferAllocationCount)
         val initialVoiceStates = renderer.voiceStateAllocationCount
         val initialScratchBuffers = renderer.scratchBufferAllocationCount
+        val initialTrackBuffers = renderer.trackBufferAllocationCount
+        val initialEffectStates = renderer.effectStateAllocationCount
 
         renderer.playMusic(compiled)
         repeat(8) {
@@ -61,6 +122,8 @@ class RealtimeAudioRendererTest {
 
         assertEquals(initialVoiceStates, renderer.voiceStateAllocationCount)
         assertEquals(initialScratchBuffers, renderer.scratchBufferAllocationCount)
+        assertEquals(initialTrackBuffers, renderer.trackBufferAllocationCount)
+        assertEquals(initialEffectStates, renderer.effectStateAllocationCount)
     }
 
     @Test
@@ -200,6 +263,57 @@ class RealtimeAudioRendererTest {
 
         assertTrue(zeroCrossings(left, 400, 800) * 2 > zeroCrossings(left, 0, 400) * 3)
     }
+}
+
+private fun renderVelocity(velocity: Float): FloatArray {
+    val renderer = RealtimeAudioRenderer(sampleRate = 8_000, blockCapacity = 256)
+    val program = audioProgram {
+        tempo(240f)
+        instrument("tone") { oscillator(OscillatorShape.SINE, gain = 0.25f) }
+        musicTrack("music") {
+            instrument("tone")
+            notes(sequence(listOf(AudioNote.Pitched(MidiNote.of(69), velocity))))
+        }
+    }
+    val compiled = assertIs<AudioCompilationResult.Success>(program.compile()).program
+    val left = FloatArray(256)
+    val right = FloatArray(256)
+    renderer.playMusic(compiled)
+    renderer.render(left, right, 256)
+    return left
+}
+
+private fun renderNoteFollowingFilter(note: MidiNote): FloatArray {
+    val renderer = RealtimeAudioRenderer(sampleRate = 8_000, blockCapacity = 512)
+    val program = audioProgram {
+        tempo(240f)
+        instrument("tone") {
+            oscillator(OscillatorShape.SAW, gain = 0.2f)
+            lowPass(noteFrequency(ratio = 2f, offsetHz = 40f))
+        }
+        musicTrack("music") {
+            instrument("tone")
+            notes(note)
+        }
+    }
+    val compiled = assertIs<AudioCompilationResult.Success>(program.compile()).program
+    val left = FloatArray(512)
+    val right = FloatArray(512)
+    renderer.playMusic(compiled)
+    renderer.render(left, right, 512)
+    return left
+}
+
+private fun highFrequencyEnergy(samples: FloatArray): Float {
+    var sum = 0f
+    for (index in 1 until samples.size) sum += abs(samples[index] - samples[index - 1])
+    return sum / samples.size
+}
+
+private fun rms(samples: FloatArray): Float {
+    var sum = 0.0
+    for (sample in samples) sum += sample * sample
+    return kotlin.math.sqrt(sum / samples.size).toFloat()
 }
 
 private fun zeroCrossings(samples: FloatArray, start: Int, endExclusive: Int): Int {

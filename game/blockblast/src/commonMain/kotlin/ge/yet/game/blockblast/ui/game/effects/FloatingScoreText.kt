@@ -22,7 +22,7 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class FloatingScoreState {
+internal class FloatingScoreState {
     private var nextId = 0L
 
     val popups: List<ScorePopup>
@@ -43,14 +43,14 @@ class FloatingScoreState {
     }
 }
 
-data class ScorePopup(
+internal data class ScorePopup(
     val id: Long,
     val points: Long,
     val originInViewport: Offset,
 )
 
 @Composable
-fun FloatingScoreOverlay(
+internal fun FloatingScoreOverlay(
     state: FloatingScoreState,
     reducedMotion: Boolean = false,
     modifier: Modifier = Modifier

@@ -17,11 +17,13 @@ import ge.yet.game.miniapp.audio.MidiNote
 import ge.yet.game.miniapp.audio.OscillatorShape
 import ge.yet.game.miniapp.audio.SfxName
 import ge.yet.game.miniapp.audio.audioProgram
+import ge.yet.game.miniapp.api.FullscreenAdVisibility
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -125,6 +127,24 @@ class MiniAppAudioEngineTest {
     }
 
     @Test
+    fun `music and sfx reuse compilation for the same immutable program instance`() = runTest {
+        val setup = setup(backgroundScope)
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        runCurrent()
+        val program = audioProgram {
+            instrument("tone") { oscillator(OscillatorShape.SINE) }
+            musicTrack("line") { instrument("tone"); notes(MidiNote.of(60)) }
+            sfx(SFX.value) { oscillator(OscillatorShape.SINE) }
+        }
+
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(program))
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(program, SFX))
+
+        val backend = setup.sink.sessions.single()
+        assertTrue(backend.musicPrograms.single() === backend.sfxPrograms.single())
+    }
+
+    @Test
     fun `close during lazy backend creation releases the backend and rejects the command`() {
         val backend = RecordingSinkSession()
         lateinit var audio: DefaultMiniAppAudio
@@ -142,6 +162,84 @@ class MiniAppAudioEngineTest {
 
         assertRejected(audio.playMusic(musicProgram()), AudioCommandRejection.SESSION_CLOSED)
         assertEquals(1, backend.releaseCount)
+    }
+
+    @Test
+    fun `fullscreen ad fades music gain out pauses scheduling and restores on dismiss`() = runTest {
+        val adVisibility = FullscreenAdVisibility()
+        val setup = setup(backgroundScope, adVisibility = adVisibility)
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        runCurrent()
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(sfxProgram(), SFX))
+        val backend = setup.sink.sessions.single()
+        assertEquals(1, backend.musicPrograms.size)
+        assertEquals(0, backend.stopCalls)
+
+        adVisibility.enterFullscreenAd()
+        advanceTimeBy(AD_FADE_TOTAL_MS + 1)
+        runCurrent()
+        assertRejected(audio.playSfx(sfxProgram(), SFX), AudioCommandRejection.PLAYBACK_SUPPRESSED)
+        val faded = backend.policies.last()
+        assertEquals(0f, faded.musicGain)
+        assertTrue(faded.schedulingPaused)
+        // No stop submit, no replay: the program stays scheduled throughout.
+        assertEquals(0, backend.stopCalls)
+        assertEquals(1, backend.musicPrograms.size)
+        val gains = backend.policies.map(AudioSessionPolicy::musicGain)
+        assertTrue(gains.first() == 1f && gains.last() == 0f)
+        assertEquals(gains.sortedDescending(), gains)
+
+        adVisibility.exitFullscreenAd()
+        advanceTimeBy(AD_FADE_TOTAL_MS + 1)
+        runCurrent()
+        assertEquals(AudioSessionPolicy.Active, backend.policies.last())
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(sfxProgram(), SFX))
+        assertEquals(1, backend.musicPrograms.size)
+        assertEquals(0, backend.stopCalls)
+    }
+
+    @Test
+    fun `rapid ad toggle converges without jumps`() = runTest {
+        val adVisibility = FullscreenAdVisibility()
+        val setup = setup(backgroundScope, adVisibility = adVisibility)
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        runCurrent()
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
+        val backend = setup.sink.sessions.single()
+
+        adVisibility.enterFullscreenAd()
+        advanceTimeBy(75)
+        runCurrent()
+        adVisibility.exitFullscreenAd()
+        advanceTimeBy(AD_FADE_TOTAL_MS + 1)
+        runCurrent()
+
+        assertEquals(AudioSessionPolicy.Active, backend.policies.last())
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(sfxProgram(), SFX))
+        assertEquals(1, backend.musicPrograms.size)
+    }
+
+    @Test
+    fun `game stop during ad wins and stays stopped after dismiss`() = runTest {
+        val adVisibility = FullscreenAdVisibility()
+        val setup = setup(backgroundScope, adVisibility = adVisibility)
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        runCurrent()
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(musicProgram()))
+        val backend = setup.sink.sessions.single()
+
+        adVisibility.enterFullscreenAd()
+        advanceTimeBy(AD_FADE_TOTAL_MS + 1)
+        runCurrent()
+        assertEquals(AudioCommandResult.Accepted, audio.stopMusic())
+        adVisibility.exitFullscreenAd()
+        advanceTimeBy(AD_FADE_TOTAL_MS + 1)
+        runCurrent()
+
+        assertEquals(1, backend.musicPrograms.size)
+        assertEquals(1, backend.stopCalls)
+        assertEquals(AudioSessionPolicy.Active, backend.policies.last())
     }
 
     @Test
@@ -170,8 +268,9 @@ class MiniAppAudioEngineTest {
         settings: FakeSettingsRepository = FakeSettingsRepository(),
         sink: RecordingSink = RecordingSink(),
         crashlytics: CrashlyticsRepository = RecordingCrashlytics(),
+        adVisibility: FullscreenAdVisibility = FullscreenAdVisibility(),
     ): Setup {
-        val engine = DefaultMiniAppAudioEngine(scope, settings, sink, crashlytics)
+        val engine = DefaultMiniAppAudioEngine(scope, settings, adVisibility, sink, crashlytics)
         return Setup(engine, sink)
     }
 
@@ -220,14 +319,20 @@ class MiniAppAudioEngineTest {
 
     private class RecordingSinkSession : PlatformAudioSinkSession {
         val policies = mutableListOf<AudioSessionPolicy>()
+        val musicPrograms = mutableListOf<CompiledAudioProgram>()
+        val sfxPrograms = mutableListOf<CompiledAudioProgram>()
+        var stopCalls = 0
         var releaseCount = 0
         var drainCount = 0
         var diagnostics = AudioRuntimeDiagnosticsSnapshot.Empty
 
         override fun updatePolicy(policy: AudioSessionPolicy) { policies += policy }
-        override fun playMusic(program: CompiledAudioProgram) = AudioRuntimeSubmitResult.Accepted
-        override fun stopMusic(fadeFrames: Int) = AudioRuntimeSubmitResult.Accepted
-        override fun playSfx(program: CompiledAudioProgram, name: SfxName) = AudioRuntimeSubmitResult.Accepted
+        override fun playMusic(program: CompiledAudioProgram): AudioRuntimeSubmitResult =
+            AudioRuntimeSubmitResult.Accepted.also { musicPrograms += program }
+        override fun stopMusic(fadeFrames: Int): AudioRuntimeSubmitResult =
+            AudioRuntimeSubmitResult.Accepted.also { stopCalls += 1 }
+        override fun playSfx(program: CompiledAudioProgram, name: SfxName) =
+            AudioRuntimeSubmitResult.Accepted.also { sfxPrograms += program }
         override fun setControl(name: AudioControlName, value: Float) = AudioRuntimeSubmitResult.Accepted
         override fun release() { releaseCount += 1 }
         override fun drainDiagnostics(): AudioRuntimeDiagnosticsSnapshot {
@@ -267,5 +372,6 @@ class MiniAppAudioEngineTest {
         val ID = MiniAppId("game.audio_test")
         val SFX = SfxName("click")
         val CONTROL = AudioControlName("intensity")
+        const val AD_FADE_TOTAL_MS = 201L
     }
 }

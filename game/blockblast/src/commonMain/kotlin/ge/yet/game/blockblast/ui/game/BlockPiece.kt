@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
  * @param filled   Whether this cell is actually occupied (false = empty grid cell).
  */
 @Composable
-fun BlockPiece(
+internal fun BlockPiece(
     color: Color,
     cellSize: Dp,
     modifier: Modifier = Modifier,

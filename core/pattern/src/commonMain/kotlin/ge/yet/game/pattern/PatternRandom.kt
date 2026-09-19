@@ -37,7 +37,7 @@ fun <T> Pattern<T>.degrade(probability: Float, seed: Long): Pattern<T> {
     }
 }
 
-private fun PatternEventBuffer<*>.stableTimeKeyAt(index: Int): ULong {
+internal fun PatternEventBuffer<*>.stableTimeKeyAt(index: Int): ULong {
     val start = wholeStartAt(index)
     val end = wholeEndExclusiveAt(index)
     var key = start.numerator.toULong()
@@ -49,12 +49,12 @@ private fun PatternEventBuffer<*>.stableTimeKeyAt(index: Int): ULong {
 private fun deterministicIndex(seed: Long, key: ULong, size: Int): Int =
     (mix64(seed.toULong() xor key) % size.toULong()).toInt()
 
-private fun deterministicUnit(seed: Long, key: ULong): Double {
+internal fun deterministicUnit(seed: Long, key: ULong): Double {
     val bits = mix64(seed.toULong() xor key) shr 11
     return bits.toDouble() / (1uL shl 53).toDouble()
 }
 
-private fun mix64(input: ULong): ULong {
+internal fun mix64(input: ULong): ULong {
     var value = input + 0x9E3779B97F4A7C15uL
     value = (value xor (value shr 30)) * 0xBF58476D1CE4E5B9uL
     value = (value xor (value shr 27)) * 0x94D049BB133111EBuL

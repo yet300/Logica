@@ -5,9 +5,7 @@ import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphPrivate
-import ge.yet.game.data.platform.NativePlatformSoundPlayer
 import ge.yet.game.data.platform.NativePlatformVibrator
-import ge.yet.game.data.platform.PlatformSoundPlayer
 import ge.yet.game.data.platform.PlatformVibrator
 import ge.yet.game.data.repository.IosStoreReviewRepository
 import ge.yet.game.domain.repository.StoreReviewRepository
@@ -21,9 +19,6 @@ import platform.Foundation.NSUserDefaults
 @ContributesTo(AppScope::class)
 @BindingContainer
 abstract class NativeDataBindings {
-
-    @Binds
-    internal abstract val NativePlatformSoundPlayer.bindPlatformSoundPlayer: PlatformSoundPlayer
 
     @Binds
     internal abstract val NativePlatformVibrator.bindPlatformVibrator: PlatformVibrator

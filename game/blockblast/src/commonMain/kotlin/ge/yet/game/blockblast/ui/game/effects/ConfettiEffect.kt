@@ -10,14 +10,14 @@ import io.github.vinceglb.confettikit.core.emitter.Emitter
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun ConfettiEffect() {
+internal fun ConfettiEffect() {
     ConfettiKit(
         modifier = Modifier.fillMaxSize(),
         parties = explode()
     )
 }
 
-fun explode(): List<Party> {
+internal fun explode(): List<Party> {
     return listOf(
         Party(
             speed = 0f,

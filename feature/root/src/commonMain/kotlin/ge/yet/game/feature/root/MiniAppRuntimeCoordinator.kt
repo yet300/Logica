@@ -21,6 +21,7 @@ import ge.yet.game.miniapp.compose.MiniAppRegistry
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,8 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.yield
 import kotlinx.serialization.Serializable
+import kotlin.concurrent.Volatile
 import kotlin.jvm.JvmInline
 
 @Serializable
@@ -51,9 +54,9 @@ internal class MiniAppRuntimeCoordinator(
 ) {
     private var lastSessionKey = 0L
     private var launchInProgress = false
+    @Volatile
     private var resetInProgress = false
     private val resetMutex = Mutex()
-    private val shippedMiniAppIds = registry.manifests.map { it.id }.toSet()
     private var pendingKey: MiniAppSessionKey? = null
     private var pendingPlugin: MiniAppPlugin? = null
     private var active: ActiveSession? = null
@@ -61,7 +64,7 @@ internal class MiniAppRuntimeCoordinator(
     private var isObscured = false
 
     fun launch(id: MiniAppId, navigate: (MiniAppSessionKey) -> Unit) {
-        if (resetInProgress || launchInProgress || active != null) return
+        if (resetMutex.isLocked || resetInProgress || launchInProgress || active != null) return
         launchInProgress = true
         try {
             val plugin = registry[id]
@@ -201,15 +204,49 @@ internal class MiniAppRuntimeCoordinator(
         navigateToCatalog(false)
     }
 
-    suspend fun clearMiniAppData(): MiniAppDataResetResult = resetMutex.withLock {
+    suspend fun clearMiniAppData(): MiniAppDataResetResult {
+        // Fast-path gate for the non-suspending launch(): set before the first
+        // suspension so a concurrent launch observes the reset even before this
+        // coroutine acquires resetMutex.
         resetInProgress = true
         try {
-            val session = active
-            navigateToCatalog(true)
-            session?.lifecycle?.awaitTeardown()
-            dataResetter.clear(shippedMiniAppIds)
+            return resetMutex.withLock {
+                // Re-assert under the lock: a previous reset may have cleared the
+                // flag in its finally while this reset was waiting for the mutex.
+                resetInProgress = true
+                try {
+                    val session = active
+                    navigateToCatalog(true)
+                    if (session != null) {
+                        try {
+                            withTimeout(RESET_TEARDOWN_TIMEOUT_MS) {
+                                session.lifecycle.awaitTeardown()
+                            }
+                        } catch (_: TimeoutCancellationException) {
+                            // Best-effort reset: a leaked session job must not hold
+                            // the mutex (and block every future launch) forever.
+                            // Navigation already detached the session; proceed to clear.
+                            crash {
+                                logMessage(
+                                    "miniapp_reset_teardown_timeout " +
+                                        "id=${session.id.value} key=${session.key.value}",
+                                )
+                            }
+                        }
+                    }
+                    // Read the registry at reset time: a constructor snapshot would
+                    // go stale if the shipped set ever changed during runtime.
+                    dataResetter.clear(registry.manifests.map { it.id }.toSet())
+                } finally {
+                    resetInProgress = false
+                }
+            }
         } finally {
-            resetInProgress = false
+            // Awaiting resetMutex is cancellable: if this reset was cancelled (or
+            // never acquired the lock), don't leave a stale gate for launch().
+            // Skip the clear while another reset holds the lock — it re-asserts
+            // the flag itself and clears it when done.
+            if (!resetMutex.isLocked) resetInProgress = false
         }
     }
 
@@ -358,5 +395,9 @@ internal class MiniAppRuntimeCoordinator(
         const val MINI_APP_SESSION_KEY = "mini_app_session_key"
         const val MINI_APP_VISIBILITY = "mini_app_visibility"
         const val MINI_APP_STATE = "mini_app_state"
+        // Bound for session teardown during reset. Child destruction plus session
+        // coroutine cleanup is near-instant; without a bound a single leaked job
+        // would hold resetMutex (and block every future launch) forever.
+        const val RESET_TEARDOWN_TIMEOUT_MS = 5_000L
     }
 }

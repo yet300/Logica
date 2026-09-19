@@ -9,7 +9,7 @@ import ge.yet.game.blockblast.domain.model.Piece
  * the component, while merely reordering the tray (e.g. neighbours placed)
  * keeps this instance alive so its UI-side animation state survives.
  */
-interface TraySlotComponent {
+internal interface TraySlotComponent {
     val piece: Piece
 
     /**

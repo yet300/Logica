@@ -97,6 +97,7 @@ internal class GameStoreFactory(
         }
 
         private fun initialize() {
+            audio.start()
             scope.launch {
                 val initialization = initializer.initialize(
                     isNewGame = isNewGame,
@@ -104,7 +105,6 @@ internal class GameStoreFactory(
                     newGameSeed = newGameSeed,
                 )
                 dispatch(GameStore.Msg.Snapshot(initialization.state))
-                updateMusic(initialization.state)
                 if (initialization.source != GameInitializer.Source.ResultRestore) {
                     logger.log(
                         eventName = "game_started",
@@ -148,7 +148,9 @@ internal class GameStoreFactory(
             event: GameEvent.MoveResolved,
         ) {
             val moveParams = moveAnalyticsParams(event)
+            audio.playPlace()
             event.feedback?.let(audio::playFeedback)
+            if (event.linesCount > 0) audio.playClear(event.linesCount)
             logger.log("piece_place_success", state, moveParams)
             if (event.linesCount > 0) logger.log("lines_cleared", state, moveParams)
             if (event.linesCount > 0 && event.comboLevel >= 2) {
@@ -159,13 +161,16 @@ internal class GameStoreFactory(
                     bestScoreRepository.setBestScore(state.bestScore)
                 }
             }
+            if (state.bestScore > before.bestScore) audio.playNewBest()
             if (event.isGameOver) {
-                audio.stopMusic()
+                // Music intentionally keeps playing into the Result screen,
+                // like 2048 and Fruit Merge: only session teardown stops it.
                 completeGame(state)
             }
         }
 
         private suspend fun completeGame(gameState: GameState) {
+            audio.playGameOver()
             logger.log("game_over", gameState)
             val reviewOpportunity = qualifiesForReview(gameState)
             val markedState = if (reviewOpportunity) {
@@ -201,17 +206,16 @@ internal class GameStoreFactory(
                     val playableState = transition.state
                     dispatch(GameStore.Msg.Snapshot(playableState))
                     scope.launch {
-                        updateMusic(playableState)
                         logger.log("revive_completed", playableState, mapOf("source" to "revive"))
                         logger.log("game_started", playableState, mapOf("source" to "revive"))
                         val saved = attemptPersistence(logger, "revive_save", playableState) {
                             saveCoordinator.flush(playableState)
                         }
                         if (saved) {
+                            audio.playRevive()
                             publish(GameStore.Label.ReviveCompleted(playableState))
                         } else {
                             dispatch(GameStore.Msg.Snapshot(terminalState))
-                            updateMusic(terminalState)
                             publish(GameStore.Label.ReviveFailed)
                         }
                     }
@@ -230,7 +234,6 @@ internal class GameStoreFactory(
             dispatch(GameStore.Msg.Snapshot(roundStart.state))
             scheduleSave(roundStart.state)
             scope.launch {
-                updateMusic(roundStart.state)
                 logger.log(
                     eventName = "game_started",
                     state = roundStart.state,
@@ -248,14 +251,6 @@ internal class GameStoreFactory(
                     logPersistenceFailure(logger, "autosave", snapshot, error)
                 },
             )
-        }
-
-        private fun updateMusic(snapshot: GameState) {
-            if (!snapshot.isGameOver && snapshot.currentPieces.isNotEmpty()) {
-                audio.startMusic()
-            } else {
-                audio.stopMusic()
-            }
         }
     }
 

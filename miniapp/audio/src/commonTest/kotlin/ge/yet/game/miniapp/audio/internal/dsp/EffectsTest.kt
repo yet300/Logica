@@ -7,6 +7,22 @@ import kotlin.test.assertTrue
 
 class EffectsTest {
     @Test
+    fun `compressor reduces sustained signal above threshold`() {
+        val left = FloatArray(1_000) { 0.9f }
+        val right = FloatArray(1_000) { -0.9f }
+        applyCompressorStereo(left, right, 0.5f, 4f, 0.001, 0.05, 1f, 8_000, DynamicsState(), 1_000)
+        assertTrue(left.takeLast(200).maxOf { abs(it) } < 0.7f)
+    }
+
+    @Test
+    fun `limiter respects declared stereo ceiling`() {
+        val left = floatArrayOf(0.2f, 1.4f, -1.2f, 0.4f)
+        val right = floatArrayOf(-0.3f, -1.6f, 1.1f, 0.2f)
+        applyLimiterStereo(left, right, 0.8f, 0.05, 8_000, DynamicsState(), left.size)
+        assertTrue((left + right).all { abs(it) <= 0.8001f })
+    }
+
+    @Test
     fun `distortion is bounded monotonic and sanitizes non finite input`() {
         val buffer = floatArrayOf(Float.NEGATIVE_INFINITY, -1f, -0.25f, 0f, 0.25f, 1f, Float.NaN)
 

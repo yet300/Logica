@@ -1,14 +1,15 @@
 package ge.yet.game.miniapp.audio
 
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRenderResult
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRenderer
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRequest
+import ge.yet.game.miniapp.audio.testing.AudioTestRenderResult
+import ge.yet.game.miniapp.audio.testing.ExperimentalMiniAppAudioTestingApi
+import ge.yet.game.miniapp.audio.testing.MiniAppAudioTestRenderer
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class AudioTrackAutomationTest {
     @Test
     fun `track snapshots bounded gain and pan automation expressions`() {
@@ -64,16 +65,14 @@ class AudioTrackAutomationTest {
                 pan(smoothNoise(seed = 99, rate = 1.hz, range = -0.9f..0.9f))
             }
         }
-        val request = OfflineAudioRequest(sampleRate = 8_000, frameCount = 16_000)
-
-        val first = assertIs<OfflineAudioRenderResult.Success>(OfflineAudioRenderer.render(program, request)).audio
-        val second = assertIs<OfflineAudioRenderResult.Success>(OfflineAudioRenderer.render(program, request)).audio
+        val first = assertIs<AudioTestRenderResult.Success>(MiniAppAudioTestRenderer.render(program, 8_000, 16_000)).pcm
+        val second = assertIs<AudioTestRenderResult.Success>(MiniAppAudioTestRenderer.render(program, 8_000, 16_000)).pcm
         val channelDifference = List(4) { window ->
             val range = window * 4_000 until (window + 1) * 4_000
             range.sumOf { abs(first.left[it]).toDouble() - abs(first.right[it]).toDouble() }
         }
 
-        assertEquals(first.quantizedPcmHash(), second.quantizedPcmHash())
+        assertEquals(first.quantizedPcmHash, second.quantizedPcmHash)
         assertTrue(channelDifference.max() - channelDifference.min() > 20.0)
         assertTrue(first.peak <= 1f)
     }

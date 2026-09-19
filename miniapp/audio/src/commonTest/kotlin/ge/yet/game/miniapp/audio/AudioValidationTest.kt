@@ -123,6 +123,7 @@ class AudioValidationTest {
         assertEquals(
             listOf(
                 AudioDiagnosticCode.EFFECT_LIMIT_EXCEEDED to "musicBus.effects",
+                AudioDiagnosticCode.REVERB_PROCESSOR_LIMIT_EXCEEDED to "musicBus.processors",
                 AudioDiagnosticCode.DELAY_LIMIT_EXCEEDED to "musicTrack[line].effect[0].delaySeconds",
                 AudioDiagnosticCode.FEEDBACK_LIMIT_EXCEEDED to "musicTrack[line].effect[0].feedback",
                 AudioDiagnosticCode.EFFECT_LIMIT_EXCEEDED to "musicTrack[line].effects",
@@ -150,6 +151,33 @@ class AudioValidationTest {
                 AudioDiagnosticCode.FILTER_LIMIT_EXCEEDED to "instrument[dense].filters",
                 AudioDiagnosticCode.NOISE_LIMIT_EXCEEDED to "instrument[dense].noises",
                 AudioDiagnosticCode.PARTIAL_LIMIT_EXCEEDED to "instrument[dense].partials",
+            ),
+            failure.diagnostics.map { it.code to it.path },
+        )
+    }
+
+    @Test
+    fun `compiler rejects section count and transposed midi overflow`() {
+        val high = ge.yet.game.pattern.sequence(listOf(AudioNote.Pitched(MidiNote.of(127))))
+        val program = audioProgram {
+            instrument("lead") { oscillator(OscillatorShape.SINE) }
+            musicTrack("line") {
+                instrument("lead")
+                arrangement {
+                    repeat(AudioMobileBudget.MAX_SECTIONS_PER_TRACK) {
+                        section(cycles = 1, muted = true)
+                    }
+                    section(cycles = 1, notes = high, transposeSemitones = 1)
+                }
+            }
+        }
+
+        val failure = assertIs<AudioCompilationResult.Failure>(program.compile())
+
+        assertEquals(
+            listOf(
+                AudioDiagnosticCode.TRANSPOSED_NOTE_OUT_OF_RANGE to "musicTrack[line].section[16].pattern",
+                AudioDiagnosticCode.SECTION_LIMIT_EXCEEDED to "musicTrack[line].sections",
             ),
             failure.diagnostics.map { it.code to it.path },
         )

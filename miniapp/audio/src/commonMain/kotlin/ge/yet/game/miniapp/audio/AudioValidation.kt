@@ -3,6 +3,7 @@ package ge.yet.game.miniapp.audio
 import ge.yet.game.pattern.PatternQueryBudget
 import ge.yet.game.pattern.PatternQueryException
 import ge.yet.game.pattern.PatternQueryLimit
+import ge.yet.game.pattern.CycleTime
 import ge.yet.game.pattern.TimeArc
 
 enum class AudioDiagnosticCode {
@@ -23,6 +24,11 @@ enum class AudioDiagnosticCode {
     PATTERN_OPERATION_LIMIT_EXCEEDED,
     PARAMETER_RANGE_INVALID,
     PARAMETER_DEPTH_EXCEEDED,
+    SECTION_LIMIT_EXCEEDED,
+    TRANSPOSED_NOTE_OUT_OF_RANGE,
+    DELAY_PROCESSOR_LIMIT_EXCEEDED,
+    REVERB_PROCESSOR_LIMIT_EXCEEDED,
+    DYNAMICS_PROCESSOR_LIMIT_EXCEEDED,
 }
 
 data class AudioDiagnostic(
@@ -165,6 +171,7 @@ internal fun AudioProgram.compile(): AudioCompilationResult {
 
         validateEffects("musicBus", musicBus.effects, this)
         validateEffects("sfxBus", sfxBus.effects, this)
+        validateProcessorBudgets(this@compile, this)
 
         if (musicTracks.size > AudioMobileBudget.MAX_TRACKS) {
             add(
@@ -260,6 +267,7 @@ private fun AudioParameter.controlNames(): Set<AudioControlName> = when (this) {
     is AudioParameter.Constant,
     is AudioParameter.SineLfo,
     is AudioParameter.SmoothNoise,
+    is AudioParameter.NoteFrequency,
     -> emptySet()
     is AudioParameter.Control -> setOf(name)
     is AudioParameter.Product -> left.controlNames() + right.controlNames()
@@ -270,6 +278,7 @@ private fun AudioParameter.depth(): Int = when (this) {
     is AudioParameter.Control,
     is AudioParameter.SineLfo,
     is AudioParameter.SmoothNoise,
+    is AudioParameter.NoteFrequency,
     -> 1
     is AudioParameter.Product -> 1 + maxOf(left.depth(), right.depth())
 }
@@ -278,19 +287,54 @@ private fun validatePattern(
     track: MusicTrackDeclaration,
     diagnostics: MutableList<AudioDiagnostic>,
 ) {
+    if (track.sections.size > AudioMobileBudget.MAX_SECTIONS_PER_TRACK) {
+        diagnostics += AudioDiagnostic(
+            code = AudioDiagnosticCode.SECTION_LIMIT_EXCEEDED,
+            path = "musicTrack[${track.name.value}].sections",
+            message = "Track exceeds the mobile section limit",
+        )
+    }
+    if (track.sections.isNotEmpty()) {
+        track.sections.forEachIndexed { index, section ->
+            val sectionPattern = section.pattern ?: return@forEachIndexed
+            val path = "musicTrack[${track.name.value}].section[$index].pattern"
+            try {
+                val events = sectionPattern.query(
+                    TimeArc(CycleTime.ZERO, CycleTime.of(section.cycles.toLong())),
+                    PatternQueryBudget(),
+                )
+                if (events.any { event ->
+                        val note = (event.value as? AudioNote.Pitched)?.midi?.value ?: return@any false
+                        note + section.transposeSemitones !in 0..127
+                    }
+                ) {
+                    diagnostics += AudioDiagnostic(
+                        code = AudioDiagnosticCode.TRANSPOSED_NOTE_OUT_OF_RANGE,
+                        path = path,
+                        message = "Section transposition resolves outside MIDI 0..127",
+                    )
+                }
+            } catch (failure: PatternQueryException) {
+                diagnostics += patternDiagnostic(path, failure)
+            }
+        }
+        return
+    }
     try {
         track.pattern.query(TimeArc.unit, PatternQueryBudget())
     } catch (failure: PatternQueryException) {
-        diagnostics += AudioDiagnostic(
-            code = when (failure.limit) {
-                PatternQueryLimit.EVENTS -> AudioDiagnosticCode.PATTERN_EVENT_LIMIT_EXCEEDED
-                PatternQueryLimit.OPERATIONS -> AudioDiagnosticCode.PATTERN_OPERATION_LIMIT_EXCEEDED
-            },
-            path = "musicTrack[${track.name.value}].pattern",
-            message = failure.message ?: "Pattern query exceeded its mobile budget",
-        )
+        diagnostics += patternDiagnostic("musicTrack[${track.name.value}].pattern", failure)
     }
 }
+
+private fun patternDiagnostic(path: String, failure: PatternQueryException): AudioDiagnostic = AudioDiagnostic(
+    code = when (failure.limit) {
+        PatternQueryLimit.EVENTS -> AudioDiagnosticCode.PATTERN_EVENT_LIMIT_EXCEEDED
+        PatternQueryLimit.OPERATIONS -> AudioDiagnosticCode.PATTERN_OPERATION_LIMIT_EXCEEDED
+    },
+    path = path,
+    message = failure.message ?: "Pattern query exceeded its mobile budget",
+)
 
 internal object AudioMobileBudget {
     const val MAX_VOICES = 32
@@ -306,6 +350,59 @@ internal object AudioMobileBudget {
     const val MAX_FILTERS = 4
     const val MAX_VOICE_EFFECTS = 4
     const val MAX_PARAMETER_DEPTH = 8
+    const val MAX_SECTIONS_PER_TRACK = 16
+    const val MAX_DELAY_PROCESSORS = 4
+    const val MAX_REVERB_PROCESSORS = 8
+    const val MAX_DYNAMICS_PROCESSORS = 4
+}
+
+private fun validateProcessorBudgets(program: AudioProgram, diagnostics: MutableList<AudioDiagnostic>) {
+    var musicDelays = 0
+    var musicReverbs = 0
+    var musicDynamics = 0
+    for (track in program.musicTracks) {
+        for (effect in track.effects) when (effect) {
+            is BusEffectDeclaration.Delay -> musicDelays += 1
+            is BusEffectDeclaration.Reverb -> musicReverbs += 1
+        }
+    }
+    for (effect in program.musicBus.effects) when (effect) {
+        is BusEffectDeclaration.Delay -> musicDelays += 2
+        is BusEffectDeclaration.Reverb -> musicReverbs += 2
+        is BusEffectDeclaration.Compressor,
+        is BusEffectDeclaration.Limiter,
+        -> musicDynamics += 1
+    }
+    var sfxDelays = 0
+    var sfxReverbs = 0
+    var sfxDynamics = 0
+    for (effect in program.sfxBus.effects) when (effect) {
+        is BusEffectDeclaration.Delay -> sfxDelays += 2
+        is BusEffectDeclaration.Reverb -> sfxReverbs += 2
+        is BusEffectDeclaration.Compressor,
+        is BusEffectDeclaration.Limiter,
+        -> sfxDynamics += 1
+    }
+    validateProcessorCount("music", musicDelays, AudioMobileBudget.MAX_DELAY_PROCESSORS, AudioDiagnosticCode.DELAY_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+    validateProcessorCount("music", musicReverbs, AudioMobileBudget.MAX_REVERB_PROCESSORS, AudioDiagnosticCode.REVERB_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+    validateProcessorCount("music", musicDynamics, AudioMobileBudget.MAX_DYNAMICS_PROCESSORS, AudioDiagnosticCode.DYNAMICS_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+    validateProcessorCount("sfx", sfxDelays, AudioMobileBudget.MAX_DELAY_PROCESSORS, AudioDiagnosticCode.DELAY_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+    validateProcessorCount("sfx", sfxReverbs, AudioMobileBudget.MAX_REVERB_PROCESSORS, AudioDiagnosticCode.REVERB_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+    validateProcessorCount("sfx", sfxDynamics, AudioMobileBudget.MAX_DYNAMICS_PROCESSORS, AudioDiagnosticCode.DYNAMICS_PROCESSOR_LIMIT_EXCEEDED, diagnostics)
+}
+
+private fun validateProcessorCount(
+    bus: String,
+    count: Int,
+    limit: Int,
+    code: AudioDiagnosticCode,
+    diagnostics: MutableList<AudioDiagnostic>,
+) {
+    if (count > limit) diagnostics += AudioDiagnostic(
+        code = code,
+        path = "${bus}Bus.processors",
+        message = "$bus processor count $count exceeds mobile limit $limit",
+    )
 }
 
 private fun InstrumentDeclaration.hasSource(): Boolean =
@@ -316,11 +413,11 @@ private fun SoundEffectDeclaration.hasSource(): Boolean =
 
 private fun validateEffects(
     ownerPath: String,
-    effects: List<SendEffectDeclaration>,
+    effects: List<BusEffectDeclaration>,
     diagnostics: MutableList<AudioDiagnostic>,
 ) {
     effects.forEachIndexed { index, effect ->
-        if (effect is SendEffectDeclaration.Delay) {
+        if (effect is BusEffectDeclaration.Delay) {
             if (effect.time.seconds > AudioMobileBudget.MAX_DELAY_SECONDS) {
                 diagnostics += AudioDiagnostic(
                     code = AudioDiagnosticCode.DELAY_LIMIT_EXCEEDED,

@@ -81,7 +81,6 @@ class DefaultGameComponentTest {
         val component = DefaultGameComponent(
             componentContext = DefaultComponentContext(lifecycle),
             gameStoreFactory = storeFactory,
-            audio = audio,
             tutorialRepository = tutorial,
             analytics = analytics,
             visibility = visibility,
@@ -96,7 +95,6 @@ class DefaultGameComponentTest {
         return Setup(
             component,
             lifecycle,
-            audio,
             analytics,
             completions,
             reviveCompletions,
@@ -211,25 +209,11 @@ class DefaultGameComponentTest {
         s.dispose()
     }
 
-    // ── Lifecycle ────────────────────────────────────────────────────────
-
-    @Test
-    fun destroy_stops_music() = runTest(testDispatcher) {
-        val s = build()
-        s.lifecycle.resume()
-        s.audio.stopMusicCount = 0
-        s.dispose()
-        runCurrent()
-        assertTrue(s.audio.stopMusicCount >= 1)
-        s.dispose()
-    }
-
     // ── Helpers ──────────────────────────────────────────────────────────
 
     private data class Setup(
         val component: DefaultGameComponent,
         val lifecycle: LifecycleRegistry,
-        val audio: RecordingAudio,
         val analytics: RecordingAnalytics,
         val completions: MutableList<Triple<GameState, Boolean, Boolean>>,
         val reviveCompletions: MutableList<GameState>,
@@ -292,10 +276,12 @@ class DefaultGameComponentTest {
     }
 
     private class RecordingAudio : BlockBlastAudioPlayer {
-        var stopMusicCount = 0
         override fun playFeedback(type: FeedbackType) = Unit
-        override fun startMusic() = Unit
-        override fun stopMusic() { stopMusicCount += 1 }
+        override fun playPlace() = Unit
+        override fun playClear(lines: Int) = Unit
+        override fun playGameOver() = Unit
+        override fun playRevive() = Unit
+        override fun playNewBest() = Unit
     }
 
     private class RecordingAnalytics : AnalyticRepository {

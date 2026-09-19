@@ -109,7 +109,7 @@ internal class MiniAppBundleGradleTestProject(
             plugins { id("com.plugins.kotlinMultiplatformPlugin") }
         """)
         write("miniapp/api/build.gradle.kts", """
-            plugins { id("com.plugins.kotlinMultiplatformPlugin") }
+            plugins { id("com.plugins.kotlinMultiplatformPlugin"); id("dev.zacsweers.metro") }
             kotlin { sourceSets.commonMain.dependencies { implementation(libs.kotlinx.coroutines.core) } }
         """)
         write("miniapp/compose/build.gradle.kts", """

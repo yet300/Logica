@@ -12,6 +12,7 @@ import ge.yet.game.miniapp.audio.MiniAppAudioEngine
 import ge.yet.game.miniapp.audio.internal.DefaultMiniAppAudioEngine
 import ge.yet.game.miniapp.audio.internal.PlatformAudioSink
 import ge.yet.game.miniapp.audio.internal.UnavailablePlatformAudioSink
+import ge.yet.game.miniapp.api.FullscreenAdVisibility
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -24,9 +25,10 @@ object MiniAppAudioBindings {
     internal fun provideMiniAppAudioEngine(
         appScope: CoroutineScope,
         settings: SettingsRepository,
+        adVisibility: FullscreenAdVisibility,
         crashlytics: CrashlyticsRepository,
         sink: PlatformAudioSink,
-    ): MiniAppAudioEngine = DefaultMiniAppAudioEngine(appScope, settings, sink, crashlytics).also { engine ->
+    ): MiniAppAudioEngine = DefaultMiniAppAudioEngine(appScope, settings, adVisibility, sink, crashlytics).also { engine ->
         appScope.launch(CoroutineName("miniapp-audio-settings")) { engine.observeSettings() }
         appScope.launch(CoroutineName("miniapp-audio-diagnostics")) { engine.reportDiagnostics() }
     }

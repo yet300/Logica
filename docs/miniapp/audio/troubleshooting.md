@@ -20,7 +20,11 @@ Reduce gains and overlapping sources first. Then shorten release/delay tails, re
 
 ## Android and iOS differ
 
-Use deterministic offline render tests to separate declaration/DSP problems from platform sink problems. Then run the platform verification in `docs/verification/miniapp-audio-android.md` or `miniapp-audio-ios.md`. Do not add platform code to a game module.
+Use deterministic `MiniAppAudioTestRenderer` tests to separate declaration/DSP problems from platform sink problems. That test API drives the same realtime block renderer as the sinks; there is no second offline DSP implementation. Then run the platform verification in `docs/verification/miniapp-audio-android.md` or `miniapp-audio-ios.md`. Do not add platform code to a game module.
+
+## Processor budget rejected
+
+Stereo bus delay/reverb consumes one processor per channel, while track sends consume one mono processor. Compressor and limiter consume one linked-stereo dynamics state each. Reduce or consolidate the chain; do not split the same effect into redundant tracks to evade the per-target limit.
 
 ## Music survives the wrong game screen
 

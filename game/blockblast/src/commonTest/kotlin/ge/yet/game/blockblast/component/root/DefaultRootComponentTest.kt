@@ -481,12 +481,11 @@ class DefaultRootComponentTest {
         restoredResultState: GameState,
     ): DefaultGameComponent {
         val reducer = GameSessionReducer(OneByOneGenerator(), ScoreCalculator())
-        val audio = RecordingAudio()
         val tutorial = FakeTutorialRepository()
         val storeFactory = GameStoreFactory(
             storeFactory = DefaultStoreFactory(),
             gameReducer = reducer,
-            audio = audio,
+            audio = RecordingAudio(),
             saveRepository = InMemoryGameSaveRepository(),
             bestScoreRepository = FakeBestScoreRepository(),
             tutorialRepository = tutorial,
@@ -497,7 +496,6 @@ class DefaultRootComponentTest {
             componentContext = DefaultComponentContext(lifecycle),
             analytics = RecordingAnalytics(),
             gameStoreFactory = storeFactory,
-            audio = audio,
             tutorialRepository = tutorial,
             visibility = visibility,
             isNewGame = false,
@@ -720,8 +718,11 @@ class DefaultRootComponentTest {
 
     private class RecordingAudio : BlockBlastAudioPlayer {
         override fun playFeedback(type: FeedbackType) = Unit
-        override fun startMusic() = Unit
-        override fun stopMusic() = Unit
+        override fun playPlace() = Unit
+        override fun playClear(lines: Int) = Unit
+        override fun playGameOver() = Unit
+        override fun playRevive() = Unit
+        override fun playNewBest() = Unit
     }
 
     private class RecordingAnalytics : AnalyticRepository {

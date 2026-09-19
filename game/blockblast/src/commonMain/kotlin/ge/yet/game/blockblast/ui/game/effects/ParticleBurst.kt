@@ -24,7 +24,7 @@ import kotlin.random.Random
  *
  * One state object covers both burst particles and the shockwave ring.
  */
-class ParticleBurstState {
+internal class ParticleBurstState {
     val particles = mutableStateListOf<Particle>()
     val shockwaves = mutableStateListOf<Shockwave>()
 
@@ -73,7 +73,7 @@ class ParticleBurstState {
     }
 }
 
-class Particle(
+internal class Particle(
     val startX: Float,
     val startY: Float,
     val velocityX: Float,
@@ -84,7 +84,7 @@ class Particle(
     val progress = Animatable(0f)
 }
 
-class Shockwave(
+internal class Shockwave(
     val cx: Float,
     val cy: Float,
     val color: Color,
@@ -93,13 +93,13 @@ class Shockwave(
 }
 
 @Composable
-fun rememberParticleBurstState(): ParticleBurstState = remember { ParticleBurstState() }
+internal fun rememberParticleBurstState(): ParticleBurstState = remember { ParticleBurstState() }
 
 /**
  * Draws particles and shockwaves on top of the grid. Coordinates are
  * normalized 0..1 of the modifier's draw size.
  */
-fun Modifier.particleBurst(state: ParticleBurstState): Modifier = this.drawWithContent {
+internal fun Modifier.particleBurst(state: ParticleBurstState): Modifier = this.drawWithContent {
     drawContent()
 
     val w = size.width

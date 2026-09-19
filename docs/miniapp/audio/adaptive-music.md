@@ -14,4 +14,14 @@ Recommended mapping process:
 
 Use a stable seed for procedural variation. A seed changes the composition's deterministic identity; a control changes its live expression. Do not generate a new seed each frame or each recomposition.
 
+For bounded form changes, declare `arrangement { section(...) }` on a track. A section lasts a positive whole number of cycles and can use a pattern, transpose it in semitones, or be muted. The section list repeats inside the existing scheduler; it is not a playlist and does not restart the audio engine.
+
+```kotlin
+arrangement {
+    section(cycles = 4, notes = verse)
+    section(cycles = 2, notes = verse, transposeSemitones = 5)
+    section(cycles = 1, muted = true)
+}
+```
+
 Visibility, global Music/SFX settings and session teardown are host-owned. An active program may be suppressed while hidden and resume according to the runtime policy; a game must not observe the app lifecycle to manipulate a native player.

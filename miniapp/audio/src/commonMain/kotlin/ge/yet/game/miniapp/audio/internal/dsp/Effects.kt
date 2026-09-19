@@ -1,5 +1,8 @@
 package ge.yet.game.miniapp.audio.internal.dsp
 
+import kotlin.math.abs
+import kotlin.math.exp
+import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.tanh
@@ -57,6 +60,11 @@ internal class DelayState(maxDelayFrames: Int) {
     init {
         require(maxDelayFrames > 0)
     }
+
+    internal fun reset() {
+        samples.fill(0f)
+        writeIndex = 0
+    }
 }
 
 internal fun applyDelay(
@@ -96,7 +104,83 @@ internal class ReverbState(sampleRate: Int) {
         combs = Array(seconds.size) { FloatArray((sampleRate * seconds[it]).toInt().coerceAtLeast(1)) }
         indices = IntArray(seconds.size)
     }
+
+    internal fun reset() {
+        for (index in combs.indices) combs[index].fill(0f)
+        indices.fill(0)
+    }
 }
+
+internal class DynamicsState {
+    internal var gain = 1f
+
+    internal fun reset() {
+        gain = 1f
+    }
+}
+
+internal fun applyCompressorStereo(
+    left: FloatArray,
+    right: FloatArray,
+    threshold: Float,
+    ratio: Float,
+    attackSeconds: Double,
+    releaseSeconds: Double,
+    makeupGain: Float,
+    sampleRate: Int,
+    state: DynamicsState,
+    frameCount: Int,
+) {
+    require(frameCount in 0..minOf(left.size, right.size))
+    require(threshold.isFinite() && threshold in 0f..1f)
+    require(ratio.isFinite() && ratio >= 1f)
+    require(attackSeconds >= 0.0 && releaseSeconds > 0.0 && sampleRate > 0)
+    require(makeupGain.isFinite() && makeupGain in 0f..4f)
+    val attack = smoothingCoefficient(attackSeconds, sampleRate)
+    val release = smoothingCoefficient(releaseSeconds, sampleRate)
+    var gain = state.gain
+    for (frame in 0 until frameCount) {
+        val leftInput = left[frame].takeIf(Float::isFinite) ?: 0f
+        val rightInput = right[frame].takeIf(Float::isFinite) ?: 0f
+        val peak = max(abs(leftInput), abs(rightInput))
+        val compressedPeak = if (peak > threshold) threshold + (peak - threshold) / ratio else peak
+        val targetGain = if (peak > 0f) compressedPeak / peak else 1f
+        val coefficient = if (targetGain < gain) attack else release
+        gain = targetGain + coefficient * (gain - targetGain)
+        left[frame] = leftInput * gain * makeupGain
+        right[frame] = rightInput * gain * makeupGain
+    }
+    state.gain = gain
+}
+
+internal fun applyLimiterStereo(
+    left: FloatArray,
+    right: FloatArray,
+    ceiling: Float,
+    releaseSeconds: Double,
+    sampleRate: Int,
+    state: DynamicsState,
+    frameCount: Int,
+) {
+    require(frameCount in 0..minOf(left.size, right.size))
+    require(ceiling.isFinite() && ceiling in 0f..1f)
+    require(releaseSeconds > 0.0 && sampleRate > 0)
+    val release = smoothingCoefficient(releaseSeconds, sampleRate)
+    var gain = state.gain
+    for (frame in 0 until frameCount) {
+        val leftInput = left[frame].takeIf(Float::isFinite) ?: 0f
+        val rightInput = right[frame].takeIf(Float::isFinite) ?: 0f
+        val peak = max(abs(leftInput), abs(rightInput))
+        val targetGain = if (peak > ceiling && peak > 0f) ceiling / peak else 1f
+        gain = if (targetGain < gain) targetGain else targetGain + release * (gain - targetGain)
+        left[frame] = (leftInput * gain).coerceIn(-ceiling, ceiling)
+        right[frame] = (rightInput * gain).coerceIn(-ceiling, ceiling)
+    }
+    state.gain = gain
+}
+
+private fun smoothingCoefficient(seconds: Double, sampleRate: Int): Float =
+    if (seconds == 0.0) 0f else exp(-1.0 / (seconds * sampleRate)).toFloat()
 
 internal fun applyReverb(
     buffer: FloatArray,

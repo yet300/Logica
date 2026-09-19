@@ -301,4 +301,74 @@ class ValidateMiniAppDependenciesTaskTest {
         )
         assertContains(second.output, "Reusing configuration cache")
     }
+
+    @Test
+    fun `actual validation rejects miniapp audio internals and engine imports`() {
+        val folder = TemporaryFolder().also { it.create() }
+        val project = MiniAppBundleGradleTestProject(folder, useMarker = false)
+        project.write(
+            "game/blockblast/src/commonMain/kotlin/game/BlockblastAudioInternals.kt",
+            """
+                package game
+                import ge.yet.game.miniapp.audio.MiniAppAudioEngine
+                import ge.yet.game.miniapp.audio.internal.AudioScheduler
+                internal class BlockblastAudioInternals
+            """,
+        )
+
+        val failure = project.runAndFail(
+            ":game:blockblast:validateMiniAppDependencies",
+            "--configuration-cache", "--configuration-cache-problems=fail",
+        )
+
+        val expected = listOf(
+            ":game:blockblast: src/commonMain/kotlin/game/BlockblastAudioInternals.kt may not import ge.yet.game.miniapp.audio.MiniAppAudioEngine; " +
+                "use MiniAppSessionContext.audio and :miniapp:audio-presets",
+            ":game:blockblast: src/commonMain/kotlin/game/BlockblastAudioInternals.kt may not import ge.yet.game.miniapp.audio.internal.AudioScheduler; " +
+                "use MiniAppSessionContext.audio and :miniapp:audio-presets",
+        ).sorted()
+        assertContains(failure.output, "Mini-app dependency boundary violations:\n")
+        expected.forEach { assertContains(failure.output, it) }
+        assertEquals(expected, expected.sortedBy { failure.output.indexOf(it) })
+    }
+
+    @Test
+    fun `actual validation rejects haptics in new games while the blockblast legacy passes`() {
+        val folder = TemporaryFolder().also { it.create() }
+        val project = MiniAppBundleGradleTestProject(folder, useMarker = false)
+        project.write("game/snake/build.gradle.kts", "plugins { id(\"logica.miniapp\") }")
+        project.write(
+            "game/snake/src/commonMain/kotlin/game/snake/SnakeHaptics.kt",
+            """
+                package game.snake
+                import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+                import androidx.compose.ui.platform.LocalHapticFeedback
+                internal class SnakeHaptics
+            """,
+        )
+        project.write(
+            "game/blockblast/src/commonMain/kotlin/game/BlockblastHaptics.kt",
+            """
+                package game
+                import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+                import androidx.compose.ui.platform.LocalHapticFeedback
+                internal class BlockblastHaptics
+            """,
+        )
+
+        val failure = project.runAndFail(":game:snake:validateMiniAppDependencies")
+        assertContains(
+            failure.output,
+            ":game:snake: src/commonMain/kotlin/game/snake/SnakeHaptics.kt may not import androidx.compose.ui.hapticfeedback.HapticFeedbackType; " +
+                "use audio feedback via MiniAppSessionContext.audio instead of haptics (legacy :game:blockblast exception)",
+        )
+        assertContains(
+            failure.output,
+            ":game:snake: src/commonMain/kotlin/game/snake/SnakeHaptics.kt may not import androidx.compose.ui.platform.LocalHapticFeedback; " +
+                "use audio feedback via MiniAppSessionContext.audio instead of haptics (legacy :game:blockblast exception)",
+        )
+
+        val legacy = project.run(":game:blockblast:validateMiniAppDependencies")
+        assertContains(legacy.output, "BUILD SUCCESSFUL")
+    }
 }

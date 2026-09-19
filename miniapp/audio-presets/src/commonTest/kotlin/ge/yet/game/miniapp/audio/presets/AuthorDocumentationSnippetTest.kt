@@ -10,10 +10,16 @@ import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.NoiseColor
 import ge.yet.game.miniapp.audio.OscillatorShape
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.audio.ScaleMode
 import ge.yet.game.miniapp.audio.audioProgram
+import ge.yet.game.miniapp.audio.humanizedNotes
 import ge.yet.game.miniapp.audio.hz
 import ge.yet.game.miniapp.audio.ms
+import ge.yet.game.miniapp.audio.noteFrequency
+import ge.yet.game.miniapp.audio.tonalScale
+import ge.yet.game.pattern.CycleTime
 import ge.yet.game.pattern.degrade
+import ge.yet.game.pattern.humanize
 import ge.yet.game.pattern.sequence
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -71,6 +77,37 @@ private val originalCollisionProgram = audioProgram {
     }
 }
 
+private val expressiveSectionProgram = audioProgram {
+    tempo(108f)
+    val scale = tonalScale(MidiNote.of(55), ScaleMode.DORIAN)
+    val phrase = humanizedNotes(
+        notes = listOf(0, 2, 4, 1).map(scale::midi),
+        velocity = 0.72f..0.94f,
+        seed = 5_501L,
+    ).humanize(CycleTime.of(1, 192), seed = 5_502L)
+    instrument("damped_tines") {
+        oscillator(OscillatorShape.SINE, gain = 0.45f)
+        partial(ratio = 2.71f, gain = 0.16f) {
+            envelope(attack = 1.ms, decay = 80.ms, sustain = 0f, release = 35.ms)
+        }
+        envelope(attack = 2.ms, decay = 260.ms, sustain = 0.1f, release = 140.ms)
+        lowPass(noteFrequency(ratio = 6f, offsetHz = 220f))
+    }
+    musicTrack("sectioned_tines") {
+        instrument("damped_tines")
+        arrangement {
+            section(cycles = 2, notes = phrase)
+            section(cycles = 1, notes = phrase, transposeSemitones = 5)
+            section(cycles = 1, muted = true)
+        }
+    }
+    musicBus {
+        reverb(0.12f)
+        compressor(0.65f, 2.5f, 8.ms, 100.ms, makeupGain = 1.03f)
+        limiter(0.92f, 70.ms)
+    }
+}
+
 private class GameAudio(private val audio: MiniAppAudio) {
     fun start() = audio.playMusic(MenuAudio.program)
 
@@ -89,6 +126,8 @@ class AuthorDocumentationSnippetTest {
         assertTrue(MenuAudio.program.musicTracks.isNotEmpty())
         assertEquals(1, retroProgram.musicTracks.size)
         assertEquals(1, originalCollisionProgram.soundEffects.size)
+        assertEquals(listOf(2, 1, 1), expressiveSectionProgram.musicTracks.single().sections.map { it.cycles })
+        assertEquals(3, expressiveSectionProgram.musicBus.effects.size)
     }
 
     @Test

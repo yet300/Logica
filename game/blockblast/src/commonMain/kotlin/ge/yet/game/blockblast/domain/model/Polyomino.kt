@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  *              Shapes are NEVER rotated — orientation is fixed.
  */
 @Serializable
-data class Polyomino(
+internal data class Polyomino(
     val id: String,
     val cells: List<Position>,
 ) {

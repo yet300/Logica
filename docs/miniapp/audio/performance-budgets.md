@@ -13,9 +13,13 @@ The compiler rejects programs beyond the mobile safety envelope. Author below th
 | Filters per voice | 4 |
 | Voice effects per voice | 4 |
 | Send effects per target | 4 |
+| Delay processors per music/SFX routing domain | 4 |
+| Reverb processors per music/SFX routing domain | 8 |
+| Compressor/limiter processors per music/SFX routing domain | 4 |
 | Delay time | 4 seconds |
 | Delay feedback | 0.95 |
 | Nested audio-parameter depth | 8 |
+| Arrangement sections per track | 16 |
 | Pattern operations | 4,096 |
 | Pattern events | 256 |
 

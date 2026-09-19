@@ -10,7 +10,7 @@ import ge.yet.game.blockblast.component.game.GameComponent
 import ge.yet.game.blockblast.component.result.DefaultGameResultComponentFactory
 import ge.yet.game.blockblast.component.result.GameResultComponent
 import ge.yet.game.blockblast.data.audio.BlockBlastAudioPlayer
-import ge.yet.game.blockblast.data.audio.DefaultBlockBlastAudioPlayer
+import ge.yet.game.blockblast.data.audio.ProceduralBlockBlastAudioPlayer
 import ge.yet.game.blockblast.domain.engine.ShapeGenerator
 import ge.yet.game.blockblast.domain.engine.WeightedShapeGenerator
 import ge.yet.game.domain.repository.FeedbackPreferences
@@ -25,7 +25,7 @@ import ge.yet.game.blockblast.session.BlockBlastSession
 @BindingContainer
 abstract class BlockBlastSessionBindings {
     @Binds
-    internal abstract fun bindAudioPlayer(impl: DefaultBlockBlastAudioPlayer): BlockBlastAudioPlayer
+    internal abstract fun bindAudioPlayer(impl: ProceduralBlockBlastAudioPlayer): BlockBlastAudioPlayer
 
     @Binds
     internal abstract fun bindShapeGenerator(impl: WeightedShapeGenerator): ShapeGenerator

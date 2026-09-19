@@ -10,14 +10,14 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
-data class PhysicsResult(
+internal data class PhysicsResult(
     val bodies: List<FruitBody>,
     val contacts: List<BodyPair>,
     val candidatePairCount: Int,
 )
 
 @SingleIn(MiniAppSessionScope::class)
-class FruitPhysics @Inject constructor(
+internal class FruitPhysics @Inject constructor(
     private val grid: SpatialGrid = SpatialGrid(),
 ) {
     fun step(input: List<FruitBody>, dt: Float): PhysicsResult {

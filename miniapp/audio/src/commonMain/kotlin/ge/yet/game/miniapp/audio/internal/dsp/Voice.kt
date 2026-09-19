@@ -17,10 +17,14 @@ internal class VoiceState(
     private lateinit var instrument: InstrumentDeclaration
     private var pitch: PitchDeclaration? = null
     private var initialBaseFrequency = 440.0
+    private var velocity = 1f
     private var renderedFrames = 0L
     private val oscillatorStates = Array(AudioMobileBudget.MAX_OSCILLATORS_PER_INSTRUMENT) { OscillatorState() }
     private val noiseStates = Array(AudioMobileBudget.MAX_NOISE_SOURCES) { NoiseState(1L) }
     private val partialStates = Array(AudioMobileBudget.MAX_ADDITIVE_PARTIALS) { OscillatorState() }
+    private val partialEnvelopeStates = Array(AudioMobileBudget.MAX_ADDITIVE_PARTIALS) {
+        EnvelopeState(sampleRate, 0.0, 0.0, 1f, 0.0)
+    }
     private val fmState = OscillatorState()
     private val vibratoState = OscillatorState()
     private val envelopeState = EnvelopeState(sampleRate, 0.0, 0.0, 1f, 0.0)
@@ -38,16 +42,23 @@ internal class VoiceState(
         controlPositions: Map<AudioControlName, Float> = emptyMap(),
         pitch: PitchDeclaration? = null,
     ) : this(sampleRate, blockCapacity, controlPositions) {
-        reset(instrument, note, pitch)
+        reset(instrument, note, pitch = pitch)
     }
 
     init {
         require(sampleRate > 0 && blockCapacity > 0)
     }
 
-    fun reset(instrument: InstrumentDeclaration, note: MidiNote, pitch: PitchDeclaration? = null) {
+    fun reset(
+        instrument: InstrumentDeclaration,
+        note: MidiNote,
+        velocity: Float = 1f,
+        pitch: PitchDeclaration? = null,
+    ) {
+        require(velocity.isFinite() && velocity in 0f..1f)
         this.instrument = instrument
         this.pitch = pitch
+        this.velocity = velocity
         initialBaseFrequency = 440.0 * 2.0.pow((note.value - 69) / 12.0)
         renderedFrames = 0L
         oscillatorStates.forEach { it.phase = 0.0 }
@@ -55,6 +66,17 @@ internal class VoiceState(
             state.reset(instrument.noises.getOrNull(index)?.seed ?: 1L)
         }
         partialStates.forEach { it.phase = 0.0 }
+        partialEnvelopeStates.forEachIndexed { index, state ->
+            val partialEnvelope = instrument.partials.getOrNull(index)?.envelope
+            state.reset(
+                sampleRate = sampleRate,
+                attackSeconds = partialEnvelope?.attack?.seconds ?: 0.0,
+                decaySeconds = partialEnvelope?.decay?.seconds ?: 0.0,
+                sustain = partialEnvelope?.sustain ?: 1f,
+                releaseSeconds = partialEnvelope?.release?.seconds ?: 0.0,
+            )
+            if (partialEnvelope != null) state.noteOn()
+        }
         fmState.phase = 0.0
         vibratoState.phase = 0.0
         val envelope = instrument.envelope
@@ -73,7 +95,9 @@ internal class VoiceState(
             state.y2 = 0.0
         }
         for (index in instrument.filters.indices) {
-            instrument.filters[index].resetCoefficients(filterCoefficients[index], sampleRate, controlPositions)
+            instrument.filters[index].resetCoefficients(
+                filterCoefficients[index], sampleRate, controlPositions, initialBaseFrequency, 0L,
+            )
         }
         crusherStates.forEach { state ->
             state.held = 0f
@@ -83,6 +107,11 @@ internal class VoiceState(
 
     fun render(output: FloatArray, frameCount: Int, offset: Int = 0) {
         require(frameCount in 0..blockCapacity && offset >= 0 && offset + frameCount <= output.size)
+        for (index in instrument.filters.indices) {
+            instrument.filters[index].resetCoefficients(
+                filterCoefficients[index], sampleRate, controlPositions, initialBaseFrequency, renderedFrames,
+            )
+        }
         for (frame in 0 until frameCount) {
             val baseFrequency = baseFrequency()
             val fm = instrument.frequencyModulation?.let {
@@ -103,9 +132,16 @@ internal class VoiceState(
             }
             for (index in instrument.partials.indices) {
                 val partial = instrument.partials[index]
-                sample += nextOscillatorSample(ge.yet.game.miniapp.audio.OscillatorShape.SINE, frequency * partial.ratio, 0.5, sampleRate, partialStates[index]) * partial.gain.value
+                val partialEnvelope = if (partial.envelope == null) 1f else partialEnvelopeStates[index].nextValue()
+                sample += nextOscillatorSample(
+                    ge.yet.game.miniapp.audio.OscillatorShape.SINE,
+                    frequency * partial.ratio,
+                    0.5,
+                    sampleRate,
+                    partialStates[index],
+                ) * partial.gain.value * partialEnvelope
             }
-            output[offset + frame] = (sample * envelopeState.nextValue()).takeIf { it.isFinite() } ?: 0f
+            output[offset + frame] = (sample * envelopeState.nextValue() * velocity).takeIf { it.isFinite() } ?: 0f
             renderedFrames += 1
         }
         for (index in instrument.filters.indices) {
@@ -121,9 +157,24 @@ internal class VoiceState(
         }
     }
 
-    fun noteOff() = envelopeState.noteOff()
+    fun noteOff() {
+        envelopeState.noteOff()
+        for (index in instrument.partials.indices) {
+            if (instrument.partials[index].envelope != null) partialEnvelopeStates[index].noteOff()
+        }
+    }
 
-    val isFinished: Boolean get() = envelopeState.phase == EnvelopePhase.DONE
+    val isFinished: Boolean
+        get() {
+            if (envelopeState.phase != EnvelopePhase.DONE) return false
+            for (index in instrument.partials.indices) {
+                if (
+                    instrument.partials[index].envelope != null &&
+                    partialEnvelopeStates[index].phase != EnvelopePhase.DONE
+                ) return false
+            }
+            return true
+        }
 
     private fun baseFrequency(): Double {
         val sweep = pitch ?: return initialBaseFrequency
@@ -137,8 +188,12 @@ private fun FilterDeclaration.resetCoefficients(
     output: BiquadCoefficients,
     sampleRate: Int,
     controlPositions: Map<AudioControlName, Float>,
+    noteFrequencyHz: Double,
+    absoluteFrame: Long,
 ) {
-    val frequency = evaluateAudioParameter(frequency, 0, sampleRate, controlPositions).toDouble()
+    val frequency = evaluateAudioParameter(
+        frequency, absoluteFrame, sampleRate, controlPositions, noteFrequencyHz,
+    ).toDouble()
     val q = 0.5 + resonance * 9.5
     when (this) {
         is FilterDeclaration.LowPass -> output.resetLowPass(sampleRate, frequency, q)

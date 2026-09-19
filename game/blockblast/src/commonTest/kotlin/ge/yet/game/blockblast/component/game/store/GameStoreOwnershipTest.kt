@@ -95,8 +95,11 @@ class GameStoreOwnershipTest {
 
     private class SilentAudioRepository : BlockBlastAudioPlayer {
         override fun playFeedback(type: FeedbackType) = Unit
-        override fun startMusic() = Unit
-        override fun stopMusic() = Unit
+        override fun playPlace() = Unit
+        override fun playClear(lines: Int) = Unit
+        override fun playGameOver() = Unit
+        override fun playRevive() = Unit
+        override fun playNewBest() = Unit
     }
 
     private class SilentAnalyticsRepository : AnalyticRepository {

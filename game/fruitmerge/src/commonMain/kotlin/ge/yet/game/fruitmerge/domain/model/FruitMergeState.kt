@@ -2,17 +2,17 @@ package ge.yet.game.fruitmerge.domain.model
 
 import ge.yet.game.fruitmerge.domain.engine.RandomState
 
-enum class RunPhase {
+internal enum class RunPhase {
     PLAYING,
     RESULT,
 }
 
-enum class TargetingMode {
+internal enum class TargetingMode {
     NONE,
     CLEAR,
 }
 
-data class FruitMergeState(
+internal data class FruitMergeState(
     val bodies: List<FruitBody> = emptyList(),
     val previewLevel: FruitLevel = FruitLevel.BLUEBERRY,
     val nextPreviewLevel: FruitLevel = FruitLevel.RASPBERRY,

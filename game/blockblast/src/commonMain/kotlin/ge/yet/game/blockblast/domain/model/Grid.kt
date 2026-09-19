@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * reduces per-move allocations by ~50× and removes Integer boxing entirely.
  */
 @Serializable
-data class Grid(
+internal data class Grid(
     val cells: IntArray = IntArray(SIZE * SIZE) { EMPTY },
 ) {
     /** Linear index for ([x], [y]) — inlined so hot loops avoid the call. */

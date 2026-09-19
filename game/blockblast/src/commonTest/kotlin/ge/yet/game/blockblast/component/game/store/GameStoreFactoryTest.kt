@@ -60,7 +60,6 @@ class GameStoreFactoryTest {
         assertTrue(store.state.currentPieces.isNotEmpty())
         assertFalse(store.state.isGameOver)
         assertTrue(deps.analytics.has("game_started", "source" to "new"))
-        assertEquals(1, deps.audio.startMusicCount)
     }
 
     @Test
@@ -88,7 +87,6 @@ class GameStoreFactoryTest {
         assertEquals(result, store.state)
         assertEquals(0, deps.save.saveCount)
         assertTrue(labels.isEmpty())
-        assertEquals(1, deps.audio.stopMusicCount)
     }
 
     @Test
@@ -154,7 +152,6 @@ class GameStoreFactoryTest {
         assertEquals(completed.finalState, deps.save.stored)
         assertEquals(completed.finalState, store.state)
         assertTrue(deps.analytics.has("game_over"))
-        assertTrue(deps.audio.stopMusicCount > 0)
     }
 
     @Test
@@ -273,6 +270,104 @@ class GameStoreFactoryTest {
         assertEquals(store.state, deps.save.stored)
     }
 
+    @Test
+    fun ordinary_place_always_plays_place() = runTest {
+        val deps = TestDependencies(saved = playableState())
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 2, y = 2))
+        runCurrent()
+
+        assertEquals(1, deps.audio.placeCount)
+        assertTrue(deps.audio.clearCalls.isEmpty())
+    }
+
+    @Test
+    fun clearing_move_plays_clear_pop_with_line_count() = runTest {
+        val deps = TestDependencies(saved = stateOneLineFromClear())
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 0, y = 0))
+        runCurrent()
+
+        assertEquals(1, deps.audio.placeCount)
+        assertEquals(listOf(1), deps.audio.clearCalls)
+    }
+
+    @Test
+    fun best_score_growth_plays_new_best_once() = runTest {
+        val deps = TestDependencies(saved = stateOneLineFromClear())
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 0, y = 0))
+        runCurrent()
+
+        assertTrue(store.state.bestScore > 0)
+        assertEquals(1, deps.audio.newBestCount)
+    }
+
+    @Test
+    fun move_without_best_growth_stays_silent_on_new_best() = runTest {
+        val saved = playableState().copy(bestScore = 10_000, bestAtRoundStart = 10_000)
+        val deps = TestDependencies(saved = saved)
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 2, y = 2))
+        runCurrent()
+
+        assertEquals(1, deps.audio.placeCount)
+        assertEquals(0, deps.audio.newBestCount)
+    }
+
+    @Test
+    fun terminal_move_plays_game_over_after_place() = runTest {
+        val deps = TestDependencies(saved = stateOneMoveFromGameOver())
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 1, y = 0))
+        runCurrent()
+
+        assertEquals(1, deps.audio.placeCount)
+        assertEquals(1, deps.audio.gameOverCount)
+    }
+
+    @Test
+    fun successful_revive_plays_revive() = runTest {
+        val terminal = playableState().copy(isGameOver = true)
+        val deps = TestDependencies()
+        val store = deps.factory.create(isNewGame = false, restoredResultState = terminal)
+        val labels = mutableListOf<GameStore.Label>()
+        backgroundScope.launch { store.labels.collect(labels::add) }
+        runCurrent()
+
+        store.accept(GameStore.Intent.Revive)
+        runCurrent()
+
+        assertEquals(1, labels.filterIsInstance<GameStore.Label.ReviveCompleted>().size)
+        assertEquals(1, deps.audio.reviveCount)
+    }
+
+    @Test
+    fun rejected_place_plays_no_audio() = runTest {
+        val saved = playableState().copy(grid = Grid().withCell(2, 2, 4))
+        val deps = TestDependencies(saved = saved)
+        val store = deps.factory.create(isNewGame = false)
+        runCurrent()
+
+        store.accept(GameStore.Intent.Place(pieceId = 1, x = 2, y = 2))
+        runCurrent()
+
+        assertEquals(0, deps.audio.placeCount)
+        assertTrue(deps.audio.clearCalls.isEmpty())
+        assertEquals(0, deps.audio.newBestCount)
+        assertEquals(0, deps.audio.gameOverCount)
+    }
+
     private fun playableState(score: Long = 0): GameState = GameState(
         grid = Grid().withCell(7, 7, 5),
         score = score,
@@ -280,6 +375,16 @@ class GameStoreFactoryTest {
         currentPieces = listOf(Piece(1, singleCell, 1)),
         nextPieceId = 1,
     )
+
+    private fun stateOneLineFromClear(): GameState {
+        var grid = Grid()
+        for (x in 1 until Grid.SIZE) grid = grid.withCell(x, 0, 2)
+        return GameState(
+            grid = grid,
+            currentPieces = listOf(Piece(1, singleCell, 1)),
+            nextPieceId = 1,
+        )
+    }
 
     private fun stateOneMoveFromGameOver(): GameState {
         var grid = Grid()
@@ -356,11 +461,17 @@ class GameStoreFactoryTest {
 
     private class RecordingAudioRepository : BlockBlastAudioPlayer {
         val feedback = mutableListOf<FeedbackType>()
-        var startMusicCount = 0
-        var stopMusicCount = 0
+        var placeCount = 0
+        val clearCalls = mutableListOf<Int>()
+        var gameOverCount = 0
+        var reviveCount = 0
+        var newBestCount = 0
         override fun playFeedback(type: FeedbackType) { feedback += type }
-        override fun startMusic() { startMusicCount += 1 }
-        override fun stopMusic() { stopMusicCount += 1 }
+        override fun playPlace() { placeCount += 1 }
+        override fun playClear(lines: Int) { clearCalls += lines }
+        override fun playGameOver() { gameOverCount += 1 }
+        override fun playRevive() { reviveCount += 1 }
+        override fun playNewBest() { newBestCount += 1 }
     }
 
     private class RecordingAnalyticsRepository : AnalyticRepository {

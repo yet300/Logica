@@ -1,6 +1,6 @@
 package ge.yet.game.fruitmerge.domain.model
 
-enum class ActionRejection {
+internal enum class ActionRejection {
     GAME_OVER,
     BOARD_BUSY,
     BODY_NOT_FOUND,
@@ -10,11 +10,11 @@ enum class ActionRejection {
     SHAKE_ACTIVE,
 }
 
-data class ActionResult(
+internal data class ActionResult(
     val state: FruitMergeState,
     val rejection: ActionRejection? = null,
 )
 
-data class EngineDiagnostics(
+internal data class EngineDiagnostics(
     val maxCandidatePairs: Int = 0,
 )

@@ -1,12 +1,48 @@
 package ge.yet.game.miniapp.audio.presets
 
 import ge.yet.game.miniapp.audio.audioProgram
+import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.audio.testing.AudioTestRenderRequest
+import ge.yet.game.miniapp.audio.testing.AudioTestRenderResult
+import ge.yet.game.miniapp.audio.testing.AudioTestSfxTrigger
+import ge.yet.game.miniapp.audio.testing.ExperimentalMiniAppAudioTestingApi
+import ge.yet.game.miniapp.audio.testing.MiniAppAudioTestRenderer
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class SoundEffectsTest {
+    @Test
+    fun `every shared sfx renders deterministic finite audible pcm with headroom`() {
+        val fragments = listOf(
+            PlacementClick(),
+            SuccessSweep(),
+            Explosion(seed = 42),
+            PowerUp(),
+        )
+
+        for (fragment in fragments) {
+            val program = audioProgram { include(fragment) }
+            val name = program.soundEffects.single().name
+            val request = AudioTestRenderRequest(
+                sampleRate = 8_000,
+                frameCount = 4_000,
+                includeMusic = false,
+                sfxTriggers = listOf(AudioTestSfxTrigger(SfxName(name.value), 0)),
+            )
+            val first = assertIs<AudioTestRenderResult.Success>(MiniAppAudioTestRenderer.render(program, request)).pcm
+            val second = assertIs<AudioTestRenderResult.Success>(MiniAppAudioTestRenderer.render(program, request)).pcm
+
+            assertEquals(first.quantizedPcmHash, second.quantizedPcmHash, name.value)
+            assertTrue(first.rms > 0.0005, name.value)
+            assertTrue(first.peak < 1f, name.value)
+            assertTrue(first.left.all(Float::isFinite) && first.right.all(Float::isFinite), name.value)
+        }
+    }
+
     @Test
     fun `shared sfx factories expose original bounded declarations`() {
         val program = audioProgram {

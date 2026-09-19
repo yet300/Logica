@@ -27,7 +27,7 @@ import kotlin.random.Random
  * This uses `drawWithContent` (not Canvas) — the composable's real content
  * is drawn first, then the glitch artifacts are composited on top.
  */
-class GlitchState {
+internal class GlitchState {
     private val mutationMutex = MutatorMutex()
 
     val intensity = Animatable(0f)
@@ -48,9 +48,9 @@ class GlitchState {
 }
 
 @Composable
-fun rememberGlitchState(): GlitchState = remember { GlitchState() }
+internal fun rememberGlitchState(): GlitchState = remember { GlitchState() }
 
-fun Modifier.glitchEffect(state: GlitchState): Modifier =
+internal fun Modifier.glitchEffect(state: GlitchState): Modifier =
     this.drawWithContent {
         drawContent()
 

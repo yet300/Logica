@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
  * pulse speeds up from ~1.4s to ~0.55s.
  */
 @Composable
-fun Modifier.dangerVignette(dangerLevel: Float): Modifier = composed {
+internal fun Modifier.dangerVignette(dangerLevel: Float): Modifier = composed {
     if (dangerLevel < 0.70f) return@composed this
 
     val intensity = ((dangerLevel - 0.70f) / 0.30f).coerceIn(0f, 1f)

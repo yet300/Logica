@@ -21,6 +21,8 @@
 - Gains leave headroom during overlapping music/SFX.
 - Rapid SFX, controls, stereo and adaptive extremes were checked.
 - Program stays below documented mobile budgets.
+- Timing/velocity variation, tonal material, partial ratios and arrangement are original and use explicit seeds.
+- Track/bus effect processor counts fit the fixed pools; no author callback or mutable RNG reaches realtime rendering.
 - Retro bit depth is an effect, not an output-format change.
 
 ## Verification
@@ -28,4 +30,4 @@
 - Declaration compiles in `commonTest`.
 - New voice/preset has deterministic acoustic render assertions where warranted.
 - Module `allTests`, Android compile and iOS simulator compile pass.
-- Counter remains a compact adaptive example; Block Blast remains a preset-composition example without host/platform imports.
+- Counter remains a compact adaptive example; Block Blast remains an original music plus preset/SFX composition example without host/platform imports.

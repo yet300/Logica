@@ -3,7 +3,7 @@ package ge.yet.game.fruitmerge.domain.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class FruitLevel(
+internal enum class FruitLevel(
     val radius: Float,
     val mass: Float,
     val mergeScore: Long,

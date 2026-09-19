@@ -67,12 +67,12 @@ class AudioProgramBuilder internal constructor() {
         sfxBus = AudioBusDeclaration(sfxBus.effects + fragment.program.sfxBus.effects)
     }
 
-    fun musicBus(block: SendEffectBuilder.() -> Unit) {
-        musicBus = AudioBusDeclaration(SendEffectBuilder().apply(block).effects())
+    fun musicBus(block: BusEffectBuilder.() -> Unit) {
+        musicBus = AudioBusDeclaration(BusEffectBuilder().apply(block).busEffects())
     }
 
-    fun sfxBus(block: SendEffectBuilder.() -> Unit) {
-        sfxBus = AudioBusDeclaration(SendEffectBuilder().apply(block).effects())
+    fun sfxBus(block: BusEffectBuilder.() -> Unit) {
+        sfxBus = AudioBusDeclaration(BusEffectBuilder().apply(block).busEffects())
     }
 
     internal fun build() = AudioProgram(
@@ -101,13 +101,22 @@ open class VoiceBuilder internal constructor() {
         oscillators += OscillatorDeclaration(shape, Gain.of(gain), detuneCents)
     }
 
-    fun noise(color: NoiseColor, gain: Float = 1f, seed: Long = 0L) {
+    fun noise(color: NoiseColor, seed: Long, gain: Float = 1f) {
         noises += NoiseDeclaration(color, Gain.of(gain), seed)
     }
 
     fun partial(ratio: Float, gain: Float = 1f) {
         require(ratio.isFinite() && ratio > 0f)
-        partials += AdditivePartialDeclaration(ratio, Gain.of(gain))
+        partials += AdditivePartialDeclaration(ratio, Gain.of(gain), envelope = null)
+    }
+
+    fun partial(ratio: Float, gain: Float = 1f, block: PartialBuilder.() -> Unit) {
+        require(ratio.isFinite() && ratio > 0f)
+        partials += AdditivePartialDeclaration(
+            ratio = ratio,
+            gain = Gain.of(gain),
+            envelope = PartialBuilder().apply(block).envelope(),
+        )
     }
 
     fun frequencyModulation(ratio: Float, index: Float) {
@@ -166,6 +175,22 @@ open class VoiceBuilder internal constructor() {
     internal fun voiceEffects() = effects.toList()
 }
 
+class PartialBuilder internal constructor() {
+    private var envelope: EnvelopeDeclaration? = null
+
+    fun envelope(
+        attack: AudioDuration,
+        decay: AudioDuration = 0.ms,
+        sustain: Float = 1f,
+        release: AudioDuration,
+    ) {
+        require(sustain.isFinite() && sustain in 0f..1f)
+        envelope = EnvelopeDeclaration(attack, decay, sustain, release)
+    }
+
+    internal fun envelope(): EnvelopeDeclaration? = envelope
+}
+
 class InstrumentBuilder internal constructor() : VoiceBuilder() {
     internal fun build(name: InstrumentName) = InstrumentDeclaration(
         name, oscillators(), noises(), partials(), envelope(), frequencyModulation(), vibrato(), filters(), voiceEffects(),
@@ -177,13 +202,24 @@ class MusicTrackBuilder internal constructor() : SendEffectBuilder() {
     private var pattern: Pattern<AudioNote>? = null
     private var gain: AudioParameter = AudioParameter.Constant(1f)
     private var pan: AudioParameter = AudioParameter.Constant(0f)
+    private var sections: List<MusicSectionDeclaration> = emptyList()
     fun instrument(name: String) { instrument = InstrumentName(name) }
     fun notes(vararg values: MidiNote) { notes(values.toList()) }
     fun notes(values: List<MidiNote>) {
         require(values.isNotEmpty()) { "A music track requires at least one note" }
         pattern = sequence(values.map(AudioNote::Pitched))
+        sections = emptyList()
     }
-    fun notes(value: Pattern<AudioNote>) { pattern = value }
+    fun notes(value: Pattern<AudioNote>) {
+        pattern = value
+        sections = emptyList()
+    }
+    fun arrangement(block: ArrangementBuilder.() -> Unit) {
+        val built = ArrangementBuilder().apply(block).sections()
+        require(built.isNotEmpty()) { "An arrangement requires at least one section" }
+        sections = built
+        pattern = built.firstNotNullOfOrNull(MusicSectionDeclaration::pattern) ?: sequence(AudioNote.Rest)
+    }
     fun gain(value: Float) {
         require(value.isFinite())
         gain(AudioParameter.Constant(value))
@@ -201,7 +237,29 @@ class MusicTrackBuilder internal constructor() : SendEffectBuilder() {
         gain,
         pan,
         effects(),
+        sections,
     )
+}
+
+class ArrangementBuilder internal constructor() {
+    private val sections = mutableListOf<MusicSectionDeclaration>()
+
+    fun section(
+        cycles: Int,
+        notes: Pattern<AudioNote>? = null,
+        transposeSemitones: Int = 0,
+        muted: Boolean = false,
+    ) {
+        require(cycles > 0) { "Section cycles must be positive" }
+        require(muted || notes != null) { "An audible section requires notes" }
+        sections += MusicSectionDeclaration(
+            cycles = cycles,
+            pattern = if (muted) null else notes,
+            transposeSemitones = transposeSemitones,
+        )
+    }
+
+    internal fun sections(): List<MusicSectionDeclaration> = sections.toList()
 }
 
 class SoundEffectBuilder internal constructor() : VoiceBuilder() {
@@ -216,19 +274,43 @@ class SoundEffectBuilder internal constructor() : VoiceBuilder() {
 }
 
 open class SendEffectBuilder internal constructor() {
-    private val sendEffects = mutableListOf<SendEffectDeclaration>()
+    protected val effectDeclarations = mutableListOf<BusEffectDeclaration>()
 
     fun delay(time: AudioDuration, feedback: Float) {
         require(time.seconds > 0.0 && feedback.isFinite() && feedback in 0f..<1f)
-        sendEffects += SendEffectDeclaration.Delay(time, feedback)
+        effectDeclarations += BusEffectDeclaration.Delay(time, feedback)
     }
 
     fun reverb(send: Float) {
         require(send.isFinite() && send in 0f..1f)
-        sendEffects += SendEffectDeclaration.Reverb(send)
+        effectDeclarations += BusEffectDeclaration.Reverb(send)
     }
 
-    internal fun effects(): List<SendEffectDeclaration> = sendEffects.toList()
+    internal fun effects(): List<SendEffectDeclaration> = effectDeclarations.map { it as SendEffectDeclaration }
+}
+
+class BusEffectBuilder internal constructor() : SendEffectBuilder() {
+    fun compressor(
+        threshold: Float,
+        ratio: Float,
+        attack: AudioDuration,
+        release: AudioDuration,
+        makeupGain: Float = 1f,
+    ) {
+        require(threshold.isFinite() && threshold in 0f..1f)
+        require(ratio.isFinite() && ratio >= 1f)
+        require(attack.seconds >= 0.0 && release.seconds > 0.0)
+        require(makeupGain.isFinite() && makeupGain in 0f..4f)
+        effectDeclarations += BusEffectDeclaration.Compressor(threshold, ratio, attack, release, makeupGain)
+    }
+
+    fun limiter(ceiling: Float, release: AudioDuration) {
+        require(ceiling.isFinite() && ceiling in 0f..1f)
+        require(release.seconds > 0.0)
+        effectDeclarations += BusEffectDeclaration.Limiter(ceiling, release)
+    }
+
+    internal fun busEffects(): List<BusEffectDeclaration> = effectDeclarations.toList()
 }
 
 private fun Float.validResonance(): Float {

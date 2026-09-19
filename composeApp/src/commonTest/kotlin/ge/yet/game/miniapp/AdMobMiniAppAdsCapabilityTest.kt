@@ -1,5 +1,6 @@
 package ge.yet.game.miniapp
 
+import ge.yet.game.miniapp.api.FullscreenAdVisibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -35,5 +36,37 @@ class AdMobMiniAppAdsCapabilityTest {
 
         assertTrue(gate.willShowAd)
         assertEquals(1, completions)
+    }
+
+    @Test
+    fun `visibility brackets the request and clears on completion`() {
+        val adVisibility = FullscreenAdVisibility()
+        var sdkCompletion: (() -> Unit)? = null
+        var completions = 0
+        val gate = miniAppAdGate(true) { sdkCompletion = it }
+            .withFullscreenAdVisibility(adVisibility)
+
+        gate.request { completions += 1 }
+        assertTrue(adVisibility.showing.value)
+
+        val completion = assertNotNull(sdkCompletion)
+        completion()
+        assertEquals(1, completions)
+        assertFalse(adVisibility.showing.value)
+    }
+
+    @Test
+    fun `visibility clears on immediate completion without presenting`() {
+        val adVisibility = FullscreenAdVisibility()
+        var completions = 0
+        val gate = miniAppAdGate(
+            canShowAds = false,
+            presenter = { error("presenter must not run") },
+        ).withFullscreenAdVisibility(adVisibility)
+
+        gate.request { completions += 1 }
+
+        assertEquals(1, completions)
+        assertFalse(adVisibility.showing.value)
     }
 }

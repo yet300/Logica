@@ -50,6 +50,6 @@ Check every `AudioCommandResult`. Rejection is expected when music/SFX is disabl
 
 The host automatically suppresses audio with visibility/settings and closes the audio handle when the MiniApp session is destroyed. Call `stopMusic` for an intentional in-game pause or screen transition; do not construct an engine or platform player.
 
-The exact examples above compile in `AuthorDocumentationSnippetTest`. Continue with [the DSL](kotlin-dsl.md), [shared instruments](instruments.md), [adaptive music](adaptive-music.md), [SFX recipes](sfx-recipes.md), and [budgets](performance-budgets.md).
+The exact examples above compile in `AuthorDocumentationSnippetTest`. Continue with [the DSL](kotlin-dsl.md), [patterns and tonal helpers](patterns.md), [shared instruments](instruments.md), [adaptive/sectional music](adaptive-music.md), [effects and bus dynamics](effects.md), [SFX recipes](sfx-recipes.md), and [budgets](performance-budgets.md).
 
 Maintainers changing the engine should instead read [the architecture design](../../superpowers/specs/2026-08-23-kotlin-pattern-audio-design.md) and [implementation plan](../../superpowers/plans/2026-08-23-miniapp-procedural-audio.md).

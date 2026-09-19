@@ -4,16 +4,16 @@ import ge.yet.game.blockblast.domain.model.FeedbackType
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ClearEvent(val cells: List<Position> = emptyList(), val nonce: Int = 0)
+internal data class ClearEvent(val cells: List<Position> = emptyList(), val nonce: Int = 0)
 
 @Serializable
-data class FeedbackEvent(val type: FeedbackType? = null, val nonce: Int = 0)
+internal data class FeedbackEvent(val type: FeedbackType? = null, val nonce: Int = 0)
 
 @Serializable
-data class PointsEvent(val points: Long = 0, val nonce: Int = 0)
+internal data class PointsEvent(val points: Long = 0, val nonce: Int = 0)
 
 @Serializable
-data class GameState(
+internal data class GameState(
     val grid: Grid = Grid(),
     val score: Long = 0L,
     val bestScore: Long = 0L,

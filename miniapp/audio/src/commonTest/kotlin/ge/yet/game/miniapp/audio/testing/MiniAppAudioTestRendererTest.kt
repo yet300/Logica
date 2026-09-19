@@ -19,7 +19,7 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class MiniAppAudioTestRendererTest {
     @Test
-    fun `legacy music overload preserves offline pcm and metrics`() {
+    fun `convenience music overload uses the realtime renderer`() {
         val pcm = renderSuccess(
             MiniAppAudioTestRenderer.render(
                 legacyMusicProgram(),
@@ -27,12 +27,18 @@ class MiniAppAudioTestRendererTest {
                 frameCount = FRAME_COUNT,
             ),
         )
+        val realtime = renderSuccess(
+            MiniAppAudioTestRenderer.render(
+                legacyMusicProgram(),
+                AudioTestRenderRequest(sampleRate = SAMPLE_RATE, frameCount = FRAME_COUNT),
+            ),
+        )
 
         assertEquals(SAMPLE_RATE, pcm.sampleRate)
         assertEquals(FRAME_COUNT, pcm.frameCount)
-        assertEquals(6_138_225_666_948_195_473L, pcm.quantizedPcmHash)
-        assertEquals(0.35700378f, pcm.peak, absoluteTolerance = 0.000001f)
-        assertEquals(0.16977849607383683, pcm.rms, absoluteTolerance = 0.000000001)
+        assertEquals(realtime.quantizedPcmHash, pcm.quantizedPcmHash)
+        assertEquals(realtime.peak, pcm.peak)
+        assertEquals(realtime.rms, pcm.rms)
         assertTrue(pcm.left.all(Float::isFinite))
         assertTrue(pcm.right.all(Float::isFinite))
     }

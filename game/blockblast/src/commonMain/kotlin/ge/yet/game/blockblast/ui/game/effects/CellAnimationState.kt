@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * wave-pop on clear. Inspired by Block Blast (HungryStudio): cells over-shoot
  * on placement and scale-up + spin slightly before fading on clear.
  */
-class CellAnimState {
+internal class CellAnimState {
     val scale = Animatable(1f)
     // Independent X/Y multipliers used to "squash" the cell on snap-in: a wide-flat
     // anticipation pose collapses into a tall-narrow recoil before settling at 1×1.

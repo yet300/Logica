@@ -42,7 +42,7 @@ import kotlinx.coroutines.delay
 import kotlin.time.Clock
 import org.jetbrains.compose.resources.stringResource
 
-class FeedbackPopupState {
+internal class FeedbackPopupState {
     private var nextId = 0L
 
     val popups: List<FeedbackItem>
@@ -64,7 +64,7 @@ class FeedbackPopupState {
     }
 }
 
-data class FeedbackItem(
+internal data class FeedbackItem(
     val id: Long,
     val type: FeedbackType?,
     val comboLevel: Int?,
@@ -72,7 +72,7 @@ data class FeedbackItem(
 )
 
 @Composable
-fun FeedbackPopupOverlay(
+internal fun FeedbackPopupOverlay(
     state: FeedbackPopupState,
     reducedMotion: Boolean = false,
     modifier: Modifier = Modifier

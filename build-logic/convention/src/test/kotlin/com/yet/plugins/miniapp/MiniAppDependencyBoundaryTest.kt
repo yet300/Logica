@@ -131,4 +131,57 @@ class MiniAppDependencyBoundaryTest {
             ),
         )
     }
+
+    @Test
+    fun `miniapp audio internals and engine are rejected while public facade stays allowed`() {
+        listOf(
+            "ge.yet.game.miniapp.audio.internal.AudioScheduler",
+            "ge.yet.game.miniapp.audio.internal.CompiledAudioRuntime",
+            "ge.yet.game.miniapp.audio.internal.dsp.Oscillator",
+            "ge.yet.game.miniapp.audio.MiniAppAudioEngine",
+        ).forEach { importPath ->
+            assertEquals(
+                "MiniAppSessionContext.audio and :miniapp:audio-presets",
+                MiniAppDependencyBoundary.sourceImportViolationFor(
+                    projectPath = ":game:snake",
+                    sourcePath = "src/commonMain/kotlin/Snake.kt",
+                    importPath = importPath,
+                )?.replacement,
+            )
+        }
+        assertEquals(
+            null,
+            MiniAppDependencyBoundary.sourceImportViolationFor(
+                projectPath = ":game:snake",
+                sourcePath = "src/commonMain/kotlin/Snake.kt",
+                importPath = "ge.yet.game.miniapp.audio.presets.SessionAudioProgram",
+            ),
+        )
+    }
+
+    @Test
+    fun `haptics imports are rejected except for the legacy blockblast project`() {
+        listOf(
+            "androidx.compose.ui.hapticfeedback.HapticFeedback",
+            "androidx.compose.ui.hapticfeedback.HapticFeedbackType",
+            "androidx.compose.ui.platform.LocalHapticFeedback",
+        ).forEach { importPath ->
+            assertEquals(
+                "audio feedback via MiniAppSessionContext.audio instead of haptics (legacy :game:blockblast exception)",
+                MiniAppDependencyBoundary.sourceImportViolationFor(
+                    projectPath = ":game:snake",
+                    sourcePath = "src/commonMain/kotlin/Snake.kt",
+                    importPath = importPath,
+                )?.replacement,
+            )
+            assertEquals(
+                null,
+                MiniAppDependencyBoundary.sourceImportViolationFor(
+                    projectPath = ":game:blockblast",
+                    sourcePath = "src/commonMain/kotlin/BlockBlast.kt",
+                    importPath = importPath,
+                ),
+            )
+        }
+    }
 }

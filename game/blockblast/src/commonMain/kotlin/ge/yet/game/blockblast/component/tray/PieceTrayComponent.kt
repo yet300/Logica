@@ -9,7 +9,7 @@ import ge.yet.game.blockblast.domain.model.Piece
  * instance stable across emissions (keyed by [Piece.pieceId]), so the UI can
  * animate position changes without resetting per-slot animation state.
  */
-interface PieceTrayComponent {
+internal interface PieceTrayComponent {
     /**
      * Compacted list of 0..3 slots — same order and length as the engine's
      * `currentPieces`. Slot identity is keyed by `pieceId`, so when a piece is
@@ -28,7 +28,7 @@ interface PieceTrayComponent {
 }
 
 /** Non-null wrapper around an optional tray selection. */
-data class TraySelection(val piece: Piece? = null) {
+internal data class TraySelection(val piece: Piece? = null) {
     companion object {
         val NONE = TraySelection()
     }

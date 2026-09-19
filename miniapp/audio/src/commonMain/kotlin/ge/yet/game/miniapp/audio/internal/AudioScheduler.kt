@@ -6,6 +6,7 @@ import ge.yet.game.miniapp.audio.CompiledAudioProgram
 import ge.yet.game.miniapp.audio.MidiNote
 import ge.yet.game.pattern.CycleTime
 import ge.yet.game.pattern.PatternEventBuffer
+import ge.yet.game.pattern.Pattern
 import ge.yet.game.pattern.PatternQueryBudget
 import ge.yet.game.pattern.TimeArc
 import kotlin.math.roundToLong
@@ -16,6 +17,7 @@ internal data class ScheduledAudioEvent(
     val absoluteStartFrame: Long,
     val frameOffset: Int,
     val durationFrames: Long,
+    val velocity: Float,
     internal val orderInTrack: Int,
 )
 
@@ -28,6 +30,7 @@ internal class ScheduledAudioEventBuffer(
     private val absoluteStartFrames = LongArray(capacity)
     private val frameOffsets = IntArray(capacity)
     private val durationFrames = LongArray(capacity)
+    private val velocities = FloatArray(capacity)
     private val ordersInTrack = IntArray(capacity)
 
     override var size: Int = 0
@@ -41,6 +44,7 @@ internal class ScheduledAudioEventBuffer(
             absoluteStartFrame = absoluteStartFrames[index],
             frameOffset = frameOffsets[index],
             durationFrames = durationFrames[index],
+            velocity = velocities[index],
             orderInTrack = ordersInTrack[index],
         )
     }
@@ -55,6 +59,7 @@ internal class ScheduledAudioEventBuffer(
         absoluteStartFrame: Long,
         frameOffset: Int,
         durationFrames: Long,
+        velocity: Float,
         orderInTrack: Int,
     ): Boolean {
         if (size == capacity) return false
@@ -63,6 +68,7 @@ internal class ScheduledAudioEventBuffer(
         absoluteStartFrames[size] = absoluteStartFrame
         frameOffsets[size] = frameOffset
         this.durationFrames[size] = durationFrames
+        velocities[size] = velocity
         ordersInTrack[size] = orderInTrack
         size += 1
         return true
@@ -75,6 +81,7 @@ internal class ScheduledAudioEventBuffer(
             val startFrame = absoluteStartFrames[index]
             val frameOffset = frameOffsets[index]
             val duration = durationFrames[index]
+            val velocity = velocities[index]
             val order = ordersInTrack[index]
             var insertion = index
             while (insertion > 0 && comesBefore(startFrame, trackIndex, order, insertion - 1)) {
@@ -86,6 +93,7 @@ internal class ScheduledAudioEventBuffer(
             absoluteStartFrames[insertion] = startFrame
             frameOffsets[insertion] = frameOffset
             durationFrames[insertion] = duration
+            velocities[insertion] = velocity
             ordersInTrack[insertion] = order
         }
     }
@@ -94,6 +102,7 @@ internal class ScheduledAudioEventBuffer(
     fun noteAt(index: Int): MidiNote = MidiNote.of(notes[index])
     fun frameOffsetAt(index: Int): Int = frameOffsets[index]
     fun durationFramesAt(index: Int): Long = durationFrames[index]
+    fun velocityAt(index: Int): Float = velocities[index]
 
     private fun comesBefore(startFrame: Long, trackIndex: Int, order: Int, other: Int): Boolean =
         startFrame < absoluteStartFrames[other] ||
@@ -106,6 +115,7 @@ internal class ScheduledAudioEventBuffer(
         absoluteStartFrames[to] = absoluteStartFrames[from]
         frameOffsets[to] = frameOffsets[from]
         durationFrames[to] = durationFrames[from]
+        velocities[to] = velocities[from]
         ordersInTrack[to] = ordersInTrack[from]
     }
 }
@@ -162,24 +172,56 @@ internal class AudioScheduler(
                 val cycleArc = TimeArc(CycleTime.of(cycle), CycleTime.of(cycle + 1))
                 val chunkArc = cycleArc.intersection(scanArc)
                 if (chunkArc != null) {
+                    var sectionBaseCycle = 0L
+                    var transposeSemitones = 0
+                    var selectedPattern: Pattern<AudioNote>? = track.pattern
+                    if (track.sections.isNotEmpty()) {
+                        var arrangementCycles = 0L
+                        for (section in track.sections) arrangementCycles += section.cycles
+                        val arrangementCycle = floorMod(cycle, arrangementCycles)
+                        var sectionStart = 0L
+                        selectedPattern = null
+                        for (section in track.sections) {
+                            val sectionEnd = sectionStart + section.cycles
+                            if (arrangementCycle < sectionEnd) {
+                                selectedPattern = section.pattern
+                                transposeSemitones = section.transposeSemitones
+                                sectionBaseCycle = cycle - (arrangementCycle - sectionStart)
+                                break
+                            }
+                            sectionStart = sectionEnd
+                        }
+                    }
+                    if (selectedPattern == null) {
+                        cycle += 1
+                        continue
+                    }
+                    val sectionOffset = CycleTime.of(sectionBaseCycle)
+                    val localChunkArc = TimeArc(
+                        chunkArc.start - sectionOffset,
+                        chunkArc.endExclusive - sectionOffset,
+                    )
                     patternEvents.clear()
                     patternBudget.reset()
-                    track.pattern.queryInto(chunkArc, patternBudget, patternEvents)
+                    selectedPattern.queryInto(localChunkArc, patternBudget, patternEvents)
                     for (eventIndex in 0 until patternEvents.size) {
-                        val wholeStart = patternEvents.wholeStartAt(eventIndex)
+                        val wholeStart = patternEvents.wholeStartAt(eventIndex) + sectionOffset
                         if (wholeStart !in cycleArc) continue
-                        val note = (patternEvents.valueAt(eventIndex) as? AudioNote.Pitched)?.midi ?: continue
+                        val pitched = patternEvents.valueAt(eventIndex) as? AudioNote.Pitched ?: continue
+                        val transposedMidi = pitched.midi.value + transposeSemitones
+                        if (transposedMidi !in 0..127) continue
                         val absoluteStart = cycleToFrame(wholeStart)
                         if (absoluteStart !in startFrame until endFrame) continue
-                        val absoluteEnd = cycleToFrame(patternEvents.wholeEndExclusiveAt(eventIndex))
+                        val absoluteEnd = cycleToFrame(patternEvents.wholeEndExclusiveAt(eventIndex) + sectionOffset)
                         val duration = absoluteEnd - absoluteStart
                         if (duration <= 0) continue
                         scheduled.add(
                             trackIndex = trackIndex,
-                            note = note,
+                            note = MidiNote.of(transposedMidi),
                             absoluteStartFrame = absoluteStart,
                             frameOffset = (absoluteStart - startFrame).toInt(),
                             durationFrames = duration,
+                            velocity = pitched.velocity,
                             orderInTrack = orderInTrack++,
                         )
                     }
@@ -218,6 +260,11 @@ private fun floorCycle(time: CycleTime): Long = time.numerator / time.denominato
 
 private fun ceilCycle(time: CycleTime): Long =
     time.numerator / time.denominator + if (time.numerator % time.denominator == 0L) 0 else 1
+
+private fun floorMod(value: Long, positiveDivisor: Long): Long {
+    val remainder = value % positiveDivisor
+    return if (remainder < 0L) remainder + positiveDivisor else remainder
+}
 
 private fun checkedAddPositive(left: Long, right: Long): Long {
     require(left >= 0 && right >= 0 && left <= Long.MAX_VALUE - right) { "Audio frame range overflow" }
