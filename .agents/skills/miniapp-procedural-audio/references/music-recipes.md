@@ -10,7 +10,9 @@ Declare one `control("intensity", default, 0f..1f)`. Map it to a few audible lay
 
 ## Tonal layer
 
-Add `SoftPad`, `AnalogBass`, `ChipLead`, or `GlassBell`, then define an original short `Pattern<AudioNote>`. Prefer transforms and seeded degradation to a long copied melody.
+Add `SoftPad`, `AnalogBass`, `ChipLead`, or `GlassBell`, then define an original short `Pattern<AudioNote>`. `tonalScale` can map original scale degrees to checked MIDI notes; it does not supply rhythm or melody. Prefer transforms, seeded degradation, bounded velocity/microtiming humanization, and explicit arrangement sections to a long copied melody.
+
+For an original struck voice, give upper partials short local envelopes and use `noteFrequency` for register-consistent filtering. Finish a dense music bus conservatively with reverb, linked compressor, then limiter; every processor consumes the documented fixed pool.
 
 ## Deterministic variation
 
