@@ -1,5 +1,6 @@
 package ge.yet.game.blockblast.di
 
+import ge.yet.game.blockblast.audio.BlockBlastAudio
 import androidx.compose.runtime.Composable
 import com.app.common.AppDispatchers
 import com.app.common.di.CommonBindings
@@ -339,15 +340,16 @@ class BlockBlastSessionGraphTest {
                 graph.playing()
                 runCurrent()
 
-                // SFX-only game: session start issues no audio commands until
-                // the first game event.
-                assertTrue(recordingAudio.commands.isEmpty())
+                assertEquals(
+                    listOf<RecordingCommand>(RecordingCommand.PlayMusic(BlockBlastAudio.program)),
+                    recordingAudio.commands,
+                )
 
                 lifecycle.destroy()
                 lifecycle.destroy()
                 runCurrent()
 
-                assertTrue(recordingAudio.commands.isEmpty())
+                assertEquals(1, recordingAudio.commands.size)
                 assertFalse(appScopeJob.isCancelled)
             } finally {
                 appGraph.destroySessionsAndCancelAppScope(lifecycle)

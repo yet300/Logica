@@ -6,11 +6,12 @@ import kotlin.test.assertTrue
 
 class BlockBlastAudioProgramTest {
     @Test
-    fun `program exposes only the approved sfx and no music surface`() {
+    fun `program preserves approved sfx and exposes only grove marimba music`() {
         val program = BlockBlastAudio.program
 
         assertTrue(program.controls.isEmpty())
-        assertTrue(program.musicTracks.isEmpty())
+        assertEquals(listOf("grove_marimba"), program.musicTracks.map { it.name.value })
+        assertEquals(listOf("grove_marimba"), program.instruments.map { it.name.value })
         assertEquals(
             setOf(
                 "place",

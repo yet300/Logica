@@ -97,6 +97,7 @@ internal class GameStoreFactory(
         }
 
         private fun initialize() {
+            audio.start()
             scope.launch {
                 val initialization = initializer.initialize(
                     isNewGame = isNewGame,

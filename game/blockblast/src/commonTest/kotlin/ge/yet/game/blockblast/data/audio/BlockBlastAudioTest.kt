@@ -8,11 +8,49 @@ import ge.yet.game.miniapp.audio.AudioDuration
 import ge.yet.game.miniapp.audio.AudioProgram
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
+import ge.yet.game.miniapp.audio.testing.AudioTestRenderResult
+import ge.yet.game.miniapp.audio.testing.ExperimentalMiniAppAudioTestingApi
+import ge.yet.game.miniapp.audio.testing.MiniAppAudioTestRenderer
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class BlockBlastAudioTest {
+    @Test
+    fun grove_marimba_is_original_bounded_and_deterministic() {
+        assertEquals(listOf("grove_marimba"), BlockBlastAudio.program.instruments.map { it.name.value })
+        assertEquals(listOf("grove_marimba"), BlockBlastAudio.program.musicTracks.map { it.name.value })
+        assertEquals(listOf(4, 2, 2), BlockBlastAudio.program.musicTracks.single().sections.map { it.cycles })
+        assertEquals(null, BlockBlastAudio.program.musicTracks.single().sections.last().pattern)
+
+        val frameCount = 8_000 * 240 * 8 / 104
+        val first = assertIs<AudioTestRenderResult.Success>(
+            MiniAppAudioTestRenderer.render(BlockBlastAudio.program, 8_000, frameCount),
+        ).pcm
+        val second = assertIs<AudioTestRenderResult.Success>(
+            MiniAppAudioTestRenderer.render(BlockBlastAudio.program, 8_000, frameCount),
+        ).pcm
+
+        assertEquals(first.quantizedPcmHash, second.quantizedPcmHash)
+        assertTrue(first.rms > 0.005)
+        assertTrue(first.peak <= 0.9101f)
+        assertTrue(first.left.all(Float::isFinite) && first.right.all(Float::isFinite))
+    }
+
+    @Test
+    fun start_is_idempotent_for_the_session_even_when_host_rejects_it() {
+        val audio = RecordingMiniAppAudio(playMusicResult = AudioCommandResult.Rejected(
+            ge.yet.game.miniapp.audio.AudioCommandRejection.PLAYBACK_SUPPRESSED,
+        ))
+        val player = ProceduralBlockBlastAudioPlayer(audio)
+
+        player.start()
+        player.start()
+
+        assertEquals(listOf<Command>(Command.PlayMusic(BlockBlastAudio.program)), audio.commands)
+    }
     @Test
     fun every_feedback_type_maps_to_its_own_voice() {
         val audio = RecordingMiniAppAudio()
@@ -72,14 +110,17 @@ class BlockBlastAudioTest {
     }
 
     private sealed interface Command {
+        data class PlayMusic(val program: AudioProgram) : Command
         data class PlaySfx(val program: AudioProgram, val name: SfxName) : Command
     }
 
-    private class RecordingMiniAppAudio : MiniAppAudio {
+    private class RecordingMiniAppAudio(
+        private val playMusicResult: AudioCommandResult = AudioCommandResult.Accepted,
+    ) : MiniAppAudio {
         val commands = mutableListOf<Command>()
 
         override fun playMusic(program: AudioProgram): AudioCommandResult =
-            AudioCommandResult.Accepted
+            playMusicResult.also { commands += Command.PlayMusic(program) }
 
         override fun stopMusic(fadeOut: AudioDuration): AudioCommandResult =
             AudioCommandResult.Accepted

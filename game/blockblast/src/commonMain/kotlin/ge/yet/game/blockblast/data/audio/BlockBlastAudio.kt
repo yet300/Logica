@@ -9,6 +9,7 @@ import ge.yet.game.miniapp.audio.presets.SessionAudioProgram
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
 internal interface BlockBlastAudioPlayer {
+    fun start() = Unit
     fun playFeedback(type: FeedbackType)
     fun playPlace()
     fun playClear(lines: Int)
@@ -24,6 +25,10 @@ internal class ProceduralBlockBlastAudioPlayer @Inject constructor(
     private val audio: MiniAppAudio,
 ) : BlockBlastAudioPlayer {
     private val sfx = SessionAudioProgram(audio, BlockBlastAudio.program)
+
+    override fun start() {
+        sfx.start()
+    }
 
     override fun playFeedback(type: FeedbackType) {
         sfx.playSfx(BlockBlastAudio.voice(type))
