@@ -11,6 +11,7 @@ internal fun evaluateAudioParameter(
     absoluteFrame: Long,
     sampleRate: Int,
     controlPositions: Map<AudioControlName, Float>,
+    noteFrequencyHz: Double = 440.0,
 ): Float {
     require(absoluteFrame >= 0 && sampleRate > 0)
     return when (parameter) {
@@ -32,9 +33,11 @@ internal fun evaluateAudioParameter(
             val normalized = ((start + (end - start) * smooth) + 1.0) * 0.5
             parameter.outputRange.interpolate(normalized.toFloat())
         }
+        is AudioParameter.NoteFrequency ->
+            (noteFrequencyHz * parameter.ratio + parameter.offsetHz).toFloat()
         is AudioParameter.Product ->
-            evaluateAudioParameter(parameter.left, absoluteFrame, sampleRate, controlPositions) *
-                evaluateAudioParameter(parameter.right, absoluteFrame, sampleRate, controlPositions)
+            evaluateAudioParameter(parameter.left, absoluteFrame, sampleRate, controlPositions, noteFrequencyHz) *
+                evaluateAudioParameter(parameter.right, absoluteFrame, sampleRate, controlPositions, noteFrequencyHz)
     }.takeIf(Float::isFinite) ?: 0f
 }
 

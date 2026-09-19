@@ -2,12 +2,20 @@ package ge.yet.game.miniapp.audio.internal
 
 import ge.yet.game.miniapp.audio.AudioControlName
 import ge.yet.game.miniapp.audio.AudioMobileBudget
+import ge.yet.game.miniapp.audio.BusEffectDeclaration
 import ge.yet.game.miniapp.audio.CompiledAudioProgram
 import ge.yet.game.miniapp.audio.MidiNote
 import ge.yet.game.miniapp.audio.MusicTrackDeclaration
 import ge.yet.game.miniapp.audio.SfxName
 import ge.yet.game.miniapp.audio.internal.dsp.SmoothedGainState
 import ge.yet.game.miniapp.audio.internal.dsp.VoiceState
+import ge.yet.game.miniapp.audio.internal.dsp.DelayState
+import ge.yet.game.miniapp.audio.internal.dsp.DynamicsState
+import ge.yet.game.miniapp.audio.internal.dsp.ReverbState
+import ge.yet.game.miniapp.audio.internal.dsp.applyCompressorStereo
+import ge.yet.game.miniapp.audio.internal.dsp.applyDelay
+import ge.yet.game.miniapp.audio.internal.dsp.applyLimiterStereo
+import ge.yet.game.miniapp.audio.internal.dsp.applyReverb
 import ge.yet.game.miniapp.audio.internal.dsp.applySmoothedGain
 import ge.yet.game.miniapp.audio.internal.dsp.limitStereo
 import ge.yet.game.miniapp.audio.internal.dsp.mixMonoToStereo
@@ -34,8 +42,22 @@ internal class RealtimeAudioRenderer(
     private val rightStopGain = SmoothedGainState(1f)
     private val musicLeft = FloatArray(blockCapacity)
     private val musicRight = FloatArray(blockCapacity)
+    private val sfxLeft = FloatArray(blockCapacity)
+    private val sfxRight = FloatArray(blockCapacity)
+    private val trackBuffers = Array(AudioMobileBudget.MAX_TRACKS) { FloatArray(blockCapacity) }
+    private val musicDelayStates = Array(AudioMobileBudget.MAX_DELAY_PROCESSORS) {
+        DelayState((AudioMobileBudget.MAX_DELAY_SECONDS * sampleRate).roundToInt())
+    }
+    private val musicReverbStates = Array(AudioMobileBudget.MAX_REVERB_PROCESSORS) { ReverbState(sampleRate) }
+    private val musicDynamicsStates = Array(AudioMobileBudget.MAX_DYNAMICS_PROCESSORS) { DynamicsState() }
+    private val sfxDelayStates = Array(AudioMobileBudget.MAX_DELAY_PROCESSORS) {
+        DelayState((AudioMobileBudget.MAX_DELAY_SECONDS * sampleRate).roundToInt())
+    }
+    private val sfxReverbStates = Array(AudioMobileBudget.MAX_REVERB_PROCESSORS) { ReverbState(sampleRate) }
+    private val sfxDynamicsStates = Array(AudioMobileBudget.MAX_DYNAMICS_PROCESSORS) { DynamicsState() }
     private val scheduler = AudioScheduler(sampleRate)
     private var program: CompiledAudioProgram? = null
+    private var sfxProgram: CompiledAudioProgram? = null
     private var framePosition = 0L
     private var policy = AudioSessionPolicy.Active
     private var stopAfterFade = false
@@ -55,6 +77,10 @@ internal class RealtimeAudioRenderer(
     internal val voiceStateAllocationCount: Int get() = voiceSlots.size
     internal val scratchBufferAllocationCount: Int get() = voiceSlots.size
     internal val schedulerAllocationCount: Int get() = 1
+    internal val trackBufferAllocationCount: Int get() = trackBuffers.size
+    internal val effectStateAllocationCount: Int
+        get() = musicDelayStates.size + musicReverbStates.size + musicDynamicsStates.size +
+            sfxDelayStates.size + sfxReverbStates.size + sfxDynamicsStates.size
 
     init {
         require(sampleRate in 8_000..192_000)
@@ -72,12 +98,15 @@ internal class RealtimeAudioRenderer(
         right.fill(0f, 0, frameCount)
         musicLeft.fill(0f, 0, frameCount)
         musicRight.fill(0f, 0, frameCount)
+        sfxLeft.fill(0f, 0, frameCount)
+        sfxRight.fill(0f, 0, frameCount)
         if (policy.schedulingPaused || frameCount == 0) return
 
         val activeProgram = program
         if (activeProgram != null) {
             scheduleNewMusicVoices(activeProgram, frameCount)
-            renderMusicVoices(musicLeft, musicRight, frameCount)
+            renderMusicVoices(activeProgram, frameCount)
+            processMusic(activeProgram, frameCount)
             framePosition += frameCount
         }
         val stopTarget = if (stopAfterFade) 0f else 1f
@@ -90,7 +119,12 @@ internal class RealtimeAudioRenderer(
             left[frame] = musicLeft[frame]
             right[frame] = musicRight[frame]
         }
-        renderSfxVoices(left, right, frameCount)
+        renderSfxVoices(sfxLeft, sfxRight, frameCount)
+        sfxProgram?.let { processStereoBus(it.source.sfxBus.effects, sfxLeft, sfxRight, frameCount, false) }
+        for (frame in 0 until frameCount) {
+            left[frame] += sfxLeft[frame]
+            right[frame] += sfxRight[frame]
+        }
         limitStereo(left, right, frameCount)
     }
 
@@ -103,6 +137,7 @@ internal class RealtimeAudioRenderer(
         resetGain(rightPolicyGain, policy.musicGain)
         resetGain(leftStopGain, 1f)
         resetGain(rightStopGain, 1f)
+        resetMusicEffectStates()
         return AudioRuntimeCommandOutcome.APPLIED
     }
 
@@ -120,6 +155,10 @@ internal class RealtimeAudioRenderer(
         val soundEffectIndex = program.soundEffectIndex(name)
         if (soundEffectIndex < 0) return AudioRuntimeCommandOutcome.VALIDATION_REJECTED
         val declaration = program.source.soundEffects[soundEffectIndex]
+        if (sfxProgram !== program) {
+            sfxProgram = program
+            resetSfxEffectStates()
+        }
         val slotIndex = allocateVoice(VoiceKind.SFX)
         if (slotIndex < 0) return AudioRuntimeCommandOutcome.VALIDATION_REJECTED
         val slot = voiceSlots[slotIndex]
@@ -128,7 +167,7 @@ internal class RealtimeAudioRenderer(
         val midi = (MIDI_A4 + MIDI_NOTES_PER_OCTAVE * ln(frequency / DEFAULT_SFX_FREQUENCY) / ln(2.0))
             .roundToInt()
             .coerceIn(MIDI_MIN, MIDI_MAX)
-        slot.state.reset(instrument, MidiNote.of(midi), declaration.pitch)
+        slot.state.reset(instrument, MidiNote.of(midi), pitch = declaration.pitch)
         slot.track = null
         slot.remainingFrames = 0L
         slot.blockOffset = 0
@@ -169,8 +208,9 @@ internal class RealtimeAudioRenderer(
             val slotIndex = allocateVoice(VoiceKind.MUSIC)
             if (slotIndex < 0) continue
             val slot = voiceSlots[slotIndex]
-            slot.state.reset(instrument, scheduled.noteAt(index))
+            slot.state.reset(instrument, scheduled.noteAt(index), velocity = scheduled.velocityAt(index))
             slot.track = track
+            slot.trackIndex = scheduled.trackIndexAt(index)
             slot.remainingFrames = scheduled.durationFramesAt(index)
             slot.blockOffset = scheduled.frameOffsetAt(index)
             slot.releaseStartFrame = 0
@@ -179,7 +219,10 @@ internal class RealtimeAudioRenderer(
         }
     }
 
-    private fun renderMusicVoices(left: FloatArray, right: FloatArray, frameCount: Int) {
+    private fun renderMusicVoices(program: CompiledAudioProgram, frameCount: Int) {
+        for (trackIndex in program.source.musicTracks.indices) {
+            trackBuffers[trackIndex].fill(0f, 0, frameCount)
+        }
         for (index in voiceSlots.indices) {
             val slot = voiceSlots[index]
             if (!slot.active || slot.kind != VoiceKind.MUSIC) continue
@@ -188,21 +231,97 @@ internal class RealtimeAudioRenderer(
             if (renderedFrames > 0) {
                 slot.scratch.fill(0f, 0, frameCount)
                 slot.state.render(slot.scratch, renderedFrames, slot.blockOffset)
-                mixMonoToStereoAutomated(
-                    mono = slot.scratch,
-                    left = left,
-                    right = right,
-                    frameCount = frameCount,
-                    sampleRate = sampleRate,
-                    gain = requireNotNull(slot.track).gain,
-                    pan = requireNotNull(slot.track).pan,
-                    controlPositions = controlPositions,
-                    absoluteStartFrame = framePosition,
-                )
+                val trackBuffer = trackBuffers[slot.trackIndex]
+                for (frame in 0 until frameCount) trackBuffer[frame] += slot.scratch[frame]
                 slot.remainingFrames -= renderedFrames
             }
             slot.blockOffset = 0
             if (slot.remainingFrames <= 0) finishVoice(slot)
+        }
+    }
+
+    private fun processMusic(program: CompiledAudioProgram, frameCount: Int) {
+        var delayIndex = 0
+        var reverbIndex = 0
+        for (trackIndex in program.source.musicTracks.indices) {
+            val track = program.source.musicTracks[trackIndex]
+            val cursor = processMonoEffects(
+                trackBuffers[trackIndex], track.effects, frameCount,
+                musicDelayStates, delayIndex, musicReverbStates, reverbIndex,
+            )
+            delayIndex = cursor ushr 16
+            reverbIndex = cursor and 0xffff
+            mixMonoToStereoAutomated(
+                mono = trackBuffers[trackIndex], left = musicLeft, right = musicRight,
+                frameCount = frameCount, sampleRate = sampleRate, gain = track.gain, pan = track.pan,
+                controlPositions = controlPositions, absoluteStartFrame = framePosition,
+            )
+        }
+        processStereoBus(
+            program.source.musicBus.effects, musicLeft, musicRight, frameCount, true,
+            delayIndex, reverbIndex,
+        )
+    }
+
+    private fun processMonoEffects(
+        buffer: FloatArray,
+        effects: List<ge.yet.game.miniapp.audio.SendEffectDeclaration>,
+        frameCount: Int,
+        delays: Array<DelayState>,
+        initialDelayIndex: Int,
+        reverbs: Array<ReverbState>,
+        initialReverbIndex: Int,
+    ): Int {
+        var delayIndex = initialDelayIndex
+        var reverbIndex = initialReverbIndex
+        for (index in effects.indices) when (val effect = effects[index]) {
+            is BusEffectDeclaration.Delay -> {
+                applyDelay(buffer, (effect.time.seconds * sampleRate).roundToInt().coerceAtLeast(1), effect.feedback, 1f, delays[delayIndex], frameCount)
+                delayIndex += 1
+            }
+            is BusEffectDeclaration.Reverb -> {
+                applyReverb(buffer, effect.send, reverbs[reverbIndex], frameCount)
+                reverbIndex += 1
+            }
+        }
+        return (delayIndex shl 16) or reverbIndex
+    }
+
+    private fun processStereoBus(
+        effects: List<BusEffectDeclaration>,
+        left: FloatArray,
+        right: FloatArray,
+        frameCount: Int,
+        music: Boolean,
+        initialDelayIndex: Int = 0,
+        initialReverbIndex: Int = 0,
+    ) {
+        val delays = if (music) musicDelayStates else sfxDelayStates
+        val reverbs = if (music) musicReverbStates else sfxReverbStates
+        val dynamics = if (music) musicDynamicsStates else sfxDynamicsStates
+        var delayIndex = initialDelayIndex
+        var reverbIndex = initialReverbIndex
+        var dynamicsIndex = 0
+        for (index in effects.indices) when (val effect = effects[index]) {
+            is BusEffectDeclaration.Delay -> {
+                val frames = (effect.time.seconds * sampleRate).roundToInt().coerceAtLeast(1)
+                applyDelay(left, frames, effect.feedback, 1f, delays[delayIndex], frameCount)
+                applyDelay(right, frames, effect.feedback, 1f, delays[delayIndex + 1], frameCount)
+                delayIndex += 2
+            }
+            is BusEffectDeclaration.Reverb -> {
+                applyReverb(left, effect.send, reverbs[reverbIndex], frameCount)
+                applyReverb(right, effect.send, reverbs[reverbIndex + 1], frameCount)
+                reverbIndex += 2
+            }
+            is BusEffectDeclaration.Compressor -> {
+                applyCompressorStereo(left, right, effect.threshold, effect.ratio, effect.attack.seconds, effect.release.seconds, effect.makeupGain, sampleRate, dynamics[dynamicsIndex], frameCount)
+                dynamicsIndex += 1
+            }
+            is BusEffectDeclaration.Limiter -> {
+                applyLimiterStereo(left, right, effect.ceiling, effect.release.seconds, sampleRate, dynamics[dynamicsIndex], frameCount)
+                dynamicsIndex += 1
+            }
         }
     }
 
@@ -255,6 +374,7 @@ internal class RealtimeAudioRenderer(
         slot.voiceId = 0L
         slot.kind = null
         slot.track = null
+        slot.trackIndex = -1
         slot.remainingFrames = 0L
         slot.blockOffset = 0
         slot.releaseStartFrame = 0
@@ -274,6 +394,19 @@ internal class RealtimeAudioRenderer(
         stopFadeFrames = 0
     }
 
+
+    private fun resetMusicEffectStates() {
+        for (state in musicDelayStates) state.reset()
+        for (state in musicReverbStates) state.reset()
+        for (state in musicDynamicsStates) state.reset()
+    }
+
+    private fun resetSfxEffectStates() {
+        for (state in sfxDelayStates) state.reset()
+        for (state in sfxReverbStates) state.reset()
+        for (state in sfxDynamicsStates) state.reset()
+    }
+
     private class RealtimeVoiceSlot(
         val state: VoiceState,
         val scratch: FloatArray,
@@ -281,6 +414,7 @@ internal class RealtimeAudioRenderer(
         var voiceId: Long = 0L,
         var kind: VoiceKind? = null,
         var track: MusicTrackDeclaration? = null,
+        var trackIndex: Int = -1,
         var remainingFrames: Long = 0L,
         var blockOffset: Int = 0,
         var releaseStartFrame: Int = 0,

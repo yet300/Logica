@@ -8,6 +8,7 @@ import ge.yet.game.miniapp.audio.AudioControlName
 import ge.yet.game.miniapp.audio.AudioDuration
 import ge.yet.game.miniapp.audio.AudioLookupResult
 import ge.yet.game.miniapp.audio.AudioProgram
+import ge.yet.game.miniapp.audio.CompiledAudioProgram
 import ge.yet.game.miniapp.audio.MiniAppAudio
 import ge.yet.game.miniapp.audio.SfxName
 import ge.yet.game.miniapp.audio.compile
@@ -36,7 +37,7 @@ internal class DefaultMiniAppAudio(
 
     override fun playMusic(program: AudioProgram): AudioCommandResult {
         rejectedWhenUnavailable()?.let { return it }
-        val compiled = when (val result = program.compile()) {
+        val compiled = when (val result = compileCached(program)) {
             is AudioCompilationResult.Failure -> return AudioCommandResult.Rejected(
                 AudioCommandRejection.INVALID_PROGRAM,
                 result.diagnostics,
@@ -71,7 +72,7 @@ internal class DefaultMiniAppAudio(
         if (program.sfx(name) is AudioLookupResult.Missing) {
             return AudioCommandResult.Rejected(AudioCommandRejection.UNKNOWN_SFX)
         }
-        val compiled = when (val result = program.compile()) {
+        val compiled = when (val result = compileCached(program)) {
             is AudioCompilationResult.Failure -> return AudioCommandResult.Rejected(
                 AudioCommandRejection.INVALID_PROGRAM,
                 result.diagnostics,
@@ -286,11 +287,25 @@ internal class DefaultMiniAppAudio(
     private fun existingBackend(): PlatformAudioSinkSession? =
         if (backend.isInitialized()) backend.value else null
 
+    private fun compileCached(program: AudioProgram): AudioCompilationResult {
+        val current = state.value
+        if (current.compiledSource === program) {
+            return AudioCompilationResult.Success(requireNotNull(current.compiledProgram))
+        }
+        val result = program.compile()
+        if (result is AudioCompilationResult.Success) {
+            updateState { it.copy(compiledSource = program, compiledProgram = result.program) }
+        }
+        return result
+    }
+
     private data class State(
         val visibility: MiniAppVisibility,
         val musicEnabled: Boolean,
         val sfxEnabled: Boolean,
         val currentMusic: AudioProgram? = null,
+        val compiledSource: AudioProgram? = null,
+        val compiledProgram: CompiledAudioProgram? = null,
         val visibilityJob: Job? = null,
         val adJob: Job? = null,
         val adSuppressed: Boolean = false,

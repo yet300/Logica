@@ -130,6 +130,47 @@ class AudioSchedulerTest {
         assertEquals(listOf(60, 72), events.map { it.note.value })
     }
 
+    @Test
+    fun `scheduler carries note velocity in primitive event storage`() {
+        val program = audioProgram {
+            tempo(240f)
+            instrument("lead") { oscillator(OscillatorShape.SINE) }
+            musicTrack("notes") {
+                instrument("lead")
+                notes(sequence(listOf(AudioNote.Pitched(MidiNote.of(60), velocity = 0.37f))))
+            }
+        }
+        val compiled = assertIs<AudioCompilationResult.Success>(program.compile()).program
+
+        val event = AudioScheduler(compiled, sampleRate = 8_000).scheduleBlockInto(0, 1_000).single()
+
+        assertEquals(0.37f, event.velocity)
+    }
+
+    @Test
+    fun `sections mute transpose and wrap at exact cycle boundaries`() {
+        val phrase = sequence(listOf(AudioNote.Pitched(MidiNote.of(60), velocity = 0.8f)))
+        val program = audioProgram {
+            tempo(240f)
+            instrument("lead") { oscillator(OscillatorShape.SINE) }
+            musicTrack("line") {
+                instrument("lead")
+                arrangement {
+                    section(cycles = 1, notes = phrase)
+                    section(cycles = 1, notes = phrase, transposeSemitones = 5)
+                    section(cycles = 1, muted = true)
+                }
+            }
+        }
+        val compiled = assertIs<AudioCompilationResult.Success>(program.compile()).program
+        val scheduler = AudioScheduler(compiled, sampleRate = 8_000)
+
+        assertEquals(listOf(60), scheduler.scheduleBlock(0, 1_000).map { it.note.value })
+        assertEquals(listOf(65), scheduler.scheduleBlock(8_000, 1_000).map { it.note.value })
+        assertEquals(emptyList(), scheduler.scheduleBlock(16_000, 1_000))
+        assertEquals(listOf(60), scheduler.scheduleBlock(24_000, 1_000).map { it.note.value })
+    }
+
     private fun scheduler(notes: List<Int>, sampleRate: Int, tempo: Float): AudioScheduler {
         val program = audioProgram {
             tempo(tempo)

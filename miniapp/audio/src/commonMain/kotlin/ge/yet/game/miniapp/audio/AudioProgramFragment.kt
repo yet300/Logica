@@ -27,9 +27,9 @@ class AudioProgramFragmentBuilder internal constructor() {
 
     fun sfx(name: String, block: SoundEffectBuilder.() -> Unit) = delegate.sfx(name, block)
 
-    fun musicBus(block: SendEffectBuilder.() -> Unit) = delegate.musicBus(block)
+    fun musicBus(block: BusEffectBuilder.() -> Unit) = delegate.musicBus(block)
 
-    fun sfxBus(block: SendEffectBuilder.() -> Unit) = delegate.sfxBus(block)
+    fun sfxBus(block: BusEffectBuilder.() -> Unit) = delegate.sfxBus(block)
 
     fun include(fragment: AudioProgramFragment) = delegate.include(fragment)
 

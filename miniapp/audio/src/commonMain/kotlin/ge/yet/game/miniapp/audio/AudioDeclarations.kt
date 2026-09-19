@@ -1,12 +1,22 @@
 package ge.yet.game.miniapp.audio
 
 import ge.yet.game.pattern.Pattern
+import kotlin.math.pow
 
 enum class OscillatorShape { SINE, TRIANGLE, SAW, SQUARE, PULSE }
 enum class NoiseColor { WHITE, PINK, BROWN }
 
 sealed interface AudioNote {
-    data class Pitched(val midi: MidiNote) : AudioNote
+    data class Pitched(
+        val midi: MidiNote,
+        val velocity: Float = 1f,
+    ) : AudioNote {
+        init {
+            require(velocity.isFinite() && velocity in 0f..1f) {
+                "Note velocity must be finite and in 0..1"
+            }
+        }
+    }
     data object Rest : AudioNote
 }
 
@@ -39,6 +49,13 @@ sealed interface AudioParameter {
     ) : AudioParameter
 
     @ConsistentCopyVisibility
+    data class NoteFrequency internal constructor(
+        val ratio: Float,
+        val offsetHz: Float,
+        override val outputRange: ClosedFloatingPointRange<Float>,
+    ) : AudioParameter
+
+    @ConsistentCopyVisibility
     data class Product internal constructor(
         val left: AudioParameter,
         val right: AudioParameter,
@@ -66,6 +83,20 @@ fun smoothNoise(
     return AudioParameter.SmoothNoise(seed, rate, range.start..range.endInclusive)
 }
 
+fun noteFrequency(
+    ratio: Float = 1f,
+    offsetHz: Float = 0f,
+): AudioParameter {
+    require(ratio.isFinite() && ratio > 0f) { "A note-frequency ratio must be finite and positive" }
+    require(offsetHz.isFinite()) { "A note-frequency offset must be finite" }
+    val minimum = (midiFrequency(0) * ratio + offsetHz).toFloat()
+    val maximum = (midiFrequency(127) * ratio + offsetHz).toFloat()
+    require(minimum.isFinite() && maximum.isFinite() && minimum > 0f) {
+        "A note-frequency range must remain finite and positive"
+    }
+    return AudioParameter.NoteFrequency(ratio, offsetHz, minimum..maximum)
+}
+
 operator fun AudioParameter.times(other: AudioParameter): AudioParameter {
     val products = listOf(
         outputRange.start * other.outputRange.start,
@@ -80,6 +111,9 @@ operator fun AudioParameter.times(other: AudioParameter): AudioParameter {
 private fun requireValidParameterRange(range: ClosedFloatingPointRange<Float>) {
     require(range.start.isFinite() && range.endInclusive.isFinite() && range.start <= range.endInclusive)
 }
+
+private fun midiFrequency(midi: Int): Double =
+    440.0 * 2.0.pow((midi - 69) / 12.0)
 
 class AudioControlReference internal constructor(private val name: AudioControlName) {
     fun map(outputStart: Float, outputEndInclusive: Float): AudioParameter {
@@ -118,6 +152,7 @@ data class NoiseDeclaration internal constructor(
 data class AdditivePartialDeclaration internal constructor(
     val ratio: Float,
     val gain: Gain,
+    val envelope: EnvelopeDeclaration?,
 )
 
 @ConsistentCopyVisibility
@@ -166,20 +201,37 @@ sealed interface VoiceEffectDeclaration {
     ) : VoiceEffectDeclaration
 }
 
-sealed interface SendEffectDeclaration {
+sealed interface BusEffectDeclaration {
     @ConsistentCopyVisibility
     data class Delay internal constructor(
         val time: AudioDuration,
         val feedback: Float,
-    ) : SendEffectDeclaration
+    ) : BusEffectDeclaration, SendEffectDeclaration
 
     @ConsistentCopyVisibility
-    data class Reverb internal constructor(val send: Float) : SendEffectDeclaration
+    data class Reverb internal constructor(val send: Float) : BusEffectDeclaration, SendEffectDeclaration
+
+    @ConsistentCopyVisibility
+    data class Compressor internal constructor(
+        val threshold: Float,
+        val ratio: Float,
+        val attack: AudioDuration,
+        val release: AudioDuration,
+        val makeupGain: Float,
+    ) : BusEffectDeclaration
+
+    @ConsistentCopyVisibility
+    data class Limiter internal constructor(
+        val ceiling: Float,
+        val release: AudioDuration,
+    ) : BusEffectDeclaration
 }
+
+sealed interface SendEffectDeclaration : BusEffectDeclaration
 
 @ConsistentCopyVisibility
 data class AudioBusDeclaration internal constructor(
-    val effects: List<SendEffectDeclaration>,
+    val effects: List<BusEffectDeclaration>,
 )
 
 @ConsistentCopyVisibility
@@ -218,6 +270,14 @@ data class MusicTrackDeclaration internal constructor(
     val gain: AudioParameter,
     val pan: AudioParameter,
     val effects: List<SendEffectDeclaration>,
+    val sections: List<MusicSectionDeclaration>,
+)
+
+@ConsistentCopyVisibility
+data class MusicSectionDeclaration internal constructor(
+    val cycles: Int,
+    val pattern: Pattern<AudioNote>?,
+    val transposeSemitones: Int,
 )
 
 @ConsistentCopyVisibility

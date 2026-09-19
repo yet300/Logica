@@ -6,8 +6,103 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 
 class AudioProgramDslTest {
+    @Test
+    fun `pitched note velocity is finite and normalized`() {
+        assertEquals(0.37f, AudioNote.Pitched(MidiNote.of(60), velocity = 0.37f).velocity)
+        assertFailsWith<IllegalArgumentException> { AudioNote.Pitched(MidiNote.of(60), velocity = Float.NaN) }
+        assertFailsWith<IllegalArgumentException> { AudioNote.Pitched(MidiNote.of(60), velocity = -0.01f) }
+        assertFailsWith<IllegalArgumentException> { AudioNote.Pitched(MidiNote.of(60), velocity = 1.01f) }
+    }
+
+    @Test
+    fun `humanized notes snapshot deterministic seeded velocities`() {
+        val notes = listOf(MidiNote.of(60), MidiNote.of(63), MidiNote.of(67), MidiNote.of(70))
+
+        val first = humanizedNotes(notes, velocity = 0.7f..0.95f, seed = 7L)
+            .query(TimeArc.unit, PatternQueryBudget())
+        val repeated = humanizedNotes(notes, velocity = 0.7f..0.95f, seed = 7L)
+            .query(TimeArc.unit, PatternQueryBudget())
+        val changed = humanizedNotes(notes, velocity = 0.7f..0.95f, seed = 8L)
+            .query(TimeArc.unit, PatternQueryBudget())
+
+        assertEquals(first, repeated)
+        assertNotEquals(
+            first.map { (it.value as AudioNote.Pitched).velocity },
+            changed.map { (it.value as AudioNote.Pitched).velocity },
+        )
+    }
+
+    @Test
+    fun `note frequency parameter exposes a positive bounded midi range`() {
+        val parameter = assertIs<AudioParameter.NoteFrequency>(
+            noteFrequency(ratio = 2.2f, offsetHz = 80f),
+        )
+
+        assertEquals(2.2f, parameter.ratio)
+        assertEquals(80f, parameter.offsetHz)
+        kotlin.test.assertTrue(parameter.outputRange.start > 0f)
+        kotlin.test.assertTrue(parameter.outputRange.endInclusive > parameter.outputRange.start)
+        assertFailsWith<IllegalArgumentException> { noteFrequency(ratio = 0f) }
+        assertFailsWith<IllegalArgumentException> { noteFrequency(ratio = 1f, offsetHz = -100f) }
+    }
+
+    @Test
+    fun `partial snapshots its own envelope`() {
+        val partial = audioProgram {
+            instrument("mallet") {
+                oscillator(OscillatorShape.SINE)
+                partial(ratio = 3.7f, gain = 0.12f) {
+                    envelope(attack = 0.ms, decay = 95.ms, sustain = 0f, release = 20.ms)
+                }
+            }
+        }.instruments.single().partials.single()
+
+        assertEquals(3.7f, partial.ratio)
+        assertEquals(0.12f, partial.gain.value)
+        assertEquals(95.ms, requireNotNull(partial.envelope).decay)
+    }
+
+    @Test
+    fun `arrangement snapshots bounded sections`() {
+        val phrase = ge.yet.game.pattern.sequence(listOf(AudioNote.Pitched(MidiNote.of(60))))
+        val track = audioProgram {
+            instrument("lead") { oscillator(OscillatorShape.SINE) }
+            musicTrack("line") {
+                instrument("lead")
+                arrangement {
+                    section(cycles = 4, notes = phrase)
+                    section(cycles = 2, notes = phrase, transposeSemitones = 5)
+                    section(cycles = 2, muted = true)
+                }
+            }
+        }.musicTracks.single()
+
+        assertEquals(listOf(4, 2, 2), track.sections.map { it.cycles })
+        assertEquals(listOf(0, 5, 0), track.sections.map { it.transposeSemitones })
+        assertEquals(null, track.sections.last().pattern)
+    }
+
+    @Test
+    fun `music bus snapshots compressor and limiter`() {
+        val bus = audioProgram {
+            musicBus {
+                reverb(0.18f)
+                compressor(0.68f, 3f, 8.ms, 110.ms, 1.05f)
+                limiter(0.92f, 70.ms)
+            }
+        }.musicBus
+
+        assertIs<BusEffectDeclaration.Reverb>(bus.effects[0])
+        assertIs<BusEffectDeclaration.Compressor>(bus.effects[1])
+        assertIs<BusEffectDeclaration.Limiter>(bus.effects[2])
+    }
+
+
+
+
     @Test
     fun `builder snapshots controls instruments tracks and sfx`() {
         val program = audioProgram {

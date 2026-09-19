@@ -127,6 +127,24 @@ class MiniAppAudioEngineTest {
     }
 
     @Test
+    fun `music and sfx reuse compilation for the same immutable program instance`() = runTest {
+        val setup = setup(backgroundScope)
+        val audio = setup.engine.openSession(ID, 1, LifecycleRegistry(), visibility())
+        runCurrent()
+        val program = audioProgram {
+            instrument("tone") { oscillator(OscillatorShape.SINE) }
+            musicTrack("line") { instrument("tone"); notes(MidiNote.of(60)) }
+            sfx(SFX.value) { oscillator(OscillatorShape.SINE) }
+        }
+
+        assertEquals(AudioCommandResult.Accepted, audio.playMusic(program))
+        assertEquals(AudioCommandResult.Accepted, audio.playSfx(program, SFX))
+
+        val backend = setup.sink.sessions.single()
+        assertTrue(backend.musicPrograms.single() === backend.sfxPrograms.single())
+    }
+
+    @Test
     fun `close during lazy backend creation releases the backend and rejects the command`() {
         val backend = RecordingSinkSession()
         lateinit var audio: DefaultMiniAppAudio
@@ -302,6 +320,7 @@ class MiniAppAudioEngineTest {
     private class RecordingSinkSession : PlatformAudioSinkSession {
         val policies = mutableListOf<AudioSessionPolicy>()
         val musicPrograms = mutableListOf<CompiledAudioProgram>()
+        val sfxPrograms = mutableListOf<CompiledAudioProgram>()
         var stopCalls = 0
         var releaseCount = 0
         var drainCount = 0
@@ -312,7 +331,8 @@ class MiniAppAudioEngineTest {
             AudioRuntimeSubmitResult.Accepted.also { musicPrograms += program }
         override fun stopMusic(fadeFrames: Int): AudioRuntimeSubmitResult =
             AudioRuntimeSubmitResult.Accepted.also { stopCalls += 1 }
-        override fun playSfx(program: CompiledAudioProgram, name: SfxName) = AudioRuntimeSubmitResult.Accepted
+        override fun playSfx(program: CompiledAudioProgram, name: SfxName) =
+            AudioRuntimeSubmitResult.Accepted.also { sfxPrograms += program }
         override fun setControl(name: AudioControlName, value: Float) = AudioRuntimeSubmitResult.Accepted
         override fun release() { releaseCount += 1 }
         override fun drainDiagnostics(): AudioRuntimeDiagnosticsSnapshot {

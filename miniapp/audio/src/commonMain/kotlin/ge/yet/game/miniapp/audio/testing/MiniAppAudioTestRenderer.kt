@@ -8,9 +8,6 @@ import ge.yet.game.miniapp.audio.SfxName
 import ge.yet.game.miniapp.audio.compile
 import ge.yet.game.miniapp.audio.internal.AudioRuntimeCommandOutcome
 import ge.yet.game.miniapp.audio.internal.AudioSessionPolicy
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRenderResult
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRenderer
-import ge.yet.game.miniapp.audio.internal.OfflineAudioRequest
 import ge.yet.game.miniapp.audio.internal.RealtimeAudioRenderer
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -102,20 +99,10 @@ object MiniAppAudioTestRenderer {
         program: AudioProgram,
         sampleRate: Int,
         frameCount: Int,
-    ): AudioTestRenderResult = when (
-        val result = OfflineAudioRenderer.render(program, OfflineAudioRequest(sampleRate, frameCount))
-    ) {
-        is OfflineAudioRenderResult.Failure -> AudioTestRenderResult.Failure(result.diagnostics)
-        is OfflineAudioRenderResult.Success -> AudioTestRenderResult.Success(
-            AudioTestPcm(
-                sampleRate = sampleRate,
-                left = result.audio.left,
-                right = result.audio.right,
-                peak = result.audio.peak,
-                rms = result.audio.rms,
-                quantizedPcmHash = result.audio.quantizedPcmHash(),
-            ),
-        )
+    ): AudioTestRenderResult {
+        require(sampleRate in MIN_SAMPLE_RATE..MAX_SAMPLE_RATE)
+        require(frameCount > 0 && frameCount.toLong() <= sampleRate.toLong() * MAX_RENDER_SECONDS)
+        return render(program, AudioTestRenderRequest(sampleRate, frameCount))
     }
 
     @ExperimentalMiniAppAudioTestingApi
