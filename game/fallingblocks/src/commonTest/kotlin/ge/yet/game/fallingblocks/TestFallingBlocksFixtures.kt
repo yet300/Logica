@@ -18,8 +18,10 @@ internal fun gameFixture(
     lines: Int = 0,
     combo: Int = -1,
     backToBack: Boolean = false,
+    gravityRemainingMillis: Int = 800,
     lockRemainingMillis: Int = 500,
     lockResetCount: Int = 0,
+    lastActionWasRotation: Boolean = false,
     revivesUsed: Int = 0,
     phase: GamePhase = GamePhase.PLAYING,
 ): FallingBlocksState {
@@ -34,8 +36,10 @@ internal fun gameFixture(
         lines = lines,
         combo = combo,
         backToBack = backToBack,
+        gravityRemainingMillis = gravityRemainingMillis,
         lockRemainingMillis = lockRemainingMillis,
         lockResetCount = lockResetCount,
+        lastActionWasRotation = lastActionWasRotation,
         revivesUsed = revivesUsed,
         runId = 1,
         phase = phase,
@@ -52,7 +56,7 @@ internal fun restingFixture(
     lockRemainingMillis: Int = 500,
     lockResetCount: Int = 0,
 ): FallingBlocksState = gameFixture(
-    active = ActivePiece(Tetromino.O, Rotation.SPAWN, Cell(3, Board.TOTAL_HEIGHT - 2)),
+    active = ActivePiece(Tetromino.O, Rotation.SPAWN, Cell(3, Board.TOTAL_HEIGHT - 1)),
     lockRemainingMillis = lockRemainingMillis,
     lockResetCount = lockResetCount,
 )
