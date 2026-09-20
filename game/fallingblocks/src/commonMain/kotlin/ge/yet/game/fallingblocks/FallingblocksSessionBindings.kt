@@ -20,6 +20,7 @@ import ge.yet.game.fallingblocks.domain.repository.GameCommitWriter
 import ge.yet.game.fallingblocks.domain.repository.GameSnapshotLoader
 import ge.yet.game.fallingblocks.domain.repository.TutorialSeenRepository
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
+import ge.yet.game.miniapp.compose.MiniAppAdsCapability
 
 @BindingContainer
 abstract class FallingblocksSessionBindings {
@@ -41,6 +42,9 @@ abstract class FallingblocksSessionBindings {
 
         @Provides
         @SingleIn(MiniAppSessionScope::class)
-        internal fun provideSession(component: RootComponent): FallingblocksSession = FallingblocksSession(component)
+        internal fun provideSession(
+            component: RootComponent,
+            ads: MiniAppAdsCapability,
+        ): FallingblocksSession = FallingblocksSession(component, ads)
     }
 }
