@@ -16,6 +16,15 @@ internal fun canOccupy(piece: ActivePiece, board: Board): Boolean = piece.cells(
         board[cell] == null
 }
 
+internal fun landingPiece(piece: ActivePiece, board: Board): ActivePiece {
+    var landing = piece
+    while (true) {
+        val candidate = landing.copy(origin = landing.origin.copy(y = landing.origin.y + 1))
+        if (!canOccupy(candidate, board)) return landing
+        landing = candidate
+    }
+}
+
 internal fun tryRotateClockwise(piece: ActivePiece, board: Board): ActivePiece? {
     val to = piece.rotation.clockwise()
     return clockwiseKicks(piece.type, piece.rotation, to)
