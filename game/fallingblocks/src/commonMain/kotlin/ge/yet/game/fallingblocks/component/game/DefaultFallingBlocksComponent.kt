@@ -55,7 +55,6 @@ internal class DefaultFallingBlocksComponent(
     override fun hardDrop() = store.accept(FallingBlocksStore.Intent.HardDrop)
     override fun revive() = store.accept(FallingBlocksStore.Intent.Revive)
     override fun newGame() = store.accept(FallingBlocksStore.Intent.NewGame)
-    override fun completeTutorial() = store.accept(FallingBlocksStore.Intent.TutorialCompleted)
 
     private suspend fun runTicks() {
         while (currentCoroutineContext().isActive) {

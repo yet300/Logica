@@ -8,6 +8,7 @@ internal val stateToModel: (FallingBlocksStore.State) -> FallingBlocksComponent.
         game = state.game,
         loading = state.loading,
         tutorialSeen = state.tutorialSeen,
+        tutorialProgress = state.tutorialProgress,
         bestScore = state.bestScore,
         active = state.active,
     )

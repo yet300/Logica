@@ -17,14 +17,20 @@ import ge.yet.game.fallingblocks.domain.repository.GameSnapshotLoader
 import ge.yet.game.fallingblocks.domain.repository.TutorialSeenRepository
 import ge.yet.game.miniapp.api.MiniAppVisibility
 import ge.yet.game.miniapp.api.MiniAppVisibilitySource
+import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 internal fun interface NewGameSeedSource {
     fun nextSeed(): Long
 }
+
+internal const val TUTORIAL_SEED: Long = 0x46414C4C494E47L
 
 internal class DefaultNewGameSeedSource @Inject constructor() : NewGameSeedSource {
     override fun nextSeed(): Long = Random.nextLong()
@@ -61,12 +67,14 @@ internal class FallingBlocksStoreFactory(
         data class Ready(
             val game: FallingBlocksState,
             val tutorialSeen: Boolean,
+            val tutorialProgress: TutorialProgress?,
             val bestScore: Long,
         ) : Msg
 
         data class GameChanged(val game: FallingBlocksState) : Msg
+        data class TutorialProgressChanged(val progress: TutorialProgress) : Msg
+        data class TutorialFinished(val game: FallingBlocksState) : Msg
         data class VisibilityChanged(val active: Boolean) : Msg
-        data object TutorialCompleted : Msg
     }
 
     private object ReducerImpl : Reducer<FallingBlocksStore.State, Msg> {
@@ -75,14 +83,21 @@ internal class FallingBlocksStoreFactory(
                 game = msg.game,
                 loading = false,
                 tutorialSeen = msg.tutorialSeen,
+                tutorialProgress = msg.tutorialProgress,
                 bestScore = maxOf(bestScore, msg.bestScore, msg.game.score),
             )
             is Msg.GameChanged -> copy(
                 game = msg.game,
                 bestScore = maxOf(bestScore, msg.game.score),
             )
+            is Msg.TutorialProgressChanged -> copy(tutorialProgress = msg.progress)
+            is Msg.TutorialFinished -> copy(
+                game = msg.game,
+                tutorialSeen = true,
+                tutorialProgress = null,
+                bestScore = maxOf(bestScore, msg.game.score),
+            )
             is Msg.VisibilityChanged -> copy(active = msg.active)
-            Msg.TutorialCompleted -> copy(tutorialSeen = true)
         }
     }
 
@@ -95,6 +110,7 @@ internal class FallingBlocksStoreFactory(
         >() {
         private val persistence by lazy { SessionPersistenceCoordinator(loader, writer, scope) }
         private var previousVisibility = visibility.visibility.value
+        private var tutorialCompletionInFlight = false
 
         override fun executeAction(action: Action) {
             when (action) {
@@ -108,7 +124,7 @@ internal class FallingBlocksStoreFactory(
             if (current.loading) return
             when (intent) {
                 is FallingBlocksStore.Intent.Frame -> {
-                    if (current.active && game.phase == GamePhase.PLAYING) {
+                    if (current.tutorialSeen && current.active && game.phase == GamePhase.PLAYING) {
                         applyAction(GameAction.AdvanceTime(intent.elapsedMillis))
                     }
                 }
@@ -124,15 +140,16 @@ internal class FallingBlocksStoreFactory(
                 FallingBlocksStore.Intent.HardDrop -> if (acceptsInput(current)) {
                     applyAction(GameAction.HardDrop)
                 }
-                FallingBlocksStore.Intent.Revive -> if (current.active && game.phase == GamePhase.TERMINAL) {
+                FallingBlocksStore.Intent.Revive -> if (
+                    current.tutorialSeen && current.active && game.phase == GamePhase.TERMINAL
+                ) {
                     applyAction(GameAction.Revive, forceCheckpoint = true)
                 }
-                FallingBlocksStore.Intent.NewGame -> if (current.active) {
+                FallingBlocksStore.Intent.NewGame -> if (current.tutorialSeen && current.active) {
                     val fresh = engine.initial(seedSource.nextSeed(), game.runId + 1)
                     dispatch(Msg.GameChanged(fresh))
                     persistence.checkpoint(fresh)
                 }
-                FallingBlocksStore.Intent.TutorialCompleted -> completeTutorial(game)
             }
         }
 
@@ -148,11 +165,17 @@ internal class FallingBlocksStoreFactory(
                 } catch (_: Exception) {
                     null
                 }
-                val game = restored?.state ?: engine.initial(seedSource.nextSeed(), runId = 1)
+                val tutorialSeen = restored?.tutorialSeen ?: false
+                val game = if (tutorialSeen) {
+                    restored.state ?: engine.initial(seedSource.nextSeed(), runId = 1)
+                } else {
+                    engine.initial(TUTORIAL_SEED, runId = 1)
+                }
                 dispatch(
                     Msg.Ready(
                         game = game,
-                        tutorialSeen = restored?.tutorialSeen ?: false,
+                        tutorialSeen = tutorialSeen,
+                        tutorialProgress = if (tutorialSeen) null else TutorialProgress.initial(),
                         bestScore = restored?.bestScore ?: 0,
                     ),
                 )
@@ -168,13 +191,23 @@ internal class FallingBlocksStoreFactory(
         }
 
         private fun acceptsInput(current: FallingBlocksStore.State): Boolean =
-            current.active && current.game?.phase == GamePhase.PLAYING
+            current.active &&
+                current.game?.phase == GamePhase.PLAYING &&
+                current.tutorialProgress?.complete != true
 
         private fun applyAction(action: GameAction, forceCheckpoint: Boolean = false) {
             val before = state().game ?: return
             val transition = engine.reduce(before, action)
             if (transition.state == before && transition.facts.isEmpty()) return
             dispatch(Msg.GameChanged(transition.state))
+
+            val tutorialProgress = state().tutorialProgress
+            if (!state().tutorialSeen && tutorialProgress != null) {
+                val advanced = tutorialProgress.accept(transition.facts)
+                if (advanced != tutorialProgress) dispatch(Msg.TutorialProgressChanged(advanced))
+                if (advanced.complete) completeTutorial(transition.state)
+                return
+            }
 
             val toppedOut = transition.facts.any { it == GameFact.ToppedOut }
             when {
@@ -187,13 +220,32 @@ internal class FallingBlocksStoreFactory(
             }
         }
 
-        private fun completeTutorial(game: FallingBlocksState) {
-            if (state().tutorialSeen) return
-            dispatch(Msg.TutorialCompleted)
+        private fun completeTutorial(practice: FallingBlocksState) {
+            if (state().tutorialSeen || tutorialCompletionInFlight) return
+            tutorialCompletionInFlight = true
             scope.launch {
-                tutorial.markTutorialSeen()
-                persistence.flush(game)
+                persistTutorialSeen()
+                val fresh = engine.initial(seedSource.nextSeed(), practice.runId + 1)
+                dispatch(Msg.TutorialFinished(fresh))
+                persistence.flush(fresh)
             }
         }
+
+        private suspend fun persistTutorialSeen() {
+            while (currentCoroutineContext().isActive) {
+                try {
+                    tutorial.markTutorialSeen()
+                    return
+                } catch (cancellation: CancellationException) {
+                    throw cancellation
+                } catch (_: Exception) {
+                    delay(TUTORIAL_RETRY_MILLIS)
+                }
+            }
+        }
+    }
+
+    private companion object {
+        const val TUTORIAL_RETRY_MILLIS = 250L
     }
 }

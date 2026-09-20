@@ -56,6 +56,7 @@ private class FakeComponent : FallingBlocksComponent {
             game = DefaultFallingBlocksEngine.initial(seed = 1L, runId = 1L),
             loading = false,
             tutorialSeen = true,
+            tutorialProgress = null,
             bestScore = 0L,
             active = true,
         ),
@@ -67,5 +68,4 @@ private class FakeComponent : FallingBlocksComponent {
     override fun hardDrop() = Unit
     override fun revive() = Unit
     override fun newGame() = Unit
-    override fun completeTutorial() = Unit
 }

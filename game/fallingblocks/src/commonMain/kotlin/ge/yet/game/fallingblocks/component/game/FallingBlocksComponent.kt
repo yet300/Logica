@@ -3,6 +3,7 @@ package ge.yet.game.fallingblocks.component.game
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 
 internal interface FallingBlocksComponent {
     val model: Value<Model>
@@ -13,12 +14,12 @@ internal interface FallingBlocksComponent {
     fun hardDrop()
     fun revive()
     fun newGame()
-    fun completeTutorial()
 
     data class Model(
         val game: FallingBlocksState?,
         val loading: Boolean,
         val tutorialSeen: Boolean,
+        val tutorialProgress: TutorialProgress?,
         val bestScore: Long,
         val active: Boolean,
     )

@@ -49,6 +49,7 @@ import ge.yet.game.fallingblocks.ui.board.colors
 import ge.yet.game.fallingblocks.ui.input.GestureEvent
 import ge.yet.game.fallingblocks.ui.input.fallingBlocksGestures
 import ge.yet.game.fallingblocks.ui.motion.rememberFallingBlocksMotionPolicy
+import ge.yet.game.fallingblocks.ui.tutorial.TutorialOverlay
 import org.jetbrains.compose.resources.stringResource
 
 internal object FallingBlocksTestTags {
@@ -93,7 +94,7 @@ internal fun FallingBlocksScreen(
             modifier = Modifier
                 .size(boardWidth, boardHeight)
                 .fallingBlocksGestures(
-                    enabled = model.active,
+                    enabled = model.active && model.tutorialProgress?.complete != true,
                     cellSize = cellSize,
                 ) { event ->
                     when (event) {
@@ -107,20 +108,29 @@ internal fun FallingBlocksScreen(
                 .semantics { contentDescription = description },
         )
 
-        Hud(
-            score = state.score,
-            level = state.level,
-            lines = state.lines,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(12.dp),
-        )
-        Preview(
-            pieces = state.preview,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(12.dp),
-        )
+        val tutorialProgress = model.tutorialProgress
+        if (tutorialProgress != null) {
+            TutorialOverlay(
+                progress = tutorialProgress,
+                reducedMotion = !motion.spatialMotionEnabled,
+                modifier = Modifier.size(boardWidth, boardHeight),
+            )
+        } else {
+            Hud(
+                score = state.score,
+                level = state.level,
+                lines = state.lines,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(12.dp),
+            )
+            Preview(
+                pieces = state.preview,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp),
+            )
+        }
     }
 }
 

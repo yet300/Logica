@@ -2,6 +2,7 @@ package ge.yet.game.fallingblocks.component.game.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 
 internal interface FallingBlocksStore : Store<
     FallingBlocksStore.Intent,
@@ -16,13 +17,13 @@ internal interface FallingBlocksStore : Store<
         data class Frame(val elapsedMillis: Int) : Intent
         data object Revive : Intent
         data object NewGame : Intent
-        data object TutorialCompleted : Intent
     }
 
     data class State(
         val game: FallingBlocksState? = null,
         val loading: Boolean = true,
         val tutorialSeen: Boolean = false,
+        val tutorialProgress: TutorialProgress? = null,
         val bestScore: Long = 0,
         val active: Boolean = true,
     )
