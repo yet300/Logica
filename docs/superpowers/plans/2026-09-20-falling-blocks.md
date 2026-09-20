@@ -375,7 +375,7 @@ internal fun hiddenRowLockFixture(): FallingBlocksState
 - [ ] **Step 4: Run model and bag tests**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*BoardTest' --tests '*SevenBagTest' --tests '*RandomStateTest'
+rtk ./gradlew :game:fallingblocks:allTests
 ```
 
 Expected: PASS.
@@ -435,7 +435,7 @@ unchanged when actual distance is zero.
 - [ ] **Step 4: Run the focused engine tests**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*SrsRotationTest' --tests '*FallingBlocksMovementTest'
+rtk ./gradlew :game:fallingblocks:allTests
 ```
 
 Expected: PASS for every table row and boundary fixture.
@@ -508,7 +508,7 @@ collapse all rows including hidden rows → update level → advance preview/bag
 spawn → top-out check. Run:
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*LockDelayTest' --tests '*LineClearTest' --tests '*ScoringTest' --tests '*TSpinTest'
+rtk ./gradlew :game:fallingblocks:allTests
 ```
 
 Expected: PASS.
@@ -572,7 +572,7 @@ replay for equal seed/actions.
 - [ ] **Step 4: Run the complete engine suite**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*engine*'
+rtk ./gradlew :game:fallingblocks:allTests
 ```
 
 Expected: PASS without hangs or platform random dependencies.
@@ -658,7 +658,7 @@ exact barrier.
 - [ ] **Step 5: Run and commit persistence**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*Persistence*' --tests '*SchemasTest'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/data game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/domain/repository game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/persistence
 rtk git commit -m "feat: persist exact falling blocks sessions"
 ```
@@ -719,7 +719,7 @@ and performs no later mutation.
 - [ ] **Step 5: Run and commit Store slice**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*TickPlannerTest' --tests '*FallingBlocksStore*'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/game
 rtk git commit -m "feat: coordinate falling blocks session state"
 ```
@@ -804,7 +804,7 @@ it; otherwise delegate to Playing.
 - [ ] **Step 5: Run and commit component navigation**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*ResultComponentTest' --tests '*RootComponentTest'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component
 rtk git commit -m "feat: add resilient falling blocks result flow"
 ```
@@ -889,7 +889,7 @@ scoring, rotation or timing rules.
 - [ ] **Step 4: Run UI-input tests**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*GestureClassifierTest' --tests '*FallingBlocksGesturesTest'
+rtk ./gradlew :game:fallingblocks:allTests
 ```
 
 Expected: PASS; there is no Hold, button or side-zone event.
@@ -976,7 +976,7 @@ remain. Render animation from transition IDs/timestamps; do not put an
 - [ ] **Step 5: Run and commit board UI**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*BoardGeometryTest' --tests '*TetrominoStyleTest' --tests '*MotionPolicyTest' --tests '*FallingBlocksScreenTest'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/board game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/motion game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/screen/FallingBlocksScreen.kt game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui
 rtk git commit -m "feat: render centered themed falling blocks board"
 ```
@@ -1042,7 +1042,7 @@ seeded, score zero, empty board and untouched by practice moves.
 - [ ] **Step 5: Run and commit tutorial**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*Tutorial*'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/tutorial game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/screen/FallingBlocksScreen.kt game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks
 rtk git commit -m "feat: add mandatory falling blocks tutorial"
 ```
@@ -1099,7 +1099,7 @@ onBack = component::handleBack)`, renders the top bar, and passes
 - [ ] **Step 5: Run and commit terminal UI**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*ResultOverlayTest' --tests '*FallingblocksSessionTest' --tests '*RootComponentTest'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/result game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/screen/root game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/FallingblocksSession.kt game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks
 rtk git commit -m "feat: add falling blocks terminal presentation"
 ```
@@ -1168,7 +1168,7 @@ rejected commands without retry loops.
 - [ ] **Step 5: Run and commit audio**
 
 ```bash
-rtk ./gradlew :game:fallingblocks:allTests --tests '*Audio*'
+rtk ./gradlew :game:fallingblocks:allTests
 rtk ./gradlew :miniapp:audio-presets:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/audio game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game/store/FallingBlocksStoreFactory.kt game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/di/FallingblocksSessionBindings.kt game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/audio
 rtk git commit -m "feat: add falling blocks procedural audio"

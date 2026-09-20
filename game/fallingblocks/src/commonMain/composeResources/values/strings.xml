@@ -1,0 +1,17 @@
+<resources>
+    <string name="miniapp_title">Falling Blocks</string>
+    <string name="miniapp_description">Stack falling pieces and clear lines.</string>
+    <string name="score_label">Score</string>
+    <string name="best_label">Best</string>
+    <string name="level_label">Level</string>
+    <string name="lines_label">Lines</string>
+    <string name="next_label">Next</string>
+    <string name="tutorial_tap">Tap the field to rotate</string>
+    <string name="tutorial_move">Drag sideways to move</string>
+    <string name="tutorial_soft_drop">Drag down slowly to soft drop</string>
+    <string name="tutorial_hard_drop">Fling down to hard drop</string>
+    <string name="game_over_title">Game over</string>
+    <string name="try_again_action">Try Again</string>
+    <string name="new_game_action">New Game</string>
+    <string name="advertisement_suffix">Advertisement</string>
+</resources>
