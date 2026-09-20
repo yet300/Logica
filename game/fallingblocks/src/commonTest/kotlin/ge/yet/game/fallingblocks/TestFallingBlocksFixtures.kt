@@ -68,5 +68,9 @@ internal fun spawnBlockedFixture(): FallingBlocksState = gameFixture(
 )
 
 internal fun hiddenRowLockFixture(): FallingBlocksState = gameFixture(
-    active = ActivePiece(Tetromino.O, Rotation.SPAWN, Cell(3, 0)),
+    board = boardWith(
+        Cell(3, Board.HIDDEN_ROWS) to Tetromino.Z,
+        Cell(4, Board.HIDDEN_ROWS) to Tetromino.Z,
+    ),
+    active = ActivePiece(Tetromino.O, Rotation.SPAWN, Cell(3, 1)),
 )

@@ -41,6 +41,7 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
     }
 
     override fun reduce(state: FallingBlocksState, action: GameAction): GameTransition {
+        if (action == GameAction.Revive) return revive(state)
         if (state.phase == GamePhase.TERMINAL) return GameTransition(state, emptyList())
         return when (action) {
             GameAction.RotateClockwise -> rotate(state)
@@ -48,8 +49,7 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
             is GameAction.SoftDrop -> softDrop(state, action.cells)
             GameAction.HardDrop -> hardDrop(state)
             is GameAction.AdvanceTime -> advanceTime(state, action.millis)
-            GameAction.Revive,
-            -> GameTransition(state, emptyList())
+            GameAction.Revive -> error("Revive is handled before phase dispatch")
         }
     }
 
@@ -218,13 +218,6 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
             lockResetCount = 0,
             lastActionWasRotation = false,
         )
-        if (lockedCells.any { it.y < Board.HIDDEN_ROWS }) {
-            return GameTransition(
-                state = resolved.copy(phase = GamePhase.TERMINAL),
-                facts = baseFacts + GameFact.ToppedOut,
-            )
-        }
-
         val refill = resolved.bag.draw(1)
         val spawned = resolved.copy(
             active = ActivePiece(
@@ -235,7 +228,9 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
             preview = resolved.preview.drop(1) + refill.items.single(),
             bag = refill.next,
         )
-        return if (canOccupy(spawned.active, spawned.board)) {
+        val toppedOut = lockedCells.any { it.y < Board.HIDDEN_ROWS } ||
+            !canOccupy(spawned.active, spawned.board)
+        return if (!toppedOut) {
             GameTransition(spawned, baseFacts)
         } else {
             GameTransition(
@@ -243,6 +238,37 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
                 facts = baseFacts + GameFact.ToppedOut,
             )
         }
+    }
+
+    private fun revive(state: FallingBlocksState): GameTransition {
+        if (state.phase != GamePhase.TERMINAL || state.revivesUsed != 0) {
+            return GameTransition(state, listOf(GameFact.Blocked))
+        }
+        val shifted = MutableList<Tetromino?>(Board.WIDTH * Board.TOTAL_HEIGHT) { null }
+        val retainedHeight = Board.TOTAL_HEIGHT - REVIVE_CLEARED_ROWS
+        for (y in 0 until retainedHeight) {
+            for (x in 0 until Board.WIDTH) {
+                shifted[(y + REVIVE_CLEARED_ROWS) * Board.WIDTH + x] = state.board[Cell(x, y)]
+            }
+        }
+        val board = Board(shifted)
+        val active = state.active.copy(rotation = Rotation.SPAWN, origin = SPAWN_ORIGIN)
+        check(canOccupy(active, board)) { "Revive transform must create a legal spawn area" }
+        return GameTransition(
+            state = state.copy(
+                board = board,
+                active = active,
+                combo = -1,
+                backToBack = false,
+                gravityRemainingMillis = gravityMillis(state.level),
+                lockRemainingMillis = LOCK_DELAY_MILLIS,
+                lockResetCount = 0,
+                lastActionWasRotation = false,
+                revivesUsed = 1,
+                phase = GamePhase.PLAYING,
+            ),
+            facts = listOf(GameFact.Revived),
+        )
     }
 
     private fun resetLockAfterGroundedAction(
@@ -310,6 +336,7 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
     private fun isGrounded(piece: ActivePiece, board: Board): Boolean = !canOccupy(piece.movedDown(), board)
 
     private const val PREVIEW_SIZE: Int = 5
+    private const val REVIVE_CLEARED_ROWS: Int = 4
     private val SPAWN_ORIGIN: Cell = Cell(4, Board.HIDDEN_ROWS)
 }
 
