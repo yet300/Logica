@@ -10,6 +10,7 @@ import ge.yet.game.miniapp.audio.ms
 import ge.yet.game.miniapp.audio.noteFrequency
 import ge.yet.game.miniapp.audio.presets.PowerUp
 import ge.yet.game.miniapp.audio.presets.SuccessSweep
+import ge.yet.game.miniapp.audio.presets.WoodenPlacementThock
 import ge.yet.game.miniapp.audio.smoothNoise
 import ge.yet.game.miniapp.audio.tonalScale
 import ge.yet.game.pattern.CycleTime
@@ -40,6 +41,7 @@ internal object BlockBlastAudio {
     val program = audioProgram {
         include(PowerUp(name = Revive.value, gain = 0.26f))
         include(SuccessSweep(name = NewBest.value, gain = 0.30f))
+        include(WoodenPlacementThock(name = Place.value))
         include(BlockBlastSfx.fragment)
 
         tempo(104f)

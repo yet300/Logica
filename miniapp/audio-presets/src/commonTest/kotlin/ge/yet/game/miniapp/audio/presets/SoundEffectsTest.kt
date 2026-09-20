@@ -8,6 +8,7 @@ import ge.yet.game.miniapp.audio.testing.AudioTestSfxTrigger
 import ge.yet.game.miniapp.audio.testing.ExperimentalMiniAppAudioTestingApi
 import ge.yet.game.miniapp.audio.testing.MiniAppAudioTestRenderer
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertIs
@@ -16,9 +17,34 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class SoundEffectsTest {
     @Test
+    fun `wooden placement thock is deterministic and bounded`() {
+        val program = audioProgram { include(WoodenPlacementThock(name = "lock")) }
+        val request = AudioTestRenderRequest(
+            sampleRate = 8_000,
+            frameCount = 4_000,
+            includeMusic = false,
+            sfxTriggers = listOf(AudioTestSfxTrigger(SfxName("lock"), 0)),
+        )
+
+        val first = assertIs<AudioTestRenderResult.Success>(
+            MiniAppAudioTestRenderer.render(program, request),
+        ).pcm
+        val second = assertIs<AudioTestRenderResult.Success>(
+            MiniAppAudioTestRenderer.render(program, request),
+        ).pcm
+
+        assertEquals(first.quantizedPcmHash, second.quantizedPcmHash)
+        assertContentEquals(first.left, second.left)
+        assertContentEquals(first.right, second.right)
+        assertTrue(first.rms > 0.0005)
+        assertTrue(first.peak < 1f)
+    }
+
+    @Test
     fun `every shared sfx renders deterministic finite audible pcm with headroom`() {
         val fragments = listOf(
             PlacementClick(),
+            WoodenPlacementThock(),
             SuccessSweep(),
             Explosion(seed = 42),
             PowerUp(),
@@ -47,13 +73,14 @@ class SoundEffectsTest {
     fun `shared sfx factories expose original bounded declarations`() {
         val program = audioProgram {
             include(PlacementClick())
+            include(WoodenPlacementThock())
             include(SuccessSweep())
             include(Explosion(seed = 42))
             include(PowerUp())
         }
 
         assertEquals(
-            listOf("placement_click", "success_sweep", "explosion", "power_up"),
+            listOf("placement_click", "wooden_placement_thock", "success_sweep", "explosion", "power_up"),
             program.soundEffects.map { it.name.value },
         )
         assertTrue(program.soundEffects.all { it.oscillators.isNotEmpty() || it.noises.isNotEmpty() })
