@@ -12,6 +12,7 @@ import ge.yet.game.fallingblocks.domain.repository.GameSnapshotLoader
 import ge.yet.game.fallingblocks.domain.repository.RestoredSession
 import ge.yet.game.fallingblocks.domain.repository.TutorialSeenRepository
 import ge.yet.game.fallingblocks.gameFixture
+import ge.yet.game.fallingblocks.NoOpFallingBlocksAudioPlayer
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -62,6 +63,7 @@ class TutorialFlowTest {
             },
             visibility = MutableMiniAppVisibilitySource(),
             seedSource = NewGameSeedSource { 77L },
+            audio = NoOpFallingBlocksAudioPlayer,
         ).create()
         advanceUntilIdle()
 

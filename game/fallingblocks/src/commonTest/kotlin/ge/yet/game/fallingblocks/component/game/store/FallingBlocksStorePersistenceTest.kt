@@ -15,6 +15,7 @@ import ge.yet.game.fallingblocks.domain.repository.GameSnapshotLoader
 import ge.yet.game.fallingblocks.domain.repository.RestoredSession
 import ge.yet.game.fallingblocks.domain.repository.TutorialSeenRepository
 import ge.yet.game.fallingblocks.gameFixture
+import ge.yet.game.fallingblocks.NoOpFallingBlocksAudioPlayer
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +55,7 @@ class FallingBlocksStorePersistenceTest {
             tutorial = SeenTutorial,
             visibility = MutableMiniAppVisibilitySource(),
             seedSource = NewGameSeedSource { 1L },
+            audio = NoOpFallingBlocksAudioPlayer,
         ).create()
         val labels = mutableListOf<FallingBlocksStore.Label>()
         val subscription = store.labels(observer(onNext = labels::add))
@@ -87,6 +89,7 @@ class FallingBlocksStorePersistenceTest {
             tutorial = SeenTutorial,
             visibility = MutableMiniAppVisibilitySource(),
             seedSource = NewGameSeedSource { 1L },
+            audio = NoOpFallingBlocksAudioPlayer,
         ).create()
         val labels = mutableListOf<FallingBlocksStore.Label>()
         val subscription = store.labels(observer(onNext = labels::add))

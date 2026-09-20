@@ -1,14 +1,22 @@
 package ge.yet.game.fallingblocks
 
+import ge.yet.game.fallingblocks.audio.FallingBlocksAudioPlayer
 import ge.yet.game.fallingblocks.domain.engine.RandomState
 import ge.yet.game.fallingblocks.domain.engine.SevenBag
 import ge.yet.game.fallingblocks.domain.model.ActivePiece
 import ge.yet.game.fallingblocks.domain.model.Board
 import ge.yet.game.fallingblocks.domain.model.Cell
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.domain.model.GameAction
+import ge.yet.game.fallingblocks.domain.model.GameFact
 import ge.yet.game.fallingblocks.domain.model.GamePhase
 import ge.yet.game.fallingblocks.domain.model.Rotation
 import ge.yet.game.fallingblocks.domain.model.Tetromino
+
+internal object NoOpFallingBlocksAudioPlayer : FallingBlocksAudioPlayer {
+    override fun start(state: FallingBlocksState) = Unit
+    override fun onTransition(action: GameAction, state: FallingBlocksState, facts: List<GameFact>) = Unit
+}
 
 internal fun gameFixture(
     board: Board = Board.empty(),

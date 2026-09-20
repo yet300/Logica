@@ -6,6 +6,8 @@ import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import ge.yet.game.fallingblocks.component.game.DefaultFallingBlocksComponentFactory
+import ge.yet.game.fallingblocks.audio.FallingBlocksAudioAdapter
+import ge.yet.game.fallingblocks.audio.FallingBlocksAudioPlayer
 import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
 import ge.yet.game.fallingblocks.component.game.store.DefaultNewGameSeedSource
 import ge.yet.game.fallingblocks.component.game.store.NewGameSeedSource
@@ -28,6 +30,7 @@ abstract class FallingblocksSessionBindings {
     @Binds internal abstract fun bindWriter(impl: FallingBlocksPersistence): GameCommitWriter
     @Binds internal abstract fun bindTutorial(impl: FallingBlocksPersistence): TutorialSeenRepository
     @Binds internal abstract fun bindSeed(impl: DefaultNewGameSeedSource): NewGameSeedSource
+    @Binds internal abstract fun bindAudio(impl: FallingBlocksAudioAdapter): FallingBlocksAudioPlayer
     @Binds internal abstract fun bindGameFactory(impl: DefaultFallingBlocksComponentFactory): FallingBlocksComponent.Factory
     @Binds internal abstract fun bindResultFactory(impl: DefaultResultComponentFactory): ResultComponent.Factory
     @Binds internal abstract fun bindRootFactory(impl: DefaultRootComponentFactory): RootComponent.Factory

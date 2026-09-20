@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import dev.zacsweers.metro.Inject
+import ge.yet.game.fallingblocks.audio.FallingBlocksAudioPlayer
 import ge.yet.game.fallingblocks.data.SessionPersistenceCoordinator
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksEngine
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
@@ -45,6 +46,7 @@ internal class FallingBlocksStoreFactory(
     private val tutorial: TutorialSeenRepository,
     private val visibility: MiniAppVisibilitySource,
     private val seedSource: NewGameSeedSource,
+    private val audio: FallingBlocksAudioPlayer,
 ) {
     fun create(): FallingBlocksStore =
         object : FallingBlocksStore,
@@ -179,6 +181,7 @@ internal class FallingBlocksStoreFactory(
                         bestScore = restored?.bestScore ?: 0,
                     ),
                 )
+                audio.start(game)
             }
         }
 
@@ -200,6 +203,7 @@ internal class FallingBlocksStoreFactory(
             val transition = engine.reduce(before, action)
             if (transition.state == before && transition.facts.isEmpty()) return
             dispatch(Msg.GameChanged(transition.state))
+            audio.onTransition(action, transition.state, transition.facts)
 
             val tutorialProgress = state().tutorialProgress
             if (!state().tutorialSeen && tutorialProgress != null) {
