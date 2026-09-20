@@ -10,5 +10,4 @@
     The session-owned Decompose component lives in `component/root/RootComponent.kt` (`RootComponent` + `DefaultRootComponent`); session UI lives in `ui/screen/root/RootContent.kt`.
     
 
-This profile includes a pure state/action/engine seam. Keep rules in `FallingblocksGameEngine`, keep state immutable, and keep UI side-effect free. It is a small starting point, not a universal game engine.
-
+This profile includes a pure state/action/engine seam. Keep rules in `FallingBlocksEngine`, keep state immutable, and keep UI side-effect free. It is a small starting point, not a universal game engine.

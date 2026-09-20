@@ -2,6 +2,12 @@ package ge.yet.game.fallingblocks
 
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.fallingblocks.component.root.DefaultRootComponent
+import ge.yet.game.fallingblocks.domain.engine.DefaultFallingBlocksEngine
+import ge.yet.game.fallingblocks.domain.model.FallingBlocksEngine
+import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.domain.model.GameAction
+import ge.yet.game.fallingblocks.domain.model.GameFact
+import ge.yet.game.fallingblocks.domain.model.GameTransition
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -11,22 +17,25 @@ class FallingblocksComponentTest {
         val lifecycle = MiniAppLifecycleHarness()
         val component = DefaultRootComponent(
             componentContext = lifecycle.componentContext,
-            engine = IncrementingFallingblocksGameEngine,
+            engine = IncrementingFallingBlocksEngine,
         )
 
-        component.dispatch(FallingblocksGameAction.Tick)
+        component.dispatch(GameAction.MoveHorizontal(1))
 
         assertEquals(1, component.model.value.state.score)
         lifecycle.destroy()
     }
 }
 
-private object IncrementingFallingblocksGameEngine : FallingblocksGameEngine {
+private object IncrementingFallingBlocksEngine : FallingBlocksEngine {
+    override fun initial(seed: Long, runId: Long): FallingBlocksState =
+        DefaultFallingBlocksEngine.initial(seed, runId)
+
     override fun reduce(
-        state: FallingblocksGameState,
-        action: FallingblocksGameAction,
-    ): FallingblocksGameState = when (action) {
-        FallingblocksGameAction.Reset -> FallingblocksGameState()
-        FallingblocksGameAction.Tick -> state.copy(score = state.score + 1)
-    }
+        state: FallingBlocksState,
+        action: GameAction,
+    ): GameTransition = GameTransition(
+        state = state.copy(score = state.score + 1),
+        facts = listOf(GameFact.Moved(horizontalCells = 1, downwardCells = 0)),
+    )
 }
