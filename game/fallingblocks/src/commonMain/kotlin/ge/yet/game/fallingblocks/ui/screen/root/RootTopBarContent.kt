@@ -1,9 +1,6 @@
 package ge.yet.game.fallingblocks.ui.screen.root
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,6 +11,7 @@ import ge.yet.game.fallingblocks.component.root.RootComponent
 import ge.yet.game.fallingblocks.generated.resources.Res
 import ge.yet.game.fallingblocks.generated.resources.best_label
 import ge.yet.game.fallingblocks.generated.resources.score_label
+import ge.yet.game.uikit.components.score.CompactScoreCard
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -22,20 +20,21 @@ internal fun RootTopBarContent(component: RootComponent) {
     val playing = (stack.active.instance as? RootComponent.Child.Playing)?.component ?: return
     val model by playing.model.subscribeAsState()
     if (model.loading) return
-    Row(
-        modifier = Modifier.testTag("falling_blocks_score_header"),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        ToolbarMetric(stringResource(Res.string.score_label), model.game?.score ?: 0)
-        ToolbarMetric(stringResource(Res.string.best_label), model.bestScore)
-    }
+    FallingBlocksScoreHeader(
+        score = model.game?.score ?: 0,
+        bestScore = model.bestScore,
+    )
 }
 
 @Composable
-private fun ToolbarMetric(label: String, value: Long) {
-    Text(
-        text = "$label $value",
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.onSurface,
+internal fun FallingBlocksScoreHeader(score: Long, bestScore: Long) {
+    CompactScoreCard(
+        primaryLabel = stringResource(Res.string.score_label),
+        primaryValue = score,
+        secondaryLabel = stringResource(Res.string.best_label),
+        secondaryValue = bestScore,
+        modifier = Modifier
+            .widthIn(min = 180.dp, max = 260.dp)
+            .testTag("falling_blocks_score_header"),
     )
 }

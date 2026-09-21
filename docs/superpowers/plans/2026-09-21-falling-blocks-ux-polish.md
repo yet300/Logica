@@ -279,7 +279,7 @@ passed (103 tests).
 - Update: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/screen/game/FallingBlocksScreenTest.kt`
 - Update: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/FallingblocksThemeIntegrationTest.kt`
 
-- [ ] **Step 1: Replace the old geometry expectations with failing bounds**
+- [x] **Step 1: Replace the old geometry expectations with failing bounds**
 
 Extend `BoardGeometry.fit` with `supportReserve` and `maxBoardWidth`. Assert:
 
@@ -298,33 +298,43 @@ assertEquals(320f, compact.centerY, 0.01f)
 Also cover wide/tablet and prove the board never exceeds `340dp`, never leaves
 the viewport, and keeps the 1:2 aspect.
 
-- [ ] **Step 2: Write the simplified screen test**
+- [x] **Step 2: Write the simplified screen test**
 
 Assert one preview canvas exists, its bounds are above/outside the board, and
 its right edge aligns with the board. Assert the screen tree has no Level or
 Lines tags and no in-board Score text. Keep the `Hold` absence assertion.
 
-- [ ] **Step 3: Implement the new playing layout**
+- [x] **Step 3: Implement the new playing layout**
 
 Delete `Hud`, `Metric`, the Level/Lines test tags, and the five-item preview
 loop. Render `state.preview.firstOrNull()` only. Use the exact geometry contract
 above and place the preview relative to `geometry.right/top`, clamped to the
 viewport. Apply gestures only to the board bounds.
 
-- [ ] **Step 4: Style Score/Best with shared UIKit**
+- [x] **Step 4: Style Score/Best with shared UIKit**
 
 Replace plain `"Score 0"`/`"Best 0"` toolbar text with
 `core:uikit`'s `CompactScoreCard`, localized labels, current score, and best
 score. Constrain it to the host center slot without creating a nested theme.
 Do not show Level or Lines in the host toolbar.
 
-- [ ] **Step 5: Run and commit**
+- [x] **Step 5: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/board/BoardGeometry.kt game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/screen game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/FallingblocksThemeIntegrationTest.kt
 rtk git commit -m "feat: refine falling blocks gameplay layout"
 ```
+
+**Implementation outcome (2026-09-21):** the playing board now remains
+mathematically centered in the full viewport, preserves 1:2 proportions, keeps
+at least a 32dp horizontal gutter, reserves vertical support space, and never
+exceeds 340dp width. The tested phone sizes resolve to the requested 336dp and
+272dp widths. Gameplay renders exactly one Next piece in a compact card above
+the board with its right edge aligned to the board; gestures remain confined to
+the board. The in-viewport Score/Level/Lines HUD and five-piece preview were
+removed. Host chrome now uses UIKit `CompactScoreCard` for localized Score and
+Best only. `rtk ./gradlew :game:fallingblocks:allTests` passed (105 tests).
 
 ## Task 4: Make the landing ghost reliably visible
 

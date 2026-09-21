@@ -2,17 +2,14 @@ package ge.yet.game.fallingblocks.ui.screen.game
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +25,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
@@ -39,10 +37,7 @@ import ge.yet.game.fallingblocks.domain.model.Rotation
 import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.generated.resources.Res
 import ge.yet.game.fallingblocks.generated.resources.board_description
-import ge.yet.game.fallingblocks.generated.resources.level_label
-import ge.yet.game.fallingblocks.generated.resources.lines_label
 import ge.yet.game.fallingblocks.generated.resources.next_label
-import ge.yet.game.fallingblocks.generated.resources.score_label
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.board.CrtBoard
 import ge.yet.game.fallingblocks.ui.board.colors
@@ -55,8 +50,7 @@ import org.jetbrains.compose.resources.stringResource
 internal object FallingBlocksTestTags {
     const val Board = "falling_blocks_board"
     const val Preview = "falling_blocks_preview"
-    const val Level = "falling_blocks_level"
-    const val Lines = "falling_blocks_lines"
+    const val PreviewPiece = "falling_blocks_preview_piece"
 }
 
 @Composable
@@ -77,7 +71,13 @@ internal fun FallingBlocksScreen(
             return@BoxWithConstraints
         }
 
-        val geometry = BoardGeometry.fit(maxWidth.value, maxHeight.value, edgeInset = 12f)
+        val geometry = BoardGeometry.fit(
+            viewportWidth = maxWidth.value,
+            viewportHeight = maxHeight.value,
+            edgeInset = 24f,
+            supportReserve = if (maxHeight < 700.dp) 48f else 64f,
+            maxBoardWidth = 340f,
+        )
         val boardWidth = geometry.width.dp
         val boardHeight = geometry.height.dp
         val cellSize = boardWidth / Board.WIDTH
@@ -116,106 +116,75 @@ internal fun FallingBlocksScreen(
                 modifier = Modifier.size(boardWidth, boardHeight),
             )
         } else {
-            Hud(
-                score = state.score,
-                level = state.level,
-                lines = state.lines,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(12.dp),
-            )
-            Preview(
-                pieces = state.preview,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp),
-            )
+            state.preview.firstOrNull()?.let { next ->
+                val previewLeft = (geometry.right - PREVIEW_WIDTH_DP)
+                    .coerceIn(0f, maxWidth.value - PREVIEW_WIDTH_DP)
+                val previewTop = (geometry.top - PREVIEW_HEIGHT_DP - PREVIEW_GAP_DP)
+                    .coerceAtLeast(0f)
+                Preview(
+                    piece = next,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .offset {
+                            IntOffset(previewLeft.dp.roundToPx(), previewTop.dp.roundToPx())
+                        },
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun Hud(score: Long, level: Int, lines: Int, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .background(
-                MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.88f),
-                RoundedCornerShape(12.dp),
-            )
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
-        Metric(stringResource(Res.string.score_label), score.toString())
-        Metric(
-            stringResource(Res.string.level_label),
-            level.toString(),
-            Modifier.testTag(FallingBlocksTestTags.Level),
-        )
-        Metric(
-            stringResource(Res.string.lines_label),
-            lines.toString(),
-            Modifier.testTag(FallingBlocksTestTags.Lines),
-        )
-    }
-}
-
-@Composable
-private fun Metric(label: String, value: String, modifier: Modifier = Modifier) {
-    Row(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
-    }
-}
-
-@Composable
-private fun Preview(pieces: List<Tetromino>, modifier: Modifier = Modifier) {
+private fun Preview(piece: Tetromino, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
-    Column(
+    Row(
         modifier = modifier
+            .size(PREVIEW_WIDTH_DP.dp, PREVIEW_HEIGHT_DP.dp)
             .background(
                 scheme.surfaceContainer.copy(alpha = 0.88f),
                 RoundedCornerShape(12.dp),
             )
-            .padding(8.dp)
-            .testTag(FallingBlocksTestTags.Preview),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .testTag(FallingBlocksTestTags.Preview)
+            .padding(horizontal = 6.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             stringResource(Res.string.next_label),
             style = MaterialTheme.typography.labelSmall,
             color = scheme.onSurfaceVariant,
         )
-        Spacer(Modifier.height(4.dp))
-        pieces.take(5).forEach { type ->
-            Canvas(Modifier.width(48.dp).height(28.dp)) {
-                val cells = ActivePiece(type, Rotation.SPAWN, Cell(0, 0)).cells()
-                val minX = cells.minOf { it.x }
-                val maxX = cells.maxOf { it.x }
-                val minY = cells.minOf { it.y }
-                val maxY = cells.maxOf { it.y }
-                val cell = minOf(size.width / (maxX - minX + 1), size.height / (maxY - minY + 1))
-                val pieceWidth = (maxX - minX + 1) * cell
-                val pieceHeight = (maxY - minY + 1) * cell
-                val origin = Offset((size.width - pieceWidth) / 2f, (size.height - pieceHeight) / 2f)
-                val colors = type.colors(scheme)
-                cells.forEach { block ->
-                    val topLeft = origin + Offset((block.x - minX) * cell, (block.y - minY) * cell)
-                    val inset = cell * 0.08f
-                    drawRoundRect(
-                        color = colors.fill,
-                        topLeft = topLeft + Offset(inset, inset),
-                        size = Size(cell - inset * 2f, cell - inset * 2f),
-                        cornerRadius = CornerRadius(cell * 0.12f),
-                    )
-                    drawRoundRect(
-                        color = colors.outline.copy(alpha = 0.66f),
-                        topLeft = topLeft + Offset(inset, inset),
-                        size = Size(cell - inset * 2f, cell - inset * 2f),
-                        cornerRadius = CornerRadius(cell * 0.12f),
-                        style = Stroke(maxOf(1f, cell * 0.045f)),
-                    )
+        Canvas(Modifier.weight(1f).height(28.dp).testTag(FallingBlocksTestTags.PreviewPiece)) {
+            val cells = ActivePiece(piece, Rotation.SPAWN, Cell(0, 0)).cells()
+            val minX = cells.minOf { it.x }
+            val maxX = cells.maxOf { it.x }
+            val minY = cells.minOf { it.y }
+            val maxY = cells.maxOf { it.y }
+            val cell = minOf(size.width / (maxX - minX + 1), size.height / (maxY - minY + 1))
+            val pieceWidth = (maxX - minX + 1) * cell
+            val pieceHeight = (maxY - minY + 1) * cell
+            val origin = Offset((size.width - pieceWidth) / 2f, (size.height - pieceHeight) / 2f)
+            val colors = piece.colors(scheme)
+            cells.forEach { block ->
+                val topLeft = origin + Offset((block.x - minX) * cell, (block.y - minY) * cell)
+                val inset = cell * 0.08f
+                drawRoundRect(
+                    color = colors.fill,
+                    topLeft = topLeft + Offset(inset, inset),
+                    size = Size(cell - inset * 2f, cell - inset * 2f),
+                    cornerRadius = CornerRadius(cell * 0.12f),
+                )
+                drawRoundRect(
+                    color = colors.outline.copy(alpha = 0.66f),
+                    topLeft = topLeft + Offset(inset, inset),
+                    size = Size(cell - inset * 2f, cell - inset * 2f),
+                    cornerRadius = CornerRadius(cell * 0.12f),
+                    style = Stroke(maxOf(1f, cell * 0.045f)),
+                )
                 }
-            }
         }
     }
 }
+
+private const val PREVIEW_WIDTH_DP = 80f
+private const val PREVIEW_HEIGHT_DP = 40f
+private const val PREVIEW_GAP_DP = 8f

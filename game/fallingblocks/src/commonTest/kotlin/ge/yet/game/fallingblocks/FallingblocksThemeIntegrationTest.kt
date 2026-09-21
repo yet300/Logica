@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHeightIsAtLeast
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runComposeUiTest
@@ -16,6 +17,7 @@ import ge.yet.game.fallingblocks.domain.model.Board
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultContent
 import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultTags
+import ge.yet.game.fallingblocks.ui.screen.root.FallingBlocksScoreHeader
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialOverlay
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialStep
@@ -36,13 +38,27 @@ class FallingblocksThemeIntegrationTest {
         )
 
         viewports.forEach { (width, height) ->
-            val geometry = BoardGeometry.fit(width, height, edgeInset = 12f)
+            val geometry = BoardGeometry.fit(width, height, 24f, 48f, 340f)
             assertEquals(width / 2f, geometry.centerX, absoluteTolerance = 0.001f)
             assertEquals(height / 2f, geometry.centerY, absoluteTolerance = 0.001f)
             assertEquals(Board.WIDTH.toFloat() / Board.VISIBLE_HEIGHT, geometry.width / geometry.height)
             assertTrue(geometry.left >= 0f && geometry.top >= 0f)
             assertTrue(geometry.right <= width && geometry.bottom <= height)
         }
+    }
+
+    @Test
+    fun `toolbar score and best use the shared compact score card`() = runComposeUiTest {
+        setContent {
+            LogicaTheme(darkTheme = false) {
+                FallingBlocksScoreHeader(score = 1_250, bestScore = 2_500)
+            }
+        }
+
+        onNodeWithContentDescription("Score 1250").assertExists()
+        onNodeWithContentDescription("Best 2500").assertExists()
+        onNodeWithText("Level").assertDoesNotExist()
+        onNodeWithText("Lines").assertDoesNotExist()
     }
 
     @Test

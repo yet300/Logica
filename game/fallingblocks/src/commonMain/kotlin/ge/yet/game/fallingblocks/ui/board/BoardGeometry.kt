@@ -21,13 +21,25 @@ internal data class BoardGeometry(
             viewportWidth: Float,
             viewportHeight: Float,
             edgeInset: Float,
+            supportReserve: Float,
+            maxBoardWidth: Float,
         ): BoardGeometry {
             require(viewportWidth > 0f && viewportHeight > 0f)
             require(edgeInset >= 0f)
-            val availableWidth = max(1f, viewportWidth - min(edgeInset * 2f, viewportWidth - 1f))
-            val availableHeight = max(1f, viewportHeight - min(edgeInset * 2f, viewportHeight - 1f))
+            require(supportReserve >= 0f)
+            require(maxBoardWidth > 0f)
+            val horizontalReserve = max(edgeInset * 2f, MIN_HORIZONTAL_RESERVE)
+            val availableWidth = max(
+                MIN_DIMENSION,
+                viewportWidth - min(horizontalReserve, viewportWidth - MIN_DIMENSION),
+            )
+            val verticalReserve = edgeInset * 2f + supportReserve
+            val availableHeight = max(
+                MIN_DIMENSION * 2f,
+                viewportHeight - min(verticalReserve, viewportHeight - MIN_DIMENSION * 2f),
+            )
             val aspect = Board.WIDTH.toFloat() / Board.VISIBLE_HEIGHT
-            val width = min(availableWidth, availableHeight * aspect)
+            val width = min(maxBoardWidth, min(availableWidth, availableHeight * aspect))
             val height = width / aspect
             return BoardGeometry(
                 left = (viewportWidth - width) / 2f,
@@ -36,5 +48,8 @@ internal data class BoardGeometry(
                 height = height,
             )
         }
+
+        private const val MIN_HORIZONTAL_RESERVE = 64f
+        private const val MIN_DIMENSION = 0.5f
     }
 }

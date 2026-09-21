@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.testTag
 import com.arkivanov.decompose.value.MutableValue
@@ -22,7 +24,7 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalTestApi::class)
 class FallingBlocksScreenTest {
     @Test
-    fun `board remains centered while hud and five piece preview are overlays`() = runComposeUiTest {
+    fun `board is centered with one next piece above and no gameplay metrics`() = runComposeUiTest {
         setContent {
             LogicaTheme(darkTheme = false) {
                 Box(Modifier.size(400.dp, 800.dp).testTag("falling_blocks_test_host")) {
@@ -43,9 +45,14 @@ class FallingBlocksScreenTest {
             ((bounds.top + bounds.bottom) / 2).value,
             absoluteTolerance = 0.5f,
         )
+        val preview = onNodeWithTag(FallingBlocksTestTags.Preview).getUnclippedBoundsInRoot()
+        onAllNodesWithTag(FallingBlocksTestTags.PreviewPiece).assertCountEquals(1)
         onNodeWithTag(FallingBlocksTestTags.Preview).assertIsDisplayed()
-        onNodeWithTag(FallingBlocksTestTags.Level).assertIsDisplayed()
-        onNodeWithTag(FallingBlocksTestTags.Lines).assertIsDisplayed()
+        assertEquals(bounds.right.value, preview.right.value, absoluteTolerance = 0.5f)
+        kotlin.test.assertTrue(preview.bottom <= bounds.top)
+        onNodeWithTag("falling_blocks_level").assertDoesNotExist()
+        onNodeWithTag("falling_blocks_lines").assertDoesNotExist()
+        onNodeWithText("Score").assertDoesNotExist()
         onNodeWithText("Hold").assertDoesNotExist()
     }
 }
