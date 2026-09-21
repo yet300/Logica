@@ -111,6 +111,24 @@ class MiniAppContractAssertionsTest {
         assertEquals(1, notConsumed.calls)
     }
 
+    @Test
+    fun `Result Back delegates to the host instead of consuming`() {
+        val resultSession = RecordingBackSession(false)
+
+        MiniAppContractAssertions.assertBackDelegatesToHostOnResult(resultSession)
+
+        assertEquals(1, resultSession.calls)
+    }
+
+    @Test
+    fun `Result Back rejects a session that consumes without navigation`() {
+        val stuckSession = RecordingBackSession(true)
+
+        assertFailsWith<AssertionError> {
+            MiniAppContractAssertions.assertBackDelegatesToHostOnResult(stuckSession)
+        }
+    }
+
     private class RecordingBackSession(private val response: Boolean) : MiniAppSession {
         var calls = 0
             private set

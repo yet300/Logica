@@ -19,6 +19,16 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalMiniAppAudioTestingApi::class)
 class BlockBlastAudioRenderTest {
     @Test
+    fun `placement thock keeps its approved acoustic signature`() {
+        val placement = renderSfx(BlockBlastAudio.Place)
+
+        assertEquals(-7588597565231800787L, placement.quantizedPcmHash)
+        assertTrue(placement.peak < MAX_PEAK)
+        assertTrue(placement.rms > MIN_AUDIBLE_RMS)
+        assertEquals(SFX_FRAME_COUNT, placement.frameCount)
+    }
+
+    @Test
     fun `program compiles inside mobile budgets on the realtime render path`() {
         val pcm = renderSuccess(
             AudioTestRenderRequest(

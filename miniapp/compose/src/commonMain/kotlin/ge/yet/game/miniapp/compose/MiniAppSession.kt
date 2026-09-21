@@ -39,6 +39,27 @@ interface MiniAppSession {
     val wantsBanner: Boolean
         get() = false
 
+    /**
+     * Offers a Back press to the session before the host closes it.
+     *
+     * Return `true` only when the session performed internal navigation
+     * (for example dismissing a Playing overlay) and the host must stay
+     * on the running MiniApp. Return `false` to let the host close the
+     * session and navigate to Catalog.
+     *
+     * In particular, a terminal Result screen must return `false`: the host
+     * owns Back there. Returning `true` without internal navigation leaves
+     * the session active, so session audio keeps playing and the catalog
+     * stays locked because the runtime still treats the MiniApp as running.
+     *
+     * Canonical Playing/Result root:
+     * ```
+     * override fun handleBack(): Boolean =
+     *     (stack.value.active.instance as? Child.Playing)
+     *         ?.component?.handleBack()
+     *         ?: false
+     * ```
+     */
     fun handleBack(): Boolean = false
 
     @Composable

@@ -25,6 +25,22 @@ fun PlacementClick(
     }
 }
 
+fun WoodenPlacementThock(
+    name: String = "wooden_placement_thock",
+    gain: Float = 1f,
+): AudioProgramFragment {
+    val level = gain.requirePresetGain()
+    return audioProgramFragment {
+        sfx(name) {
+            oscillator(OscillatorShape.SINE, gain = 0.22f * level)
+            noise(NoiseColor.PINK, gain = 0.06f * level, seed = 8_048_402L)
+            pitch(from = 170.hz, to = 85.hz, duration = 70.ms)
+            envelope(attack = 1.ms, decay = 40.ms, sustain = 0.10f, release = 60.ms)
+            lowPass(cutoff = 900.hz, resonance = 0.08f)
+        }
+    }
+}
+
 fun SuccessSweep(
     name: String = "success_sweep",
     gain: Float = 0.5f,

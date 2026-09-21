@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Scale original 554 × 537 canvas to 100 × 100 -->
+    <group
+        android:pivotX="0"
+        android:pivotY="0"
+        android:scaleX="0.180505"
+        android:scaleY="0.186220">
+
+        <!-- Rounded game field: AnthropicNearBlack #141413 -->
+        <path
+            android:fillColor="#FF141413"
+            android:pathData="M127,30h301c55.8,0 101,45.2 101,101v304c0,55.8 -45.2,101 -101,101h-301c-55.8,0 -101,-45.2 -101,-101v-304c0,-55.8 45.2,-101 101,-101z" />
+
+        <!-- Game grid -->
+        <group
+            android:translateX="-2"
+            android:translateY="94">
+
+            <!-- Falling red piece -->
+            <path
+                android:fillColor="#FFB53333"
+                android:pathData="
+                    M336,28h46v46h-46z
+                    M282,82h46v46h-46z
+                    M336,82h46v46h-46z
+                    M282,136h46v46h-46z" />
+
+            <!-- Ochre O piece -->
+            <path
+                android:fillColor="#FFD8A051"
+                android:pathData="
+                    M66,136h46v46h-46z
+                    M120,136h46v46h-46z
+                    M66,190h46v46h-46z
+                    M120,190h46v46h-46z" />
+
+            <!-- Terracotta L piece -->
+            <path
+                android:fillColor="#FFC96442"
+                android:pathData="
+                    M174,190h46v46h-46z
+                    M174,244h46v46h-46z
+                    M120,244h46v46h-46z
+                    M66,244h46v46h-46z" />
+
+            <!-- Olive S piece -->
+            <path
+                android:fillColor="#FF6E7C5E"
+                android:pathData="
+                    M228,190h46v46h-46z
+                    M228,244h46v46h-46z
+                    M282,244h46v46h-46z
+                    M282,298h46v46h-46z" />
+
+            <!-- Coral T piece -->
+            <path
+                android:fillColor="#FFD97757"
+                android:pathData="
+                    M336,190h46v46h-46z
+                    M336,244h46v46h-46z
+                    M390,244h46v46h-46z
+                    M336,298h46v46h-46z" />
+
+            <!-- Focus-blue J piece -->
+            <path
+                android:fillColor="#FF3898EC"
+                android:pathData="
+                    M444,190h46v46h-46z
+                    M444,244h46v46h-46z
+                    M444,298h46v46h-46z
+                    M390,298h46v46h-46z" />
+
+            <!-- Warm-sand lower row -->
+            <path
+                android:fillColor="#FFE8E6DC"
+                android:pathData="
+                    M66,298h46v46h-46z
+                    M120,298h46v46h-46z
+                    M174,298h46v46h-46z
+                    M228,298h46v46h-46z" />
+
+            <!-- Olive final lower-row cell -->
+            <path
+                android:fillColor="#FF6E7C5E"
+                android:pathData="M282,298h46v46h-46z" />
+
+        </group>
+
+    </group>
+</vector>

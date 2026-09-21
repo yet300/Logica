@@ -22,6 +22,11 @@ means that evidence is attached to the change or can be reproduced locally.
       sibling-game dependency was introduced.
 - [ ] Host-owned navigation, Back, Settings, toolbar, system-region contrast,
       safe-area handling and ads remain outside the plugin.
+- [ ] Back on a terminal Result returns `false` without internal navigation,
+      so the host closes the session, stops session audio and unlocks the
+      catalog (see `MiniAppSession.handleBack`; cover with
+      `assertBackDelegatesToHostOnResult` or an equivalent
+      `handle_back_on_result_returns_false_without_popping` test).
 - [ ] The plugin supplies at most partial inherited Material colors and optional
       decorative background; it does not manage platform bars or ad spacing.
 - [ ] Session-owned state and child graph are destroyed with the session.
