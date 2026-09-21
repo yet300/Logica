@@ -31,3 +31,16 @@ No third-party image, font or bundled audio asset is introduced. Initial UI
 copy is English only. The generated catalog icon is scaffold infrastructure,
 not a claim of a final product icon. Production shipping requires a separate
 maintainer review and explicit allowlist decision.
+
+## Procedural audio authorship
+
+The 126 BPM program uses an original bass, pulse and degraded lead motif with
+fixed game-owned seeds. It composes the repository's public `AnalogBass`,
+`ChipLead`, `WoodenPlacementThock`, `SuccessSweep` and `PowerUp` fragments with
+original Falling Blocks SFX declarations. The supplied Sprudel notes, rhythmic
+sequence and parameter values were not transcribed.
+
+Deterministic render tests cover base/high intensity, every typed SFX, line-clear
+families, headroom, finite PCM, DC offset and a bounded mobile declaration
+budget. These automated renders were not exported or represented as a human
+listening review.

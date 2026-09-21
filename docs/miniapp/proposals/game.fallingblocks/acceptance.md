@@ -1,82 +1,95 @@
 # Falling Blocks Acceptance Evidence
 
 **Shipping status:** NOT ALLOWLISTED  
-**Current phase:** Design approved; implementation not started
+**Current phase:** Implementation and automated acceptance complete; live-device experiential review remains
+blocked by the non-shipping gate and the absence of an attached test device.
 
 Statuses are `passed`, `failed`, `blocked-by-environment`, and `not-run`.
 
-| Criterion | Required evidence or artifact | Status | Remaining work |
+| Criterion | Evidence | Status | Remaining work |
 |---|---|---|---|
-| Module boundary | Generated `:game:fallingblocks`, valid dependency report, no forbidden platform/feature/game edges | not-run | Generate only after plan approval; run `validateMiniAppDependencies` |
-| Pure deterministic engine | Unit scenarios for actions, invalid actions, collision, spawn, lock and terminal state | not-run | Implement test-first |
-| Seven-bag and RNG restore | Bag permutation tests, long-run distribution invariant, snapshot continuation matching uninterrupted run | not-run | Implement test-first |
-| SRS rotation | Transition and kick-table tests for every piece/orientation near walls, floor, stack and hidden rows | not-run | Implement corrected downward-positive coordinates |
-| No Hold | Source/API inspection and UI semantics contain no Hold state, intent, control, string or tutorial step | not-run | Verify after implementation |
-| Gesture-only play | Density-independent tap, horizontal drag, slow downward drag and fast downward fling tests | not-run | Add gesture classifier and Compose integration tests |
-| Lock delay | 500 ms boundary and maximum 15 valid reset tests; no instant lock on first blocked descent | not-run | Implement test-first |
-| Lines and scoring | Single through four-line, T-spin, combo, back-to-back, perfect-clear, soft/hard-drop and level multiplier tests | not-run | Implement test-first |
-| Top-out | Spawn failure and locked hidden-row scenarios display result exactly once | not-run | Implement test-first |
-| One endless mode | Manifest/UI inspection shows no difficulty or mode selection | not-run | Verify semantics and screenshots |
-| Mandatory tutorial | Fresh install enters four-step practice; no skip affordance; completion persists and starts a clean run | not-run | Unit and Compose tests plus recording |
-| Exact resume | Round-trip snapshot resumes board, active piece, queue/bag/RNG, scoring, lock timing and continuation count | not-run | Recreation and relaunch tests |
-| Corrupt snapshot recovery | Invalid version, cells, coordinates, bag, counters and durations start clean while preserving best/tutorial | not-run | Add validator tests |
-| Game-over presentation | Non-dismissible bottom-sheet-like overlay; board remains sharp, undimmed and visible | not-run | Compact/wide screenshots and dismissal tests |
-| Advertisement continuation | Five-second visibility-aware offer, one revive, bottom-four-row recovery, stale/duplicate callback rejection, failure leaves result usable | not-run | Component tests with recording capability |
-| New game | Terminal action starts a clean deterministic run and cannot race a pending ad callback | not-run | Component tests |
-| Banner eligibility | Session declares `wantsBanner = true`; game does not render or size a banner | not-run | Contract test |
-| Centered adaptive field | Board center matches viewport center in compact portrait, wide, tablet and compact-height layouts | not-run | Screenshot/layout-coordinate assertions |
-| Theme-only colors | Light/dark and contrasting theme captures; no fixed game color literals or nested theme | not-run | Static inspection and screenshots |
-| CRT effect | Static scanlines, restrained glow/bleed, field-only clipping, no jitter; reduced motion retains static scanlines only | not-run | Screenshots and motion capture |
-| Motion | Move, rotation, drop, clear/collapse, blocked action and result transitions inspected under normal and reduced motion | not-run | Record representative sessions |
-| Accessibility | English labels, non-color piece distinction, predictable result focus, concise board/status semantics and touch behavior | not-run | Compose semantics tests and manual screen-reader pass |
-| Shared lock SFX | Block Blast placement thock extracted to `:miniapp:audio-presets`; acoustic regression keeps Block Blast declaration/render unchanged within tolerance | not-run | Add preset and render assertions |
-| Original music and SFX | Declarations compile; deterministic render/headroom/budget tests; no supplied melody transcription | not-run | Create and render representative artifacts |
-| Audio experience | Listen to loop, intensity changes, repeated movement/drop/lock/clear SFX over music, mute, background/resume and teardown | not-run | Record artifact paths and listening notes |
-| Performance | No storage/audio/DSP work in Compose frame callbacks; bounded effects and stable rapid-input behavior on representative devices | not-run | Profile Android and inspect iOS run |
-| Android verification | `allTests`, `verifyMiniApp`, Android compilation and relevant host compilation succeed | not-run | Run exact final commands |
-| iOS verification | iOS simulator compilation succeeds and live layout/audio are inspected where available | not-run | Run exact final commands and device/simulator review |
-| Repository hygiene | `git diff --check`; unrelated worktree files untouched; provenance and limitations documented | not-run | Verify before handoff |
-| Shipping gate | `settings.gradle.kts` production allowlist remains unchanged | passed | Reconfirm before handoff |
+| Module boundary | `validateMiniAppDependencies`; `verifyMiniApp`; isolated Metro registry and graph tests | passed | None |
+| Pure deterministic engine | Board, movement, line-clear, scoring, lock, terminal and generated property tests | passed | None |
+| Seven-bag and RNG restore | `SevenBagTest`, `RandomStateTest`, snapshot round-trip and uninterrupted-continuation tests | passed | None |
+| SRS rotation | Clockwise JLSTZ/I/O transition and wall/floor/stack kick coverage in `SrsRotationTest` | passed | None |
+| No Hold | No Hold model/action/resource; Compose semantics assert no Hold control | passed | None |
+| Gesture-only play | Density-independent tap, drag, slow drop and fling classification tests | passed | Physical-device gesture feel remains experiential |
+| Lock delay | 500 ms boundary and 15-reset cap in `LockDelayTest` | passed | None |
+| Lines and scoring | Single through four-line, T-spin, combo, back-to-back, perfect-clear and drop scoring tests | passed | None |
+| Top-out | Spawn obstruction and hidden-row lock tests; result is deduplicated by run ID | passed | None |
+| One endless mode | Manifest and UI expose direct play only; no mode or difficulty state/resource | passed | None |
+| Mandatory tutorial | Four legal-action steps, fixed practice seed, frozen gravity, retrying completion persistence, no Skip | passed | Live gesture pacing review |
+| Exact resume | Full snapshot equality plus graph recreation test after visibility checkpoint | passed | None |
+| Corrupt snapshot recovery | Version, board, active piece, bag, counters and timing validation tests | passed | None |
+| Game-over presentation | Bottom-anchored Material surface, zero scrim, no blur/dismiss action, board retained, 48 dp primary action | passed | Live compact/wide capture |
+| Advertisement continuation | Visibility-aware five-second offer, one revive, bottom-four-row recovery, failure recovery and stale callback tests | passed | Live SDK presentation requires allowlisting/test host |
+| New game | Clean incremented run and stale continuation rejection tests | passed | None |
+| Banner eligibility | Plugin contract asserts `wantsBanner == true`; module contains no banner renderer | passed | Native creative layout remains host-owned |
+| Centered adaptive field | Compose coordinate assertion plus portrait, wide, tablet and compact-height geometry matrix | passed | Device screenshots unavailable |
+| Theme-only colors | Tetrominoes map only to `MaterialTheme.colorScheme` roles; light/dark tests; no fixed production color literals | passed | Visual contrast review on devices |
+| CRT effect | Field-clipped static scanlines/glow; no jitter; reduced-motion policy retains static CRT treatment | passed | Aesthetic inspection unavailable |
+| Motion | Deterministic motion policy and reduced-motion tests | blocked-by-environment | Record move, rotation, drop, clear and result motion on an allowlisted test host |
+| Accessibility | English board/result/tutorial semantics, no color-only piece identity, 48 dp result action | passed | Manual screen-reader and switch-control pass unavailable |
+| Shared lock SFX | `WoodenPlacementThock` preset plus Block Blast and preset regression suites | passed | None |
+| Original music and SFX | Original 126 BPM program; all 13 SFX deterministic, audible, finite, low-DC and below 0.98 peak; bounded declaration budget | passed | Human listening review unavailable |
+| Audio experience | Routing, intensity bands, rejection/no-retry and deterministic stress assertions | blocked-by-environment | Listen to base/high loops, overlaps, mute, ad suppression and teardown on Android/iOS |
+| Performance | Bounded three-track/13-SFX declaration and no storage/DSP work in Compose callbacks | blocked-by-environment | Android profiler and iOS live producer diagnostics were not available |
+| Android verification | Falling Blocks Android compile and shared `composeApp` Android compile | passed | No Android host/device test was attached; repository Android host tests are disabled |
+| iOS verification | iOS Simulator compile and common tests, including Compose UI tests | passed | No live simulator app session or physical iOS audio inspection |
+| Repository hygiene | `git diff --check`; scoped source only; unrelated generated Firebase SwiftPM directories untouched | passed | Reconfirm after final commit |
+| Shipping gate | No `settings.gradle.kts` diff; bundle report contains Block Blast, 2048 and Fruit Merge only | passed | Separate maintainer authorization is required to ship |
 
-## Planned Visual Evidence
+## Automated artifacts
 
-- Compact portrait: active play, each tutorial gesture, blocked rotation, and
-  game-over overlay.
-- Wide/landscape: centered field with edge information not shifting its center.
-- Tablet: centered field, five-piece preview, score/level/lines, banner-safe host
-  layout.
-- Light and dark themes, plus reduced-motion captures.
-- Motion recording covering hard drop, line sweep/collapse, result entrance,
-  app background/resume, and continuation.
+- Falling Blocks test report: `game/fallingblocks/build/reports/tests/allTests/index.html`
+- iOS Simulator test report: `game/fallingblocks/build/reports/tests/iosSimulatorArm64Test/index.html`
+- Audio render assertions: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/audio/FallingBlocksAudioRenderTest.kt`
+- Adaptive/theme assertions: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/FallingblocksThemeIntegrationTest.kt`
+- Lifecycle/restore assertions: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/FallingblocksLifecycleIntegrationTest.kt`
 
-## Planned Audio Evidence
+The test renderer validated base/high music and every SFX in memory. It does not
+export WAV files, and this task had no audible playback surface. No listening
+claim or visual screenshot claim is made from compilation or pixel assertions.
 
-- A representative original music loop at base and elevated intensity.
-- Individual SFX renders and a mixed stress render with repeated gameplay SFX.
-- Determinism hashes or acoustic features, peak/headroom results, mobile render
-  budget results, and human listening notes.
-- A before/after Block Blast placement render proving the extracted shared
-  preset did not unintentionally change its sound.
+## Verification run — 2026-09-20
 
-## Planned Verification Commands
+Each required command exited `0`:
 
-All commands will use the repository-required `rtk` prefix.
+| Command | Result |
+|---|---|
+| `rtk ./gradlew :game:fallingblocks:allTests` | passed; iOS Simulator common and Compose UI suite |
+| `rtk ./gradlew :game:fallingblocks:validateMiniAppDependencies` | passed |
+| `rtk ./gradlew :game:fallingblocks:compileAndroidMain` | passed |
+| `rtk ./gradlew :game:fallingblocks:compileKotlinIosSimulatorArm64` | passed |
+| `rtk ./gradlew :game:fallingblocks:verifyMiniApp` | passed |
+| `rtk ./gradlew :game:blockblast:allTests` | passed; shared wooden placement regression retained |
+| `rtk ./gradlew :miniapp:audio-presets:allTests` | passed |
+| `rtk ./gradlew :miniapp:audio-presets:compileAndroidMain` | passed |
+| `rtk ./gradlew :miniapp:audio-presets:compileKotlinIosSimulatorArm64` | passed |
+| `rtk ./gradlew :composeApp:compileAndroidMain` | passed |
+| `rtk git diff --check` | passed |
 
-```bash
-rtk ./gradlew :game:fallingblocks:allTests
-rtk ./gradlew :game:fallingblocks:validateMiniAppDependencies
-rtk ./gradlew :game:fallingblocks:compileAndroidMain
-rtk ./gradlew :game:fallingblocks:compileKotlinIosSimulatorArm64
-rtk ./gradlew :game:fallingblocks:verifyMiniApp
-rtk ./gradlew :game:blockblast:allTests
-rtk ./gradlew :miniapp:audio-presets:allTests
-rtk ./gradlew :miniapp:audio-presets:compileAndroidMain
-rtk ./gradlew :miniapp:audio-presets:compileKotlinIosSimulatorArm64
-rtk ./gradlew :composeApp:compileAndroidMain
-rtk git diff --check
-```
+Additional shipping-boundary evidence:
 
-The exact successful and failed command results, inspected artifacts, device
-coverage, unresolved limitations, and final NOT ALLOWLISTED status will replace
-this planned evidence during implementation.
+- `rtk ./gradlew projects` lists `:game:fallingblocks`, proving discovery.
+- `rtk ./gradlew :miniapp:bundle:dependencies --configuration commonMainApi`
+  lists only `metro`, `blockblast`, `twentyfortyeight`, and `fruitmerge`; it does
+  not contain Falling Blocks.
+- `settings.gradle.kts` has no working-tree diff.
 
+## Experiential limitations
+
+No unlocked Android device, Android emulator session, iOS app simulator session,
+or physical iOS device was available for this non-allowlisted MiniApp. Therefore
+the following remain explicitly `blocked-by-environment`, not passed:
+
+- device screenshots for compact portrait, wide, tablet and compact-height;
+- live motion recordings and reduced-motion OS-setting inspection;
+- TalkBack/VoiceOver focus-order review;
+- listening to music/SFX, repeated overlaps, mute, background/resume, fullscreen
+  ad suppression and audio teardown;
+- Android frame/audio profiling and iOS realtime producer diagnostics.
+
+Falling Blocks remains discoverable for review but absent from the production
+bundle. Shipping requires a separate, explicit change to the authoritative
+`miniApps` allowlist.
