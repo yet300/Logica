@@ -1,47 +1,25 @@
 package ge.yet.game.fallingblocks.ui.screen.game
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
-import ge.yet.game.fallingblocks.domain.engine.cells
-import ge.yet.game.fallingblocks.domain.model.ActivePiece
 import ge.yet.game.fallingblocks.domain.model.Board
-import ge.yet.game.fallingblocks.domain.model.Cell
-import ge.yet.game.fallingblocks.domain.model.Rotation
-import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.generated.resources.Res
 import ge.yet.game.fallingblocks.generated.resources.board_description
-import ge.yet.game.fallingblocks.generated.resources.next_label
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.board.CrtBoard
 import ge.yet.game.fallingblocks.ui.board.FallingBlocksBoardEffects
-import ge.yet.game.fallingblocks.ui.board.colors
 import ge.yet.game.fallingblocks.ui.input.GestureEvent
 import ge.yet.game.fallingblocks.ui.input.fallingBlocksGestures
 import ge.yet.game.fallingblocks.ui.motion.rememberFallingBlocksMotionPolicy
@@ -124,76 +102,6 @@ internal fun FallingBlocksScreen(
                 reducedMotion = !motion.spatialMotionEnabled,
                 modifier = Modifier.size(boardWidth, boardHeight),
             )
-        } else {
-            state.preview.firstOrNull()?.let { next ->
-                val previewLeft = (geometry.right - PREVIEW_WIDTH_DP)
-                    .coerceIn(0f, maxWidth.value - PREVIEW_WIDTH_DP)
-                val previewTop = (geometry.top - PREVIEW_HEIGHT_DP - PREVIEW_GAP_DP)
-                    .coerceAtLeast(0f)
-                Preview(
-                    piece = next,
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .offset {
-                            IntOffset(previewLeft.dp.roundToPx(), previewTop.dp.roundToPx())
-                        },
-                )
-            }
         }
     }
 }
-
-@Composable
-private fun Preview(piece: Tetromino, modifier: Modifier = Modifier) {
-    val scheme = MaterialTheme.colorScheme
-    Row(
-        modifier = modifier
-            .size(PREVIEW_WIDTH_DP.dp, PREVIEW_HEIGHT_DP.dp)
-            .background(
-                scheme.surfaceContainer.copy(alpha = 0.88f),
-                RoundedCornerShape(12.dp),
-            )
-            .testTag(FallingBlocksTestTags.Preview)
-            .padding(horizontal = 6.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            stringResource(Res.string.next_label),
-            style = MaterialTheme.typography.labelSmall,
-            color = scheme.onSurfaceVariant,
-        )
-        Canvas(Modifier.weight(1f).height(28.dp).testTag(FallingBlocksTestTags.PreviewPiece)) {
-            val cells = ActivePiece(piece, Rotation.SPAWN, Cell(0, 0)).cells()
-            val minX = cells.minOf { it.x }
-            val maxX = cells.maxOf { it.x }
-            val minY = cells.minOf { it.y }
-            val maxY = cells.maxOf { it.y }
-            val cell = minOf(size.width / (maxX - minX + 1), size.height / (maxY - minY + 1))
-            val pieceWidth = (maxX - minX + 1) * cell
-            val pieceHeight = (maxY - minY + 1) * cell
-            val origin = Offset((size.width - pieceWidth) / 2f, (size.height - pieceHeight) / 2f)
-            val colors = piece.colors(scheme)
-            cells.forEach { block ->
-                val topLeft = origin + Offset((block.x - minX) * cell, (block.y - minY) * cell)
-                val inset = cell * 0.08f
-                drawRoundRect(
-                    color = colors.fill,
-                    topLeft = topLeft + Offset(inset, inset),
-                    size = Size(cell - inset * 2f, cell - inset * 2f),
-                    cornerRadius = CornerRadius(cell * 0.12f),
-                )
-                drawRoundRect(
-                    color = colors.outline.copy(alpha = 0.66f),
-                    topLeft = topLeft + Offset(inset, inset),
-                    size = Size(cell - inset * 2f, cell - inset * 2f),
-                    cornerRadius = CornerRadius(cell * 0.12f),
-                    style = Stroke(maxOf(1f, cell * 0.045f)),
-                )
-                }
-        }
-    }
-}
-
-private const val PREVIEW_WIDTH_DP = 80f
-private const val PREVIEW_HEIGHT_DP = 40f
-private const val PREVIEW_GAP_DP = 8f

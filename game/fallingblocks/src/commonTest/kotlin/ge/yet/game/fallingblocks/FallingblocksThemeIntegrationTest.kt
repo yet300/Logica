@@ -66,7 +66,7 @@ class FallingblocksThemeIntegrationTest {
     }
 
     @Test
-    fun `toolbar score and best use the shared compact score card`() = runComposeUiTest {
+    fun `toolbar score and best use block blast style pills`() = runComposeUiTest {
         setContent {
             LogicaTheme(darkTheme = false) {
                 FallingBlocksScoreHeader(score = 1_250, bestScore = 2_500)

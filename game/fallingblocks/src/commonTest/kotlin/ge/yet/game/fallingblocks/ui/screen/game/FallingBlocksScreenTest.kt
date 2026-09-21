@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalTestApi::class)
 class FallingBlocksScreenTest {
     @Test
-    fun `board is centered with one next piece above and no gameplay metrics`() = runComposeUiTest {
+    fun `board is centered with next piece moved to app bar and no gameplay metrics`() = runComposeUiTest {
         setContent {
             LogicaTheme(darkTheme = false) {
                 Box(Modifier.size(400.dp, 800.dp).testTag("falling_blocks_test_host")) {
@@ -48,11 +48,10 @@ class FallingBlocksScreenTest {
             ((bounds.top + bounds.bottom) / 2).value,
             absoluteTolerance = 0.5f,
         )
-        val preview = onNodeWithTag(FallingBlocksTestTags.Preview).getUnclippedBoundsInRoot()
-        onAllNodesWithTag(FallingBlocksTestTags.PreviewPiece).assertCountEquals(1)
-        onNodeWithTag(FallingBlocksTestTags.Preview).assertIsDisplayed()
-        assertEquals(bounds.right.value, preview.right.value, absoluteTolerance = 0.5f)
-        kotlin.test.assertTrue(preview.bottom <= bounds.top)
+        // Next preview now lives in the host app bar, not in the viewport.
+        onNodeWithTag(FallingBlocksTestTags.Preview).assertDoesNotExist()
+        onAllNodesWithTag(FallingBlocksTestTags.PreviewPiece).assertCountEquals(0)
+        onNodeWithText("Next").assertDoesNotExist()
         onNodeWithTag("falling_blocks_level").assertDoesNotExist()
         onNodeWithTag("falling_blocks_lines").assertDoesNotExist()
         onNodeWithText("Score").assertDoesNotExist()
