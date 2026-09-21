@@ -3,6 +3,7 @@ package ge.yet.game.fallingblocks.component.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
 import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.component.result.ResultComponent
@@ -59,6 +60,7 @@ class RootComponentTest {
 
         assertEquals(1, setup.root.stack.value.items.size)
         assertNotSame(original, setup.playing())
+        assertTrue(original.destroyed)
         assertEquals(listOf(false, true), setup.gameFactory.startFreshRequests)
         setup.destroy()
     }
@@ -103,13 +105,21 @@ class RootComponentTest {
             onToppedOut: (Long) -> Unit,
         ): FallingBlocksComponent {
             startFreshRequests += startFresh
-            return FakePlaying(onToppedOut)
+            return FakePlaying(onToppedOut, componentContext)
         }
     }
 
     private class FakePlaying(
         private val onToppedOut: (Long) -> Unit,
+        componentContext: ComponentContext,
     ) : FallingBlocksComponent {
+        var destroyed: Boolean = false
+            private set
+
+        init {
+            componentContext.lifecycle.doOnDestroy { destroyed = true }
+        }
+
         private val mutableModel = MutableValue(
             FallingBlocksComponent.Model(
                 game = gameFixture(score = 100L),

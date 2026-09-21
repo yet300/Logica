@@ -34,8 +34,11 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FallingblocksLifecycleIntegrationTest {
@@ -56,6 +59,7 @@ class FallingblocksLifecycleIntegrationTest {
         val first = app.sessionGraph(firstLifecycle, storage, visibility)
         advanceUntilIdle()
 
+        assertFalse(first.component.playing().model.value.active)
         val obscured = assertNotNull(first.component.playing().model.value.game)
         advanceTimeBy(1_600)
         runCurrent()
@@ -63,6 +67,7 @@ class FallingblocksLifecycleIntegrationTest {
 
         visibility.set(MiniAppVisibility.ACTIVE)
         runCurrent()
+        assertTrue(first.component.playing().model.value.active)
         advanceTimeBy(32)
         runCurrent()
         val ticking = assertNotNull(first.component.playing().model.value.game)
@@ -83,6 +88,8 @@ class FallingblocksLifecycleIntegrationTest {
         advanceUntilIdle()
 
         assertEquals(checkpoint, restored.component.playing().model.value.game)
+        assertFalse(restored.component.playing().model.value.active)
+        assertNull(restored.component.playing().model.value.visualEvent)
         secondLifecycle.destroy()
     }
 

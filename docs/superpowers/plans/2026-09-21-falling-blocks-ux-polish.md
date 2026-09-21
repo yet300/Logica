@@ -553,21 +553,21 @@ motion-contract and single-layer assertions; `rtk ./gradlew
 - Update: `game/fallingblocks/PROVENANCE.md` only if implementation introduces new original visual declarations
 - Do not modify: `settings.gradle.kts`
 
-- [ ] **Step 1: Add end-to-end component assertions**
+- [x] **Step 1: Add end-to-end component assertions**
 
 Verify exact checkpoint restore starts with no stale visual event; backgrounding
 pauses countdown/ticks/effects; destroyed Result ad approval is stale; successful
 revive returns to the retained Playing child; New Game destroys old children;
 banner opt-in remains true; Result uses `ContentOnly` and Playing uses `Standard`.
 
-- [ ] **Step 2: Add the final theme/layout matrix**
+- [x] **Step 2: Add the final theme/layout matrix**
 
 Test light/dark synthetic schemes at `320×568`, `360×640`, `400×800`,
 `800×400`, and `1200×800`. Assert centered/capped field, one external preview,
 no in-field metrics, readable ghost style, 48dp actions, no Hold/Skip, and
 English semantics.
 
-- [ ] **Step 3: Run focused and broad automated verification**
+- [x] **Step 3: Run focused and broad automated verification**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
@@ -585,7 +585,7 @@ rtk git diff --exit-code -- settings.gradle.kts
 Expected: every command exits 0; Falling Blocks remains discoverable and absent
 from production bundle dependencies.
 
-- [ ] **Step 4: Perform device experience checks**
+- [x] **Step 4: Perform device experience checks**
 
 On an available Android emulator/device, record portrait gameplay and Result.
 Inspect: margins; field center; one Next piece; ghost over empty/dense bottoms;
@@ -594,7 +594,7 @@ New Game; banner mounted/unmounted viewport changes. Repeat the critical layout
 and lifecycle checks on iOS when available. Mark missing device checks
 `blocked-by-environment`, never `passed` from compilation.
 
-- [ ] **Step 5: Update acceptance evidence and commit**
+- [x] **Step 5: Update acceptance evidence and commit**
 
 Record exact commands, screenshots/video paths, observed defects, and
 unavailable checks in `acceptance.md`.
@@ -603,6 +603,19 @@ unavailable checks in `acceptance.md`.
 rtk git add game/fallingblocks docs/miniapp/proposals/game.fallingblocks
 rtk git commit -m "test: verify falling blocks ux polish"
 ```
+
+**Implementation outcome (2026-09-21):** Extended lifecycle coverage to prove
+inactive presentation state, exact restore without stale visual events, and
+destruction of the replaced Playing child. Plugin/root tests retain banner,
+stale-ad, retained-revive and `Standard`/`ContentOnly` frame-mode guarantees.
+The light/dark matrix now covers exact `320×568`, `360×640`, `400×800`,
+`800×400` and `1200×800` field widths/centering plus every tetromino ghost at
+at least 3:1 outline contrast. Falling Blocks tests, dependency validation,
+Android/iOS compilation, `verifyMiniApp`, Block Blast tests, UIKit tests and
+ComposeApp Android compilation passed. Bundle dependencies still exclude
+Falling Blocks and `settings.gradle.kts` is unchanged. Device experience checks
+are `blocked-by-environment`: `adb` is unavailable and no iOS Simulator is
+booted, so no visual/audio acceptance claim was made.
 
 Final handoff must explicitly state **NOT ALLOWLISTED**, confirm no
 `settings.gradle.kts` diff, and list any unperformed human visual/audio checks.

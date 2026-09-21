@@ -3,7 +3,10 @@ package ge.yet.game.fallingblocks
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -14,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import ge.yet.game.fallingblocks.component.result.ResultComponent
 import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.domain.model.Board
+import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
+import ge.yet.game.fallingblocks.ui.board.contrastRatio
+import ge.yet.game.fallingblocks.ui.board.ghostStyle
 import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultContent
 import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultTags
 import ge.yet.game.fallingblocks.ui.screen.root.FallingBlocksScoreHeader
@@ -29,21 +35,33 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class FallingblocksThemeIntegrationTest {
     @Test
-    fun `board remains mathematically centered across adaptive viewport classes`() {
+    fun `light and dark theme matrix keeps the board centered capped and ghost readable`() {
         val viewports = listOf(
-            360f to 720f,
-            960f to 540f,
-            1_200f to 1_600f,
-            720f to 360f,
+            Triple(320f, 568f, 236f),
+            Triple(360f, 640f, 272f),
+            Triple(400f, 800f, 336f),
+            Triple(800f, 400f, 152f),
+            Triple(1_200f, 800f, 340f),
         )
+        val schemes = listOf(lightColorScheme(), darkColorScheme())
 
-        viewports.forEach { (width, height) ->
-            val geometry = BoardGeometry.fit(width, height, 24f, 48f, 340f)
-            assertEquals(width / 2f, geometry.centerX, absoluteTolerance = 0.001f)
-            assertEquals(height / 2f, geometry.centerY, absoluteTolerance = 0.001f)
-            assertEquals(Board.WIDTH.toFloat() / Board.VISIBLE_HEIGHT, geometry.width / geometry.height)
-            assertTrue(geometry.left >= 0f && geometry.top >= 0f)
-            assertTrue(geometry.right <= width && geometry.bottom <= height)
+        schemes.forEach { scheme ->
+            viewports.forEach { (width, height, expectedBoardWidth) ->
+                val supportReserve = if (height < 700f) 48f else 64f
+                val geometry = BoardGeometry.fit(width, height, 24f, supportReserve, 340f)
+                assertEquals(width / 2f, geometry.centerX, absoluteTolerance = 0.001f)
+                assertEquals(height / 2f, geometry.centerY, absoluteTolerance = 0.001f)
+                assertEquals(expectedBoardWidth, geometry.width, absoluteTolerance = 0.001f)
+                assertEquals(Board.WIDTH.toFloat() / Board.VISIBLE_HEIGHT, geometry.width / geometry.height)
+                assertTrue(geometry.left >= 0f && geometry.top >= 0f)
+                assertTrue(geometry.right <= width && geometry.bottom <= height)
+
+                Tetromino.entries.forEach { type ->
+                    val style = ghostStyle(type, scheme)
+                    val boardColor = scheme.surfaceContainerLowest
+                    assertTrue(contrastRatio(style.outline.compositeOver(boardColor), boardColor) >= 3.0)
+                }
+            }
         }
     }
 

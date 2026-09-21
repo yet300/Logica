@@ -13,6 +13,7 @@ import ge.yet.game.miniapp.compose.MiniAppRegistry
 import ge.yet.game.miniapp.compose.MiniAppAdGate
 import ge.yet.game.miniapp.compose.MiniAppAdKind
 import ge.yet.game.miniapp.compose.MiniAppAdsCapability
+import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.metro.MiniAppMetroBindings
 import ge.yet.game.miniapp.testkit.MiniAppContractAssertions
 import ge.yet.game.miniapp.testkit.withMiniAppSession
@@ -63,6 +64,7 @@ class FallingblocksPluginContractTest {
             val session = plugin.createSession(harness.context)
             assertEquals(expectedId, plugin.manifest.id)
             assertTrue(session.wantsBanner)
+            assertEquals(MiniAppFrameMode.Standard, session.frameMode.value)
             MiniAppContractAssertions.assertRetainedGraphSession(session)
             harness.resume()
         }
