@@ -78,6 +78,24 @@ class FallingBlocksStoreTest {
     }
 
     @Test
+    fun `fresh child skips restored game but keeps best and tutorial completion`() = runTest {
+        val restored = gameFixture(score = 42)
+        val engine = RecordingEngine()
+        val store = createStore(
+            engine = engine,
+            loader = ImmediateLoader(RestoredSession(restored, bestScore = 100, tutorialSeen = true)),
+            startFresh = true,
+        )
+
+        advanceUntilIdle()
+
+        assertEquals(engine.initialState.copy(runId = restored.runId + 1L), store.state.game)
+        assertEquals(100L, store.state.bestScore)
+        assertTrue(store.state.tutorialSeen)
+        store.dispose()
+    }
+
+    @Test
     fun `frames are rejected while visibility is not active`() = runTest {
         val visibility = MutableMiniAppVisibilitySource()
         val engine = RecordingEngine()
@@ -137,6 +155,7 @@ class FallingBlocksStoreTest {
         loader: GameSnapshotLoader = ImmediateLoader(RestoredSession(null, 0, false)),
         writer: GameCommitWriter = ImmediateWriter,
         visibility: MutableMiniAppVisibilitySource = MutableMiniAppVisibilitySource(),
+        startFresh: Boolean = false,
     ): FallingBlocksStore = FallingBlocksStoreFactory(
         storeFactory = DefaultStoreFactory(),
         engine = engine,
@@ -146,7 +165,7 @@ class FallingBlocksStoreTest {
         visibility = visibility,
         seedSource = NewGameSeedSource { 7L },
         audio = NoOpFallingBlocksAudioPlayer,
-    ).create()
+    ).create(startFresh = startFresh)
 }
 
 private class ControlledLoader : GameSnapshotLoader {

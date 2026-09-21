@@ -89,19 +89,22 @@ not replay on ordinary recomposition.
 - Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/root/DefaultRootComponent.kt`
 - Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/result/ResultComponent.kt`
 - Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/result/DefaultResultComponent.kt`
+- Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game/FallingBlocksComponent.kt`
+- Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game/DefaultFallingBlocksComponent.kt`
+- Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component/game/store/FallingBlocksStoreFactory.kt`
 - Test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/root/RootComponentTest.kt`
 - Test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/result/FallingBlocksResultSnapshotTest.kt`
 - Update: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/result/DefaultResultComponentTest.kt`
 
-- [ ] **Step 1: Add failing snapshot tests**
+- [x] **Step 1: Add failing snapshot tests**
 
 Define tests proving that a terminal state maps to a serializable immutable
 snapshot containing all 220 board cells, active type/rotation/origin, score,
-best score, run ID, revive eligibility, and `isNewBest`. Round-trip through
+best score, run ID, and revive count. Round-trip through
 `Json.encodeToString/decodeFromString` and assert equality. Reject malformed
 cell counts and invalid enum ordinals.
 
-- [ ] **Step 2: Add failing root navigation tests**
+- [x] **Step 2: Add failing root navigation tests**
 
 Assert these exact state transitions:
 
@@ -125,7 +128,7 @@ assertEquals(1, root.stack.value.items.size)
 Also retain the existing stale-ad callback test: approval for a destroyed
 Result child must not revive or replace its successor.
 
-- [ ] **Step 3: Implement the stack model**
+- [x] **Step 3: Implement the stack model**
 
 Use this public root shape:
 
@@ -146,16 +149,24 @@ Use serializable `Config.Playing(instanceId, isNewGame)` and
 `Config.Result(gameInstanceId, snapshot, canContinue)`. Push Result exactly
 once for the matching run. Continue calls `revive()` on the retained matching
 Playing child and removes Result only after its model returns to `PLAYING`.
-New Game uses `replaceAll` with a new instance ID. Map Playing to `Standard`
-frame mode and Result to `ContentOnly`.
+New Game uses `replaceAll` with a new instance ID and creates Playing with
+`startFresh = true`. The Store bootstrap must skip the restored game snapshot
+for that child while retaining persisted Best and tutorial completion; this
+avoids a destroy/checkpoint race. Map Playing to `Standard` frame mode and
+Result to `ContentOnly`.
 
-- [ ] **Step 4: Pass the snapshot through ResultComponent**
+- [x] **Step 4: Pass the snapshot through ResultComponent**
 
 Replace scalar `score`/`bestScore` factory inputs with
 `snapshot: FallingBlocksResultSnapshot`. Keep the existing visibility-aware
 five-second countdown and exactly-once primary gate unchanged.
 
-- [ ] **Step 5: Run and commit**
+Implementation note: `isNewBest` is deliberately not added. The persisted
+model does not retain a round-start best baseline, and the requested polish is
+Score/Best styling rather than a new-best badge. Adding it would require an
+unrelated persistence-schema migration.
+
+- [x] **Step 5: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
@@ -164,6 +175,15 @@ rtk git commit -m "refactor: navigate to falling blocks result screen"
 ```
 
 Expected: PASS; the old `ChildSlot` API is absent.
+
+**Implementation outcome (2026-09-21):** migrated the root from `ChildSlot`
+to a retained `ChildStack`, added a validated serializable terminal snapshot,
+and made Result a real `ContentOnly` destination. Continue returns to the same
+Playing component after a successful revive; New Game replaces the stack with
+a fresh Playing child that intentionally skips the saved game snapshot while
+retaining Best and tutorial completion. The legacy `ResultOverlay` is used only
+as the temporary renderer for the new destination until Task 2 replaces it.
+`rtk ./gradlew :game:fallingblocks:allTests` passed.
 
 ## Task 2: Build the adaptive Block Blast-style result screen
 

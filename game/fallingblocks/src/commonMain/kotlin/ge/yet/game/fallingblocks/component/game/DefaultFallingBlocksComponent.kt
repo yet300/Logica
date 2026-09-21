@@ -77,11 +77,12 @@ internal class DefaultFallingBlocksComponentFactory(
 ) : FallingBlocksComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
+        startFresh: Boolean,
         onToppedOut: (Long) -> Unit,
     ): FallingBlocksComponent =
         DefaultFallingBlocksComponent(
             componentContext = componentContext,
-            store = storeFactory.create(),
+            store = storeFactory.create(startFresh = startFresh),
             visibility = visibility,
             onToppedOut = onToppedOut,
         )

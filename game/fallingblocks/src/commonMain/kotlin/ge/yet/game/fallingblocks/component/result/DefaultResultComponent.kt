@@ -17,8 +17,7 @@ import kotlinx.coroutines.launch
 
 internal class DefaultResultComponent(
     componentContext: ComponentContext,
-    score: Long,
-    bestScore: Long,
+    snapshot: FallingBlocksResultSnapshot,
     canContinue: Boolean,
     private val visibility: MiniAppVisibilitySource,
     private val onContinueRequested: () -> Unit,
@@ -26,7 +25,7 @@ internal class DefaultResultComponent(
 ) : ResultComponent, ComponentContext by componentContext {
     private val scope = coroutineScope()
     private val mutableModel = MutableValue(
-        ResultComponent.Model(score, bestScore, canContinue, if (canContinue) 5 else 0),
+        ResultComponent.Model(snapshot, canContinue, if (canContinue) 5 else 0),
     )
     override val model: Value<ResultComponent.Model> = mutableModel
     private var countdown: Job? = null
@@ -86,13 +85,12 @@ internal class DefaultResultComponentFactory(
 ) : ResultComponent.Factory {
     override fun create(
         componentContext: ComponentContext,
-        score: Long,
-        bestScore: Long,
+        snapshot: FallingBlocksResultSnapshot,
         canContinue: Boolean,
         onContinueRequested: () -> Unit,
         onNewGameRequested: () -> Unit,
     ): ResultComponent = DefaultResultComponent(
-        componentContext, score, bestScore, canContinue, visibility,
+        componentContext, snapshot, canContinue, visibility,
         onContinueRequested, onNewGameRequested,
     )
 }

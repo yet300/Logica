@@ -27,7 +27,7 @@ class DefaultResultComponentTest {
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
         val visibility = MutableMiniAppVisibilitySource(MiniAppVisibility.OBSCURED)
         val component = DefaultResultComponent(
-            lifecycle.componentContext, 10, 20, true, visibility, {}, {},
+            lifecycle.componentContext, snapshot(), true, visibility, {}, {},
         )
         advanceTimeBy(2_000)
         runCurrent()
@@ -45,7 +45,7 @@ class DefaultResultComponentTest {
         val lifecycle = MiniAppLifecycleHarness().also { it.resume() }
         var requests = 0
         val component = DefaultResultComponent(
-            lifecycle.componentContext, 10, 20, true, MutableMiniAppVisibilitySource(), {}, {},
+            lifecycle.componentContext, snapshot(), true, MutableMiniAppVisibilitySource(), {}, {},
         )
 
         component.onPrimaryClicked { requests += 1 }
@@ -54,4 +54,9 @@ class DefaultResultComponentTest {
         assertEquals(1, requests)
         lifecycle.destroy()
     }
+
+    private fun snapshot(): FallingBlocksResultSnapshot = FallingBlocksResultSnapshot.from(
+        ge.yet.game.fallingblocks.gameFixture(score = 10),
+        bestScore = 20,
+    )
 }

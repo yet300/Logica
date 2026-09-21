@@ -1,16 +1,17 @@
 package ge.yet.game.fallingblocks.component.root
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.slot.ChildSlot
-import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.activate
-import com.arkivanov.decompose.router.slot.childSlot
-import com.arkivanov.decompose.router.slot.dismiss
-import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import dev.zacsweers.metro.Inject
 import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
+import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.component.result.ResultComponent
 import ge.yet.game.fallingblocks.domain.model.GamePhase
 import ge.yet.game.miniapp.compose.MiniAppFrameMode
@@ -18,65 +19,112 @@ import kotlinx.serialization.Serializable
 
 internal class DefaultRootComponent(
     componentContext: ComponentContext,
-    gameFactory: FallingBlocksComponent.Factory,
+    private val gameFactory: FallingBlocksComponent.Factory,
     private val resultFactory: ResultComponent.Factory,
 ) : RootComponent, ComponentContext by componentContext {
-    private val navigation = SlotNavigation<ResultConfig>()
-    override val playing = gameFactory.create(componentContext, ::showResult)
-    override val result: Value<ChildSlot<*, ResultComponent>> = childSlot(
-        source = navigation,
-        serializer = ResultConfig.serializer(),
-        key = "FallingBlocksResult",
-        handleBackButton = false,
-        childFactory = ::createResult,
-    )
-    override val frameMode: Value<MiniAppFrameMode> = MutableValue(MiniAppFrameMode.Standard)
+    private val navigation = StackNavigation<Config>()
+    private var lastGameInstanceId = 1L
 
-    init {
-        val subscription = playing.model.subscribe { model ->
-            model.game?.takeIf { it.phase == GamePhase.TERMINAL }?.let { showResult(it.runId) }
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
+        source = navigation,
+        serializer = Config.serializer(),
+        initialConfiguration = Config.Playing(instanceId = 1L, startFresh = false),
+        handleBackButton = false,
+        childFactory = ::createChild,
+    )
+
+    override val frameMode: Value<MiniAppFrameMode> = stack.map { children ->
+        when (children.active.instance) {
+            is RootComponent.Child.Playing -> MiniAppFrameMode.Standard
+            is RootComponent.Child.Result -> MiniAppFrameMode.ContentOnly
         }
-        lifecycle.doOnDestroy(subscription::cancel)
     }
 
-    override fun handleBack(): Boolean = result.value.child != null
+    override fun handleBack(): Boolean = stack.value.active.instance is RootComponent.Child.Result
 
-    private fun showResult(runId: Long) {
+    private fun createChild(config: Config, context: ComponentContext): RootComponent.Child = when (config) {
+        is Config.Playing -> {
+            lastGameInstanceId = maxOf(lastGameInstanceId, config.instanceId)
+            val component = gameFactory.create(
+                componentContext = context,
+                startFresh = config.startFresh,
+                onToppedOut = { runId -> showResult(config.instanceId, runId) },
+            )
+            val subscription = component.model.subscribe { model ->
+                model.game
+                    ?.takeIf { it.phase == GamePhase.TERMINAL }
+                    ?.let { showResult(config.instanceId, it.runId) }
+            }
+            context.lifecycle.doOnDestroy(subscription::cancel)
+            RootComponent.Child.Playing(component)
+        }
+
+        is Config.Result -> RootComponent.Child.Result(createResult(config, context))
+    }
+
+    private fun showResult(gameInstanceId: Long, runId: Long) {
+        val playing = findPlaying(gameInstanceId) ?: return
         val model = playing.model.value
         val game = model.game ?: return
         if (game.runId != runId || game.phase != GamePhase.TERMINAL) return
-        if ((result.value.child?.configuration as? ResultConfig)?.runId == runId) return
-        navigation.activate(ResultConfig(runId, game.score, maxOf(model.bestScore, game.score), game.revivesUsed == 0))
+        val active = stack.value.active.configuration
+        if (active is Config.Result && active.gameInstanceId == gameInstanceId) return
+        navigation.navigate { configurations ->
+            if (configurations.lastOrNull() is Config.Result) return@navigate configurations
+            if (configurations.none { it is Config.Playing && it.instanceId == gameInstanceId }) {
+                return@navigate configurations
+            }
+            configurations + Config.Result(
+                gameInstanceId = gameInstanceId,
+                snapshot = FallingBlocksResultSnapshot.from(game, model.bestScore),
+                canContinue = game.revivesUsed == 0,
+            )
+        }
     }
 
-    private fun createResult(config: ResultConfig, context: ComponentContext): ResultComponent {
+    private fun createResult(config: Config.Result, context: ComponentContext): ResultComponent {
         lateinit var origin: ResultComponent
         origin = resultFactory.create(
             componentContext = context,
-            score = config.score,
-            bestScore = config.bestScore,
+            snapshot = config.snapshot,
             canContinue = config.canContinue,
-            onContinueRequested = {
-                if (isActive(origin, config)) {
-                    playing.revive()
-                    val game = playing.model.value.game
-                    if (game?.runId == config.runId && game.phase == GamePhase.PLAYING) navigation.dismiss()
-                    else origin.onContinueFailed()
+            onContinueRequested = continueRequest@{
+                if (!isActiveResult(origin, config)) return@continueRequest
+                val playing = findPlaying(config.gameInstanceId)
+                playing?.revive()
+                val game = playing?.model?.value?.game
+                if (game?.runId == config.snapshot.runId && game.phase == GamePhase.PLAYING) {
+                    navigation.navigate { it.dropLast(1) }
+                } else {
+                    origin.onContinueFailed()
                 }
             },
-            onNewGameRequested = {
-                if (isActive(origin, config)) {
-                    playing.newGame()
-                    val game = playing.model.value.game
-                    if (game != null && game.runId != config.runId && game.phase == GamePhase.PLAYING) navigation.dismiss()
-                }
+            onNewGameRequested = newGameRequest@{
+                if (!isActiveResult(origin, config)) return@newGameRequest
+                navigation.replaceAll(
+                    Config.Playing(instanceId = ++lastGameInstanceId, startFresh = true),
+                )
             },
         )
         return origin
     }
 
-    private fun isActive(origin: ResultComponent, config: ResultConfig): Boolean =
-        result.value.child?.let { it.instance === origin && it.configuration == config } == true
+    private fun findPlaying(instanceId: Long): FallingBlocksComponent? = stack.value.items
+        .asReversed()
+        .firstNotNullOfOrNull { child ->
+            val config = child.configuration as? Config.Playing
+            if (config?.instanceId == instanceId) {
+                (child.instance as? RootComponent.Child.Playing)?.component
+            } else {
+                null
+            }
+        }
+
+    private fun isActiveResult(origin: ResultComponent, config: Config.Result): Boolean {
+        val active = stack.value.active
+        return active.configuration == config &&
+            (active.instance as? RootComponent.Child.Result)?.component === origin
+    }
 }
 
 @Inject
@@ -89,9 +137,14 @@ internal class DefaultRootComponentFactory(
 }
 
 @Serializable
-private data class ResultConfig(
-    val runId: Long,
-    val score: Long,
-    val bestScore: Long,
-    val canContinue: Boolean,
-)
+private sealed interface Config {
+    @Serializable
+    data class Playing(val instanceId: Long, val startFresh: Boolean) : Config
+
+    @Serializable
+    data class Result(
+        val gameInstanceId: Long,
+        val snapshot: FallingBlocksResultSnapshot,
+        val canContinue: Boolean,
+    ) : Config
+}

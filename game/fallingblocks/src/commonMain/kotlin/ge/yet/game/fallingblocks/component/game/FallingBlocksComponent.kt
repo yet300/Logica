@@ -27,6 +27,7 @@ internal interface FallingBlocksComponent {
     fun interface Factory {
         fun create(
             componentContext: ComponentContext,
+            startFresh: Boolean,
             onToppedOut: (runId: Long) -> Unit,
         ): FallingBlocksComponent
     }

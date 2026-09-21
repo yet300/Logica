@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import ge.yet.game.fallingblocks.component.result.ResultComponent
+import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.domain.model.Board
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.result.ResultOverlay
@@ -77,8 +78,10 @@ class FallingblocksThemeIntegrationTest {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     ResultOverlay(
                         model = ResultComponent.Model(
-                            score = 1_250,
-                            bestScore = 2_500,
+                            snapshot = FallingBlocksResultSnapshot.from(
+                                gameFixture(score = 1_250),
+                                bestScore = 2_500,
+                            ),
                             canContinue = true,
                             continueSecondsRemaining = 5,
                         ),

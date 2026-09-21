@@ -10,19 +10,19 @@ internal interface ResultComponent {
     fun onContinueFailed()
 
     data class Model(
-        val score: Long,
-        val bestScore: Long,
+        val snapshot: FallingBlocksResultSnapshot,
         val canContinue: Boolean,
         val continueSecondsRemaining: Int,
     ) {
         val isContinuePhase: Boolean get() = canContinue && continueSecondsRemaining > 0
+        val score: Long get() = snapshot.score
+        val bestScore: Long get() = snapshot.bestScore
     }
 
     interface Factory {
         fun create(
             componentContext: ComponentContext,
-            score: Long,
-            bestScore: Long,
+            snapshot: FallingBlocksResultSnapshot,
             canContinue: Boolean,
             onContinueRequested: () -> Unit,
             onNewGameRequested: () -> Unit,

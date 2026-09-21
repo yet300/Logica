@@ -13,6 +13,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import ge.yet.game.fallingblocks.component.result.ResultComponent
+import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
+import ge.yet.game.fallingblocks.gameFixture
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,8 +30,10 @@ class ResultOverlayTest {
                     Box(Modifier.fillMaxSize().testTag("terminal_board"))
                     ResultOverlay(
                         model = ResultComponent.Model(
-                            score = 1_250,
-                            bestScore = 2_500,
+                            snapshot = FallingBlocksResultSnapshot.from(
+                                gameFixture(score = 1_250),
+                                bestScore = 2_500,
+                            ),
                             canContinue = true,
                             continueSecondsRemaining = 5,
                         ),
@@ -58,8 +62,10 @@ class ResultOverlayTest {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     ResultOverlay(
                         model = ResultComponent.Model(
-                            score = 1_250,
-                            bestScore = 2_500,
+                            snapshot = FallingBlocksResultSnapshot.from(
+                                gameFixture(score = 1_250),
+                                bestScore = 2_500,
+                            ),
                             canContinue = true,
                             continueSecondsRemaining = 0,
                         ),

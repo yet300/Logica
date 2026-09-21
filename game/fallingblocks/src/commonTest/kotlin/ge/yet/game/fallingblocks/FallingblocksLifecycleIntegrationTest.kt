@@ -1,7 +1,9 @@
 package ge.yet.game.fallingblocks
 
 import dev.zacsweers.metro.createGraph
+import ge.yet.game.fallingblocks.component.game.FallingBlocksComponent
 import ge.yet.game.fallingblocks.component.result.ResultComponent
+import ge.yet.game.fallingblocks.component.root.RootComponent
 import ge.yet.game.fallingblocks.data.FallingBlocksPersistence
 import ge.yet.game.fallingblocks.data.TUTORIAL_SEEN_KEY
 import ge.yet.game.fallingblocks.di.InspectableFallingblocksAppGraph
@@ -54,22 +56,22 @@ class FallingblocksLifecycleIntegrationTest {
         val first = app.sessionGraph(firstLifecycle, storage, visibility)
         advanceUntilIdle()
 
-        val obscured = assertNotNull(first.component.playing.model.value.game)
+        val obscured = assertNotNull(first.component.playing().model.value.game)
         advanceTimeBy(1_600)
         runCurrent()
-        assertEquals(obscured, first.component.playing.model.value.game)
+        assertEquals(obscured, first.component.playing().model.value.game)
 
         visibility.set(MiniAppVisibility.ACTIVE)
         runCurrent()
         advanceTimeBy(32)
         runCurrent()
-        val ticking = assertNotNull(first.component.playing.model.value.game)
+        val ticking = assertNotNull(first.component.playing().model.value.game)
         assertNotEquals(obscured.gravityRemainingMillis, ticking.gravityRemainingMillis)
 
-        first.component.playing.move(1)
+        first.component.playing().move(1)
         visibility.set(MiniAppVisibility.OBSCURED)
         advanceUntilIdle()
-        val checkpoint = assertNotNull(first.component.playing.model.value.game)
+        val checkpoint = assertNotNull(first.component.playing().model.value.game)
         firstLifecycle.destroy()
 
         val secondLifecycle = MiniAppLifecycleHarness().also { it.resume() }
@@ -80,7 +82,7 @@ class FallingblocksLifecycleIntegrationTest {
         )
         advanceUntilIdle()
 
-        assertEquals(checkpoint, restored.component.playing.model.value.game)
+        assertEquals(checkpoint, restored.component.playing().model.value.game)
         secondLifecycle.destroy()
     }
 
@@ -98,7 +100,7 @@ class FallingblocksLifecycleIntegrationTest {
             MutableMiniAppVisibilitySource(MiniAppVisibility.OBSCURED),
         )
         advanceUntilIdle()
-        val staleResult = assertNotNull(first.component.result.value.child?.instance)
+        val staleResult = assertNotNull(first.component.result())
         var staleApproval: (() -> Unit)? = null
         staleResult.onPrimaryClicked { approve -> staleApproval = approve }
         firstLifecycle.destroy()
@@ -110,12 +112,12 @@ class FallingblocksLifecycleIntegrationTest {
             MutableMiniAppVisibilitySource(MiniAppVisibility.OBSCURED),
         )
         advanceUntilIdle()
-        val successor = second.component.playing.model.value.game
+        val successor = second.component.playing().model.value.game
 
         assertNotNull(staleApproval).invoke()
         advanceUntilIdle()
 
-        assertEquals(successor, second.component.playing.model.value.game)
+        assertEquals(successor, second.component.playing().model.value.game)
         secondLifecycle.destroy()
     }
 
@@ -138,7 +140,7 @@ class FallingblocksLifecycleIntegrationTest {
 
         visibility.set(MiniAppVisibility.ACTIVE)
         runCurrent()
-        graph.component.playing.rotate()
+        graph.component.playing().rotate()
         runCurrent()
         visibility.set(MiniAppVisibility.OBSCURED)
         runCurrent()
@@ -161,6 +163,12 @@ class FallingblocksLifecycleIntegrationTest {
             audio = audio,
         ),
     ).also { it.component }
+
+    private fun RootComponent.playing(): FallingBlocksComponent = stack.value.items
+        .firstNotNullOf { (it.instance as? RootComponent.Child.Playing)?.component }
+
+    private fun RootComponent.result(): ResultComponent? =
+        (stack.value.active.instance as? RootComponent.Child.Result)?.component
 
     private class VisibilityAwareAudio(
         private val visibility: MutableMiniAppVisibilitySource,

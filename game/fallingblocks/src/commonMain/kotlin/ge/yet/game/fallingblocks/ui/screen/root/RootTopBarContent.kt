@@ -18,7 +18,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RootTopBarContent(component: RootComponent) {
-    val model by component.playing.model.subscribeAsState()
+    val stack by component.stack.subscribeAsState()
+    val playing = (stack.active.instance as? RootComponent.Child.Playing)?.component ?: return
+    val model by playing.model.subscribeAsState()
     if (model.loading) return
     Row(
         modifier = Modifier.testTag("falling_blocks_score_header"),

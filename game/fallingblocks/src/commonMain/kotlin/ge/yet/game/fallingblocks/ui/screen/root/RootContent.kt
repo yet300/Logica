@@ -1,11 +1,10 @@
 package ge.yet.game.fallingblocks.ui.screen.root
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import ge.yet.game.fallingblocks.component.root.RootComponent
 import ge.yet.game.fallingblocks.ui.result.ResultOverlay
 import ge.yet.game.fallingblocks.ui.screen.game.FallingBlocksScreen
@@ -18,22 +17,27 @@ internal fun RootContent(
     ads: MiniAppAdsCapability,
     modifier: Modifier = Modifier,
 ) {
-    val result by component.result.subscribeAsState()
-    Box(modifier = modifier.fillMaxSize()) {
-        FallingBlocksScreen(
-            component = component.playing,
-            modifier = Modifier.fillMaxSize(),
-        )
-        result.child?.instance?.let { resultComponent ->
-            val gate = ads.rememberGate(
-                MiniAppAdKind.Fullscreen("continue_after_game_over"),
+    Children(
+        stack = component.stack,
+        modifier = modifier,
+        animation = stackAnimation(fade()),
+    ) { child ->
+        when (val instance = child.instance) {
+            is RootComponent.Child.Playing -> FallingBlocksScreen(
+                component = instance.component,
+                modifier = Modifier,
             )
-            ResultOverlay(
-                component = resultComponent,
-                advertisementExpected = gate.willShowAd,
-                onPrimary = { resultComponent.onPrimaryClicked(gate.request) },
-                modifier = Modifier.fillMaxSize(),
-            )
+            is RootComponent.Child.Result -> {
+                val gate = ads.rememberGate(
+                    MiniAppAdKind.Fullscreen("continue_after_game_over"),
+                )
+                ResultOverlay(
+                    component = instance.component,
+                    advertisementExpected = gate.willShowAd,
+                    onPrimary = { instance.component.onPrimaryClicked(gate.request) },
+                    modifier = Modifier,
+                )
+            }
         }
     }
 }

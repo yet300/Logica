@@ -48,7 +48,7 @@ internal class FallingBlocksStoreFactory(
     private val seedSource: NewGameSeedSource,
     private val audio: FallingBlocksAudioPlayer,
 ) {
-    fun create(): FallingBlocksStore =
+    fun create(startFresh: Boolean = false): FallingBlocksStore =
         object : FallingBlocksStore,
             Store<FallingBlocksStore.Intent, FallingBlocksStore.State, FallingBlocksStore.Label> by
             storeFactory.create(
@@ -57,7 +57,7 @@ internal class FallingBlocksStoreFactory(
                     active = visibility.visibility.value == MiniAppVisibility.ACTIVE,
                 ),
                 bootstrapper = SimpleBootstrapper(Action.Init),
-                executorFactory = ::ExecutorImpl,
+                executorFactory = { ExecutorImpl(startFresh) },
                 reducer = ReducerImpl,
             ) {}
 
@@ -103,7 +103,9 @@ internal class FallingBlocksStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<
+    private inner class ExecutorImpl(
+        private val startFresh: Boolean,
+    ) : CoroutineExecutor<
         FallingBlocksStore.Intent,
         Action,
         FallingBlocksStore.State,
@@ -169,7 +171,14 @@ internal class FallingBlocksStoreFactory(
                 }
                 val tutorialSeen = restored?.tutorialSeen ?: false
                 val game = if (tutorialSeen) {
-                    restored.state ?: engine.initial(seedSource.nextSeed(), runId = 1)
+                    if (startFresh) {
+                        engine.initial(
+                            seed = seedSource.nextSeed(),
+                            runId = (restored.state?.runId ?: 0L) + 1L,
+                        )
+                    } else {
+                        restored.state ?: engine.initial(seedSource.nextSeed(), runId = 1)
+                    }
                 } else {
                     engine.initial(TUTORIAL_SEED, runId = 1)
                 }
