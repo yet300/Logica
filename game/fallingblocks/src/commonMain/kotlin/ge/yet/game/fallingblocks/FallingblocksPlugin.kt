@@ -3,7 +3,6 @@ package ge.yet.game.fallingblocks
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
-import ge.yet.game.fallingblocks.di.FallingblocksSessionGraph
 import ge.yet.game.miniapp.api.MiniAppCategoryId
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.compose.MiniAppManifest

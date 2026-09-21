@@ -1,10 +1,9 @@
-package ge.yet.game.fallingblocks.di
+package ge.yet.game.fallingblocks
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
-import ge.yet.game.fallingblocks.FallingblocksSession
 import ge.yet.game.miniapp.compose.MiniAppSessionContext
 import ge.yet.game.miniapp.metro.MiniAppSessionScope
 
