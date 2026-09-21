@@ -125,8 +125,12 @@ awards two points per cell.
 - A pure common Kotlin engine maps immutable `GameState` and typed `GameAction`
   to new state and typed domain events. Compose owns rendering and input
   translation only.
-- Keep the Playing component mounted at game over. A Decompose `childSlot`
-  presents the non-dismissible result overlay while gameplay is frozen.
+- Keep the Playing component retained underneath game over, but present the
+  result as a distinct Decompose `ChildStack` destination, matching Block
+  Blast's navigation model. The Result destination renders an immutable final
+  board snapshot and uses `MiniAppFrameMode.ContentOnly`; it is not a modal,
+  sheet, blur, or dim overlay. Continue pops Result only after a successful
+  revive; New Game replaces the whole stack with a fresh Playing child.
 - Result logic owns the visibility-aware countdown and terminal-action gate.
   Advertisement completion is guarded by a unique session/run/action token;
   duplicate or stale callbacks do nothing.
@@ -179,3 +183,25 @@ tutorial flow, accessibility, motion, and cross-platform compilation are
 verified. Visual and audio quality require inspected artifacts; compilation
 alone is insufficient. Detailed evidence is tracked in `acceptance.md`.
 
+## 2026-09-21 Gameplay Presentation Revision
+
+The supplied gameplay screenshot and device review replace the first-pass
+presentation decisions with these requirements:
+
+- Reduce the 10×20 board from the near-edge-to-edge first pass. Keep it
+  geometrically centered, reserve visible breathing room on all sides, cap its
+  width, and account for the preview lane without shifting the board center.
+- Show exactly one upcoming tetromino (`preview.first()`) in a compact `Next`
+  card above and outside the board, aligned to its upper-right edge.
+- Remove Score, Level, and Lines overlays from the board. Score and Best remain
+  in the host top bar and use the shared UIKit score-card visual language used
+  by Block Blast/Fruit Merge.
+- Strengthen the landing ghost with a theme-derived translucent fill and
+  high-contrast outline. The current dashed stroke is effectively only 14%
+  opaque because its stroke color itself uses the low-alpha fill.
+- Add event-driven, bounded effects: a short CRT channel split/trail and impact
+  pulse for hard drop; a row flash, square-particle burst, and collapse cue for
+  line clearing. Effects are driven by typed transition IDs and never replay
+  merely because Compose recomposes.
+- Reduced-motion mode replaces spatial trails, particles, and collapse motion
+  with short opacity flashes while preserving immediate state clarity.
