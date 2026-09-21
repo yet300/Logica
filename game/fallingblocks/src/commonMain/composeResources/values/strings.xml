@@ -13,6 +13,7 @@
     <string name="tutorial_hard_drop">Fling down to hard drop</string>
     <string name="tutorial_progress">Step %1$d of 4</string>
     <string name="game_over_title">Game over</string>
+    <string name="result_board_description">Final board with %1$d occupied cells.</string>
     <string name="try_again_action">Try Again</string>
     <string name="new_game_action">New Game</string>
     <string name="advertisement_suffix">Advertisement</string>

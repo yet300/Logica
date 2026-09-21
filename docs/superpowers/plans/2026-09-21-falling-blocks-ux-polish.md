@@ -197,21 +197,21 @@ as the temporary renderer for the new destination until Task 2 replaces it.
 - Replace test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/result/ResultOverlayTest.kt` → `FallingBlocksResultContentTest.kt`
 - Create test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/result/ResultLayoutPolicyTest.kt`
 
-- [ ] **Step 1: Add failing layout-budget tests**
+- [x] **Step 1: Add failing layout-budget tests**
 
 Cover `320×568`, `360×640`, `400×800`, `800×400`, and `1200×800`. Assert
 the 1:2 result board and complete CTA fit; button height is at least `48dp`;
 portrait stacks board/card and landscape uses two panes. Cap the result board
 at `280dp` wide / `560dp` high so a tall field never pushes the CTA offscreen.
 
-- [ ] **Step 2: Add failing Compose result tests**
+- [x] **Step 2: Add failing Compose result tests**
 
 Assert title, exact Score/Best values, final board, five-second Continue CTA,
 advertisement semantics, New Game after expiry, and absence of overlay/panel
 test tags. Assert no blur/scrim node exists and the result action is at least
 48dp tall.
 
-- [ ] **Step 3: Make CrtBoard support read-only terminal rendering**
+- [x] **Step 3: Make CrtBoard support read-only terminal rendering**
 
 Add explicit parameters with safe defaults:
 
@@ -224,18 +224,18 @@ internal fun CrtBoard(
 )
 ```
 
-Result uses `showGhost = false`, no gestures, and no transient effects. Rebuild
-the terminal presentation state from the validated snapshot so the visible
-board and blocked spawned piece explain the loss.
+Result uses `showGhost = false`, no gestures, and no transient effects. Render
+the validated snapshot's Board and ActivePiece directly through a read-only
+`CrtBoard` overload so no incomplete synthetic gameplay state is invented.
 
-- [ ] **Step 4: Adapt the Block Blast result composition, not its game types**
+- [x] **Step 4: Adapt the Block Blast result composition, not its game types**
 
 Use the same structural pattern as `GameResultContent`: responsive portrait/
 landscape layout, theme-derived title, final-board pane, elevated rounded result
-card, Score/Best/new-best styling, and one primary CTA. Keep Falling Blocks'
+card, Score/Best styling, and one primary CTA. Keep Falling Blocks'
 existing Continue/New Game behavior and strings. Do not import Block Blast.
 
-- [ ] **Step 5: Render root destinations through Decompose Children**
+- [x] **Step 5: Render root destinations through Decompose Children**
 
 ```kotlin
 Children(stack = stack, animation = stackAnimation(fade())) { child ->
@@ -251,13 +251,23 @@ Children(stack = stack, animation = stackAnimation(fade())) { child ->
 }
 ```
 
-- [ ] **Step 6: Run and commit**
+- [x] **Step 6: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui
 rtk git commit -m "feat: add falling blocks result screen"
 ```
+
+**Implementation outcome (2026-09-21):** deleted the bottom-sheet-style
+overlay and added a real adaptive result destination. Portrait layouts stack a
+theme-colored title, read-only 1:2 terminal board, and elevated Score/Best CTA
+card; landscape and expanded widths use two panes. The board is capped at
+`280×560dp`, the CTA keeps a measured `48dp` minimum, Continue retains its
+five-second timer and advertisement semantics, and the terminal render has no
+scrim, blur, ghost, gestures, or transient effects. Layout budgets cover all
+five requested viewport sizes. `rtk ./gradlew :game:fallingblocks:allTests`
+passed (103 tests).
 
 ## Task 3: Resize the centered field and simplify gameplay chrome
 

@@ -14,8 +14,8 @@ import ge.yet.game.fallingblocks.component.result.ResultComponent
 import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.domain.model.Board
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
-import ge.yet.game.fallingblocks.ui.result.ResultOverlay
-import ge.yet.game.fallingblocks.ui.result.ResultOverlayTags
+import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultContent
+import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultTags
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialOverlay
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialStep
@@ -76,7 +76,7 @@ class FallingblocksThemeIntegrationTest {
         setContent {
             LogicaTheme(darkTheme = true) {
                 Box(Modifier.size(390.dp, 760.dp)) {
-                    ResultOverlay(
+                    FallingBlocksResultContent(
                         model = ResultComponent.Model(
                             snapshot = FallingBlocksResultSnapshot.from(
                                 gameFixture(score = 1_250),
@@ -92,7 +92,7 @@ class FallingblocksThemeIntegrationTest {
             }
         }
 
-        onNodeWithTag(ResultOverlayTags.Primary).assertHeightIsAtLeast(48.dp)
-        onNodeWithTag(ResultOverlayTags.Panel).assertExists()
+        onNodeWithTag(FallingBlocksResultTags.Primary).assertHeightIsAtLeast(48.dp)
+        onNodeWithTag(FallingBlocksResultTags.Board).assertExists()
     }
 }

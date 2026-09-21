@@ -19,12 +19,29 @@ import ge.yet.game.fallingblocks.domain.engine.landingPiece
 import ge.yet.game.fallingblocks.domain.model.Board
 import ge.yet.game.fallingblocks.domain.model.Cell
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.domain.model.ActivePiece
 import ge.yet.game.fallingblocks.domain.model.Tetromino
 
 @Composable
 internal fun CrtBoard(
     state: FallingBlocksState,
     spatialEffectsEnabled: Boolean,
+    showGhost: Boolean = true,
+    modifier: Modifier = Modifier,
+) = CrtBoard(
+    board = state.board,
+    active = state.active,
+    spatialEffectsEnabled = spatialEffectsEnabled,
+    showGhost = showGhost,
+    modifier = modifier,
+)
+
+@Composable
+internal fun CrtBoard(
+    board: Board,
+    active: ActivePiece,
+    spatialEffectsEnabled: Boolean,
+    showGhost: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     val scheme = MaterialTheme.colorScheme
@@ -45,28 +62,28 @@ internal fun CrtBoard(
 
         drawBoardGrid(cellSize, scheme.outlineVariant.copy(alpha = 0.11f))
 
-        state.board.cells.forEachIndexed { index, type ->
+        board.cells.forEachIndexed { index, type ->
             if (type != null) {
                 val cell = Cell(index % Board.WIDTH, index / Board.WIDTH)
                 if (cell.y >= Board.HIDDEN_ROWS) drawPieceCell(cell, type, cellSize, scheme)
             }
         }
 
-        val ghost = landingPiece(state.active, state.board)
-        if (ghost.origin != state.active.origin) {
+        val ghost = landingPiece(active, board)
+        if (showGhost && ghost.origin != active.origin) {
             ghost.cells().forEach { cell ->
                 if (cell.y >= Board.HIDDEN_ROWS) {
-                    drawGhostCell(cell, state.active.type, cellSize, scheme)
+                    drawGhostCell(cell, active.type, cellSize, scheme)
                 }
             }
         }
 
-        state.active.cells().forEach { cell ->
+        active.cells().forEach { cell ->
             if (cell.y >= Board.HIDDEN_ROWS) {
                 if (spatialEffectsEnabled) {
-                    drawChannelEcho(cell, state.active.type, cellSize, scheme)
+                    drawChannelEcho(cell, active.type, cellSize, scheme)
                 }
-                drawPieceCell(cell, state.active.type, cellSize, scheme)
+                drawPieceCell(cell, active.type, cellSize, scheme)
             }
         }
 
