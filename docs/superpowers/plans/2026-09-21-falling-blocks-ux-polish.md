@@ -344,7 +344,7 @@ Best only. `rtk ./gradlew :game:fallingblocks:allTests` passed (105 tests).
 - Create test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/board/GhostStyleTest.kt`
 - Update test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/board/TetrominoStyleTest.kt`
 
-- [ ] **Step 1: Reproduce the actual visibility bug in a pure style test**
+- [x] **Step 1: Reproduce the actual visibility bug in a pure style test**
 
 The current implementation passes `style.fill.copy(alpha = 0.14f)` as the
 color of a `Stroke`, so the outline itself is only 14% opaque and there is no
@@ -358,25 +358,34 @@ assertTrue(contrastRatio(style.outline.compositeOver(board), board) >= 3f)
 
 Run the test and observe failure with the old single-color design.
 
-- [ ] **Step 2: Implement theme-derived GhostStyle**
+- [x] **Step 2: Implement theme-derived GhostStyle**
 
 Choose the stronger of the tetromino outline and `colorScheme.onSurface` after
 compositing against `surfaceContainerLowest`. Return a translucent fill,
 high-contrast outline, and stroke width. No hard-coded game color literals.
 
-- [ ] **Step 3: Draw both fill and outline**
+- [x] **Step 3: Draw both fill and outline**
 
 Draw a translucent rounded fill first, then a mostly solid dashed outline with
 a minimum density-aware width. Keep ghost cells below settled/active cells and
 hide them when the landing origin equals the active origin.
 
-- [ ] **Step 4: Run and commit**
+- [x] **Step 4: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/board game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/board
 rtk git commit -m "fix: improve falling blocks landing ghost"
 ```
+
+**Implementation outcome (2026-09-21):** replaced the single 14%-alpha dashed
+stroke with two explicit theme-derived layers: a 22%-alpha tetromino fill and a
+separate dashed outline. The outline chooses the stronger contrast candidate
+between the tetromino outline and `onSurface`, then raises its opacity only as
+far as needed to reach at least 3:1 against `surfaceContainerLowest`. Stroke
+width is density-aware and scales with the cell. Tests cover every tetromino in
+both light and dark Material schemes. `rtk ./gradlew
+:game:fallingblocks:allTests` passed (106 tests).
 
 ## Task 5: Expose deterministic transient presentation events
 

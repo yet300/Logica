@@ -150,16 +150,25 @@ private fun DrawScope.drawGhostCell(
     cellSize: Float,
     scheme: androidx.compose.material3.ColorScheme,
 ) {
-    val style = type.colors(scheme)
+    val style = ghostStyle(type, scheme)
     val visibleY = cell.y - Board.HIDDEN_ROWS
     val gap = cellSize * 0.12f
+    val topLeft = Offset(cell.x * cellSize + gap, visibleY * cellSize + gap)
+    val size = Size(cellSize - gap * 2f, cellSize - gap * 2f)
+    val radius = CornerRadius(cellSize * 0.12f)
     drawRoundRect(
-        color = style.fill.copy(alpha = 0.14f),
-        topLeft = Offset(cell.x * cellSize + gap, visibleY * cellSize + gap),
-        size = Size(cellSize - gap * 2f, cellSize - gap * 2f),
-        cornerRadius = CornerRadius(cellSize * 0.12f),
+        color = style.fill,
+        topLeft = topLeft,
+        size = size,
+        cornerRadius = radius,
+    )
+    drawRoundRect(
+        color = style.outline,
+        topLeft = topLeft,
+        size = size,
+        cornerRadius = radius,
         style = Stroke(
-            width = maxOf(1f, cellSize * 0.055f),
+            width = maxOf(1.dp.toPx(), cellSize * style.strokeWidthFraction),
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(cellSize * 0.16f, cellSize * 0.11f)),
         ),
     )

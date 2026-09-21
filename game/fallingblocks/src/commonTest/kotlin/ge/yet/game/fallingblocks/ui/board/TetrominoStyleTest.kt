@@ -35,5 +35,9 @@ class TetrominoStyleTest {
 
         assertNotEquals(light.fill, dark.fill)
         assertNotEquals(light.outline, dark.outline)
+        assertNotEquals(
+            ghostStyle(Tetromino.T, lightColorScheme()).outline,
+            ghostStyle(Tetromino.T, darkColorScheme()).outline,
+        )
     }
 }
