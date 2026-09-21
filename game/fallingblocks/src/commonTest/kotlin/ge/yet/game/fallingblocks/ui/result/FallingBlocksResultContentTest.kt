@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import ge.yet.game.fallingblocks.component.result.FallingBlocksResultSnapshot
 import ge.yet.game.fallingblocks.component.result.ResultComponent
 import ge.yet.game.fallingblocks.gameFixture
+import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultContent
+import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultTags
 import ge.yet.game.uikit.theme.LogicaTheme
 import kotlin.test.Test
 

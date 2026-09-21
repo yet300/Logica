@@ -1,4 +1,4 @@
-package ge.yet.game.fallingblocks.ui.result
+package ge.yet.game.fallingblocks.ui.screen.result
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints

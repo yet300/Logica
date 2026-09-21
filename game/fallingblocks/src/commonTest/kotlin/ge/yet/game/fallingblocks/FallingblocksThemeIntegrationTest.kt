@@ -21,8 +21,8 @@ import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.board.contrastRatio
 import ge.yet.game.fallingblocks.ui.board.ghostStyle
-import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultContent
-import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultTags
+import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultContent
+import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultTags
 import ge.yet.game.fallingblocks.ui.screen.root.FallingBlocksScoreHeader
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialOverlay
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress

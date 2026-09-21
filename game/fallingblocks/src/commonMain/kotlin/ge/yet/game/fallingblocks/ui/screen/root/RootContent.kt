@@ -7,7 +7,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import ge.yet.game.fallingblocks.component.root.RootComponent
-import ge.yet.game.fallingblocks.ui.result.FallingBlocksResultContent
+import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultContent
 import ge.yet.game.fallingblocks.ui.screen.game.FallingBlocksScreen
 import ge.yet.game.miniapp.compose.MiniAppAdKind
 import ge.yet.game.miniapp.compose.MiniAppAdsCapability

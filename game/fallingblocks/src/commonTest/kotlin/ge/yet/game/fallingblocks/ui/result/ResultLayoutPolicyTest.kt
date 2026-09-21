@@ -1,5 +1,6 @@
 package ge.yet.game.fallingblocks.ui.result
 
+import ge.yet.game.fallingblocks.ui.screen.result.resultLayoutBudget
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

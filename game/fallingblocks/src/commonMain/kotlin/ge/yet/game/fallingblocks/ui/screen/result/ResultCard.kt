@@ -1,4 +1,4 @@
-package ge.yet.game.fallingblocks.ui.result
+package ge.yet.game.fallingblocks.ui.screen.result
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
