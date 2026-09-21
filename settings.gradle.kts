@@ -33,6 +33,10 @@ miniApps {
         projectPath = ":game:fruitmerge",
         expectedId = "game.fruitmerge",
     )
+    include(
+        projectPath = ":game:fallingblocks",
+        expectedId = "game.fallingblocks",
+    )
 }
 
 dependencyResolutionManagement {
