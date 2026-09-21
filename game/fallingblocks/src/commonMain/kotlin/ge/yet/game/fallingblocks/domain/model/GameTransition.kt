@@ -15,7 +15,17 @@ sealed interface GameFact {
     data object Blocked : GameFact
     data class HardDropped(val cells: Int) : GameFact
     data object Locked : GameFact
-    data class LinesCleared(val count: Int, val perfect: Boolean) : GameFact
+    data class LinesCleared(
+        val rows: List<Int>,
+        val perfect: Boolean,
+    ) : GameFact {
+        init {
+            require(rows == rows.distinct().sorted())
+            require(rows.all { it in 0 until Board.TOTAL_HEIGHT })
+        }
+
+        val count: Int get() = rows.size
+    }
     data class LevelChanged(val level: Int) : GameFact
     data object ToppedOut : GameFact
     data object Revived : GameFact

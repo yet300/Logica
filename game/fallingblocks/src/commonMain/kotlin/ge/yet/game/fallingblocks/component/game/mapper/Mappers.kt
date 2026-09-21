@@ -11,5 +11,6 @@ internal val stateToModel: (FallingBlocksStore.State) -> FallingBlocksComponent.
         tutorialProgress = state.tutorialProgress,
         bestScore = state.bestScore,
         active = state.active,
+        visualEvent = state.visualEvent,
     )
 }

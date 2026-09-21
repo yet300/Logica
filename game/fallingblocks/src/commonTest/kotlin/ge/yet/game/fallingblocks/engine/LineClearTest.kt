@@ -34,7 +34,14 @@ class LineClearTest {
         assertEquals(1, result.state.lines)
         assertEquals(1, result.state.level)
         assertEquals(2L * 16 + 100L + 2_000L, result.state.score)
-        assertTrue(result.facts.contains(GameFact.LinesCleared(count = 1, perfect = true)))
+        assertTrue(
+            result.facts.contains(
+                GameFact.LinesCleared(
+                    rows = listOf(Board.TOTAL_HEIGHT - 1),
+                    perfect = true,
+                ),
+            ),
+        )
     }
 
     @Test
@@ -100,12 +107,21 @@ class LineClearTest {
             active = ActivePiece(Tetromino.I, Rotation.RIGHT, Cell(4, Board.TOTAL_HEIGHT - 3)),
         )
 
-        val started = engine.reduce(base, GameAction.HardDrop).state
-        val continued = engine.reduce(base.copy(backToBack = true, combo = 0), GameAction.HardDrop).state
+        val startedTransition = engine.reduce(base, GameAction.HardDrop)
+        val continuedTransition = engine.reduce(
+            base.copy(backToBack = true, combo = 0),
+            GameAction.HardDrop,
+        )
+        val started = startedTransition.state
+        val continued = continuedTransition.state
 
         assertTrue(started.backToBack)
         assertEquals(2_800, started.score)
         assertTrue(continued.backToBack)
         assertEquals(3_250, continued.score)
+        assertEquals(
+            (Board.TOTAL_HEIGHT - 4 until Board.TOTAL_HEIGHT).toList(),
+            startedTransition.facts.filterIsInstance<GameFact.LinesCleared>().single().rows,
+        )
     }
 }

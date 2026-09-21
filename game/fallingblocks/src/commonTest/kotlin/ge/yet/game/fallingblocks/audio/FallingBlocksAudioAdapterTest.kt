@@ -30,7 +30,7 @@ class FallingBlocksAudioAdapterTest {
             listOf(
                 GameFact.HardDropped(8),
                 GameFact.Locked,
-                GameFact.LinesCleared(count = 4, perfect = true),
+                GameFact.LinesCleared(rows = listOf(18, 19, 20, 21), perfect = true),
                 GameFact.LevelChanged(level = 5),
                 GameFact.ToppedOut,
             ),

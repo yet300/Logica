@@ -203,7 +203,7 @@ internal object DefaultFallingBlocksEngine : FallingBlocksEngine {
         }
         val baseFacts = buildList {
             add(GameFact.Locked)
-            if (fullRows.isNotEmpty()) add(GameFact.LinesCleared(fullRows.size, perfect))
+            if (fullRows.isNotEmpty()) add(GameFact.LinesCleared(fullRows, perfect))
             if (nextLevel != state.level) add(GameFact.LevelChanged(nextLevel))
         }
         val resolved = state.copy(

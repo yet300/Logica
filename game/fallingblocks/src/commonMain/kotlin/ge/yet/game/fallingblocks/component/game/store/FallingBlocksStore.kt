@@ -2,6 +2,7 @@ package ge.yet.game.fallingblocks.component.game.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
+import ge.yet.game.fallingblocks.component.game.FallingBlocksVisualEvent
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 
 internal interface FallingBlocksStore : Store<
@@ -26,6 +27,8 @@ internal interface FallingBlocksStore : Store<
         val tutorialProgress: TutorialProgress? = null,
         val bestScore: Long = 0,
         val active: Boolean = true,
+        val visualEvent: FallingBlocksVisualEvent? = null,
+        val nextVisualEventId: Long = 1L,
     )
 
     sealed interface Label {

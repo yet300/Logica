@@ -402,7 +402,7 @@ both light and dark Material schemes. `rtk ./gradlew
 - Create test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/game/FallingBlocksTransitionPlannerTest.kt`
 - Update test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/component/game/store/FallingBlocksStoreTest.kt`
 
-- [ ] **Step 1: Make cleared rows explicit**
+- [x] **Step 1: Make cleared rows explicit**
 
 Change the fact to:
 
@@ -419,7 +419,7 @@ Engine tests must assert the exact sorted row indices before collapse, not only
 the count. Update audio/tutorial consumers to use `count` so sound behavior is
 unchanged.
 
-- [ ] **Step 2: Define immutable visual events**
+- [x] **Step 2: Define immutable visual events**
 
 ```kotlin
 internal sealed interface FallingBlocksVisualEvent {
@@ -443,27 +443,37 @@ internal sealed interface FallingBlocksVisualEvent {
 `VisualCell` contains cell/type only. It is transient and is never included in
 the persistence schema.
 
-- [ ] **Step 3: Add a pure planner**
+- [x] **Step 3: Add a pure planner**
 
 Given `before`, `action`, `after`, `facts`, and `nextId`, return at most one
 event. Hard drop captures active and landing cells from `before`. A line clear
 takes precedence and captures the complete pre-collapse cleared rows, including
 the just-locked active piece. Normal movement/ticks return `null`.
 
-- [ ] **Step 4: Publish event state exactly once per transition**
+- [x] **Step 4: Publish event state exactly once per transition**
 
 Add `visualEvent: FallingBlocksVisualEvent?` and `nextVisualEventId: Long` to
 Store state/model. Update them in the same reducer message as the game state.
 Initialization/restoration starts with `null`; recomposition does not allocate
 a new ID. Verify IDs are monotonic and overflow is rejected before wraparound.
 
-- [ ] **Step 5: Run and commit**
+- [x] **Step 5: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/domain game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/component game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks
 rtk git commit -m "feat: expose falling blocks visual events"
 ```
+
+**Implementation outcome (2026-09-21):** `LinesCleared` now carries validated,
+sorted pre-collapse row indices while retaining its derived `count` for audio
+behavior. Added immutable HardDrop/LineClear events and a pure planner. A clear
+takes priority and captures all ten pre-collapse cells per row, including the
+landed active piece; hard drop captures source and landing cells. Store state
+publishes the event atomically with the game transition, preserves it across
+recomposition, advances IDs only for matching transitions, starts restored
+sessions without stale events, and rejects exhaustion before `Long` wraparound.
+`rtk ./gradlew :game:fallingblocks:allTests` passed (111 tests).
 
 ## Task 6: Render hard-drop CRT and Block Blast-inspired clear effects
 

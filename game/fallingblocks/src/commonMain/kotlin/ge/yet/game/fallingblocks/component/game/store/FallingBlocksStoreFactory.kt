@@ -7,6 +7,8 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import dev.zacsweers.metro.Inject
 import ge.yet.game.fallingblocks.audio.FallingBlocksAudioPlayer
+import ge.yet.game.fallingblocks.component.game.FallingBlocksTransitionPlanner
+import ge.yet.game.fallingblocks.component.game.FallingBlocksVisualEvent
 import ge.yet.game.fallingblocks.data.SessionPersistenceCoordinator
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksEngine
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
@@ -73,7 +75,11 @@ internal class FallingBlocksStoreFactory(
             val bestScore: Long,
         ) : Msg
 
-        data class GameChanged(val game: FallingBlocksState) : Msg
+        data class GameChanged(
+            val game: FallingBlocksState,
+            val visualEvent: FallingBlocksVisualEvent?,
+            val nextVisualEventId: Long,
+        ) : Msg
         data class TutorialProgressChanged(val progress: TutorialProgress) : Msg
         data class TutorialFinished(val game: FallingBlocksState) : Msg
         data class VisibilityChanged(val active: Boolean) : Msg
@@ -91,6 +97,8 @@ internal class FallingBlocksStoreFactory(
             is Msg.GameChanged -> copy(
                 game = msg.game,
                 bestScore = maxOf(bestScore, msg.game.score),
+                visualEvent = msg.visualEvent,
+                nextVisualEventId = msg.nextVisualEventId,
             )
             is Msg.TutorialProgressChanged -> copy(tutorialProgress = msg.progress)
             is Msg.TutorialFinished -> copy(
@@ -98,6 +106,7 @@ internal class FallingBlocksStoreFactory(
                 tutorialSeen = true,
                 tutorialProgress = null,
                 bestScore = maxOf(bestScore, msg.game.score),
+                visualEvent = null,
             )
             is Msg.VisibilityChanged -> copy(active = msg.active)
         }
@@ -113,6 +122,7 @@ internal class FallingBlocksStoreFactory(
         FallingBlocksStore.Label,
         >() {
         private val persistence by lazy { SessionPersistenceCoordinator(loader, writer, scope) }
+        private val transitionPlanner = FallingBlocksTransitionPlanner()
         private var previousVisibility = visibility.visibility.value
         private var tutorialCompletionInFlight = false
 
@@ -151,7 +161,13 @@ internal class FallingBlocksStoreFactory(
                 }
                 FallingBlocksStore.Intent.NewGame -> if (current.tutorialSeen && current.active) {
                     val fresh = engine.initial(seedSource.nextSeed(), game.runId + 1)
-                    dispatch(Msg.GameChanged(fresh))
+                    dispatch(
+                        Msg.GameChanged(
+                            game = fresh,
+                            visualEvent = null,
+                            nextVisualEventId = current.nextVisualEventId,
+                        ),
+                    )
                     persistence.checkpoint(fresh)
                 }
             }
@@ -208,10 +224,25 @@ internal class FallingBlocksStoreFactory(
                 current.tutorialProgress?.complete != true
 
         private fun applyAction(action: GameAction, forceCheckpoint: Boolean = false) {
-            val before = state().game ?: return
+            val current = state()
+            val before = current.game ?: return
             val transition = engine.reduce(before, action)
             if (transition.state == before && transition.facts.isEmpty()) return
-            dispatch(Msg.GameChanged(transition.state))
+            val visualEvent = transitionPlanner.plan(
+                before = before,
+                action = action,
+                after = transition.state,
+                facts = transition.facts,
+                nextId = current.nextVisualEventId,
+            )
+            dispatch(
+                Msg.GameChanged(
+                    game = transition.state,
+                    visualEvent = visualEvent,
+                    nextVisualEventId = visualEvent?.let { it.id + 1L }
+                        ?: current.nextVisualEventId,
+                ),
+            )
             audio.onTransition(action, transition.state, transition.facts)
 
             val tutorialProgress = state().tutorialProgress

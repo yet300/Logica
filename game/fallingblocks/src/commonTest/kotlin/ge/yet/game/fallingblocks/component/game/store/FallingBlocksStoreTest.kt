@@ -5,6 +5,8 @@ import ge.yet.game.fallingblocks.domain.model.FallingBlocksEngine
 import ge.yet.game.fallingblocks.domain.model.FallingBlocksState
 import ge.yet.game.fallingblocks.domain.model.GameAction
 import ge.yet.game.fallingblocks.domain.model.GameTransition
+import ge.yet.game.fallingblocks.domain.engine.DefaultFallingBlocksEngine
+import ge.yet.game.fallingblocks.component.game.FallingBlocksVisualEvent
 import ge.yet.game.fallingblocks.domain.repository.CommitResult
 import ge.yet.game.fallingblocks.domain.repository.GameCommitWriter
 import ge.yet.game.fallingblocks.domain.repository.GameSnapshotLoader
@@ -147,6 +149,31 @@ class FallingBlocksStoreTest {
             ),
             engine.actions,
         )
+        store.dispose()
+    }
+
+    @Test
+    fun `visual event ids advance once per matching transition`() = runTest {
+        val store = createStore(engine = DefaultFallingBlocksEngine)
+        advanceUntilIdle()
+
+        assertEquals(null, store.state.visualEvent)
+        assertEquals(1L, store.state.nextVisualEventId)
+
+        store.accept(FallingBlocksStore.Intent.HardDrop)
+        runCurrent()
+        assertEquals(1L, store.state.visualEvent?.id)
+        assertTrue(store.state.visualEvent is FallingBlocksVisualEvent.HardDrop)
+        assertEquals(2L, store.state.nextVisualEventId)
+
+        val first = store.state.visualEvent
+        runCurrent()
+        assertEquals(first, store.state.visualEvent)
+
+        store.accept(FallingBlocksStore.Intent.HardDrop)
+        runCurrent()
+        assertEquals(2L, store.state.visualEvent?.id)
+        assertEquals(3L, store.state.nextVisualEventId)
         store.dispose()
     }
 

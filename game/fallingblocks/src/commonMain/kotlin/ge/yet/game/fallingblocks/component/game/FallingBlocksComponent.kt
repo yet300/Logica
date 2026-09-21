@@ -22,6 +22,7 @@ internal interface FallingBlocksComponent {
         val tutorialProgress: TutorialProgress?,
         val bestScore: Long,
         val active: Boolean,
+        val visualEvent: FallingBlocksVisualEvent? = null,
     )
 
     fun interface Factory {
