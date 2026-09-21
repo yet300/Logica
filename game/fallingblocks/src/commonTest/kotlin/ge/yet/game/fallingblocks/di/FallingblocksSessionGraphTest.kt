@@ -8,7 +8,6 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.createGraph
 import ge.yet.game.fallingblocks.FallingblocksPluginTestBindings
 import ge.yet.game.fallingblocks.FallingblocksSession
-import ge.yet.game.fallingblocks.FallingblocksSessionBindings
 import ge.yet.game.fallingblocks.audio.FallingBlocksAudioAdapter
 import ge.yet.game.fallingblocks.component.root.RootComponent
 import ge.yet.game.fallingblocks.data.FallingBlocksPersistence

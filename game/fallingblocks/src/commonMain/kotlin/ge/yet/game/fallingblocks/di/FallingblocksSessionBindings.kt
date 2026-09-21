@@ -1,10 +1,11 @@
-package ge.yet.game.fallingblocks
+package ge.yet.game.fallingblocks.di
 
 import com.arkivanov.decompose.ComponentContext
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
+import ge.yet.game.fallingblocks.FallingblocksSession
 import ge.yet.game.fallingblocks.component.game.DefaultFallingBlocksComponentFactory
 import ge.yet.game.fallingblocks.audio.FallingBlocksAudioAdapter
 import ge.yet.game.fallingblocks.audio.FallingBlocksAudioPlayer
