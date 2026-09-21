@@ -13,6 +13,7 @@ import ge.yet.game.miniapp.compose.MiniAppFrameMode
 import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
@@ -20,7 +21,7 @@ import kotlin.test.assertTrue
 
 class RootComponentTest {
     @Test
-    fun `top out opens one content only result and consumes back`() {
+    fun `top out opens one content only result and delegates back to the host`() {
         val setup = build()
 
         setup.playing().topOut()
@@ -30,7 +31,7 @@ class RootComponentTest {
         val result = assertIs<RootComponent.Child.Result>(setup.root.stack.value.active.instance)
         assertEquals(100L, result.component.model.value.snapshot.score)
         assertEquals(MiniAppFrameMode.ContentOnly, setup.root.frameMode.value)
-        assertTrue(setup.root.handleBack())
+        assertFalse(setup.root.handleBack())
         assertEquals(2, setup.root.stack.value.items.size)
         setup.destroy()
     }

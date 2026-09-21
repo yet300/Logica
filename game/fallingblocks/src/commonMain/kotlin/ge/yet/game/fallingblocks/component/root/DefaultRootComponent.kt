@@ -40,7 +40,7 @@ internal class DefaultRootComponent(
         }
     }
 
-    override fun handleBack(): Boolean = stack.value.active.instance is RootComponent.Child.Result
+    override fun handleBack(): Boolean = false
 
     private fun createChild(config: Config, context: ComponentContext): RootComponent.Child = when (config) {
         is Config.Playing -> {

@@ -41,6 +41,24 @@ object MiniAppContractAssertions {
         assertFalse(session.handleBack())
     }
 
+    /**
+     * Asserts that Back on a terminal Result delegates to the host.
+     *
+     * A Result screen must return `false` from `MiniAppSession.handleBack`
+     * without popping its own stack: the host owns Back there and closes
+     * the session. Returning `true` without internal navigation is the
+     * Falling Blocks regression — session audio keeps playing and catalog
+     * cards stay locked because the runtime still treats the MiniApp as
+     * running.
+     */
+    fun assertBackDelegatesToHostOnResult(session: MiniAppSession) {
+        assertFalse(
+            session.handleBack(),
+            "Back on Result must return false so the host closes the session, " +
+                "stops session audio and unlocks the catalog",
+        )
+    }
+
     suspend fun assertResourcesResolvable(manifest: MiniAppManifest) {
         assertTrue(getString(manifest.title).isNotBlank())
         assertTrue(getString(manifest.description).isNotBlank())
