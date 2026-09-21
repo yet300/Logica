@@ -35,17 +35,17 @@ maintainer review and explicit allowlist decision.
 
 ## Procedural visual authorship
 
-The hard-drop landing/border pulse, exact-row flash, shock line, per-row
-cascade ripple, lean shimmer, shockwave rings and deterministic
-square-particle declarations are original Compose drawing code authored for
-this MiniApp. They use captured engine facts and normalized 10×20 board
-geometry; no shader, artwork, animation sequence or effect implementation was
-copied verbatim from Block Blast or the CRT article. Block Blast's
-particle-burst/shockwave language informed the visual goals and was
-reimplemented with deterministic theme-derived parameters, a single
-board-level animation controller and reduced-motion fallbacks. A previously
-explored slice-glitch overlay was removed per playtest feedback; hard drop
-keeps only the landing/border pulse.
+The hard-drop trail beam with halftone fade and speed-line hatching,
+landing/border pulse, exact-row flash, shock line, per-row cascade ripple,
+lean shimmer, shockwave rings and deterministic square-particle declarations
+are original Compose drawing code authored for this MiniApp. They use captured
+engine facts and normalized 10×20 board geometry; no shader, artwork,
+animation sequence or effect implementation was copied verbatim from Block
+Blast or the CRT article. Block Blast's particle-burst/shockwave language
+informed the visual goals and was reimplemented with deterministic
+theme-derived parameters, a single board-level animation controller and
+reduced-motion fallbacks. A previously explored slice-glitch overlay was
+removed per playtest feedback in favor of the piece-colored drop beam.
 
 ## Procedural audio authorship
 
