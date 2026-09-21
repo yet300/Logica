@@ -72,12 +72,10 @@ internal fun FallingBlocksBoardEffects(
             if (progress.value >= 1f) return@Canvas
             clipRect {
                 when (current) {
-                    is FallingBlocksVisualEvent.HardDrop -> drawHardDropEffect(
+                    is FallingBlocksVisualEvent.HardDrop -> drawHardDropImpact(
                         event = current,
                         progress = progress.value,
-                        policy = motionPolicy,
                         primary = scheme.primary,
-                        tertiary = scheme.tertiary,
                         outline = scheme.outline,
                     )
                     is FallingBlocksVisualEvent.LineClear -> drawLineClearEffect(
@@ -98,74 +96,27 @@ internal fun FallingBlocksBoardEffects(
 private fun FallingBlocksVisualEvent.durationMillis(policy: FallingBlocksMotionPolicy): Int =
     when (this) {
         is FallingBlocksVisualEvent.HardDrop ->
-            policy.hardDropTrailDurationMillis + policy.hardDropImpactDurationMillis
+            policy.hardDropImpactDurationMillis
         is FallingBlocksVisualEvent.LineClear ->
             policy.lineClearFlashDurationMillis + policy.lineClearCollapseDurationMillis
     }
 
-private fun DrawScope.drawHardDropEffect(
+private fun DrawScope.drawHardDropImpact(
     event: FallingBlocksVisualEvent.HardDrop,
     progress: Float,
-    policy: FallingBlocksMotionPolicy,
     primary: androidx.compose.ui.graphics.Color,
-    tertiary: androidx.compose.ui.graphics.Color,
     outline: androidx.compose.ui.graphics.Color,
 ) {
-    val total = event.durationMillis(policy).coerceAtLeast(1)
-    val trailSplit = policy.hardDropTrailDurationMillis.toFloat() / total
-    if (policy.spatialMotionEnabled && trailSplit > 0f && progress < trailSplit) {
-        val trailProgress = (progress / trailSplit).coerceIn(0f, 1f)
-        hardDropTrails(event.from, event.to).forEach { trail ->
-            repeat(3) { echo ->
-                val delayed = (trailProgress - echo * 0.16f).coerceIn(0f, 1f)
-                val y = trail.fromY + (trail.toY - trail.fromY) * delayed
-                drawNormalizedEffectCell(
-                    centerX = trail.centerX,
-                    centerY = y,
-                    color = if (echo % 2 == 0) primary else tertiary,
-                    alpha = (1f - trailProgress) * (0.28f - echo * 0.06f),
-                    horizontalOffset = if (echo % 2 == 0) -0.05f else 0.05f,
-                )
-            }
-        }
-    }
-
-    val impactProgress = if (trailSplit >= 1f) 1f else {
-        ((progress - trailSplit) / (1f - trailSplit)).coerceIn(0f, 1f)
-    }
-    if (progress >= trailSplit) {
-        val alpha = (1f - impactProgress) * 0.72f
-        val cellSize = size.width / Board.WIDTH
-        drawRoundRect(
-            color = outline.copy(alpha = alpha),
-            style = Stroke(maxOf(1f, cellSize * 0.10f)),
-            cornerRadius = CornerRadius(cellSize * 0.16f),
-        )
-        event.to.forEach { cell ->
-            drawEffectCell(cell.x.toFloat(), cell.y.toFloat(), primary, alpha * 0.55f)
-        }
-    }
-}
-
-private fun DrawScope.drawNormalizedEffectCell(
-    centerX: Float,
-    centerY: Float,
-    color: androidx.compose.ui.graphics.Color,
-    alpha: Float,
-    horizontalOffset: Float = 0f,
-) {
-    val cellWidth = size.width / Board.WIDTH
-    val cellHeight = size.height / Board.VISIBLE_HEIGHT
-    val inset = cellWidth * 0.10f
+    val alpha = (1f - progress.coerceIn(0f, 1f)) * 0.72f
+    val cellSize = size.width / Board.WIDTH
     drawRoundRect(
-        color = color.copy(alpha = alpha.coerceIn(0f, 1f)),
-        topLeft = Offset(
-            (centerX + horizontalOffset / Board.WIDTH) * size.width - cellWidth / 2f + inset,
-            centerY * size.height - cellHeight / 2f + inset,
-        ),
-        size = Size(cellWidth - inset * 2f, cellHeight - inset * 2f),
-        cornerRadius = CornerRadius(cellWidth * 0.12f),
+        color = outline.copy(alpha = alpha),
+        style = Stroke(maxOf(1f, cellSize * 0.10f)),
+        cornerRadius = CornerRadius(cellSize * 0.16f),
     )
+    event.to.forEach { cell ->
+        drawEffectCell(cell.x.toFloat(), cell.y.toFloat(), primary, alpha * 0.55f)
+    }
 }
 
 private fun DrawScope.drawLineClearEffect(
@@ -178,18 +129,30 @@ private fun DrawScope.drawLineClearEffect(
     scheme: androidx.compose.material3.ColorScheme,
 ) {
     val total = event.durationMillis(policy).coerceAtLeast(1)
-    val flashSplit = policy.lineClearFlashDurationMillis.toFloat() / total
-    val flashProgress = if (flashSplit == 0f) 1f else (progress / flashSplit).coerceIn(0f, 1f)
-    val flashAlpha = (1f - flashProgress) * 0.78f
+    val elapsedMs = progress * total
+    val flashMs = policy.lineClearFlashDurationMillis.coerceAtLeast(1).toFloat()
     val cellHeight = size.height / Board.VISIBLE_HEIGHT
+    val sortedRows = event.rows.distinct().sorted()
+    // Block Blast-style ripple: each cleared row starts its flash on its own
+    // cascade slot. Reduced motion collapses every row onto slot zero.
+    fun rowFade(row: Int): Float {
+        val start = if (policy.spatialMotionEnabled) {
+            lineClearCascadeDelayMs(lineClearRowSlot(row, sortedRows)).toFloat()
+        } else {
+            0f
+        }
+        if (elapsedMs < start) return 1f
+        return 1f - ((elapsedMs - start) / flashMs).coerceIn(0f, 1f)
+    }
 
-    event.rows.forEach { row ->
+    sortedRows.forEach { row ->
         val visibleY = row - Board.HIDDEN_ROWS
         if (visibleY in 0 until Board.VISIBLE_HEIGHT) {
+            val fade = rowFade(row)
             val top = visibleY * cellHeight
-            drawRect(primary.copy(alpha = flashAlpha), Offset(0f, top), Size(size.width, cellHeight))
+            drawRect(primary.copy(alpha = 0.78f * fade), Offset(0f, top), Size(size.width, cellHeight))
             drawLine(
-                tertiary.copy(alpha = flashAlpha),
+                tertiary.copy(alpha = 0.85f * fade),
                 Offset(0f, top + cellHeight / 2f),
                 Offset(size.width, top + cellHeight / 2f),
                 strokeWidth = maxOf(1f, cellHeight * 0.10f),
@@ -197,17 +160,22 @@ private fun DrawScope.drawLineClearEffect(
         }
     }
     event.cells.forEach { visual ->
+        val fade = rowFade(visual.cell.y)
+        // Tilt shimmer without per-cell animators: alternate columns lean
+        // opposite ways while fading, echoing Block Blast's clear rotation.
+        val lean = (if (visual.cell.x % 2 == 0) -0.035f else 0.035f) * fade
         drawEffectCell(
             visual.cell.x.toFloat(),
             visual.cell.y.toFloat(),
             visual.type.colors(scheme).fill,
-            (1f - progress) * 0.70f,
+            0.70f * fade,
+            horizontalOffset = lean,
         )
     }
     if (policy.spatialMotionEnabled) {
         particles.forEach { particle ->
             val x = particle.originX + particle.velocityX * progress
-            val y = particle.originY + particle.velocityY * progress + 0.18f * progress * progress
+            val y = particle.originY + particle.velocityY * progress + 0.55f * progress * progress
             val side = particle.size * size.width
             drawRect(
                 color = particle.type.colors(scheme).fill.copy(
@@ -215,6 +183,19 @@ private fun DrawScope.drawLineClearEffect(
                 ),
                 topLeft = Offset(x * size.width - side / 2f, y * size.height - side / 2f),
                 size = Size(side, side),
+            )
+        }
+        lineClearShockwaves(event.rows).forEach { wave ->
+            val start = lineClearCascadeDelayMs(wave.slot).toFloat()
+            if (elapsedMs < start) return@forEach
+            val span = (total - start).coerceAtLeast(1f)
+            val t = ((elapsedMs - start) / span).coerceIn(0f, 1f)
+            if (t >= 1f) return@forEach
+            drawCircle(
+                color = tertiary.copy(alpha = (1f - t) * 0.6f),
+                radius = t * 0.6f * size.width,
+                center = Offset(wave.centerX * size.width, wave.centerY * size.height),
+                style = Stroke(width = maxOf(1f, 0.04f * size.width)),
             )
         }
     }

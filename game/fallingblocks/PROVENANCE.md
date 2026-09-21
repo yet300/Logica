@@ -18,6 +18,7 @@ assistance from OpenAI Codex.
   is a technical reference for layer recording, scanlines and glow. The final
   Compose implementation is original, theme-derived and omits continuous
   jitter.
+
 - The user-provided tutorial screenshots are interaction-staging references.
   The photographed/3D hand is not imported; the game uses Material Symbols and
   original Compose-drawn gesture trails.
@@ -34,13 +35,17 @@ maintainer review and explicit allowlist decision.
 
 ## Procedural visual authorship
 
-The hard-drop afterimages, theme-derived channel split, landing/border pulse,
-exact-row flash, shock line and deterministic square-particle declarations are
-original Compose drawing code authored for this MiniApp. They use captured
-engine facts and normalized 10×20 board geometry; no shader, artwork, animation
-sequence or effect implementation was copied from Block Blast or the CRT
-article. Block Blast informed only the causal goal that a clear should remain
-readable while the collapsed board is already visible underneath.
+The hard-drop landing/border pulse, exact-row flash, shock line, per-row
+cascade ripple, lean shimmer, shockwave rings and deterministic
+square-particle declarations are original Compose drawing code authored for
+this MiniApp. They use captured engine facts and normalized 10×20 board
+geometry; no shader, artwork, animation sequence or effect implementation was
+copied verbatim from Block Blast or the CRT article. Block Blast's
+particle-burst/shockwave language informed the visual goals and was
+reimplemented with deterministic theme-derived parameters, a single
+board-level animation controller and reduced-motion fallbacks. A previously
+explored slice-glitch overlay was removed per playtest feedback; hard drop
+keeps only the landing/border pulse.
 
 ## Procedural audio authorship
 

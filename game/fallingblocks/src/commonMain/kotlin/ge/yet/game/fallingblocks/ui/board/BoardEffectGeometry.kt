@@ -24,11 +24,32 @@ internal data class BoardEffectParticle(
     val type: Tetromino,
 )
 
-internal data class BoardEffectTrail(
+internal data class BoardEffectShockwave(
     val centerX: Float,
-    val fromY: Float,
-    val toY: Float,
+    val centerY: Float,
+    val slot: Int,
 )
+
+internal const val LINE_CLEAR_CASCADE_DELAY_MS = 90L
+
+internal fun lineClearRowSlot(row: Int, sortedRows: List<Int>): Int =
+    sortedRows.indexOf(row)
+
+internal fun lineClearCascadeDelayMs(slot: Int): Long =
+    (slot.coerceAtLeast(0) * LINE_CLEAR_CASCADE_DELAY_MS).toLong()
+
+internal fun lineClearShockwaves(rows: List<Int>): List<BoardEffectShockwave> {
+    val sorted = rows.distinct().sorted()
+    return sorted.mapNotNull { row ->
+        val visibleY = row - Board.HIDDEN_ROWS
+        if (visibleY !in 0 until Board.VISIBLE_HEIGHT) return@mapNotNull null
+        BoardEffectShockwave(
+            centerX = 0.5f,
+            centerY = (visibleY + 0.5f) / Board.VISIBLE_HEIGHT,
+            slot = sorted.indexOf(row),
+        )
+    }
+}
 
 internal fun normalizedEffectCell(cell: Cell): NormalizedEffectCell? {
     if (cell.x !in 0 until Board.WIDTH || cell.y !in Board.HIDDEN_ROWS until Board.TOTAL_HEIGHT) {
@@ -43,22 +64,6 @@ internal fun normalizedEffectCell(cell: Cell): NormalizedEffectCell? {
         bottom = (cell.y - Board.HIDDEN_ROWS + 1f) / Board.VISIBLE_HEIGHT,
     )
 }
-
-internal fun hardDropTrails(from: List<Cell>, to: List<Cell>): List<BoardEffectTrail> =
-    to.mapIndexedNotNull { index, target ->
-        val targetBounds = normalizedEffectCell(target) ?: return@mapIndexedNotNull null
-        val source = from.getOrElse(index) { target }
-        if (source.x !in 0 until Board.WIDTH || source.y >= Board.TOTAL_HEIGHT) {
-            return@mapIndexedNotNull null
-        }
-        val sourceVisibleY = (source.y - Board.HIDDEN_ROWS)
-            .coerceIn(0, Board.VISIBLE_HEIGHT - 1)
-        BoardEffectTrail(
-            centerX = (targetBounds.left + targetBounds.right) / 2f,
-            fromY = (sourceVisibleY + 0.5f) / Board.VISIBLE_HEIGHT,
-            toY = (targetBounds.top + targetBounds.bottom) / 2f,
-        )
-    }
 
 internal fun lineClearParticles(
     eventId: Long,

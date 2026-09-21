@@ -45,15 +45,28 @@ class BoardEffectGeometryTest {
     }
 
     @Test
-    fun `hard drop trails clip hidden origins into normalized board space`() {
-        val trails = hardDropTrails(
-            from = listOf(Cell(3, 0), Cell(4, Board.HIDDEN_ROWS + 2)),
-            to = listOf(Cell(3, Board.TOTAL_HEIGHT - 1), Cell(4, Board.TOTAL_HEIGHT - 2)),
-        )
+    fun `shockwaves center on visible cleared rows and skip hidden rows`() {
+        val bottom = Board.TOTAL_HEIGHT - 1
+        val waves = lineClearShockwaves(listOf(0, Board.HIDDEN_ROWS, bottom))
 
-        assertEquals(2, trails.size)
-        assertTrue(trails.all { it.centerX in 0f..1f })
-        assertTrue(trails.all { it.fromY in 0f..1f && it.toY in 0f..1f })
-        assertEquals(0.025f, trails.first().fromY, absoluteTolerance = 0.0001f)
+        assertEquals(2, waves.size)
+        waves.forEach { wave ->
+            assertEquals(0.5f, wave.centerX)
+            assertTrue(wave.centerY in 0f..1f)
+        }
+        val expectedTop = (Board.HIDDEN_ROWS - Board.HIDDEN_ROWS + 0.5f) / Board.VISIBLE_HEIGHT
+        assertEquals(expectedTop, waves[0].centerY, absoluteTolerance = 1e-4f)
+        val expectedBottom = (bottom - Board.HIDDEN_ROWS + 0.5f) / Board.VISIBLE_HEIGHT
+        assertEquals(expectedBottom, waves[1].centerY, absoluteTolerance = 1e-4f)
     }
+
+    @Test
+    fun `row slots follow sorted order for cascade delays`() {
+        val rows = listOf(18, 19, 20, 21)
+        assertEquals(0, lineClearRowSlot(18, rows))
+        assertEquals(3, lineClearRowSlot(21, rows))
+        assertEquals(90L, lineClearCascadeDelayMs(1))
+        assertEquals(270L, lineClearCascadeDelayMs(3))
+    }
+
 }
