@@ -40,6 +40,7 @@ import ge.yet.game.fallingblocks.generated.resources.board_description
 import ge.yet.game.fallingblocks.generated.resources.next_label
 import ge.yet.game.fallingblocks.ui.board.BoardGeometry
 import ge.yet.game.fallingblocks.ui.board.CrtBoard
+import ge.yet.game.fallingblocks.ui.board.FallingBlocksBoardEffects
 import ge.yet.game.fallingblocks.ui.board.colors
 import ge.yet.game.fallingblocks.ui.input.GestureEvent
 import ge.yet.game.fallingblocks.ui.input.fallingBlocksGestures
@@ -51,6 +52,7 @@ internal object FallingBlocksTestTags {
     const val Board = "falling_blocks_board"
     const val Preview = "falling_blocks_preview"
     const val PreviewPiece = "falling_blocks_preview_piece"
+    const val Effects = "falling_blocks_effects"
 }
 
 @Composable
@@ -88,9 +90,10 @@ internal fun FallingBlocksScreen(
             state.lines,
         )
 
-        CrtBoard(
-            state = state,
-            spatialEffectsEnabled = motion.spatialMotionEnabled,
+        FallingBlocksBoardEffects(
+            event = model.visualEvent,
+            motionPolicy = motion,
+            active = model.active,
             modifier = Modifier
                 .size(boardWidth, boardHeight)
                 .fallingBlocksGestures(
@@ -106,7 +109,13 @@ internal fun FallingBlocksScreen(
                 }
                 .testTag(FallingBlocksTestTags.Board)
                 .semantics { contentDescription = description },
-        )
+        ) {
+            CrtBoard(
+                state = state,
+                spatialEffectsEnabled = motion.spatialMotionEnabled,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
 
         val tutorialProgress = model.tutorialProgress
         if (tutorialProgress != null) {

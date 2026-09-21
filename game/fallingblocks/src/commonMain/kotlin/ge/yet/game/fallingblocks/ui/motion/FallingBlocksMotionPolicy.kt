@@ -13,6 +13,10 @@ internal data class FallingBlocksMotionPolicy(
     val scoreDurationMillis: Int,
     val gameOverDurationMillis: Int,
     val opacityDurationMillis: Int,
+    val hardDropTrailDurationMillis: Int,
+    val hardDropImpactDurationMillis: Int,
+    val lineClearFlashDurationMillis: Int,
+    val lineClearCollapseDurationMillis: Int,
 )
 
 internal fun fallingBlocksMotionPolicy(reducedMotion: Boolean): FallingBlocksMotionPolicy =
@@ -27,6 +31,10 @@ internal fun fallingBlocksMotionPolicy(reducedMotion: Boolean): FallingBlocksMot
             scoreDurationMillis = 0,
             gameOverDurationMillis = 0,
             opacityDurationMillis = 72,
+            hardDropTrailDurationMillis = 0,
+            hardDropImpactDurationMillis = 80,
+            lineClearFlashDurationMillis = 90,
+            lineClearCollapseDurationMillis = 0,
         )
     } else {
         FallingBlocksMotionPolicy(
@@ -39,6 +47,10 @@ internal fun fallingBlocksMotionPolicy(reducedMotion: Boolean): FallingBlocksMot
             scoreDurationMillis = 160,
             gameOverDurationMillis = 280,
             opacityDurationMillis = 90,
+            hardDropTrailDurationMillis = 90,
+            hardDropImpactDurationMillis = 140,
+            lineClearFlashDurationMillis = 180,
+            lineClearCollapseDurationMillis = 160,
         )
     }
 

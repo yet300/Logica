@@ -192,7 +192,7 @@ as the temporary renderer for the new destination until Task 2 replaces it.
 - Create: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/result/FallingBlocksResultContent.kt`
 - Create: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/result/ResultCard.kt`
 - Create: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/result/ResultLayoutPolicy.kt`
-- Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/board/CrtBoard.kt`
+- Reuse unchanged: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/board/CrtBoard.kt`
 - Modify: `game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui/screen/root/RootContent.kt`
 - Replace test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/result/ResultOverlayTest.kt` → `FallingBlocksResultContentTest.kt`
 - Create test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/result/ResultLayoutPolicyTest.kt`
@@ -487,21 +487,21 @@ sessions without stale events, and rejects exhaustion before `Long` wraparound.
 - Update test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/motion/FallingBlocksMotionPolicyTest.kt`
 - Update test: `game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui/screen/game/FallingBlocksScreenTest.kt`
 
-- [ ] **Step 1: Add pure geometry and motion tests**
+- [x] **Step 1: Add pure geometry and motion tests**
 
 Assert every particle/trail coordinate is normalized from a 10×20 visible
 board, hidden rows are clipped, particle count is bounded (`<= 8` per cleared
 cell but `<= 96` total), and fixed event IDs produce deterministic particle
 directions. Assert normal and reduced-motion durations match the Motion Contract.
 
-- [ ] **Step 2: Implement one board-level effect controller**
+- [x] **Step 2: Implement one board-level effect controller**
 
 Use one `Animatable<Float>` or one transition at the board wrapper, keyed by
 `visualEvent.id`. `collectLatest`/`LaunchedEffect(id)` cancels the old animation
 when a newer event arrives. Do not mutate the Store and do not create animation
 objects inside cell loops.
 
-- [ ] **Step 3: Draw the hard-drop effect**
+- [x] **Step 3: Draw the hard-drop effect**
 
 During the first 90ms, draw the captured dropped piece as fading vertical
 afterimages and small opposite horizontal channel offsets using
@@ -509,25 +509,39 @@ afterimages and small opposite horizontal channel offsets using
 and landing cells. Clip every pass to board bounds; do not glitch the host or
 the whole game viewport.
 
-- [ ] **Step 4: Draw the line-clear effect**
+- [x] **Step 4: Draw the line-clear effect**
 
 Adapt Block Blast's causal language without importing its 8×8 implementation:
 flash exact cleared rows, emit deterministic theme-colored square particles,
 and draw a restrained shock line. The already-collapsed board stays underneath;
 captured pre-collapse cells fade out on top, making collapse understandable.
 
-- [ ] **Step 5: Implement reduced motion**
+- [x] **Step 5: Implement reduced motion**
 
 When `spatialMotionEnabled` is false, skip trails, channel displacement,
 particles, and translation. Draw only an 80–90ms alpha pulse/row flash.
 
-- [ ] **Step 6: Run and commit**
+- [x] **Step 6: Run and commit**
 
 ```bash
 rtk ./gradlew :game:fallingblocks:allTests
 rtk git add game/fallingblocks/src/commonMain/kotlin/ge/yet/game/fallingblocks/ui game/fallingblocks/src/commonTest/kotlin/ge/yet/game/fallingblocks/ui
 rtk git commit -m "feat: animate falling blocks board events"
 ```
+
+**Implementation outcome (2026-09-21):** Added a single board-wrapper
+`Animatable` keyed by the monotonic visual-event ID; a newer event cancels the
+previous animation, while session inactivity preserves progress and resumes the
+remaining duration. Pure normalized geometry clips hidden rows, deterministically
+bounds clear particles to 96, and keeps all drawing inside the 10×20 viewport.
+Hard drop renders 90ms theme-derived channel-split afterimages followed by a
+140ms landing/border pulse. Line clear renders exact-row flashes, a shock line,
+captured pre-collapse cells and deterministic square particles above the already
+collapsed board. Reduced motion removes spatial trails, displacement, particles
+and collapse movement, leaving only 80–90ms alpha feedback. The existing
+`CrtBoard` stays unchanged beneath the overlay. TDD started with failing geometry,
+motion-contract and single-layer assertions; `rtk ./gradlew
+:game:fallingblocks:allTests` then passed (115 tests).
 
 ## Task 7: Integration, regression, and acceptance evidence
 
