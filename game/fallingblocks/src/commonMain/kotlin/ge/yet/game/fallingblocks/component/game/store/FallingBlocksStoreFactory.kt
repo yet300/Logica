@@ -235,10 +235,14 @@ internal class FallingBlocksStoreFactory(
                 facts = transition.facts,
                 nextId = current.nextVisualEventId,
             )
+            // Ambient ticks (gravity/lock countdowns) change timers without
+            // producing facts. They must not wipe a transient visual event
+            // whose animation the board overlay still owns by event id.
+            // Explicit clears (New Game, tutorial finish) bypass this path.
             dispatch(
                 Msg.GameChanged(
                     game = transition.state,
-                    visualEvent = visualEvent,
+                    visualEvent = visualEvent ?: current.visualEvent,
                     nextVisualEventId = visualEvent?.let { it.id + 1L }
                         ?: current.nextVisualEventId,
                 ),

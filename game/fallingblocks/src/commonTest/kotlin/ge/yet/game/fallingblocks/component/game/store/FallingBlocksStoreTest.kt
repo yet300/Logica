@@ -177,6 +177,27 @@ class FallingBlocksStoreTest {
         store.dispose()
     }
 
+    @Test
+    fun `visual event survives ambient frame ticks`() = runTest {
+        val store = createStore(
+            engine = DefaultFallingBlocksEngine,
+            loader = ImmediateLoader(RestoredSession(gameFixture(), 0, true)),
+        )
+        advanceUntilIdle()
+
+        store.accept(FallingBlocksStore.Intent.HardDrop)
+        runCurrent()
+        val event = store.state.visualEvent
+        assertTrue(event is FallingBlocksVisualEvent, "expected a visual event, got $event")
+
+        repeat(10) {
+            store.accept(FallingBlocksStore.Intent.Frame(16))
+            runCurrent()
+        }
+        assertEquals(event, store.state.visualEvent)
+        store.dispose()
+    }
+
     private fun createStore(
         engine: FallingBlocksEngine = RecordingEngine(),
         loader: GameSnapshotLoader = ImmediateLoader(RestoredSession(null, 0, false)),
