@@ -8,7 +8,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runComposeUiTest
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -37,7 +37,7 @@ class TutorialOverlayTest {
     @Test
     fun `visible tutorial is a wordless gesture overlay`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 TutorialOverlay(
                     visible = true,
                     active = true,

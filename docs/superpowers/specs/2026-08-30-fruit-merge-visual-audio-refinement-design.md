@@ -10,7 +10,7 @@ reference only. Its branding, artwork, text, assets, and distinctive expression 
 
 - Make the compact portrait hierarchy immediately readable: score, consumables, next fruit, glass,
   and evolution strip.
-- Bring every surface into Logica's warm editorial cream-and-coral design system.
+- Bring every surface into Funfolio's warm editorial cream-and-coral design system.
 - Replace the current flat fruit rendering with original glossy-kawaii Canvas art that remains
   efficient on low-end devices.
 - Make shake a visible, multi-second game action with synchronized UI and deterministic physics.

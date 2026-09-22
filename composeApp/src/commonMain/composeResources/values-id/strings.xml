@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Main</string>
     <string name="settings">Pengaturan</string>
     <string name="sound">Suara</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Dukung game</string>
     <string name="support_game_subtitle">Beri bintang pada proyek di GitHub atau berdonasi</string>
     <string name="disable_ads">Nonaktifkan iklan?</string>
-    <string name="disable_ads_title">Iklan membuat Logica tetap gratis</string>
-    <string name="disable_ads_body">Iklan membantu kami meningkatkan game dan menjaga semua fitur tetap gratis. Jika dinonaktifkan, hidup kembali akan tetap gratis — dan Anda masih dapat mendukung Logica dengan bintang GitHub atau donasi.</string>
+    <string name="disable_ads_title">Iklan membuat Funfolio tetap gratis</string>
+    <string name="disable_ads_body">Iklan membantu kami meningkatkan game dan menjaga semua fitur tetap gratis. Jika dinonaktifkan, hidup kembali akan tetap gratis — dan Anda masih dapat mendukung Funfolio dengan bintang GitHub atau donasi.</string>
     <string name="keep_ads">Pertahankan iklan</string>
     <string name="disable_ads_anyway">Tetap nonaktifkan</string>
     <string name="cd_settings">Pengaturan</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s tidak tersedia</string>
     <string name="back_to_catalog">Kembali ke katalog</string>
     <string name="exit">Keluar</string>
-    <string name="review_prompt_title">Menikmati Logica?</string>
+    <string name="review_prompt_title">Menikmati Funfolio?</string>
     <string name="review_prompt_body">Ulasan Anda membantu lebih banyak pemain teka-teki menemukan permainan ini.</string>
     <string name="review_prompt_leave_feedback">Berikan masukan</string>
     <string name="review_prompt_dont_show">Jangan tampilkan lagi</string>

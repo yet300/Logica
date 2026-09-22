@@ -18,7 +18,7 @@ import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.ui.screen.game.FallingBlocksTestTags
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -28,7 +28,7 @@ class RootTopBarContentTest {
     @Test
     fun `score best and next pills fit side by side in a phone title slot`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(320.dp, 64.dp)) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(
@@ -89,7 +89,7 @@ class RootTopBarContentTest {
     @Test
     fun `beaten best collapses to one highlighted pill`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(320.dp, 64.dp)) {
                     FallingBlocksScoreHeader(
                         score = 2_500,
@@ -107,7 +107,7 @@ class RootTopBarContentTest {
     @Test
     fun `zero score keeps two pills and next preview keeps its slot`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 Box(Modifier.size(320.dp, 64.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         FallingBlocksScoreHeader(

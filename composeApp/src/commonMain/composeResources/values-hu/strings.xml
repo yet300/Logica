@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Játék</string>
     <string name="settings">Beállítások</string>
     <string name="sound">Hang</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s nem érhető el</string>
     <string name="back_to_catalog">Vissza a katalógushoz</string>
     <string name="exit">Kilépés</string>
-    <string name="review_prompt_title">Tetszik a Logica?</string>
+    <string name="review_prompt_title">Tetszik a Funfolio?</string>
     <string name="review_prompt_body">Az értékelésed segít több kirakós játékosnak megtalálni a játékot.</string>
     <string name="review_prompt_leave_feedback">Visszajelzés küldése</string>
     <string name="review_prompt_dont_show">Ne jelenjen meg újra</string>

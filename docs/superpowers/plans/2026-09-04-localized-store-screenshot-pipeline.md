@@ -140,7 +140,7 @@ word-for-word:
 6. different games in one thoughtful home;
 7. the next puzzle awaits.
 
-Keep brand/game labels (`LOGICA`, `BLOCK BLAST`, `2048`, `FRUIT MERGE`) intact;
+Keep brand/game labels (`FUNFOLIO`, `BLOCK BLAST`, `2048`, `FRUIT MERGE`) intact;
 localize `CHOOSE YOUR GAME` and `GROWING COLLECTION`. Each headline keeps an
 intentional one- or two-line break and must fit the existing caption bounds.
 Update `seed-project.mjs` from the same translation table so reset cannot erase

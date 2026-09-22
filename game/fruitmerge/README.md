@@ -1,6 +1,6 @@
 # Fruit Merge
 
-Fruit Merge is an original, deterministic drop-and-merge MiniApp for Logica. Tap anywhere in the
+Fruit Merge is an original, deterministic drop-and-merge MiniApp for Funfolio. Tap anywhere in the
 game viewport to drop the preview fruit, or drag horizontally and release to choose its position.
 Equal fruit combine into the next level. Keep every fruit below the danger line; a continuous
 1.5-second overflow ends the run. Accepted drops have a 450 ms cooldown so fruit cannot be spammed

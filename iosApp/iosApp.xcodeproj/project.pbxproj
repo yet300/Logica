@@ -18,7 +18,7 @@
 			isa = PBXFileReference;
 			explicitFileType = wrapper.application;
 			includeInIndex = 0;
-			path = Logica.app;
+			path = Funfolio.app;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXFileReference section */

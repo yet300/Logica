@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">เล่น</string>
     <string name="settings">ตั้งค่า</string>
     <string name="sound">เสียง</string>
@@ -27,8 +27,8 @@
     <string name="support_game">สนับสนุนเกม</string>
     <string name="support_game_subtitle">ติดดาวให้โปรเจกต์บน GitHub หรือบริจาค</string>
     <string name="disable_ads">ปิดโฆษณาไหม</string>
-    <string name="disable_ads_title">โฆษณาช่วยให้ Logica ใช้งานได้ฟรี</string>
-    <string name="disable_ads_body">โฆษณาช่วยให้เราปรับปรุงเกมและเปิดให้ใช้ทุกฟีเจอร์ได้ฟรี หากปิดโฆษณา การฟื้นคืนชีพจะยังคงฟรี — และคุณยังสนับสนุน Logica ได้ด้วยการติดดาวบน GitHub หรือบริจาค</string>
+    <string name="disable_ads_title">โฆษณาช่วยให้ Funfolio ใช้งานได้ฟรี</string>
+    <string name="disable_ads_body">โฆษณาช่วยให้เราปรับปรุงเกมและเปิดให้ใช้ทุกฟีเจอร์ได้ฟรี หากปิดโฆษณา การฟื้นคืนชีพจะยังคงฟรี — และคุณยังสนับสนุน Funfolio ได้ด้วยการติดดาวบน GitHub หรือบริจาค</string>
     <string name="keep_ads">เปิดโฆษณาไว้</string>
     <string name="disable_ads_anyway">ปิดต่อไป</string>
     <string name="cd_settings">การตั้งค่า</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s ไม่พร้อมใช้งาน</string>
     <string name="back_to_catalog">กลับไปยังแคตตาล็อก</string>
     <string name="exit">ออก</string>
-    <string name="review_prompt_title">ชอบ Logica ไหม?</string>
+    <string name="review_prompt_title">ชอบ Funfolio ไหม?</string>
     <string name="review_prompt_body">รีวิวของคุณช่วยให้ผู้เล่นปริศนาคนอื่นๆ ค้นหาเกมนี้ได้</string>
     <string name="review_prompt_leave_feedback">ให้ความคิดเห็น</string>
     <string name="review_prompt_dont_show">ไม่ต้องแสดงอีก</string>

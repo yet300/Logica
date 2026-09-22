@@ -1,6 +1,6 @@
-# Contributing a MiniApp to Logica
+# Contributing a MiniApp to Funfolio
 
-Logica is a single Kotlin Multiplatform super-app with a curated catalog of
+Funfolio is a single Kotlin Multiplatform super-app with a curated catalog of
 short, local-first MiniApp sessions. Contributions are independent Kotlin
 Multiplatform modules. The scaffold creates reviewable source; it does not
 authorize a game to ship. Discovery, review, merge and production allowlisting
@@ -17,7 +17,7 @@ Start with the repository's
 Give the agent an idea or a reference-game URL; a complete specification is
 not required to begin research and the interview. For example:
 
-> Use $puzzle-game-creation to create a puzzle game for Logica based on this
+> Use $puzzle-game-creation to create a puzzle game for Funfolio based on this
 > reference: [paste the game URL]. First research its mechanics, design,
 > animations and player feedback. Interview me in detail about the rules,
 > levels, visual direction and procedural music/SFX. Show concrete visual,

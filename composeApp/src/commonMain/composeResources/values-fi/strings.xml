@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Pelaa</string>
     <string name="settings">Asetukset</string>
     <string name="sound">Ääni</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Tue peliä</string>
     <string name="support_game_subtitle">Anna projektille tähti GitHubissa tai lahjoita</string>
     <string name="disable_ads">Poistetaanko mainokset käytöstä?</string>
-    <string name="disable_ads_title">Mainokset pitävät Logican ilmaisena</string>
-    <string name="disable_ads_body">Mainokset auttavat meitä parantamaan peliä ja pitämään kaikki ominaisuudet ilmaisina. Jos poistat ne käytöstä, elvytykset pysyvät ilmaisina — ja voit edelleen tukea Logicaa GitHub-tähdellä tai lahjoituksella.</string>
+    <string name="disable_ads_title">Mainokset pitävät Funfolion ilmaisena</string>
+    <string name="disable_ads_body">Mainokset auttavat meitä parantamaan peliä ja pitämään kaikki ominaisuudet ilmaisina. Jos poistat ne käytöstä, elvytykset pysyvät ilmaisina — ja voit edelleen tukea Funfolioa GitHub-tähdellä tai lahjoituksella.</string>
     <string name="keep_ads">Pidä mainokset</string>
     <string name="disable_ads_anyway">Poista silti käytöstä</string>
     <string name="cd_settings">Asetukset</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s ei ole saatavilla</string>
     <string name="back_to_catalog">Takaisin luetteloon</string>
     <string name="exit">Poistu</string>
-    <string name="review_prompt_title">Pidätkö Logicasta?</string>
+    <string name="review_prompt_title">Pidätkö Funfoliosta?</string>
     <string name="review_prompt_body">Arviosi auttaa muita palapelipelaajia löytämään pelin.</string>
     <string name="review_prompt_leave_feedback">Jätä palaute</string>
     <string name="review_prompt_dont_show">Älä näytä uudelleen</string>

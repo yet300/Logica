@@ -5,7 +5,7 @@ This module owns the allowlisted `game.twentyfortyeight` MiniApp in the
 the root `miniApps` declarations. Allowlisting controls compiled production
 membership; a separate release decision controls store distribution.
 
-Keep dependencies inward and limited to the `logica.miniapp` convention,
+Keep dependencies inward and limited to the `funfolio.miniapp` convention,
 `:core:common`, `:core:domain`, `:core:uikit`, and the existing MVI bundle.
 Do not depend on feature, application, native-ad, telemetry implementation,
 platform-audio, raw Settings, or another game/sample module.

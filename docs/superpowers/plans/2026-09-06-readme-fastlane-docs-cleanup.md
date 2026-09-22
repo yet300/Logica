@@ -42,7 +42,7 @@ class ReadmeDocumentationContractTest(unittest.TestCase):
         self.assertIn("Compose Multiplatform** 1.12.0", readme)
         self.assertIn("ParthJadhav/app-store-screenshots", readme)
         self.assertIn('<a id="support-me"></a>', readme)
-        self.assertIn("## Sponsor Logica", readme)
+        self.assertIn("## Sponsor Funfolio", readme)
         self.assertIn("ryaeh7282@gmail.com", readme)
         for wallet in ("**ton**", "**btc**", "**eth**", "**usdt(erc20)**", "**bnb**", "**usdt(trc20)**"):
             self.assertIn(wallet, readme)
@@ -105,9 +105,9 @@ Edit `README.md` so it:
 ```markdown
 <a id="support-me"></a>
 
-## Sponsor Logica
+## Sponsor Funfolio
 
-Logica is looking for sponsors who want to help fund independent development.
+Funfolio is looking for sponsors who want to help fund independent development.
 Direct financial support is welcome, as are AI API credits/tokens, CI capacity,
 test devices, localization, and design support. Sponsorship does not grant
 control over the production MiniApp allowlist or project direction.

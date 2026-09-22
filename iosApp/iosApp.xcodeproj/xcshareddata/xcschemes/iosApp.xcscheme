@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "192B2BB9C75E89DAF55AF13A"
-               BuildableName = "Logica.app"
+               BuildableName = "Funfolio.app"
                BlueprintName = "iosApp"
                ReferencedContainer = "container:iosApp.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "192B2BB9C75E89DAF55AF13A"
-            BuildableName = "Logica.app"
+            BuildableName = "Funfolio.app"
             BlueprintName = "iosApp"
             ReferencedContainer = "container:iosApp.xcodeproj">
          </BuildableReference>

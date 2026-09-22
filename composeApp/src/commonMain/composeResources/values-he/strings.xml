@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">שחק</string>
     <string name="settings">הגדרות</string>
     <string name="sound">צליל</string>
@@ -27,8 +27,8 @@
     <string name="support_game">תמיכה במשחק</string>
     <string name="support_game_subtitle">תנו לפרויקט כוכב ב-GitHub או תרמו</string>
     <string name="disable_ads">להשבית פרסומות?</string>
-    <string name="disable_ads_title">הפרסומות משאירות את Logica בחינם</string>
-    <string name="disable_ads_body">הפרסומות עוזרות לנו לשפר את המשחק ולהשאיר את כל התכונות בחינם. אם תשביתו אותן, ההחייאות יישארו בחינם — ועדיין תוכלו לתמוך ב-Logica באמצעות כוכב ב-GitHub או תרומה.</string>
+    <string name="disable_ads_title">הפרסומות משאירות את Funfolio בחינם</string>
+    <string name="disable_ads_body">הפרסומות עוזרות לנו לשפר את המשחק ולהשאיר את כל התכונות בחינם. אם תשביתו אותן, ההחייאות יישארו בחינם — ועדיין תוכלו לתמוך ב-Funfolio באמצעות כוכב ב-GitHub או תרומה.</string>
     <string name="keep_ads">להשאיר פרסומות</string>
     <string name="disable_ads_anyway">להשבית בכל זאת</string>
     <string name="cd_settings">הגדרות</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s אינו זמין</string>
     <string name="back_to_catalog">חזרה לקטלוג</string>
     <string name="exit">יציאה</string>
-    <string name="review_prompt_title">נהנה מ-Logica?</string>
+    <string name="review_prompt_title">נהנה מ-Funfolio?</string>
     <string name="review_prompt_body">הביקורת שלך עוזרת לשחקני פאזלים נוספים למצוא את המשחק.</string>
     <string name="review_prompt_leave_feedback">השאר משוב</string>
     <string name="review_prompt_dont_show">אל תציג שוב</string>

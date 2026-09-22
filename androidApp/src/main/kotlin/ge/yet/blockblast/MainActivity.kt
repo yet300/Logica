@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         val appGraph = (application as BlockBlastApp).appGraph
         rootComponent = retainedComponent(
-            key = "LogicaRoot",
+            key = "FunfolioRoot",
             handleBackButton = true,
             isStateSavingAllowed = { true },
         ) { componentContext ->

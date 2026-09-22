@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Παίξε</string>
     <string name="settings">Ρυθμίσεις</string>
     <string name="sound">Ήχος</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Υποστηρίξτε το παιχνίδι</string>
     <string name="support_game_subtitle">Βάλτε αστέρι στο έργο στο GitHub ή κάντε δωρεά</string>
     <string name="disable_ads">Απενεργοποίηση διαφημίσεων;</string>
-    <string name="disable_ads_title">Οι διαφημίσεις κρατούν το Logica δωρεάν</string>
-    <string name="disable_ads_body">Οι διαφημίσεις μάς βοηθούν να βελτιώνουμε το παιχνίδι και να διατηρούμε όλες τις λειτουργίες δωρεάν. Αν τις απενεργοποιήσετε, οι αναβιώσεις θα παραμείνουν δωρεάν — και μπορείτε να υποστηρίξετε το Logica με ένα αστέρι στο GitHub ή μια δωρεά.</string>
+    <string name="disable_ads_title">Οι διαφημίσεις κρατούν το Funfolio δωρεάν</string>
+    <string name="disable_ads_body">Οι διαφημίσεις μάς βοηθούν να βελτιώνουμε το παιχνίδι και να διατηρούμε όλες τις λειτουργίες δωρεάν. Αν τις απενεργοποιήσετε, οι αναβιώσεις θα παραμείνουν δωρεάν — και μπορείτε να υποστηρίξετε το Funfolio με ένα αστέρι στο GitHub ή μια δωρεά.</string>
     <string name="keep_ads">Διατήρηση διαφημίσεων</string>
     <string name="disable_ads_anyway">Απενεργοποίηση ούτως ή άλλως</string>
     <string name="cd_settings">Ρυθμίσεις</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">Το %1$s δεν είναι διαθέσιμο</string>
     <string name="back_to_catalog">Επιστροφή στον κατάλογο</string>
     <string name="exit">Έξοδος</string>
-    <string name="review_prompt_title">Σου αρέσει το Logica;</string>
+    <string name="review_prompt_title">Σου αρέσει το Funfolio;</string>
     <string name="review_prompt_body">Η κριτική σου βοηθά περισσότερους παίκτες παζλ να βρουν το παιχνίδι.</string>
     <string name="review_prompt_leave_feedback">Αφήστε σχόλια</string>
     <string name="review_prompt_dont_show">Να μην εμφανιστεί ξανά</string>

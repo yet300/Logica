@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Spelen</string>
     <string name="settings">Instellingen</string>
     <string name="sound">Geluid</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Steun het spel</string>
     <string name="support_game_subtitle">Geef het project een ster op GitHub of doneer</string>
     <string name="disable_ads">Advertenties uitschakelen?</string>
-    <string name="disable_ads_title">Advertenties houden Logica gratis</string>
-    <string name="disable_ads_body">Advertenties helpen ons het spel te verbeteren en alle functies gratis te houden. Als je ze uitschakelt, blijven herlevingen gratis — en je kunt Logica nog steeds steunen met een GitHub-ster of een donatie.</string>
+    <string name="disable_ads_title">Advertenties houden Funfolio gratis</string>
+    <string name="disable_ads_body">Advertenties helpen ons het spel te verbeteren en alle functies gratis te houden. Als je ze uitschakelt, blijven herlevingen gratis — en je kunt Funfolio nog steeds steunen met een GitHub-ster of een donatie.</string>
     <string name="keep_ads">Advertenties behouden</string>
     <string name="disable_ads_anyway">Toch uitschakelen</string>
     <string name="cd_settings">Instellingen</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s is niet beschikbaar</string>
     <string name="back_to_catalog">Terug naar catalogus</string>
     <string name="exit">Afsluiten</string>
-    <string name="review_prompt_title">Geniet je van Logica?</string>
+    <string name="review_prompt_title">Geniet je van Funfolio?</string>
     <string name="review_prompt_body">Jouw beoordeling helpt meer puzzelspelers het spel te vinden.</string>
     <string name="review_prompt_leave_feedback">Feedback achterlaten</string>
     <string name="review_prompt_dont_show">Niet meer tonen</string>

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "submission.schema.json",
-  "title": "Logica MiniApp submission",
+  "title": "Funfolio MiniApp submission",
   "type": "object",
   "additionalProperties": false,
   "required": [

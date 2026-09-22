@@ -20,7 +20,7 @@ import ge.yet.game.fallingblocks.component.game.FallingBlocksVisualEvent
 import ge.yet.game.fallingblocks.domain.model.Cell
 import ge.yet.game.fallingblocks.domain.model.Tetromino
 import ge.yet.game.fallingblocks.domain.engine.DefaultFallingBlocksEngine
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -29,7 +29,7 @@ class FallingBlocksScreenTest {
     @Test
     fun `board is centered with next piece moved to app bar and no gameplay metrics`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(400.dp, 800.dp).testTag("falling_blocks_test_host")) {
                     FallingBlocksScreen(FakeComponent())
                 }
@@ -61,7 +61,7 @@ class FallingBlocksScreenTest {
     @Test
     fun `visual event mounts one board effect layer`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 Box(Modifier.size(400.dp, 800.dp)) {
                     FallingBlocksScreen(
                         FakeComponent(

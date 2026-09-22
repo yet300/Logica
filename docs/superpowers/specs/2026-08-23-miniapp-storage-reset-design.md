@@ -57,7 +57,7 @@ The API supports:
 - reactive observation with deterministic initial values;
 - removal of one local key and clearing of the current namespace;
 - versioned, serializable JSON snapshots with explicit migration functions;
-- atomic logical updates and serialized writes on a framework-owned I/O
+- atomic funfoliol updates and serialized writes on a framework-owned I/O
   dispatcher;
 - arbitrary local keys rather than a rigid `save`/`bestScore` schema.
 

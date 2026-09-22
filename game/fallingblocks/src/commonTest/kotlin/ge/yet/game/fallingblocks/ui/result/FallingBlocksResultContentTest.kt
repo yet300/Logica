@@ -16,7 +16,7 @@ import ge.yet.game.fallingblocks.component.result.ResultComponent
 import ge.yet.game.fallingblocks.gameFixture
 import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultContent
 import ge.yet.game.fallingblocks.ui.screen.result.FallingBlocksResultTags
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -25,7 +25,7 @@ class FallingBlocksResultContentTest {
     fun `continue result is a full destination with final board and advertisement semantics`() =
         runComposeUiTest {
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     Box(Modifier.size(390.dp, 760.dp)) {
                         FallingBlocksResultContent(
                             model = resultModel(seconds = 5),
@@ -54,7 +54,7 @@ class FallingBlocksResultContentTest {
     @Test
     fun `new game replaces timed continuation`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 Box(Modifier.size(800.dp, 400.dp)) {
                     FallingBlocksResultContent(
                         model = resultModel(seconds = 0),

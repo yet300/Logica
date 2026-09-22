@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Produce two validated four-image English store screenshot sets for Logica and upload them to the current App Store Connect and Google Play listings without submitting a release.
+**Goal:** Produce two validated four-image English store screenshot sets for Funfolio and upload them to the current App Store Connect and Google Play listings without submitting a release.
 
 **Architecture:** Preserve the supplied simulator captures as source-of-truth UI, create one restrained AI-generated abstract background, and use a small Pillow renderer for deterministic typography, cropping, and platform-specific composition. A focused unittest verifies dimensions, color mode, filenames, and safe crop limits; visual contact sheets provide the final human check before browser upload.
 
@@ -406,7 +406,7 @@ Check:
 - no ad banner or “Test mode” overlay is visible;
 - each title is readable at contact-sheet size;
 - no title collides with the UI card;
-- board, score, tutorial hand, and Logica home identity remain recognizable;
+- board, score, tutorial hand, and Funfolio home identity remain recognizable;
 - all four files feel like one series.
 
 - [ ] **Step 2: Inspect all eight masters**
@@ -450,7 +450,7 @@ Navigate to:
 https://appstoreconnect.apple.com/apps/6765924581/distribution/ios/version/inflight
 ```
 
-Expected: the editable version page for Logica is visible.
+Expected: the editable version page for Funfolio is visible.
 
 - [ ] **Step 2: Select the English (U.S.) localization and 6.5-inch display**
 

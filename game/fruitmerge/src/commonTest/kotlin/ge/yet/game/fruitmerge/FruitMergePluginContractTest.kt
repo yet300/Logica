@@ -38,7 +38,7 @@ import ge.yet.game.miniapp.testkit.MiniAppLifecycleHarness
 import ge.yet.game.miniapp.testkit.MutableMiniAppVisibilitySource
 import ge.yet.game.miniapp.testkit.RecordingMiniAppSessionHost
 import ge.yet.game.miniapp.testkit.TestMiniAppSessionContext
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -134,7 +134,7 @@ class FruitMergePluginContractTest {
             ),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(
                     modifier = Modifier
                         .size(width = 320.dp, height = 480.dp)

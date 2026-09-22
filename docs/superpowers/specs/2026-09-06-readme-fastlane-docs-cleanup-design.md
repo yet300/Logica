@@ -2,7 +2,7 @@
 
 ## Goal
 
-Keep the repository root README focused on Logica as a product and contributor
+Keep the repository root README focused on Funfolio as a product and contributor
 project. Move operational screenshot, store-listing, signing, and release
 instructions into Fastlane-owned documentation. Remove command-line surfaces
 that are not used by GitHub Actions or another retained automation path.
@@ -90,7 +90,7 @@ every transitive dependency or the entire version catalog.
 
 ## Sponsorship
 
-Replace the generic `Support Me` heading with a clearer `Sponsor Logica`
+Replace the generic `Support Me` heading with a clearer `Sponsor Funfolio`
 section. It will state that the project welcomes:
 
 - direct financial sponsorship;

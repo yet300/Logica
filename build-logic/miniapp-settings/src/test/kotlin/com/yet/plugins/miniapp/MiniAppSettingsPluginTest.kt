@@ -221,7 +221,7 @@ class MiniAppSettingsPluginTest {
             }
 
             plugins {
-                id("logica.miniapp.settings")
+                id("funfolio.miniapp.settings")
             }
 
             $miniApps

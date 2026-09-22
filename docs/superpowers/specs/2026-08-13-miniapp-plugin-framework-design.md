@@ -2,7 +2,7 @@
 
 ## Context
 
-Logica is evolving from a single Block Blast game into a catalog application
+Funfolio is evolving from a single Block Blast game into a catalog application
 that ships multiple trusted mini-apps, initially games. A contributor creates a
 Gradle module such as `:game:snake`; after that module is reviewed and added to
 the production allowlist, it is compiled into the next Android and iOS release
@@ -136,7 +136,7 @@ framework version:
     Block Blast plugin, child graph, internal flow, persistence and UI
 
 :composeApp
-    Final AppGraph, LogicaTheme, MiniAppFrame and platform capability adapters
+    Final AppGraph, FunfolioTheme, MiniAppFrame and platform capability adapters
 ```
 
 No additional `app-shell:component` or `app-shell:ui` modules are introduced.
@@ -304,7 +304,7 @@ cast.
 Every running session is rendered by a shared slot-based frame:
 
 ```text
-LogicaTheme
+FunfolioTheme
 └── MiniAppFrame
     ├── Top bar
     │   ├── Back
@@ -347,7 +347,7 @@ type crosses the plugin boundary. Catalog advertising, if ever desired, is a
 separate host product decision; this design places the common banner in the
 running mini-app frame.
 
-The application uses `LogicaTheme` as the base for Catalog, Settings, Review,
+The application uses `FunfolioTheme` as the base for Catalog, Settings, Review,
 error states and sheets. A running session declares a `ColorScheme`; Root
 resolves it against that base and applies it to the complete MiniApp frame, so
 Back, Settings and the banner surface match the game. A plugin may still wrap
@@ -620,7 +620,7 @@ A plugin module applies one repository convention plugin:
 
 ```kotlin
 plugins {
-    id("logica.miniapp")
+    id("funfolio.miniapp")
 }
 ```
 
@@ -830,7 +830,7 @@ capability; the adapter and consent policy remain outside the plugin.
 
 - Replace Home/Game/Result Root states with Catalog/RunningMiniApp.
 - Add non-restored active-session navigation semantics.
-- Add `LogicaTheme` and the host-owned `MiniAppFrame`.
+- Add `FunfolioTheme` and the host-owned `MiniAppFrame`.
 - Centralize Back, system Back, Settings, Review, insets, and bottom-banner UI.
 - Remove direct Block Blast rendering from `:composeApp`.
 

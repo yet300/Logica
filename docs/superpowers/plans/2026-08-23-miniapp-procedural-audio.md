@@ -410,7 +410,7 @@
 - Modify: `build-logic/convention/src/test/kotlin/com/yet/plugins/miniapp/CreateMiniAppTaskTest.kt`
 - Modify: generated scaffold templates under `build-logic/convention/src/main/kotlin/com/yet/plugins/miniapp/` as located by the existing renderer tests.
 
-- [ ] RED-test that `logica.miniapp` supplies `:miniapp:audio-presets` to commonMain, while direct Android/iOS audio libraries and raw platform audio imports remain forbidden for game modules.
+- [ ] RED-test that `funfolio.miniapp` supplies `:miniapp:audio-presets` to commonMain, while direct Android/iOS audio libraries and raw platform audio imports remain forbidden for game modules.
 - [ ] Add `implementation(project(":miniapp:audio-presets"))` in the convention. Keep the existing single `api(:miniapp:metro)` framework edge.
 - [ ] Update generated scaffold contract tests so `context.audio` compiles and a shared SFX preset can be referenced without extra dependency boilerplate. Do not autoplay audio in generated sample code.
 - [ ] Add boundary diagnostics for direct external/platform audio dependencies, without rejecting `:miniapp:audio` or `:miniapp:audio-presets` supplied by convention.

@@ -7,7 +7,7 @@
 ## Objective
 
 Create `game.fallingblocks`, an original Kotlin Multiplatform falling-block
-MiniApp for Logica. It provides one endless, gesture-only mode, exact resumable
+MiniApp for Funfolio. It provides one endless, gesture-only mode, exact resumable
 state, a mandatory visual tutorial, a centered adaptive board, theme-derived
 CRT styling, an advertisement-backed single continuation, and original
 procedural audio.
@@ -47,7 +47,7 @@ Detailed product decisions and acceptance evidence live in:
 
 ## Rules Model
 
-The logical board contains ten columns, twenty visible rows, and two hidden
+The funfoliol board contains ten columns, twenty visible rows, and two hidden
 spawn rows. The standard seven free tetrominoes are produced by a deterministic
 seven-bag generator. Five upcoming pieces are visible. There is no Hold state or
 action.
@@ -159,7 +159,7 @@ All values use local snake-case keys through `MiniAppStorage`:
 The versioned snapshot contains settled cells, active piece and origin,
 rotation metadata, queue, bag contents and cursor, RNG state, score, level,
 lines, combo, back-to-back state, remaining lock duration, reset count,
-continuation count, run identity, and schema version. It stores logical
+continuation count, run identity, and schema version. It stores funfoliol
 durations rather than wall-clock timestamps and excludes animation, particles,
 pointer state, pending audio, and advertisement callbacks.
 

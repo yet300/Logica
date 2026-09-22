@@ -70,7 +70,7 @@ internal fun RootChildContent(
             val session = (child.state as? RootComponent.MiniAppState.Content)?.session
             val frameMode = session?.frameMode?.subscribeAsState()?.value
                 ?: MiniAppFrameMode.Standard
-            // Resolved under the outer Logica theme, before installing the session theme.
+            // Resolved under the outer Funfolio theme, before installing the session theme.
             val baseBackground = MaterialTheme.colorScheme.background
             val declaredScheme = session?.colorScheme() ?: MaterialTheme.colorScheme
             val scheme = declaredScheme.copy(

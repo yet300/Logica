@@ -11,12 +11,12 @@
 - **Project path:** `:game:fallingblocks`
 - **Display name:** Falling Blocks
 - **Category:** Game
-- **Authors:** Logica contributors, with implementation assistance from OpenAI Codex
+- **Authors:** Funfolio contributors, with implementation assistance from OpenAI Codex
 - **Mode:** One endless run; no difficulty selector
 - **Platforms:** Android and iOS, phone and tablet, portrait and landscape
 - **Language at launch:** English only, through Compose Resources
 
-Falling Blocks is a gesture-only falling-tetromino game for Logica. The board
+Falling Blocks is a gesture-only falling-tetromino game for Funfolio. The board
 remains the visual center on every window size. The presentation inherits
 `MaterialTheme.colorScheme`, adds a restrained theme-derived CRT treatment to
 the playfield, and uses original procedural music and effects.

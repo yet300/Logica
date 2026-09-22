@@ -857,7 +857,7 @@ rtk git commit -m "feat: add resilient falling blocks result flow"
 ```
 
 Repeat physical motions at densities 1f, 2f and 3.5f and assert identical
-logical events.
+funfoliol events.
 
 - [ ] **Step 2: Implement a pure sequence classifier**
 

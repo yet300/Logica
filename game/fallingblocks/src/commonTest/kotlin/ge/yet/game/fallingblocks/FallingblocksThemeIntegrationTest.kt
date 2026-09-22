@@ -27,7 +27,7 @@ import ge.yet.game.fallingblocks.ui.screen.root.FallingBlocksScoreHeader
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialOverlay
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialProgress
 import ge.yet.game.fallingblocks.ui.tutorial.TutorialStep
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -68,7 +68,7 @@ class FallingblocksThemeIntegrationTest {
     @Test
     fun `toolbar score and best use block blast style pills`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 FallingBlocksScoreHeader(score = 1_250, bestScore = 2_500)
             }
         }
@@ -82,7 +82,7 @@ class FallingblocksThemeIntegrationTest {
     @Test
     fun `all English tutorial steps render with no Hold or Skip affordance`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Column {
                     TutorialStep.entries.forEach { step ->
                         Box(Modifier.size(240.dp, 180.dp)) {
@@ -108,7 +108,7 @@ class FallingblocksThemeIntegrationTest {
     @Test
     fun `result action keeps the Material minimum touch target without a scrim`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FallingBlocksResultContent(
                         model = ResultComponent.Model(

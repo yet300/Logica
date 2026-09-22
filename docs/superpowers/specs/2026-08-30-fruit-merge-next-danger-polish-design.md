@@ -9,7 +9,7 @@ the single-canvas renderer inexpensive on low-end devices.
 ## Approved visual direction
 
 The reference screenshot is used for hierarchy and interaction cues, not copied
-artwork. The result remains inside the existing Logica Material 3 design system.
+artwork. The result remains inside the existing Funfolio Material 3 design system.
 The first four merge levels become blueberry, raspberry, strawberry and lime.
 They use deliberately flat vector illustration: strong silhouettes, a small
 controlled palette, sparse highlights and compact graphic faces. Soft 3D gloss,

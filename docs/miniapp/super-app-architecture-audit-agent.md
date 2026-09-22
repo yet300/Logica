@@ -1,10 +1,10 @@
-# Prompt: research and audit Logica as a MiniApp super-app
+# Prompt: research and audit Funfolio as a MiniApp super-app
 
 Copy the block below into a research-capable coding agent. It must finish the
 research and evidence report before proposing implementation changes.
 
 ```text
-You are working in the Logica — Block Puzzle repository, a Kotlin
+You are working in the Funfolio: Offline Games repository, a Kotlin
 Multiplatform super-app for Android and iOS. One host application contains a
 catalog of short, local-first MiniApp sessions. First conduct external
 research, then perform a complete evidence-based audit from product model and
@@ -40,7 +40,7 @@ Rules:
 Order of work:
 
 A. Product research — build a table for four or more hubs, cite sources, and
-   identify recurring principles and anti-patterns relevant to Logica.
+   identify recurring principles and anti-patterns relevant to Funfolio.
 B. Architecture — build a dependency map for composeApp/core/feature/game/
    miniapp; inspect ownership, Metro child graphs, Decompose navigation,
    lifecycle, visibility/audio/storage contracts, persistence, diagnostics,

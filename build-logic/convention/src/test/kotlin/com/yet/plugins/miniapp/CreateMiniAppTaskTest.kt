@@ -32,7 +32,7 @@ class CreateMiniAppTaskTest {
             target.resolve("AGENTS.md").readText(),
             "MiniAppId(\"game.snake\").storageKey(localName)",
         )
-        assertEquals("plugins { id(\"logica.miniapp\") }\n", target.resolve("build.gradle.kts").readText())
+        assertEquals("plugins { id(\"funfolio.miniapp\") }\n", target.resolve("build.gradle.kts").readText())
         val plugin = target.resolve("src/commonMain/kotlin/ge/yet/game/snake/SnakePlugin.kt").readText()
         assertEquals(true, plugin.contains("import ge.yet.game.snake.generated.resources.miniapp_title"))
         assertEquals(true, plugin.contains("import ge.yet.game.snake.generated.resources.miniapp_description"))
@@ -166,7 +166,7 @@ class CreateMiniAppTaskTest {
     fun `root task creates a discoverable but unshipped game under strict configuration cache`() {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
         fixture.write("build.gradle.kts", """
-            plugins { id("logica.miniapp.root") }
+            plugins { id("funfolio.miniapp.root") }
             allprojects { repositories { google(); mavenCentral() } }
         """)
         fixture.run(
@@ -189,7 +189,7 @@ class CreateMiniAppTaskTest {
     @Test
     fun `root create task action is configuration-cache reusable`() {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
-        fixture.write("build.gradle.kts", "plugins { id(\"logica.miniapp.root\") }")
+        fixture.write("build.gradle.kts", "plugins { id(\"funfolio.miniapp.root\") }")
         fixture.write("game/snake/build.gradle.kts", "plugins { base }")
         fixture.write("game/snake/keep.txt", "keep")
         val first = fixture.runAndFail(
@@ -211,7 +211,7 @@ class CreateMiniAppTaskTest {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
         fixture.copyRealMiniAppContracts()
         fixture.write("build.gradle.kts", """
-            plugins { id("logica.miniapp.root") }
+            plugins { id("funfolio.miniapp.root") }
             allprojects { repositories { google(); mavenCentral() } }
         """)
         fixture.run(
@@ -236,7 +236,7 @@ class CreateMiniAppTaskTest {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
         fixture.copyRealMiniAppContracts()
         fixture.write("build.gradle.kts", """
-            plugins { id("logica.miniapp.root") }
+            plugins { id("funfolio.miniapp.root") }
             allprojects { repositories { google(); mavenCentral() } }
         """)
         fixture.run(
@@ -266,7 +266,7 @@ class CreateMiniAppTaskTest {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
         fixture.copyRealMiniAppContracts()
         fixture.write("build.gradle.kts", """
-            plugins { id("logica.miniapp.root") }
+            plugins { id("funfolio.miniapp.root") }
             allprojects { repositories { google(); mavenCentral() } }
         """)
         fixture.run(
@@ -329,7 +329,7 @@ class CreateMiniAppTaskTest {
     @Test
     fun `root task rejects malformed id blank name and traversal without source or staging writes`() {
         val fixture = MiniAppBundleGradleTestProject(temporaryFolder, declarations = "", useMarker = false)
-        fixture.write("build.gradle.kts", "plugins { id(\"logica.miniapp.root\") }")
+        fixture.write("build.gradle.kts", "plugins { id(\"funfolio.miniapp.root\") }")
 
         val malformed = fixture.runAndFail(
             "createMiniApp", "-PminiAppId=game.Snake", "-PminiAppName=Snake",

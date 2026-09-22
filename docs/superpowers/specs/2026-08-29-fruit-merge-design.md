@@ -6,7 +6,7 @@
 
 ## Objective
 
-Create an original Kotlin Multiplatform Fruit Merge MiniApp for Logica. The
+Create an original Kotlin Multiplatform Fruit Merge MiniApp for Funfolio. The
 game uses the established drop-and-merge rules of the fruit-merging puzzle
 genre, an original visual identity, deterministic lightweight circle physics,
 adaptive Compose Multiplatform UI, and two consumable board-management actions.
@@ -38,7 +38,7 @@ font, or audio asset is required.
 - **Project path:** `:game:fruitmerge`
 - **Display name:** Fruit Merge
 - **Category:** `game`
-- **Authors:** Logica contributors, with implementation assistance from OpenAI
+- **Authors:** Funfolio contributors, with implementation assistance from OpenAI
   Codex
 - **Summary:** Drop expressive fruit, combine matching pairs, manage the pile,
   and chase a high score without crossing the danger line.

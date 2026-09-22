@@ -30,10 +30,10 @@ The supplied Klang examples establish the desired expressive range only: layered
 └── plugins/
     ├── marketplace.json                  # repository-local Codex catalog
     └── plugins/
-        └── logica-procedural-audio-composer/
+        └── funfolio-procedural-audio-composer/
             ├── .codex-plugin/plugin.json
             └── skills/
-                └── logica-procedural-audio-composer/
+                └── funfolio-procedural-audio-composer/
                     ├── SKILL.md           # canonical workflow
                     ├── agents/openai.yaml
                     └── references/
@@ -43,7 +43,7 @@ The supplied Klang examples establish the desired expressive range only: layered
                         └── evaluation-rubric.md
 ```
 
-The plugin skill is the canonical source. Its skill name is `logica-procedural-audio-composer`. The short `.agents/skills/procedural-audio-composer` entrypoint uses a distinct name to avoid a duplicate-name collision when the plugin is installed, and explicitly loads the canonical skill by repository-relative path. This lets agents that understand the generic `.agents/skills` convention use the workflow without installing a Codex plugin, while Codex can install and present the complete plugin through the repository marketplace.
+The plugin skill is the canonical source. Its skill name is `funfolio-procedural-audio-composer`. The short `.agents/skills/procedural-audio-composer` entrypoint uses a distinct name to avoid a duplicate-name collision when the plugin is installed, and explicitly loads the canonical skill by repository-relative path. This lets agents that understand the generic `.agents/skills` convention use the workflow without installing a Codex plugin, while Codex can install and present the complete plugin through the repository marketplace.
 
 The plugin contains no MCP server, app connector, hook, executable script, network dependency, or copied audio asset. Its only capability is maintained agent guidance.
 

@@ -42,11 +42,11 @@ object AppConfig {
     // ── Legal ──────────────────────────────────────────────────────────────
     /** Public privacy-policy URL linked from the Settings screen. */
     const val PRIVACY_POLICY_URL: String =
-        "https://github.com/yet300/Logica/blob/main/privacy_policy.md"
+        "https://github.com/yet300/funfolio/blob/main/privacy_policy.md"
 
     /** Public source-code repository linked from the Settings screen. */
     const val GITHUB_URL: String =
-        "https://github.com/yet300/Logica"
+        "https://github.com/yet300/funfolio"
 
     /** README section containing the current donation addresses. */
     const val GITHUB_SUPPORT_URL: String =

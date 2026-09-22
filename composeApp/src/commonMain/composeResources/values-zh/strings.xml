@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">开始</string>
     <string name="settings">设置</string>
     <string name="sound">声音</string>
@@ -27,8 +27,8 @@
     <string name="support_game">支持游戏</string>
     <string name="support_game_subtitle">在 GitHub 上为项目加星或捐赠</string>
     <string name="disable_ads">关闭广告？</string>
-    <string name="disable_ads_title">广告让 Logica 保持免费</string>
-    <string name="disable_ads_body">广告帮助我们改进游戏，并让所有功能保持免费。关闭广告后，复活仍然免费 — 你也可以通过 GitHub 加星或捐赠来支持 Logica。</string>
+    <string name="disable_ads_title">广告让 Funfolio 保持免费</string>
+    <string name="disable_ads_body">广告帮助我们改进游戏，并让所有功能保持免费。关闭广告后，复活仍然免费 — 你也可以通过 GitHub 加星或捐赠来支持 Funfolio。</string>
     <string name="keep_ads">保留广告</string>
     <string name="disable_ads_anyway">仍然关闭</string>
     <string name="cd_settings">设置</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s不可用</string>
     <string name="back_to_catalog">返回目录</string>
     <string name="exit">退出</string>
-    <string name="review_prompt_title">喜欢Logica吗？</string>
+    <string name="review_prompt_title">喜欢Funfolio吗？</string>
     <string name="review_prompt_body">您的评价可以帮助更多拼图玩家找到这款游戏。</string>
     <string name="review_prompt_leave_feedback">留下反馈</string>
     <string name="review_prompt_dont_show">不再显示</string>

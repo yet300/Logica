@@ -32,7 +32,7 @@ import ge.yet.game.twentyfortyeight.generated.resources.move_down
 import ge.yet.game.twentyfortyeight.generated.resources.move_left
 import ge.yet.game.twentyfortyeight.generated.resources.move_right
 import ge.yet.game.twentyfortyeight.generated.resources.move_up
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import org.jetbrains.compose.resources.stringResource
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -45,7 +45,7 @@ class BoardSemanticsTest {
     fun `RTL board exposes one row-major summary and no tile descriptions`() = runComposeUiTest {
         var expectedSummary = ""
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                     ResourceExpectations { summary, _ -> expectedSummary = summary }
                     TwentyFortyEightBoard(
@@ -77,7 +77,7 @@ class BoardSemanticsTest {
         var expectedSummary = ""
         var expectedActionLabels = emptyList<String>()
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                     ResourceExpectations { summary, actionLabels ->
                         expectedSummary = summary
@@ -111,7 +111,7 @@ class BoardSemanticsTest {
             val textLayouts = mutableMapOf<Long, TextLayoutResult>()
             var expectedSummary = ""
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     val density = LocalDensity.current
                     CompositionLocalProvider(
                         LocalDensity provides Density(density.density, fontScale = 2f),

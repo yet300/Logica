@@ -26,7 +26,7 @@ internal class MiniAppScaffoldRenderer(
     }
 
     fun writeTo(root: File) {
-        write(root, "build.gradle.kts", "plugins { id(\"logica.miniapp\") }\n")
+        write(root, "build.gradle.kts", "plugins { id(\"funfolio.miniapp\") }\n")
         write(root, "AGENTS.md", """
             # $classPrefix MiniApp
 

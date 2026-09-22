@@ -33,7 +33,7 @@ import ge.yet.game.fruitmerge.component.game.FruitMergeComponent
 import ge.yet.game.fruitmerge.component.game.PaidAction
 import ge.yet.game.fruitmerge.component.game.PaidActionToken
 import ge.yet.game.fruitmerge.component.game.TutorialStep
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import ge.yet.game.uikit.theme.PieceColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -45,11 +45,11 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class FruitMergeScreenTest {
     @Test
-    fun `light market palette is derived from the shared Logica design system`() = runComposeUiTest {
+    fun `light market palette is derived from the shared Funfolio design system`() = runComposeUiTest {
         var capturedPalette: FruitMergePalette? = null
         var capturedScheme: androidx.compose.material3.ColorScheme? = null
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 capturedScheme = MaterialTheme.colorScheme
                 capturedPalette = rememberFruitMergePalette()
             }
@@ -74,7 +74,7 @@ class FruitMergeScreenTest {
     fun `compact layout keeps board and consumable actions reachable`() = runComposeUiTest {
         val component = FakeFruitMergeComponent(playingModel())
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -99,7 +99,7 @@ class FruitMergeScreenTest {
             ),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -117,7 +117,7 @@ class FruitMergeScreenTest {
             CompositionLocalProvider(
                 LocalDensity provides Density(density.density, fontScale = 1.5f),
             ) {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     Box(Modifier.size(390.dp, 760.dp)) {
                         FruitMergeScreen(component, {}, {})
                     }
@@ -136,7 +136,7 @@ class FruitMergeScreenTest {
     @Test
     fun `market price tag is compact and exact for accessibility`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     MarketPriceTag(score = 1_250, bestScore = 2_000_000)
                 }
@@ -156,7 +156,7 @@ class FruitMergeScreenTest {
             CompositionLocalProvider(
                 LocalDensity provides Density(density.density, fontScale = 1.3f),
             ) {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     // Narrow top-bar center slot, like a 402pt phone with crowded chrome.
                     Box(Modifier.size(200.dp, 120.dp)) {
                         MarketPriceTag(score = 8_765_432_100, bestScore = 12_500_000_000)
@@ -191,7 +191,7 @@ class FruitMergeScreenTest {
             ),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -206,7 +206,7 @@ class FruitMergeScreenTest {
     fun `wide layout keeps the phone composition centered and width constrained`() = runComposeUiTest {
         val component = FakeFruitMergeComponent(playingModel())
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(1000.dp, 900.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -233,7 +233,7 @@ class FruitMergeScreenTest {
         )
         var requested: PaidActionToken? = null
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, { requested = it }, {})
                 }
@@ -250,7 +250,7 @@ class FruitMergeScreenTest {
     fun `tap above the board still drops through the full viewport`() = runComposeUiTest {
         val component = FakeFruitMergeComponent(playingModel())
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -272,7 +272,7 @@ class FruitMergeScreenTest {
             base.copy(game = base.game.copy(dropCooldownSeconds = 0.20f)),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }
@@ -292,7 +292,7 @@ class FruitMergeScreenTest {
             playingModel().copy(tutorialStep = TutorialStep.Gesture),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeScreen(component, {}, {})
                 }

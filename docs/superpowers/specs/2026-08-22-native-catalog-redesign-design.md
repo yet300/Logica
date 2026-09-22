@@ -26,7 +26,7 @@ download/install progress, ratings, ads, or remote loading/error state.
 
 `CatalogContent` renders a transparent Material 3 `Scaffold` over the existing
 Root ambient background. Its only app chrome is a `CenterAlignedTopAppBar`
-whose title is `Logica`. The bar contains no navigation icon and no actions.
+whose title is `Funfolio`. The bar contains no navigation icon and no actions.
 When content scrolls beneath it, the bar may use a restrained Haze backdrop
 effect; Haze does not apply to cards or dialogs.
 
@@ -155,7 +155,7 @@ with a centered maximum width.
 
 Compose tests prove:
 
-- `CenterAlignedTopAppBar` displays `Logica` and has no actions;
+- `CenterAlignedTopAppBar` displays `Funfolio` and has no actions;
 - cards use the expected title, description, icon, and Play action;
 - card click opens details;
 - long press exposes only Play and Details;

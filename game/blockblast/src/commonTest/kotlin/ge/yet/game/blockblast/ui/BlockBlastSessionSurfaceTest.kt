@@ -14,7 +14,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import ge.yet.game.blockblast.ui.screen.root.RootBackground
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,7 +23,7 @@ class BlockBlastSessionSurfaceTest {
     @Test
     fun session_background_fills_the_host_owned_layer() = runComposeUiTest {
         setContent {
-            LogicaTheme {
+            FunfolioTheme {
                 Box(
                     modifier = Modifier
                         .size(width = 320.dp, height = 480.dp)

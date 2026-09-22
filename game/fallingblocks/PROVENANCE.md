@@ -5,7 +5,7 @@
 ## Authorship
 
 The Kotlin, Compose, procedural visuals and procedural audio for this MiniApp
-are authored for the Logica repository by its contributors with implementation
+are authored for the Funfolio repository by its contributors with implementation
 assistance from OpenAI Codex.
 
 ## References
@@ -24,7 +24,7 @@ assistance from OpenAI Codex.
   original Compose-drawn gesture trails.
 - The user-provided Sprudel text is an aesthetic and layering reference only.
   Its recognizable melody, rhythm and parameter sequence are excluded. Music
-  and effects are declared through Logica's procedural-audio API.
+  and effects are declared through Funfolio's procedural-audio API.
 
 ## Assets and limitations
 

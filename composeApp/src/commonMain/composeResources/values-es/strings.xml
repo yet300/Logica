@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Jugar</string>
     <string name="settings">Ajustes</string>
     <string name="sound">Sonido</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Apoya el juego</string>
     <string name="support_game_subtitle">Dale una estrella al proyecto en GitHub o haz una donación</string>
     <string name="disable_ads">¿Desactivar la publicidad?</string>
-    <string name="disable_ads_title">La publicidad mantiene Logica gratis</string>
-    <string name="disable_ads_body">La publicidad nos ayuda a mejorar el juego y a mantener todas las funciones gratis. Si la desactivas, las reanimaciones seguirán siendo gratuitas, y aún podrás apoyar Logica con una estrella en GitHub o una donación.</string>
+    <string name="disable_ads_title">La publicidad mantiene Funfolio gratis</string>
+    <string name="disable_ads_body">La publicidad nos ayuda a mejorar el juego y a mantener todas las funciones gratis. Si la desactivas, las reanimaciones seguirán siendo gratuitas, y aún podrás apoyar Funfolio con una estrella en GitHub o una donación.</string>
     <string name="keep_ads">Mantener la publicidad</string>
     <string name="disable_ads_anyway">Desactivar de todos modos</string>
     <string name="cd_settings">Ajustes</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s no está disponible</string>
     <string name="back_to_catalog">Volver al catálogo</string>
     <string name="exit">Salir</string>
-    <string name="review_prompt_title">¿Disfrutando Logica?</string>
+    <string name="review_prompt_title">¿Disfrutando Funfolio?</string>
     <string name="review_prompt_body">Tu reseña ayuda a más jugadores de puzzles a encontrar el juego.</string>
     <string name="review_prompt_leave_feedback">Dejar comentario</string>
     <string name="review_prompt_dont_show">No mostrar de nuevo</string>

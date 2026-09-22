@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Turn Logica from a Block Blast-specific application into a compile-time catalog whose reviewed `MiniApp` modules are discovered with Metro, shipped through one production allowlist, and launched behind a generic retained session boundary.
+**Goal:** Turn Funfolio from a Block Blast-specific application into a compile-time catalog whose reviewed `MiniApp` modules are discovered with Metro, shipped through one production allowlist, and launched behind a generic retained session boundary.
 
 **Architecture:** Stable IDs, manifests, session contracts, and an immutable registry live in inward-facing `:miniapp:*` modules. Each accepted plugin contributes one app-scoped descriptor and creates one `MiniAppSessionScope` Metro child graph; Root owns Catalog/Running navigation, lifecycle visibility, Settings/Review overlays, and stale-callback protection, while `:composeApp` owns the common frame, theme, ads, and platform adapters. Block Blast moves Playing/Result/Revive and resume selection into its own session before Home and all concrete game references are removed from the host.
 
@@ -17,7 +17,7 @@
 - Keep the app usable at every commit. The old Home/Root flow remains until the generic Catalog-to-Block-Blast path is green.
 - Do not introduce a second `GameScope`: the shared `MiniAppSessionScope` is the session lifetime for games and future non-game mini-apps; each concrete plugin still owns a distinct graph-extension type.
 - Counter proves the aggregation mechanism first in a non-shipping graph. The production `plugin -> bundle -> composeApp` proof happens immediately after the real Block Blast plugin exists; Counter is never temporarily allowlisted.
-- Do not weaken the plugin dependency boundary to make Block Blast pass. Remove its `:monetization:ads` dependency first, then apply `logica.miniapp`.
+- Do not weaken the plugin dependency boundary to make Block Blast pass. Remove its `:monetization:ads` dependency first, then apply `funfolio.miniapp`.
 - Use `rtk` before every shell command. Run the narrow RED/GREEN command shown in each task before broad verification.
 - Before each commit, run `rtk git diff --check` and inspect `rtk git status --short`; stage only files named by that task.
 
@@ -36,7 +36,7 @@
 | Block Blast | New `session/` and `di/BlockBlastSessionGraph.kt` own Playing/Result/Revive, child lifetime, resume choice, review requests, and plugin rendering. Existing repositories remain app-scoped and existing engine/UI stays internal. |
 | Catalog | `:feature:catalog` snapshots registry manifests, emits only `onPlay(MiniAppId)`, and owns uniform cards/resources. |
 | Root | `RootComponent` and `DefaultRootComponent` expose only Catalog/RunningMiniApp plus global sheets; an internal session key and lifecycle scope reject stale callbacks. |
-| Host UI | `LogicaTheme`, `MiniAppFrame`, generic `RootContent`, AdMob interstitial capability, and retained Android root remain in `:composeApp`/native shell. |
+| Host UI | `FunfolioTheme`, `MiniAppFrame`, generic `RootContent`, AdMob interstitial capability, and retained Android root remain in `:composeApp`/native shell. |
 | Removal | `:feature:home`, `GameSaveApi`, direct Root/ComposeApp Block Blast dependencies, game-owned Back/Settings/banner, and legacy bindings are deleted only after end-to-end green. |
 
 ### Task 1: Add settings-phase discovery and the authoritative shipping model
@@ -120,7 +120,7 @@ pluginManagement {
 }
 ```
 
-`withPluginClasspath()` supplies only the repository's `logica.*` plugins; the fixture above supplies their external plugin IDs. Keep Kotlin/AGP/Compose/Metro as `compileOnly` in the real build logic.
+`withPluginClasspath()` supplies only the repository's `funfolio.*` plugins; the fixture above supplies their external plugin IDs. Keep Kotlin/AGP/Compose/Metro as `compileOnly` in the real build logic.
 
 - [ ] **Step 2: Write failing settings-plugin tests.**
 
@@ -185,7 +185,7 @@ Run:
 rtk ./gradlew -p build-logic :convention:test --tests '*MiniAppSettingsPluginTest'
 ```
 
-Expected: FAIL because `logica.miniapp.settings` and its extension do not exist.
+Expected: FAIL because `funfolio.miniapp.settings` and its extension do not exist.
 
 - [ ] **Step 4: Implement the immutable settings model and discovery plugin.**
 
@@ -277,7 +277,7 @@ Register the plugin:
 
 ```kotlin
 register("miniAppSettings") {
-    id = "logica.miniapp.settings"
+    id = "funfolio.miniapp.settings"
     implementationClass = "com.yet.plugins.miniapp.MiniAppSettingsPlugin"
 }
 ```
@@ -287,7 +287,7 @@ Apply it in `settings.gradle.kts`, remove the static `include(":game:blockblast"
 ```kotlin
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-    id("logica.miniapp.settings")
+    id("funfolio.miniapp.settings")
 }
 
 miniApps {
@@ -747,7 +747,7 @@ Build isolated fake projects with `:miniapp:metro`, one allowlisted game, and on
 ```kotlin
 @Test fun `allowlisted project is exactly one commonMain api dependency`()
 @Test fun `discovered non allowlisted project is absent from bundle`()
-@Test fun `allowlisted project without logica miniapp convention fails verification`()
+@Test fun `allowlisted project without funfolio miniapp convention fails verification`()
 @Test fun `generated expectation contains allowlist ids in declaration order`()
 @Test fun `verify task rejects a dependency not represented by allowlist`()
 @Test fun `bundle configuration reuses configuration cache`()
@@ -773,7 +773,7 @@ The generated expectation class itself is a stable runtime bridge exported by `:
 rtk ./gradlew -p build-logic :convention:test --tests '*MiniAppBundlePluginTest'
 ```
 
-Expected: FAIL because `logica.miniapp.bundle` is unknown.
+Expected: FAIL because `funfolio.miniapp.bundle` is unknown.
 
 - [ ] **Step 3: Implement generation and verification tasks.**
 
@@ -848,13 +848,13 @@ internal abstract class VerifyMiniAppBundleTask : DefaultTask() {
             "Mini-app bundle mismatch: " +
                 "missing=$missing, unexpected=$unexpected, " +
                 "duplicates=$duplicateDependencies, " +
-                "withoutLogicaMiniApp=$withoutConvention"
+                "withoutFunfolioMiniApp=$withoutConvention"
         }
     }
 }
 ```
 
-This proves exact dependency equality, exactly-once wiring, and that every allowlisted project applies `logica.miniapp`; all diagnostics use stable ordering.
+This proves exact dependency equality, exactly-once wiring, and that every allowlisted project applies `funfolio.miniapp`; all diagnostics use stable ordering.
 
 - [ ] **Step 4: Implement the bundle plugin and register it.**
 
@@ -889,7 +889,7 @@ class MiniAppBundlePlugin : Plugin<Project> {
             val actual = directCommonMainProjectPaths(project)
                 .filterNot { it == ":miniapp:metro" }
             val usingConvention = expected.filter { path ->
-                project(path).pluginManager.hasPlugin("logica.miniapp")
+                project(path).pluginManager.hasPlugin("funfolio.miniapp")
             }
             verify.configure {
                 expectedProjectPaths.set(expected)
@@ -907,7 +907,7 @@ Register:
 
 ```kotlin
 register("miniAppBundle") {
-    id = "logica.miniapp.bundle"
+    id = "funfolio.miniapp.bundle"
     implementationClass = "com.yet.plugins.miniapp.MiniAppBundlePlugin"
 }
 ```
@@ -916,7 +916,7 @@ Replace `miniapp/bundle/build.gradle.kts` with:
 
 ```kotlin
 plugins {
-    id("logica.miniapp.bundle")
+    id("funfolio.miniapp.bundle")
 }
 ```
 
@@ -956,7 +956,7 @@ rtk git commit -m "build: derive shipping bundle from mini-app allowlist"
 
 - [ ] **Step 1: Write convention and boundary RED tests.**
 
-The convention TestKit fixture applies only `id("logica.miniapp")` and asserts:
+The convention TestKit fixture applies only `id("funfolio.miniapp")` and asserts:
 
 ```kotlin
 @Test fun `convention applies kmp compose resources and metro`()
@@ -1009,7 +1009,7 @@ Assert exact behavior rather than merely checking that a directory exists:
 ```kotlin
 @Test fun `game id generates exact buildable source tree`()
 @Test fun `sample id supports explicit project path`()
-@Test fun `generated build file applies only logica miniapp`()
+@Test fun `generated build file applies only funfolio miniapp`()
 @Test fun `generated session retains graph and applies viewport modifier`()
 @Test fun `generated component binds cleanup to Decompose lifecycle`()
 @Test fun `generated contributor guide requires namespaced storage helper`()
@@ -1044,7 +1044,7 @@ rtk ./gradlew -p build-logic :convention:test --tests '*MiniAppConventionPluginT
 
 Expected: FAIL because the three plugins and validation/scaffold classes do not exist.
 
-- [ ] **Step 4: Implement and register `logica.miniapp`.**
+- [ ] **Step 4: Implement and register `funfolio.miniapp`.**
 
 Derive resource packages only from validated Gradle path segments:
 
@@ -1107,7 +1107,7 @@ Register it:
 
 ```kotlin
 register("miniApp") {
-    id = "logica.miniapp"
+    id = "funfolio.miniapp"
     implementationClass = "com.yet.plugins.miniapp.MiniAppConventionPlugin"
 }
 ```
@@ -1205,7 +1205,7 @@ The renderer must emit these non-negotiable source shapes:
 ```kotlin
 // generated build.gradle.kts
 plugins {
-    id("logica.miniapp")
+    id("funfolio.miniapp")
 }
 ```
 
@@ -1238,7 +1238,7 @@ Register and apply the root plugin:
 
 ```kotlin
 register("miniAppRoot") {
-    id = "logica.miniapp.root"
+    id = "funfolio.miniapp.root"
     implementationClass = "com.yet.plugins.miniapp.MiniAppRootPlugin"
 }
 ```
@@ -1246,7 +1246,7 @@ register("miniAppRoot") {
 ```kotlin
 // root build.gradle.kts
 plugins {
-    id("logica.miniapp.root")
+    id("funfolio.miniapp.root")
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.android.kotlin.multiplatform.library) apply false
     alias(libs.plugins.composeMultiplatform) apply false
@@ -1760,7 +1760,7 @@ rtk git commit -m "feat: add typed mini-app host capabilities"
 
 - [ ] **Step 1: Move Root's game-flow assertions into a new session RED suite.**
 
-Add a temporary `implementation(projects.miniapp.api)` to Block Blast `commonMain` so the new session/component tests can compile against `MiniAppSessionHost` and visibility. Task 10 removes this explicit edge when `logica.miniapp` supplies the framework dependencies.
+Add a temporary `implementation(projects.miniapp.api)` to Block Blast `commonMain` so the new session/component tests can compile against `MiniAppSessionHost` and visibility. Task 10 removes this explicit edge when `funfolio.miniapp` supplies the framework dependencies.
 
 Build the session with recording Game/Result factories and `RecordingMiniAppSessionHost`. Add exact tests:
 
@@ -2141,11 +2141,11 @@ Until generic Root lands, keep current app behavior compiling with a private tra
 
 - [ ] **Step 6: Apply the strict convention only after the forbidden dependency is gone.**
 
-Replace the Block Blast plugin block and resource configuration with the following; remove the temporary explicit `projects.miniapp.api`/`projects.miniapp.metro` edges because `logica.miniapp` supplies the one framework dependency:
+Replace the Block Blast plugin block and resource configuration with the following; remove the temporary explicit `projects.miniapp.api`/`projects.miniapp.metro` edges because `funfolio.miniapp` supplies the one framework dependency:
 
 ```kotlin
 plugins {
-    id("logica.miniapp")
+    id("funfolio.miniapp")
 }
 
 kotlin {
@@ -2697,7 +2697,7 @@ rtk ./gradlew :feature:root:dependencies --configuration commonMainCompileDepend
 
 Expected: Root tests PASS; dependency output contains Catalog/MiniApp contracts and no `:game:blockblast`/`:feature:home`. Do not commit this public API change alone: Task 14 immediately updates ComposeApp and commits the complete compiling vertical slice.
 
-### Task 14: Add LogicaTheme, the common MiniAppFrame, and generic Root rendering
+### Task 14: Add FunfolioTheme, the common MiniAppFrame, and generic Root rendering
 
 **Files:**
 - Modify: `gradle/libs.versions.toml`
@@ -2768,7 +2768,7 @@ Expected: FAIL because generic Root children and frame are not rendered.
 
 ```kotlin
 @Composable
-fun LogicaTheme(
+fun FunfolioTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
@@ -2780,7 +2780,7 @@ fun LogicaTheme(
 }
 ```
 
-Remove `BlockBlastTheme`; update all host tests/previews/imports. A plugin may add a local viewport theme later, but the first migration inherits Logica's Material theme.
+Remove `BlockBlastTheme`; update all host tests/previews/imports. A plugin may add a local viewport theme later, but the first migration inherits Funfolio's Material theme.
 
 - [ ] **Step 4: Implement the slot-based frame with real layout ownership.**
 
@@ -2871,7 +2871,7 @@ Preserve the current `cupertinoPredictiveBackAnimation(backHandler = component.b
 
 ```kotlin
 AdMobProvider(state = monetizationState, configuration = adMobConfiguration) {
-    LogicaTheme(darkTheme = darkTheme) {
+    FunfolioTheme(darkTheme = darkTheme) {
         RootContent(component = rootComponent)
     }
 }
@@ -2885,7 +2885,7 @@ Remove Block Blast CompositionLocal imports/providers and direct Home/Game UI de
 rtk ./gradlew :game:blockblast:allTests :feature:catalog:allTests :feature:root:allTests :composeApp:allTests
 rtk ./gradlew :composeApp:compileAndroidMain :androidApp:assembleDebug :composeApp:linkDebugFrameworkIosSimulatorArm64
 rtk git add gradle/libs.versions.toml core/uikit game/blockblast feature/root composeApp
-rtk git commit -m "feat: host mini-apps in a common Logica frame"
+rtk git commit -m "feat: host mini-apps in a common Funfolio frame"
 ```
 
 Expected: cold launch renders Catalog; Play enters Block Blast; common Back/Settings and conditional bottom banner are outside the viewport; Root/ComposeApp compile with no Block Blast import.
@@ -2964,7 +2964,7 @@ Replace root creation with the verified Decompose 3.5.0 API:
 
 ```kotlin
 val rootComponent = retainedComponent(
-    key = "LogicaRoot",
+    key = "FunfolioRoot",
     handleBackButton = true,
     isStateSavingAllowed = { true },
 ) { componentContext ->

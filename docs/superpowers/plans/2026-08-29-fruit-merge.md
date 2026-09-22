@@ -137,7 +137,7 @@ Create `game/fruitmerge/submission.json` with the exact product contract:
   "id": "game.fruitmerge",
   "displayName": "Fruit Merge",
   "category": "game",
-  "authors": ["Logica contributors", "OpenAI Codex"],
+  "authors": ["Funfolio contributors", "OpenAI Codex"],
   "summary": "Drop expressive fruit, combine matching pairs, and manage the pile without crossing the danger line.",
   "rules": "Drop fruit into a bounded container. Equal fruit merge into the next original level and award score. Two maximum-level melons disappear for a bonus. A fruit continuously above the danger line for 1.5 seconds ends the run.",
   "controls": [

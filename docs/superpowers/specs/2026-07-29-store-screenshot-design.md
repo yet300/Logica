@@ -1,17 +1,17 @@
-# Logica Store Screenshot Design
+# Funfolio Store Screenshot Design
 
 ## Objective
 
-Create a conversion-focused English screenshot set for Logica and prepare it for:
+Create a conversion-focused English screenshot set for Funfolio and prepare it for:
 
 - Apple App Store, iPhone 6.5-inch display class
 - Google Play, phone listing
 
-The creative should position Logica as a calm, thoughtful alternative to louder block-puzzle games. It must use real application UI, exclude ad banners and test-mode overlays, and remain legible at store-thumbnail size.
+The creative should position Funfolio as a calm, thoughtful alternative to louder block-puzzle games. It must use real application UI, exclude ad banners and test-mode overlays, and remain legible at store-thumbnail size.
 
 ## Audience
 
-The primary audience is broad casual-puzzle players looking for a relaxing daily game. The creative should not frame Logica as a difficult specialist puzzle or a competitive arcade game.
+The primary audience is broad casual-puzzle players looking for a relaxing daily game. The creative should not frame Funfolio as a difficult specialist puzzle or a competitive arcade game.
 
 ## Value Proposition
 
@@ -43,7 +43,7 @@ Generative imagery may be used only for a subtle abstract background texture. It
 - Headline: **A quiet puzzle / with real depth**
 - Supporting line: **CALM TO PLAY · SMART TO MASTER**
 - Source screen: dark-theme active gameplay, score 28
-- Purpose: establish the emotional promise and differentiate Logica from loud category conventions
+- Purpose: establish the emotional promise and differentiate Funfolio from loud category conventions
 
 ### Slot 2 — Mechanic
 
@@ -63,7 +63,7 @@ Generative imagery may be used only for a subtle abstract background texture. It
 
 - Headline: **Your next / quiet challenge**
 - Supporting line: **PLAY AT YOUR OWN PACE**
-- Source screen: dark-theme Logica home screen
+- Source screen: dark-theme Funfolio home screen
 - Purpose: close on the brand and a calm invitation to play
 
 ## Source Mapping

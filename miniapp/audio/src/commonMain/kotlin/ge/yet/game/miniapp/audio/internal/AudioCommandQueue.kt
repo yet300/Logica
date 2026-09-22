@@ -52,7 +52,7 @@ internal class AudioCommandQueue(
     }
 
     fun clear() {
-        for (logicalIndex in 0 until size) commands[physicalIndex(logicalIndex)] = null
+        for (funfoliolIndex in 0 until size) commands[physicalIndex(funfoliolIndex)] = null
         head = 0
         size = 0
     }
@@ -67,11 +67,11 @@ internal class AudioCommandQueue(
     }
 
     private fun coalesceTrailingControl(command: AudioCommand.SetControl): AudioCommandOfferResult? {
-        for (logicalIndex in size - 1 downTo 0) {
-            val queued = commandAt(logicalIndex)
+        for (funfoliolIndex in size - 1 downTo 0) {
+            val queued = commandAt(funfoliolIndex)
             if (queued !is AudioCommand.SetControl) return null
             if (queued.name == command.name) {
-                commands[physicalIndex(logicalIndex)] = command
+                commands[physicalIndex(funfoliolIndex)] = command
                 return AudioCommandOfferResult.Coalesced
             }
         }
@@ -82,9 +82,9 @@ internal class AudioCommandQueue(
         replacement: AudioCommand,
         matches: (AudioCommand) -> Boolean,
     ): AudioCommandOfferResult? {
-        for (logicalIndex in 0 until size) {
-            if (matches(commandAt(logicalIndex))) {
-                commands[physicalIndex(logicalIndex)] = replacement
+        for (funfoliolIndex in 0 until size) {
+            if (matches(commandAt(funfoliolIndex))) {
+                commands[physicalIndex(funfoliolIndex)] = replacement
                 return AudioCommandOfferResult.Coalesced
             }
         }
@@ -96,19 +96,19 @@ internal class AudioCommandQueue(
         size += 1
     }
 
-    private fun removeAt(logicalIndex: Int) {
-        require(logicalIndex in 0 until size)
-        for (index in logicalIndex until size - 1) {
+    private fun removeAt(funfoliolIndex: Int) {
+        require(funfoliolIndex in 0 until size)
+        for (index in funfoliolIndex until size - 1) {
             commands[physicalIndex(index)] = commands[physicalIndex(index + 1)]
         }
         commands[physicalIndex(size - 1)] = null
         size -= 1
     }
 
-    private fun commandAt(logicalIndex: Int): AudioCommand =
-        commands[physicalIndex(logicalIndex)] ?: error("Queue slot is unexpectedly empty")
+    private fun commandAt(funfoliolIndex: Int): AudioCommand =
+        commands[physicalIndex(funfoliolIndex)] ?: error("Queue slot is unexpectedly empty")
 
-    private fun physicalIndex(logicalIndex: Int): Int = (head + logicalIndex) % capacity
+    private fun physicalIndex(funfoliolIndex: Int): Int = (head + funfoliolIndex) % capacity
 }
 
 private val AudioCommand.isCritical: Boolean

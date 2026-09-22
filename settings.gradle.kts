@@ -1,4 +1,4 @@
-rootProject.name = "Logica"
+rootProject.name = "Funfolio"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -17,7 +17,7 @@ pluginManagement {
 }
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-    id("logica.miniapp.settings")
+    id("funfolio.miniapp.settings")
 }
 
 miniApps {

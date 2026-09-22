@@ -2,7 +2,7 @@
 
 ## Purpose
 
-BlockBlast (published as **Logica — Block Puzzle**) is a Kotlin Multiplatform
+BlockBlast (published as **Funfolio: Offline Games**) is a Kotlin Multiplatform
 block-puzzle game. Kotlin and Compose Multiplatform provide the shared product
 and presentation layers for Android and iOS; the Android and SwiftUI shells
 host platform SDK integrations.
@@ -96,8 +96,8 @@ BlockBlast/
 | `:feature:catalog` | Registry-backed MiniApp catalog with adaptive host-owned Material 3 list cards and direct Play actions | `:miniapp:compose`, `:core:uikit`, Decompose, Compose resources and Haze |
 | `:feature:review` | Reusable app-review policy, prompt persistence, analytics and component | `:core:domain`, `:core:common`, multiplatform-settings |
 | `:feature:root` | Decompose Catalog/running-MiniApp navigation and sheet ownership. Its runtime coordinator owns session creation, visibility, stale callbacks, session-bound audio opening/closure, reset/launch serialization and teardown-before-clear ordering. | core modules, `:feature:catalog`, `:feature:review`, `:feature:settings`, `:miniapp:api`, `:miniapp:audio`, `:miniapp:compose` |
-| `:game:blockblast` | Block Blast rules, models, persistence, bundled-audio filename mapping, Metro child graph, MiniApp plugin/session, components, tests and Compose UI | `logica.miniapp` convention; MiniApp/core contracts, ConfettiKit and MVIKotlin; no raw Settings, platform-audio or native-ad dependency |
-| `:game:twentyfortyeight` | Allowlisted 2048 MiniApp with game-owned rules, persistence, session graph, UI and tests | `logica.miniapp` convention; approved inward core and MVI dependencies; included in the production bundle |
+| `:game:blockblast` | Block Blast rules, models, persistence, bundled-audio filename mapping, Metro child graph, MiniApp plugin/session, components, tests and Compose UI | `funfolio.miniapp` convention; MiniApp/core contracts, ConfettiKit and MVIKotlin; no raw Settings, platform-audio or native-ad dependency |
+| `:game:twentyfortyeight` | Allowlisted 2048 MiniApp with game-owned rules, persistence, session graph, UI and tests | `funfolio.miniapp` convention; approved inward core and MVI dependencies; included in the production bundle |
 | `:monetization:core` | SDK-neutral entitlement state and advertising policy | no project dependency declared |
 | `:monetization:ads` | AdMob/UMP integration, ATT bridge, banners and interstitials | `:monetization:core`, `:miniapp:api` |
 | `:miniapp:api` | Stable Compose-free IDs, storage-key helpers, review/session and visibility contracts, fullscreen-ad signal | kotlinx serialization, coroutines |
@@ -108,7 +108,7 @@ BlockBlast/
 | `:miniapp:audio-presets` | Original reusable instrument, SFX and deterministic soundscape fragments authored only through the public audio API | `:miniapp:audio` only |
 | `:miniapp:bundle` | Production MiniApp bundle with the generated registry expectation and allowlist verification | `:miniapp:metro`, allowlisted MiniApp projects only |
 | `:miniapp:testkit` | Reusable recording host, no-op audio/storage, mutable visibility source, lifecycle harness and plugin-contract assertions | MiniApp API, Compose and Metro contracts, Decompose, Compose resources, kotlin-test |
-| `:miniapp:samples:counter` | Generated reference plugin proving component state, runtime session inputs, child-graph scoping, retained sessions and asset-free procedural Music/SFX authoring | `logica.miniapp` convention; discovered automatically and intentionally absent from the shipping allowlist |
+| `:miniapp:samples:counter` | Generated reference plugin proving component state, runtime session inputs, child-graph scoping, retained sessions and asset-free procedural Music/SFX authoring | `funfolio.miniapp` convention; discovered automatically and intentionally absent from the shipping allowlist |
 | `:miniapp:integration-test` | Non-shipping host proving Counter Metro aggregation, generic Root/session lifecycle, real MiniAppFrame layout and Android/iOS Compose resources | `:miniapp:samples:counter` as `commonMainApi`, `:miniapp:metro`, `:miniapp:testkit`; test-only host composition dependencies |
 | `build-logic:convention` | Shared KMP setup for library modules | included Gradle build, not runtime code |
 | `build-logic:miniapp-settings` | Settings-phase discovery and typed shipping model for MiniApp projects | isolated Gradle plugin artifact; Gradle API only |
@@ -180,7 +180,7 @@ no-fill and ineligibility occupy zero ad space. A session may contribute optiona
 center content through `MiniAppSession.TopBarContent`; that content renders in the
 resolved session color scheme, outside the plugin viewport. A session may override
 only the needed Material color roles through `MiniAppSession.colorScheme`; all
-other roles, typography and shapes inherit from Logica. Arbitrary themes nested
+other roles, typography and shapes inherit from Funfolio. Arbitrary themes nested
 inside `MiniAppSession.Content` remain confined to the viewport and cannot leak
 into host chrome. Sessions
 publish a Decompose `Value<MiniAppFrameMode>` derived from their active internal
@@ -228,7 +228,7 @@ bundle; Counter remains discovered but excluded from the allowlist and
 unshipped.
 `verifyMiniAppBundle` rejects missing,
 unexpected or duplicated bundle dependencies, and allowlisted projects that do
-not apply `logica.miniapp`.
+not apply `funfolio.miniapp`.
 
 For contributor work, read
 [`CONTRIBUTING_MINIAPP.md`](CONTRIBUTING_MINIAPP.md) and
@@ -258,7 +258,7 @@ through a sibling staging directory. Discovery makes every project under
 invocation. There is no server, runtime catalog download or remote plugin
 loading.
 
-Generated projects apply only `logica.miniapp`. That convention supplies KMP, Compose resources, Metro, one direct `:miniapp:metro` framework edge, reusable `:miniapp:audio-presets` as an implementation dependency, and dependency-boundary validation. Contributors can use `MiniAppSessionContext.audio` and shared audio presets without declaring audio dependencies. They may use stable `:miniapp:*` contracts and the allowed inward core contracts, but must not depend on feature, application, concrete game/sample, data/telemetry, native-ad modules, platform audio APIs or external audio engines. Use `:miniapp:compose MiniAppAdsCapability` rather than `:monetization:ads`. Never add game-specific ad subtypes, placements or names to `:miniapp:compose`.
+Generated projects apply only `funfolio.miniapp`. That convention supplies KMP, Compose resources, Metro, one direct `:miniapp:metro` framework edge, reusable `:miniapp:audio-presets` as an implementation dependency, and dependency-boundary validation. Contributors can use `MiniAppSessionContext.audio` and shared audio presets without declaring audio dependencies. They may use stable `:miniapp:*` contracts and the allowed inward core contracts, but must not depend on feature, application, concrete game/sample, data/telemetry, native-ad modules, platform audio APIs or external audio engines. Use `:miniapp:compose MiniAppAdsCapability` rather than `:monetization:ads`. Never add game-specific ad subtypes, placements or names to `:miniapp:compose`.
 
 Do not inject or call the legacy `AudioRepository` from a generated MiniApp.
 Its bundled-file path is retained only for Block Blast and is not part of the
@@ -327,7 +327,7 @@ and verification live in
 `docs/superpowers/plans/2026-08-23-miniapp-procedural-audio.md`. These are
 maintainer references, not authorization for contributors to modify the engine.
 
-The catalog uses a centered `Logica` app bar and an adaptive grid: one column
+The catalog uses a centered `Funfolio` app bar and an adaptive grid: one column
 below 840 dp and two columns at or above it, capped at 1200 dp. Each host-owned
 clickable card contains one Material 3 `ListItem` and launches the MiniApp as a
 single action; it contains no nested Play button or trailing affordance. The

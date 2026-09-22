@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">العب</string>
     <string name="settings">الإعدادات</string>
     <string name="sound">الصوت</string>
@@ -27,8 +27,8 @@
     <string name="support_game">ادعم اللعبة</string>
     <string name="support_game_subtitle">ضع نجمة للمشروع على GitHub أو تبرّع</string>
     <string name="disable_ads">هل تريد تعطيل الإعلانات؟</string>
-    <string name="disable_ads_title">الإعلانات تُبقي Logica مجانية</string>
-    <string name="disable_ads_body">تساعدنا الإعلانات على تحسين اللعبة وإبقاء جميع الميزات متاحة مجانًا. إذا عطّلتها، فسيظل الإحياء مجانيًا — ويمكنك دعم Logica بوضع نجمة على GitHub أو بالتبرع.</string>
+    <string name="disable_ads_title">الإعلانات تُبقي Funfolio مجانية</string>
+    <string name="disable_ads_body">تساعدنا الإعلانات على تحسين اللعبة وإبقاء جميع الميزات متاحة مجانًا. إذا عطّلتها، فسيظل الإحياء مجانيًا — ويمكنك دعم Funfolio بوضع نجمة على GitHub أو بالتبرع.</string>
     <string name="keep_ads">الإبقاء على الإعلانات</string>
     <string name="disable_ads_anyway">التعطيل على أي حال</string>
     <string name="cd_settings">الإعدادات</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s غير متوفر</string>
     <string name="back_to_catalog">العودة إلى الدليل</string>
     <string name="exit">خروج</string>
-    <string name="review_prompt_title">هل تستمتع بـ Logica؟</string>
+    <string name="review_prompt_title">هل تستمتع بـ Funfolio؟</string>
     <string name="review_prompt_body">تقييمك يساعد المزيد من لاعبي الألغاز في العثور على اللعبة.</string>
     <string name="review_prompt_leave_feedback">ترك تعليق</string>
     <string name="review_prompt_dont_show">عدم الإظهار مرة أخرى</string>

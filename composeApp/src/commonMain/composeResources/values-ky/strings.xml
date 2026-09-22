@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Ойноо</string>
     <string name="settings">Орнотуулар</string>
     <string name="sound">Үн</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Оюнду колдоо</string>
     <string name="support_game_subtitle">Долбоорго GitHub'да жылдыз коюңуз же кайрымдуулук кылыңыз</string>
     <string name="disable_ads">Жарнаманы өчүрөсүзбү?</string>
-    <string name="disable_ads_title">Жарнама Logica'ны акысыз сактайт</string>
-    <string name="disable_ads_body">Жарнама оюнду жакшыртууга жана бардык мүмкүнчүлүктөрдү акысыз сактоого жардам берет. Аны өчүрсөңүз да, кайра жандануу акысыз бойдон калат — Logica'ны GitHub'дагы жылдыз же кайрымдуулук менен колдой аласыз.</string>
+    <string name="disable_ads_title">Жарнама Funfolio'ны акысыз сактайт</string>
+    <string name="disable_ads_body">Жарнама оюнду жакшыртууга жана бардык мүмкүнчүлүктөрдү акысыз сактоого жардам берет. Аны өчүрсөңүз да, кайра жандануу акысыз бойдон калат — Funfolio'ны GitHub'дагы жылдыз же кайрымдуулук менен колдой аласыз.</string>
     <string name="keep_ads">Жарнаманы калтыруу</string>
     <string name="disable_ads_anyway">Баары бир өчүрүү</string>
     <string name="cd_settings">Орнотуулар</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s жеткиликсиз</string>
     <string name="back_to_catalog">Каталогго кайтуу</string>
     <string name="exit">Чыгуу</string>
-    <string name="review_prompt_title">Logica жакты беби?</string>
+    <string name="review_prompt_title">Funfolio жакты беби?</string>
     <string name="review_prompt_body">Сиздин баа берүүңүз башка табышмак ойноочуларга оюнду табууга жардам берет.</string>
     <string name="review_prompt_leave_feedback">Пикир калтыруу</string>
     <string name="review_prompt_dont_show">Кайра көрсөтпөө</string>

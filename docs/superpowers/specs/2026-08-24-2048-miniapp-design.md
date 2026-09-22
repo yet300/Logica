@@ -9,7 +9,7 @@
 
 ## 2. Context
 
-Logica needs a polished, independently authored version of the familiar 4×4 number-combination game commonly called **2048**. It must be a normal repository MiniApp: discovered by the settings plugin after a future scaffold, hosted by Root, retained through the existing Metro/Decompose session contract, stored only in its MiniApp namespace, and absent from the production bundle until a maintainer separately approves it.
+Funfolio needs a polished, independently authored version of the familiar 4×4 number-combination game commonly called **2048**. It must be a normal repository MiniApp: discovered by the settings plugin after a future scaffold, hosted by Root, retained through the existing Metro/Decompose session contract, stored only in its MiniApp namespace, and absent from the production bundle until a maintainer separately approves it.
 
 The proposed identity is valid against the current build logic:
 
@@ -52,7 +52,7 @@ This design excludes alternate board sizes, modes, timers, Zen mode, challenges,
 
 ## 6. Rights and provenance
 
-The mechanics are implemented from first principles as mathematical rules. No original or third-party 2048 code, layouts, color tables, tile assets, transition constants, screenshots, or implementation text may be copied. UI composition, palette, catalog art, procedural declarations, note material, rhythm, arrangement, seeds, and SFX are original Logica work.
+The mechanics are implemented from first principles as mathematical rules. No original or third-party 2048 code, layouts, color tables, tile assets, transition constants, screenshots, or implementation text may be copied. UI composition, palette, catalog art, procedural declarations, note material, rhythm, arrangement, seeds, and SFX are original Funfolio work.
 
 The following Klang pages from the product brief are mood references only: they communicate a broad evolving-synth vocabulary. They are not transcription sources.
 
@@ -100,7 +100,7 @@ flowchart LR
     Game -. forbidden .-> Shell
 ```
 
-The future module applies only `logica.miniapp`. The convention supplies the approved contract, Metro, Compose resource, and audio-preset edges. Any additional dependency needs separate architectural justification and is outside this design.
+The future module applies only `funfolio.miniapp`. The convention supplies the approved contract, Metro, Compose resource, and audio-preset edges. Any additional dependency needs separate architectural justification and is outside this design.
 
 No engine is extracted to `core`: there is no second demonstrated rules consumer. Pure code is not automatically shared code.
 
@@ -308,7 +308,7 @@ interface MiniAppSession {
 }
 ```
 
-Root owns the `BackCallback(PRIORITY_MAX)` and the toolbar callback. Both system/predictive Back and toolbar Back continue to call the same `RootComponent.onBackClicked()` path. With no host sheet active, Root obtains the active content session and calls `session.handleBack()` first. `true` means the session consumed Back and Root leaves it running; `false`, unavailable content, or the default implementation means Root closes the session and returns to Catalog. Host Settings/AppReview sheets keep their existing higher logical order before the session hook.
+Root owns the `BackCallback(PRIORITY_MAX)` and the toolbar callback. Both system/predictive Back and toolbar Back continue to call the same `RootComponent.onBackClicked()` path. With no host sheet active, Root obtains the active content session and calls `session.handleBack()` first. `true` means the session consumed Back and Root leaves it running; `false`, unavailable content, or the default implementation means Root closes the session and returns to Catalog. Host Settings/AppReview sheets keep their existing higher funfoliol order before the session hook.
 
 `RetainedMiniAppSession.handleBack()` delegates to its retained session. Block Blast and Counter intentionally inherit the safe `false` default, and compatibility tests prove their Back still exits. `TwentyFortyEightSession.handleBack()` synchronously asks its session component to dismiss the active Playing `ChildSlot`; it returns `true` only for Victory, Statistics, or Restart confirmation. Playing without a slot and every Result state return `false`. No local Essenty Back handler is registered by 2048, no game child draws a Back/Settings control, and Root imports no game-specific type. Both active stack children remain `MiniAppFrameMode.Standard`.
 
@@ -322,7 +322,7 @@ DI tests must prove that app-scoped stateless persistence/analytics/diagnostics 
 
 ## 20. MiniApp host integration
 
-The future manifest is exposed through `MiniAppPlugin`; the session implements `Background`, optional `TopBarContent`, `Content`, `frameMode`, and the optional generic `handleBack()` behavior above. The game background may fill the host background layer, while `LogicaTheme` and host chrome remain outside the game-local content styling boundary.
+The future manifest is exposed through `MiniAppPlugin`; the session implements `Background`, optional `TopBarContent`, `Content`, `frameMode`, and the optional generic `handleBack()` behavior above. The game background may fill the host background layer, while `FunfolioTheme` and host chrome remain outside the game-local content styling boundary.
 
 `MiniAppVisibilitySource` gates input and lets the host-owned audio facade duck/suppress/pause correctly. Only an active, unobscured session accepts gestures, custom accessibility actions, or modal confirmations. Obscuring does not destroy or mutate the game. Destruction closes the retained graph; the game never closes platform audio itself.
 
@@ -349,7 +349,7 @@ The catalog card remains host-owned. `TopBarContent` is empty for this game beca
 
 ```text
 TwentyFortyEightSession
-└── LogicaTheme boundary inside MiniApp viewport
+└── FunfolioTheme boundary inside MiniApp viewport
     └── TwentyFortyEightScreen
         ├── status row: Score, tappable Best/Crown
         ├── BoardSurface (square)
@@ -371,7 +371,7 @@ All visible copy, content descriptions, custom action labels, announcements, plu
 
 ## 22. Light and dark tokens
 
-The screen consumes actual `LogicaTheme`/Material typography and existing warm tokens; it does not introduce unavailable Copernicus or StyreneB fonts.
+The screen consumes actual `FunfolioTheme`/Material typography and existing warm tokens; it does not introduce unavailable Copernicus or StyreneB fonts.
 
 | Role | Light | Dark | Use |
 |---|---|---|---|
@@ -563,7 +563,7 @@ Audio dispatch originates from typed Store Labels in a session-scoped adapter, n
 
 ## 34. Audio originality and provenance
 
-The audio provenance record identifies every reused Logica preset and every original declaration. `SoftPad`, `AnalogBass`, `GlassBell`, `PlacementClick`, `PowerUp`, and `SuccessSweep` are internal repository presets used through their public `name`/`gain` controls. New note patterns and merge/Undo/Game Over voices are owned by this game because the preset surface lacks composition and the required pitch/duration contours.
+The audio provenance record identifies every reused Funfolio preset and every original declaration. `SoftPad`, `AnalogBass`, `GlassBell`, `PlacementClick`, `PowerUp`, and `SuccessSweep` are internal repository presets used through their public `name`/`gain` controls. New note patterns and merge/Undo/Game Over voices are owned by this game because the preset surface lacks composition and the required pitch/duration contours.
 
 The record must contain authorship date, responsible author, declaration names, seeds, public preset versions/commit, acoustic-test hashes or fixtures, and the explicit statement that no Klang/Strudel code, sequence, melody, rhythm, arrangement, seed, section structure, parameter set, commercial soundtrack, or third-party demo composition was transcribed. Only the public MiniApp audio DSL and preset module are permitted; internal renderer/scheduler/sinks, `MiniAppAudioEngine`, `AudioRepository`, files, and runtime web engines are forbidden.
 
@@ -682,7 +682,7 @@ No file below is created by this design. All Kotlin is `internal` unless the Min
 | `feature/root/src/commonMain/kotlin/ge/yet/game/feature/root/DefaultRootComponent.kt` and `feature/root/src/commonTest/kotlin/ge/yet/game/feature/root/DefaultRootComponentTest.kt` | One sheet → active-session `handleBack()` → close-session order for toolbar and PRIORITY_MAX system/predictive Back. |
 | `game/blockblast/src/commonTest/kotlin/ge/yet/game/blockblast/BlockBlastPluginContractTest.kt`, `miniapp/samples/counter/src/commonTest/kotlin/ge/yet/sample/counter/CounterPluginContractTest.kt`, and `miniapp/integration-test/src/commonTest/kotlin/ge/yet/game/miniapp/integration/CounterRootHarness.kt` | Prove default `false` compatibility and unchanged host exit for existing sessions. |
 | `AGENTS.md` | Module-local boundaries, storage/audio/provenance rules; documentation only; checked in review. |
-| `build.gradle.kts` | Future scaffold's single `logica.miniapp` application; no manual outward edges; dependency-boundary tests. |
+| `build.gradle.kts` | Future scaffold's single `funfolio.miniapp` application; no manual outward edges; dependency-boundary tests. |
 | `src/commonMain/kotlin/ge/yet/game/twentyfortyeight/TwentyFortyEightPlugin.kt` | App-scoped contributed manifest/plugin and graph creation; MiniApp contracts/Metro only; testkit contract test. |
 | `…/session/TwentyFortyEightSession.kt`, `…SessionComponent.kt` | Public concrete session with internal constructor, retained session UI/frame binding, stack/slot owner and `handleBack()` delegation; session scope; Decompose/MiniApp/Compose contracts; lifecycle/navigation/Back tests. |
 | `…/di/TwentyFortyEightSessionGraph.kt`, `…AppBindings.kt`, `…SessionBindings.kt` | Collision-safe `createGameTwentyfortyeightSessionGraph`; app-scoped stateless engine/persistence/analytics/diagnostics and session-scoped coordinator/Store/component/Label/audio adapters; Metro; scope/identity/destruction tests. |

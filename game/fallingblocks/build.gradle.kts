@@ -1,4 +1,4 @@
-plugins { id("logica.miniapp") }
+plugins { id("funfolio.miniapp") }
 
 kotlin {
     sourceSets {

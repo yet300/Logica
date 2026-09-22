@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.unit.dp
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 
 @OptIn(ExperimentalTestApi::class)
@@ -17,7 +17,7 @@ class TutorialOverlayTest {
     @Test
     fun `mandatory tutorial renders instruction without a skip action`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(360.dp, 720.dp)) {
                     TutorialOverlay(
                         progress = TutorialProgress(TutorialStep.HARD_DROP),

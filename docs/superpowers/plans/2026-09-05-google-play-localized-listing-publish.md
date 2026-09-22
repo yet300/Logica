@@ -86,7 +86,7 @@ Expected: import failure because `play_listing.py` does not exist.
 Create constants and functions with these public signatures:
 
 ```python
-TITLE = "Logica — Block Puzzle"
+TITLE = "Funfolio: Offline Games"
 PLAY_STORE_LOCALES: dict[str, str] = {
     "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",
     "da": "da-DK", "de": "de-DE", "el": "el-GR", "en": "en-US",
@@ -185,7 +185,7 @@ git commit -m "feat: validate localized Play Store metadata"
 Write the exact title and short description:
 
 ```text
-Logica — Block Puzzle
+Funfolio: Offline Games
 ```
 
 ```text
@@ -197,7 +197,7 @@ Write the English full description with this exact source copy:
 ```text
 One app. A growing world of puzzle games.
 
-Logica brings relaxing, thoughtful games together in one place. Pick a quick challenge, build a new strategy, and switch games whenever you want.
+Funfolio brings relaxing, thoughtful games together in one place. Pick a quick challenge, build a new strategy, and switch games whenever you want.
 
 PLAY YOUR WAY
 • Clear lines and shape the board in Block Blast
@@ -212,7 +212,7 @@ MADE FOR EVERY MOMENT
 • Play offline wherever you are
 • A clean, calm interface that keeps the puzzle in focus
 
-Whether you enjoy block puzzles, number games, merge games, logic challenges, or casual brain teasers, Logica gives you a growing collection without filling your phone with separate apps.
+Whether you enjoy block puzzles, number games, merge games, logic challenges, or casual brain teasers, Funfolio gives you a growing collection without filling your phone with separate apps.
 
 Choose a game, settle in, and find your next favorite puzzle.
 ```
@@ -222,7 +222,7 @@ Choose a game, settle in, and find your next favorite puzzle.
 For every mapped locale, write the same exact title and a native, concise
 translation of the short and full description. Preserve the two-section
 structure and the four current-game/growing-catalog bullets. Localize prose and
-section labels, but keep `Logica`, `Block Blast`, `2048`, and `Fruit Merge`
+section labels, but keep `Funfolio`, `Block Blast`, `2048`, and `Fruit Merge`
 unchanged. Do not introduce claims absent from the English source.
 
 - [ ] **Step 3: Run the validator against the real metadata tree**

@@ -2,7 +2,7 @@
 
 MiniApp audio is Kotlin-only, asset-free and shared by Android and iOS. A game declares one immutable `AudioProgram`, receives the session-bound `MiniAppAudio` from `MiniAppSessionContext` or Metro, and sends commands from its component/state holder. Compose UI must not own playback.
 
-Generated game modules applying `logica.miniapp` already receive the public audio API and shared presets; do not duplicate those dependencies. A non-MiniApp module must declare only the narrow dependency it actually authors against.
+Generated game modules applying `funfolio.miniapp` already receive the public audio API and shared presets; do not duplicate those dependencies. A non-MiniApp module must declare only the narrow dependency it actually authors against.
 
 Start by composing presets:
 

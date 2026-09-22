@@ -16,7 +16,7 @@ import ge.yet.game.fruitmerge.component.result.FruitMergeResultSnapshot
 import ge.yet.game.fruitmerge.domain.model.FruitBody
 import ge.yet.game.fruitmerge.domain.model.FruitLevel
 import ge.yet.game.fruitmerge.domain.model.Vec2
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -42,7 +42,7 @@ class FruitMergeResultScreenTest {
             ),
         )
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(Modifier.size(390.dp, 760.dp)) {
                     FruitMergeResultScreen(component)
                 }

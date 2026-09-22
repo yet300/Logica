@@ -22,7 +22,7 @@ import ge.yet.game.twentyfortyeight.component.overlay.OverlayComponent
 import ge.yet.game.twentyfortyeight.component.playing.PlayingComponent
 import ge.yet.game.twentyfortyeight.domain.model.Direction
 import ge.yet.game.twentyfortyeight.component.root.RootComponent
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -35,7 +35,7 @@ class TwentyFortyEightThemeIntegrationTest {
             val session = TwentyFortyEightSession(FakeSessionComponent())
 
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     session.Background(
                         Modifier
                             .size(32.dp)
@@ -67,7 +67,7 @@ class TwentyFortyEightThemeIntegrationTest {
     ): RenderedColors {
         var expected = Color.Unspecified
         setContent {
-            LogicaTheme(darkTheme = darkTheme) {
+            FunfolioTheme(darkTheme = darkTheme) {
                 expected = MaterialTheme.colorScheme.background
                 Box(Modifier.size(400.dp, 700.dp)) {
                     session.Content(

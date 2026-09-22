@@ -46,7 +46,7 @@ internal class MiniAppBundleGradleTestProject(
         write(
             "miniapp/bundle/build.gradle.kts",
             """
-                plugins { id("logica.miniapp.bundle") }
+                plugins { id("funfolio.miniapp.bundle") }
 
                 $additionalBundleDependencies
             """,
@@ -217,7 +217,7 @@ internal class MiniAppBundleGradleTestProject(
                 }
             }
 
-            plugins { id("logica.miniapp.settings") }
+            plugins { id("funfolio.miniapp.settings") }
 
             dependencyResolutionManagement {
                 repositories { google(); mavenCentral() }
@@ -254,7 +254,7 @@ internal class MiniAppBundleGradleTestProject(
                 id("com.plugins.kotlinMultiplatformPlugin")
                 id("org.jetbrains.compose")
                 id("org.jetbrains.kotlin.plugin.compose")
-                ${if (usesMiniAppConvention) "id(\"logica.miniapp\")" else ""}
+                ${if (usesMiniAppConvention) "id(\"funfolio.miniapp\")" else ""}
             }
         """
 
@@ -265,7 +265,7 @@ internal class MiniAppBundleGradleTestProject(
             gradlePlugin {
                 plugins {
                     register("miniApp") {
-                        id = "logica.miniapp"
+                        id = "funfolio.miniapp"
                         implementationClass = "testmarker.MiniAppMarkerPlugin"
                     }
                 }

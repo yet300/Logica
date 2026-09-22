@@ -41,7 +41,7 @@ public class MiniAppBundlePlugin : Plugin<Project> {
         afterEvaluate {
             val expected = shippingDeclarations.map(MiniAppDeclaration::projectPath)
             val actual = directCommonMainProjectPaths().filterNot { it == ":miniapp:metro" }
-            val convention = expected.filter { project(it).pluginManager.hasPlugin("logica.miniapp") }
+            val convention = expected.filter { project(it).pluginManager.hasPlugin("funfolio.miniapp") }
             verify.configure {
                 expectedProjectPaths.set(expected)
                 actualProjectPaths.set(actual)

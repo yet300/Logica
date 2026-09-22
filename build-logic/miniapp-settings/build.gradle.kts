@@ -19,7 +19,7 @@ tasks.withType<JavaCompile>().configureEach {
 gradlePlugin {
     plugins {
         register("miniAppSettings") {
-            id = "logica.miniapp.settings"
+            id = "funfolio.miniapp.settings"
             implementationClass = "com.yet.plugins.miniapp.MiniAppSettingsPlugin"
         }
     }

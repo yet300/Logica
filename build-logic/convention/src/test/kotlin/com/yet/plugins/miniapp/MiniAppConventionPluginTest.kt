@@ -29,7 +29,7 @@ class MiniAppConventionPluginTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 val kotlin = extensions.getByName("kotlin") as org.gradle.api.plugins.ExtensionAware
                 val android = kotlin.extensions.getByName("android")
                 val resources = android.javaClass.getMethod("getAndroidResources").invoke(android)

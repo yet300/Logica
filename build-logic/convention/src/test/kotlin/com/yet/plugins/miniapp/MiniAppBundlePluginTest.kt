@@ -17,7 +17,7 @@ class MiniAppBundlePluginTest {
         project.write(
             "miniapp/bundle/build.gradle.kts",
             """
-                plugins { id("logica.miniapp.bundle") }
+                plugins { id("funfolio.miniapp.bundle") }
 
                 tasks.register("printDirectCommonMainApiDependencies") {
                     doLast {
@@ -41,7 +41,7 @@ class MiniAppBundlePluginTest {
         project.write(
             "miniapp/bundle/build.gradle.kts",
             """
-                plugins { id("logica.miniapp.bundle") }
+                plugins { id("funfolio.miniapp.bundle") }
 
                 tasks.register("printDirectCommonMainApiDependencies") {
                     doLast {
@@ -60,12 +60,12 @@ class MiniAppBundlePluginTest {
     }
 
     @Test
-    fun `allowlisted project without logica miniapp convention fails verification`() {
+    fun `allowlisted project without funfolio miniapp convention fails verification`() {
         val project = testProject(gameUsesMiniAppConvention = false)
 
         val result = project.runAndFail(":miniapp:bundle:verifyMiniAppBundle")
 
-        assertContains(result.output, "withoutLogicaMiniApp=[:game:blockblast]")
+        assertContains(result.output, "withoutFunfolioMiniApp=[:game:blockblast]")
     }
 
     @Test
@@ -212,7 +212,7 @@ class MiniAppBundlePluginTest {
         """
             plugins {
                 id("com.plugins.kotlinMultiplatformPlugin")
-                id("logica.miniapp")
+                id("funfolio.miniapp")
             }
         """
 }

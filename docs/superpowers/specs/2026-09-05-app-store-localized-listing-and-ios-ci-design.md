@@ -2,7 +2,7 @@
 
 ## Objective
 
-Extend the existing store automation so Logica has the same controlled delivery
+Extend the existing store automation so Funfolio has the same controlled delivery
 path on iOS as it has on Google Play:
 
 - localized App Store metadata for every application language Apple accepts;
@@ -17,12 +17,12 @@ Google Play behavior remains unchanged.
 
 ## Product-page positioning
 
-The iOS listing uses the already approved super-app positioning: Logica is a
+The iOS listing uses the already approved super-app positioning: Funfolio is a
 growing, calm collection of puzzle games rather than a single Block Blast game.
 The public title remains exactly:
 
 ```text
-Logica — Block Puzzle
+Funfolio: Offline Games
 ```
 
 Each Apple localization receives a natural subtitle, description, promotional

@@ -114,7 +114,7 @@ aboutLibraries {
 }
 
 compose.resources {
-    packageOfResClass = "logica.composeapp.generated.resources"
+    packageOfResClass = "funfolio.composeapp.generated.resources"
 }
 
 tasks.named("copyNonXmlValueResourcesForCommonMain") {

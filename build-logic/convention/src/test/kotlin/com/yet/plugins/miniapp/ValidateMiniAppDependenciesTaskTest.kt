@@ -54,7 +54,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 dependencies {
                     add("commonMainImplementation", project(":feature:root"))
                     add("commonMainApi", project(":core:data"))
@@ -94,7 +94,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 val customMiniAppApi by configurations.creating {
                     isCanBeDeclared = true
                     isCanBeResolved = false
@@ -118,7 +118,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 val eventuallyNonDeclarable = configurations.create("eventuallyNonDeclarable") {
                     dependencies.add(project.dependencies.project(mapOf("path" to ":feature:root")))
                     isCanBeDeclared = false
@@ -159,7 +159,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 configurations.register("lazyForbidden") {
                     isCanBeDeclared = true
                     isCanBeResolved = false
@@ -198,7 +198,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 val published by configurations.creating {
                     isCanBeDeclared = false
                     isCanBeResolved = false
@@ -233,7 +233,7 @@ class ValidateMiniAppDependenciesTaskTest {
         project.write(
             "game/blockblast/build.gradle.kts",
             """
-                plugins { id("logica.miniapp") }
+                plugins { id("funfolio.miniapp") }
                 dependencies {
                     add("commonMainImplementation", "com.russhwolf:multiplatform-settings:1.3.0")
                     add("commonTestImplementation", "com.russhwolf:multiplatform-settings-test:1.3.0")
@@ -336,7 +336,7 @@ class ValidateMiniAppDependenciesTaskTest {
     fun `actual validation rejects haptics in new games while the blockblast legacy passes`() {
         val folder = TemporaryFolder().also { it.create() }
         val project = MiniAppBundleGradleTestProject(folder, useMarker = false)
-        project.write("game/snake/build.gradle.kts", "plugins { id(\"logica.miniapp\") }")
+        project.write("game/snake/build.gradle.kts", "plugins { id(\"funfolio.miniapp\") }")
         project.write(
             "game/snake/src/commonMain/kotlin/game/snake/SnakeHaptics.kt",
             """

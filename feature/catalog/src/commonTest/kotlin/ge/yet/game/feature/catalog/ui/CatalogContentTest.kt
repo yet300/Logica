@@ -22,7 +22,7 @@ import ge.yet.game.feature.catalog.generated.resources.catalog_placeholder
 import ge.yet.game.miniapp.api.MiniAppCategoryId
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.compose.MiniAppManifest
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -76,7 +76,7 @@ class CatalogContentTest {
 
     @Composable
     private fun TestCatalog(component: CatalogComponent) {
-        LogicaTheme {
+        FunfolioTheme {
             CatalogContent(
                 component = component,
                 modifier = Modifier,

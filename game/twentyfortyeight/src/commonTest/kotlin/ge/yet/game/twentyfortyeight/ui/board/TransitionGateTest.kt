@@ -22,7 +22,7 @@ import ge.yet.game.twentyfortyeight.domain.model.TileValue
 import ge.yet.game.twentyfortyeight.domain.model.UndoTileMotion
 import ge.yet.game.twentyfortyeight.domain.model.UndoTransition
 import ge.yet.game.twentyfortyeight.component.playing.store.VisualTransition
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -36,7 +36,7 @@ class TransitionGateTest {
         val transition = mutableStateOf<VisualTransition>(VisualTransition.Move(41L, move))
         val completed = mutableListOf<Long>()
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 VisualTransitionView(
                     transition = transition.value,
                     policy = MotionPolicy.Normal,

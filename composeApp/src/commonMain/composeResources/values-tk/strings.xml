@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Oýnamak</string>
     <string name="settings">Sazlamalar</string>
     <string name="sound">Ses</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Oýny golda</string>
     <string name="support_game_subtitle">Taslama GitHub-da ýyldyz beriň ýa-da sadaka ediň</string>
     <string name="disable_ads">Mahabaty öçürmelimi?</string>
-    <string name="disable_ads_title">Mahabat Logica-ny mugt saklaýar</string>
-    <string name="disable_ads_body">Mahabat oýny ösdürmäge we ähli mümkinçilikleri mugt saklamaga kömek edýär. Ony öçürseňiz hem, gaýtadan janlanmak mugt galar — Logica-ny GitHub ýyldyzy ýa-da sadaka bilen goldap bilersiňiz.</string>
+    <string name="disable_ads_title">Mahabat Funfolio-ny mugt saklaýar</string>
+    <string name="disable_ads_body">Mahabat oýny ösdürmäge we ähli mümkinçilikleri mugt saklamaga kömek edýär. Ony öçürseňiz hem, gaýtadan janlanmak mugt galar — Funfolio-ny GitHub ýyldyzy ýa-da sadaka bilen goldap bilersiňiz.</string>
     <string name="keep_ads">Mahabaty sakla</string>
     <string name="disable_ads_anyway">Şonda-da öçür</string>
     <string name="cd_settings">Sazlamalar</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s elýeterli däl</string>
     <string name="back_to_catalog">Kataloga dolan</string>
     <string name="exit">Çykyş</string>
-    <string name="review_prompt_title">Logica halaýarmy?</string>
+    <string name="review_prompt_title">Funfolio halaýarmy?</string>
     <string name="review_prompt_body">Siziň synlaryňyz has köp tapmaça oýunçylaryna oýny tapmaga kömek eder.</string>
     <string name="review_prompt_leave_feedback">Pikir galdyrmak</string>
     <string name="review_prompt_dont_show">Ýene görkezme</string>

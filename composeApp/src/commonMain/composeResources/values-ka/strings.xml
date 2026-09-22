@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">თამაში</string>
     <string name="settings">პარამეტრები</string>
     <string name="sound">ხმა</string>
@@ -27,8 +27,8 @@
     <string name="support_game">თამაშის მხარდაჭერა</string>
     <string name="support_game_subtitle">მიეცით პროექტს ვარსკვლავი GitHub-ზე ან გაიღეთ დონაცია</string>
     <string name="disable_ads">გამოირთოს რეკლამა?</string>
-    <string name="disable_ads_title">რეკლამა Logica-ს უფასოდ ტოვებს</string>
-    <string name="disable_ads_body">რეკლამა გვეხმარება თამაშის გაუმჯობესებასა და ყველა ფუნქციის უფასოდ დატოვებაში. თუ მას გამორთავთ, გაცოცხლება კვლავ უფასო იქნება — Logica-ს კი GitHub-ის ვარსკვლავით ან დონაციით დაუჭერთ მხარს.</string>
+    <string name="disable_ads_title">რეკლამა Funfolio-ს უფასოდ ტოვებს</string>
+    <string name="disable_ads_body">რეკლამა გვეხმარება თამაშის გაუმჯობესებასა და ყველა ფუნქციის უფასოდ დატოვებაში. თუ მას გამორთავთ, გაცოცხლება კვლავ უფასო იქნება — Funfolio-ს კი GitHub-ის ვარსკვლავით ან დონაციით დაუჭერთ მხარს.</string>
     <string name="keep_ads">რეკლამის დატოვება</string>
     <string name="disable_ads_anyway">მაინც გამორთვა</string>
     <string name="cd_settings">პარამეტრები</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s მიუწვდომელია</string>
     <string name="back_to_catalog">კატალოგში დაბრუნება</string>
     <string name="exit">გასვლა</string>
-    <string name="review_prompt_title">მოგწონთ Logica?</string>
+    <string name="review_prompt_title">მოგწონთ Funfolio?</string>
     <string name="review_prompt_body">თქვენი შეფასება დაეხმარება მეტ თავსატეხის მოთამაშეს თამაშის პოვნაში.</string>
     <string name="review_prompt_leave_feedback">გამოხმაურების დატოვება</string>
     <string name="review_prompt_dont_show">აღარ აჩვენო</string>

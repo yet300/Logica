@@ -243,7 +243,7 @@ actions.
 - [ ] **Step 4: Add localized catalog strings**
 
 Add `app_name`, `play`, `details`, `close`, `catalog_empty_title`, and accessible
-Play/Details labels. Use `Logica` as the app-bar title.
+Play/Details labels. Use `Funfolio` as the app-bar title.
 
 - [ ] **Step 5: Run focused tests and commit**
 
@@ -294,7 +294,7 @@ git commit -m "feat: add mini-app details dialog"
 
 - [ ] **Step 1: Add failing screen tests**
 
-Assert `Logica` appears exactly once, no navigation/actions exist, empty state
+Assert `Funfolio` appears exactly once, no navigation/actions exist, empty state
 has no Retry, clicking a card calls Details, and dialog selection from component
 state renders. Add tagged one/two-column containers driven by fixed constraints.
 

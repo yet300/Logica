@@ -1,9 +1,9 @@
-# Logica Super-App Store Screenshot Design
+# Funfolio Super-App Store Screenshot Design
 
 ## Objective
 
-Create a conversion-focused English screenshot system for the current Logica
-super-app architecture. The assets must position Logica as a growing home for
+Create a conversion-focused English screenshot system for the current Funfolio
+super-app architecture. The assets must position Funfolio as a growing home for
 thoughtful puzzle games rather than as a single Block Blast title, while
 remaining accurate when more games are added later.
 
@@ -18,7 +18,7 @@ No asset will be uploaded to either store as part of this work.
 
 ## Product Context
 
-Logica currently ships three games:
+Funfolio currently ships three games:
 
 - Block Blast;
 - 2048;
@@ -26,7 +26,7 @@ Logica currently ships three games:
 
 The screenshot story must not use a fixed game count in its positioning. The
 catalog and the varied game screens provide evidence of breadth, while the copy
-describes Logica as a growing puzzle collection.
+describes Funfolio as a growing puzzle collection.
 
 ## Audience
 
@@ -43,7 +43,7 @@ The approved positioning is:
 
 The sequence communicates four benefits:
 
-1. Logica is a growing puzzle destination, not one isolated game.
+1. Funfolio is a growing puzzle destination, not one isolated game.
 2. Players can choose between meaningfully different puzzle mechanics.
 3. Each game is easy to enter but rewards thought and improvement.
 4. The collection shares one restrained, polished product experience.
@@ -73,9 +73,9 @@ Merge to retain their individual visual identities.
 ### Slide 1 - Collection Hero
 
 - Headline: **A growing world of puzzles.**
-- Screen: the Logica catalog with the current games visible.
+- Screen: the Funfolio catalog with the current games visible.
 - Layout: large hero composition with a prominent catalog device.
-- Purpose: immediately reposition Logica as a puzzle collection.
+- Purpose: immediately reposition Funfolio as a puzzle collection.
 
 ### Slide 2 - Choice
 
@@ -120,7 +120,7 @@ Merge to retain their individual visual identities.
 - Headline: **Your next puzzle awaits.**
 - Screen: app icon plus a calm catalog composition.
 - Layout: sparse brand close with a clear visual endpoint.
-- Purpose: finish with an invitation to open Logica and choose a game.
+- Purpose: finish with an invitation to open Funfolio and choose a game.
 
 ## Layout Rhythm and Connected Canvas
 
@@ -178,7 +178,7 @@ hierarchy. Exported deliverables and review contact sheets remain under
 
 The initial project state will seed:
 
-- app name `Logica`;
+- app name `Funfolio`;
 - locale `en` only;
 - the custom Quiet Editorial theme;
 - connected canvas enabled for this new deck;
@@ -212,7 +212,7 @@ The initial project state will seed:
 ### Google Play Feature Graphic
 
 - One opaque RGB PNG at exactly 1024 x 500.
-- Use Logica branding, the collection positioning, and restrained visual cues
+- Use Funfolio branding, the collection positioning, and restrained visual cues
   from the three current games.
 - Do not place a device frame in the feature graphic.
 

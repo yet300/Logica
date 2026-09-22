@@ -1,6 +1,6 @@
 package ge.yet.game.di
 
-import logica.composeapp.generated.resources.Res
+import funfolio.composeapp.generated.resources.Res
 import com.app.common.AppDispatchers
 import com.mikepenz.aboutlibraries.Libs
 import dev.zacsweers.metro.Inject

@@ -16,7 +16,7 @@ means that evidence is attached to the change or can be reproduced locally.
 
 ## Architecture
 
-- [ ] Module applies `logica.miniapp`.
+- [ ] Module applies `funfolio.miniapp`.
 - [ ] Dependencies flow inward and pass `validateMiniAppDependencies`.
 - [ ] No feature, application, native-ad, platform-audio, raw Settings or
       sibling-game dependency was introduced.

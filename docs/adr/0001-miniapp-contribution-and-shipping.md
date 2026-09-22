@@ -2,11 +2,11 @@
 
 - **Status:** Accepted
 - **Date:** 2026-08-23
-- **Decision owners:** Logica maintainers
+- **Decision owners:** Funfolio maintainers
 
 ## Context
 
-Logica discovers local MiniApp modules at build time. Human contributors, AI
+Funfolio discovers local MiniApp modules at build time. Human contributors, AI
 agents and a future submission website need one entry path that does not confuse
 source generation with authorization to ship third-party code or content.
 

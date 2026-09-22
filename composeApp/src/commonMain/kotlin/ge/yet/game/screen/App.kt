@@ -11,7 +11,7 @@ import ge.yet.game.monetization.ads.AdMobProvider
 import ge.yet.game.monetization.ads.rememberAdMobState
 import ge.yet.game.monetization.core.MonetizationEntitlement
 import ge.yet.game.screen.root.RootContent
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 
 @Composable
 fun App(rootComponent: RootComponent) {
@@ -35,7 +35,7 @@ fun App(rootComponent: RootComponent) {
         state = monetizationState,
         configuration = adMobConfiguration,
     ) {
-        LogicaTheme(darkTheme = darkTheme) {
+        FunfolioTheme(darkTheme = darkTheme) {
             RootContent(component = rootComponent)
         }
     }

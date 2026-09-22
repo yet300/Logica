@@ -39,7 +39,7 @@ internal abstract class VerifyMiniAppBundleTask : DefaultTask() {
             membershipIsClean && !outOfOrder,
         ) {
             "Mini-app bundle mismatch: missing=$missing, unexpected=$unexpected, " +
-                "duplicates=$duplicateDependencies, withoutLogicaMiniApp=$withoutConvention, " +
+                "duplicates=$duplicateDependencies, withoutFunfolioMiniApp=$withoutConvention, " +
                 "outOfOrder=$outOfOrder"
         }
     }

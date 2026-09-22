@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Refine Fruit Merge so its layout, fruit art, tutorial, shake behavior, result background, and procedural effects feel cohesive with the Logica design system and remain smooth on low-end devices.
+**Goal:** Refine Fruit Merge so its layout, fruit art, tutorial, shake behavior, result background, and procedural effects feel cohesive with the Funfolio design system and remain smooth on low-end devices.
 
 **Architecture:** Keep rules deterministic in the game engine, expose only state-derived UI behavior, and retain the existing Decompose child flow. Extend the shared adaptive scaffold with an optional header slot, render the game as bounded Canvas layers, and author immutable procedural audio declarations through the public MiniApp audio API.
 
@@ -87,7 +87,7 @@
 - Test: `game/fruitmerge/src/commonTest/kotlin/ge/yet/game/fruitmerge/ui/FruitMergeTutorialTest.kt`
 
 - [ ] Add failing tests for normal/reduced-motion tutorial policy and exact board-guidance state.
-- [ ] Replace the heavy overlay with a light measured spotlight, compact Logica caption, preview-aligned guide, and subtle hand/ripple animation.
+- [ ] Replace the heavy overlay with a light measured spotlight, compact Funfolio caption, preview-aligned guide, and subtle hand/ripple animation.
 - [ ] Preserve pass-through gameplay gestures and keep only Skip explicitly interactive.
 - [ ] Run module tests and compile Android.
 - [ ] Commit the tutorial refinement.

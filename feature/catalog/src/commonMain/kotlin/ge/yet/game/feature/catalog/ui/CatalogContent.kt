@@ -40,7 +40,7 @@ import ge.yet.game.feature.catalog.generated.resources.catalog_empty_title
 import ge.yet.game.miniapp.api.MiniAppId
 import ge.yet.game.miniapp.compose.MiniAppManifest
 import ge.yet.game.uikit.components.background.AmbientMeshBackground
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -180,7 +180,7 @@ private fun CatalogGrid(
 
 @PreviewLightDark
 @Composable
-fun CatalogContentPreview() = LogicaTheme {
+fun CatalogContentPreview() = FunfolioTheme {
     CatalogContent(
         modifier = Modifier.fillMaxSize(),
         component = PreviewCatalogComponent()

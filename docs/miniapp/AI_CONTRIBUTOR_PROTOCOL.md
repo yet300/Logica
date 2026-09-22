@@ -1,7 +1,7 @@
 # AI Contributor Protocol
 
 This protocol applies when an agent is asked to create, add, port or implement
-a MiniApp in Logica, the repository's curated Kotlin Multiplatform super-app.
+a MiniApp in Funfolio, the repository's curated Kotlin Multiplatform super-app.
 
 ## Start puzzle requests with the creation skill
 

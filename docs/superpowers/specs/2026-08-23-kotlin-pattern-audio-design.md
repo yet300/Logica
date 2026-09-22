@@ -23,7 +23,7 @@ most of its DSP, voices, scheduler and musical contracts in Kotlin `commonMain`,
 then connects that code to JVM Java Sound and browser Web Audio backends. It has
 no Android AudioTrack or iOS AVAudioEngine backend at the time of this design.
 
-Klang and Strudel are AGPL-3.0 works. Logica must not copy, translate, adapt or
+Klang and Strudel are AGPL-3.0 works. Funfolio must not copy, translate, adapt or
 vendor their production source, DSL declarations, tests, presets or songs. The
 engine is an independent implementation using its own API, terminology, test
 vectors and code. General audio engineering ideas, public specifications,

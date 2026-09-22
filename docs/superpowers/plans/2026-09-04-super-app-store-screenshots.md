@@ -1,8 +1,8 @@
-# Logica Super-App Store Screenshots Implementation Plan
+# Funfolio Super-App Store Screenshots Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Capture the current Logica catalog and three shipped games from iPhone and iPad simulators, then produce validated English App Store and Google Play screenshot bundles with a reusable Quiet Editorial editor project.
+**Goal:** Capture the current Funfolio catalog and three shipped games from iPhone and iPad simulators, then produce validated English App Store and Google Play screenshot bundles with a reusable Quiet Editorial editor project.
 
 **Architecture:** Restore the Kotlin-generated SwiftPM linkage, build one simulator app, and install it on the existing iPhone 11 Pro Max and iPad Pro 13-inch simulators. Scaffold the installed `app-store-screenshots` Next.js template under `store-assets/screenshot-editor`, extend it only with the approved three-device mosaic, seed deterministic deck state, and export exact store PNGs through the editor. Small Node and Python contracts validate project configuration, source captures, filenames, dimensions, and opacity; contact sheets provide the final visual gate.
 
@@ -23,7 +23,7 @@
 - Create: `store-assets/screenshot-editor/scripts/verify-project.mjs` - validate the seeded editor contract and source capture inventory.
 - Create: `store-assets/screenshot-editor/scripts/seed-project.mjs` - generate the canonical deck JSON without manual duplication.
 - Replace: `store-assets/screenshot-editor/app-store-screenshots.json` - canonical English decks for iPhone, iPad, Android phone, and Feature Graphic.
-- Create: `store-assets/screenshot-editor/public/app-icon.png` - opaque production Logica icon.
+- Create: `store-assets/screenshot-editor/public/app-icon.png` - opaque production Funfolio icon.
 - Create: `store-assets/screenshot-editor/public/screenshots/apple/iphone/en/*.png` - current iPhone source captures.
 - Create: `store-assets/screenshot-editor/public/screenshots/apple/ipad/en/*.png` - current iPad source captures.
 - Create: `tools/store_screenshots/test_verify_exports.py` - output contract tests.
@@ -37,7 +37,7 @@
 - iPad simulator: `iPad Pro 13-inch (M5)`, UDID `85449AE9-8E41-4FFF-B087-9310DE592F2A`.
 - iOS runtime: 26.4.
 - Xcode scheme: `iosApp`.
-- Built product: `Logica.app`.
+- Built product: `Funfolio.app`.
 - Simulator bundle identifier: `ge.yet3.blokblast.BlockBlast` when `TEAM_ID` is empty in `iosApp/Configuration/Config.xcconfig`.
 - Package manager: Bun at `/Users/yet/.bun/bin/bun`.
 - Source icon: `iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png`.
@@ -151,7 +151,7 @@ function assert(condition, message) {
 }
 
 assert(state.schemaVersion === 2, "schemaVersion must be 2");
-assert(state.appName === "Logica", "appName must be Logica");
+assert(state.appName === "Funfolio", "appName must be Funfolio");
 assert(state.themeId === "quiet-editorial", "Quiet Editorial theme must be active");
 assert(state.connectedCanvas === true, "new decks must use connected canvas");
 assert(JSON.stringify(state.locales) === JSON.stringify(["en"]), "only English is in scope");
@@ -212,7 +212,7 @@ cd store-assets/screenshot-editor
 rtk bun run verify:project
 ```
 
-Expected: failure at `appName must be Logica` against the untouched template state.
+Expected: failure at `appName must be Funfolio` against the untouched template state.
 
 - [ ] **Step 4: Commit the failing contract**
 
@@ -408,7 +408,7 @@ rtk git commit -m "feat: add quiet editorial screenshot mosaic"
 
 **Files:**
 - Generated, not committed: `iosApp/KotlinMultiplatformLinkedPackage/subpackages/**`
-- Generated, not committed: `/tmp/logica-store-shots-derived/**`
+- Generated, not committed: `/tmp/funfolio-store-shots-derived/**`
 
 - [ ] **Step 1: Regenerate the Kotlin linkage package**
 
@@ -435,10 +435,10 @@ Expected: `BUILD SUCCESSFUL`.
 Run:
 
 ```bash
-rtk xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator -derivedDataPath /tmp/logica-store-shots-derived CODE_SIGNING_ALLOWED=NO build
+rtk xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug -sdk iphonesimulator -derivedDataPath /tmp/funfolio-store-shots-derived CODE_SIGNING_ALLOWED=NO build
 ```
 
-Expected: `** BUILD SUCCEEDED **` and `/tmp/logica-store-shots-derived/Build/Products/Debug-iphonesimulator/Logica.app` exists.
+Expected: `** BUILD SUCCEEDED **` and `/tmp/funfolio-store-shots-derived/Build/Products/Debug-iphonesimulator/Funfolio.app` exists.
 
 - [ ] **Step 4: Boot the approved devices and wait for readiness**
 
@@ -453,13 +453,13 @@ rtk xcrun simctl bootstatus 85449AE9-8E41-4FFF-B087-9310DE592F2A -b
 
 Expected: both devices report booted. `boot` may report that a device is already booted; that is non-fatal.
 
-- [ ] **Step 5: Install Logica on both devices**
+- [ ] **Step 5: Install Funfolio on both devices**
 
 Run:
 
 ```bash
-rtk xcrun simctl install 0E8A0375-A199-4237-993B-AB8386778436 /tmp/logica-store-shots-derived/Build/Products/Debug-iphonesimulator/Logica.app
-rtk xcrun simctl install 85449AE9-8E41-4FFF-B087-9310DE592F2A /tmp/logica-store-shots-derived/Build/Products/Debug-iphonesimulator/Logica.app
+rtk xcrun simctl install 0E8A0375-A199-4237-993B-AB8386778436 /tmp/funfolio-store-shots-derived/Build/Products/Debug-iphonesimulator/Funfolio.app
+rtk xcrun simctl install 85449AE9-8E41-4FFF-B087-9310DE592F2A /tmp/funfolio-store-shots-derived/Build/Products/Debug-iphonesimulator/Funfolio.app
 ```
 
 Expected: both installs exit 0 without erasing simulator-wide data.
@@ -477,7 +477,7 @@ rtk xcrun simctl status_bar 85449AE9-8E41-4FFF-B087-9310DE592F2A override --time
 rtk xcrun simctl launch 85449AE9-8E41-4FFF-B087-9310DE592F2A ge.yet3.blokblast.BlockBlast -AppleLanguages '(en)' -AppleLocale en_US
 ```
 
-Expected: Logica opens on both devices in English with a consistent dark system appearance and clean status bar.
+Expected: Funfolio opens on both devices in English with a consistent dark system appearance and clean status bar.
 
 ### Task 5: Capture Real Catalog and Gameplay States
 
@@ -490,7 +490,7 @@ Expected: Logica opens on both devices in English with a consistent dark system 
 
 - [ ] **Step 1: Open each simulator and clear blocking UI**
 
-Use the simulator UI to dismiss ATT/consent prompts, switch off advertising through Logica settings when the control is available, return to Catalog, and verify no settings sheet, permission dialog, test-mode label, or banner is visible. Do not modify production code to create screenshot-only behavior.
+Use the simulator UI to dismiss ATT/consent prompts, switch off advertising through Funfolio settings when the control is available, return to Catalog, and verify no settings sheet, permission dialog, test-mode label, or banner is visible. Do not modify production code to create screenshot-only behavior.
 
 - [ ] **Step 2: Capture the iPhone catalog**
 
@@ -500,7 +500,7 @@ Arrange the catalog so all current game cards are visible, then run:
 rtk xcrun simctl io 0E8A0375-A199-4237-993B-AB8386778436 screenshot store-assets/screenshot-editor/public/screenshots/apple/iphone/en/01-catalog.png
 ```
 
-Expected: 1242 x 2688 current Logica catalog capture.
+Expected: 1242 x 2688 current Funfolio catalog capture.
 
 - [ ] **Step 3: Capture strong iPhone gameplay states**
 
@@ -548,7 +548,7 @@ Expected: iPhone sources are 1242 x 2688; iPad sources are 2064 x 2752. Alpha is
 
 ```bash
 rtk git add store-assets/screenshot-editor/public
-rtk git commit -m "assets: capture current Logica game collection"
+rtk git commit -m "assets: capture current Funfolio game collection"
 ```
 
 ### Task 6: Seed the Four English Decks
@@ -567,13 +567,13 @@ import path from "node:path";
 import process from "node:process";
 
 const story = [
-  { id: "01-collection", layout: "hero", label: "LOGICA", headline: "A growing world\nof puzzles.", shot: "01-catalog.png" },
+  { id: "01-collection", layout: "hero", label: "FUNFOLIO", headline: "A growing world\nof puzzles.", shot: "01-catalog.png" },
   { id: "02-choice", layout: "device-bottom", label: "CHOOSE YOUR GAME", headline: "Choose your\nnext challenge.", shot: "01-catalog.png" },
   { id: "03-blockblast", layout: "device-top", label: "BLOCK BLAST", headline: "Clear lines.\nFind your flow.", shot: "02-blockblast.png", inverted: true },
   { id: "04-2048", layout: "hero", label: "2048", headline: "Merge numbers.\nThink ahead.", shot: "03-2048.png" },
   { id: "05-fruitmerge", layout: "device-bottom", label: "FRUIT MERGE", headline: "Drop fruit.\nGrow bigger.", shot: "04-fruitmerge.png" },
   { id: "06-collection", layout: "three-devices", label: "GROWING COLLECTION", headline: "Different games.\nOne thoughtful home.", shot: "02-blockblast.png", secondary: "03-2048.png", tertiary: "04-fruitmerge.png", inverted: true },
-  { id: "07-close", layout: "hero", label: "LOGICA", headline: "Your next\npuzzle awaits.", shot: "01-catalog.png" },
+  { id: "07-close", layout: "hero", label: "FUNFOLIO", headline: "Your next\npuzzle awaits.", shot: "01-catalog.png" },
 ];
 
 function localize(value) {
@@ -597,7 +597,7 @@ const iphoneBase = "/screenshots/apple/iphone/{locale}/";
 const ipadBase = "/screenshots/apple/ipad/{locale}/";
 const state = {
   schemaVersion: 2,
-  appName: "Logica",
+  appName: "Funfolio",
   themeId: "quiet-editorial",
   connectedCanvas: true,
   locales: ["en"],
@@ -668,7 +668,7 @@ Expected: production build succeeds.
 
 ```bash
 rtk git add store-assets/screenshot-editor/app-store-screenshots.json store-assets/screenshot-editor/scripts/seed-project.mjs
-rtk git commit -m "feat: seed Logica store screenshot decks"
+rtk git commit -m "feat: seed Funfolio store screenshot decks"
 ```
 
 ### Task 7: Tune the Deck in the Live Editor
@@ -689,7 +689,7 @@ Expected: Next reports the actual local URL, normally `http://localhost:3000`.
 
 - [ ] **Step 2: Inspect the iPhone connected canvas**
 
-Open the reported URL in a browser. Confirm the project loads from disk, the toolbar shows Connected, theme shows Quiet Editorial, locale controls are hidden, and all seven iPhone slides contain real Logica UI.
+Open the reported URL in a browser. Confirm the project loads from disk, the toolbar shows Connected, theme shows Quiet Editorial, locale controls are hidden, and all seven iPhone slides contain real Funfolio UI.
 
 - [ ] **Step 3: Tune headline and device transforms**
 
@@ -723,7 +723,7 @@ Expected: both commands pass after manual transform edits.
 
 ```bash
 rtk git add store-assets/screenshot-editor/app-store-screenshots.json
-rtk git commit -m "design: tune Logica store screenshot layouts"
+rtk git commit -m "design: tune Funfolio store screenshot layouts"
 ```
 
 ### Task 8: Define and Implement Export Verification
@@ -995,7 +995,7 @@ If any check fails, return to Task 7, adjust, re-export only the affected device
 
 ```bash
 rtk git add store-assets/exports store-assets/review store-assets/screenshot-editor/app-store-screenshots.json
-rtk git commit -m "assets: add Logica store screenshot bundles"
+rtk git commit -m "assets: add Funfolio store screenshot bundles"
 ```
 
 ### Task 10: Final Verification and Handoff

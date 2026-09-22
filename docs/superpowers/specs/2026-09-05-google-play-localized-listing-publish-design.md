@@ -4,7 +4,7 @@
 
 Extend the manual store-screenshot workflow so one all-locale invocation
 generates every screenshot deck and then uploads a complete, localized Google
-Play listing edit for Logica. The edit must remain in Play Console as changes
+Play listing edit for Funfolio. The edit must remain in Play Console as changes
 not sent for review. App Store upload is explicitly out of scope.
 
 The triggering command remains:
@@ -25,7 +25,7 @@ three games.
 The title is identical in every locale and is not translated:
 
 ```text
-Logica — Block Puzzle
+Funfolio: Offline Games
 ```
 
 The English source short description is:
@@ -36,7 +36,7 @@ A growing collection of relaxing puzzle games for focus, strategy, and fun.
 
 The English source full description follows this message hierarchy:
 
-1. Logica is one place for a growing collection of puzzle games.
+1. Funfolio is one place for a growing collection of puzzle games.
 2. Block Blast, 2048, and Fruit Merge are current examples, not the product's
    permanent limit.
 3. Sessions are quick to start, controls are simple, progress and personal
@@ -84,7 +84,7 @@ and verifies the entire metadata package before any network call. Validation
 must reject:
 
 - a missing, extra, or duplicate locale;
-- a title that differs from `Logica — Block Puzzle`;
+- a title that differs from `Funfolio: Offline Games`;
 - a title longer than 30 characters;
 - an empty or over-80-character short description;
 - an empty or over-4000-character full description;

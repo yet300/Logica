@@ -48,7 +48,7 @@ import ge.yet.game.twentyfortyeight.ui.gameplay.PlayingContent
 import ge.yet.game.twentyfortyeight.ui.gameplay.ScoreBestRow
 import ge.yet.game.twentyfortyeight.ui.overlay.OverlayContent
 import ge.yet.game.twentyfortyeight.ui.result.ResultContent
-import ge.yet.game.uikit.theme.LogicaTheme
+import ge.yet.game.uikit.theme.FunfolioTheme
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -59,7 +59,7 @@ class TwentyFortyEightScreenTest {
     fun `score presentation has no background and centers its content`() = runComposeUiTest {
         val parentColor = Color.Magenta
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Box(
                     modifier = Modifier
                         .size(320.dp, 80.dp)
@@ -103,7 +103,7 @@ class TwentyFortyEightScreenTest {
                 ),
             )
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     ScoreBestRow(
                         score = state.value.score,
                         bestScore = state.value.bestScore,
@@ -143,7 +143,7 @@ class TwentyFortyEightScreenTest {
     @Test
     fun `playing surface exposes neither statistics nor swipe hint`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = playingModel(undoEnabled = false),
                     onDirection = {},
@@ -163,7 +163,7 @@ class TwentyFortyEightScreenTest {
     fun `accessibility traversal follows score best board actions and tutorial`() =
         runComposeUiTest {
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     PlayingContent(
                         model = playingModel(undoEnabled = true, tutorialVisible = true),
                         onDirection = {},
@@ -202,7 +202,7 @@ class TwentyFortyEightScreenTest {
         var restartRequests = 0
         var density = 1f
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 density = LocalDensity.current.density
                 PlayingContent(
                     model = playingModel(undoEnabled = false),
@@ -238,7 +238,7 @@ class TwentyFortyEightScreenTest {
         var confirmed = 0
 
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 OverlayContent(
                     OverlayComponent.Victory(
                         model = MutableValue(OverlayComponent.Model.Victory(4096L, 8192L)),
@@ -256,7 +256,7 @@ class TwentyFortyEightScreenTest {
         assertEquals(1, victoryRestarted)
 
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 OverlayContent(
                     OverlayComponent.RestartConfirmation(
                         model = MutableValue(
@@ -280,7 +280,7 @@ class TwentyFortyEightScreenTest {
     fun `result and persistence error are model driven`() = runComposeUiTest {
         var newGameRequests = 0
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 ResultContent(
                     model = resultModel(),
                     error = UiErrorCode.ProgressNotSaved,
@@ -306,7 +306,7 @@ class TwentyFortyEightScreenTest {
     fun `game over stays reachable on a compact screen at two hundred percent font scale`() =
         runComposeUiTest {
             setContent {
-                LogicaTheme(darkTheme = true) {
+                FunfolioTheme(darkTheme = true) {
                     val density = LocalDensity.current
                     CompositionLocalProvider(
                         LocalDensity provides Density(density.density, fontScale = 2f),
@@ -328,7 +328,7 @@ class TwentyFortyEightScreenTest {
     @Test
     fun `compact height support remains reachable at two hundred percent font scale`() = runComposeUiTest {
         setContent {
-            LogicaTheme(darkTheme = true) {
+            FunfolioTheme(darkTheme = true) {
                 val density = LocalDensity.current
                 CompositionLocalProvider(
                     LocalDensity provides Density(density.density, fontScale = 2f),
@@ -358,7 +358,7 @@ class TwentyFortyEightScreenTest {
     fun `expanded hierarchy enforces board and support column caps`() = runComposeUiTest {
         var density = 1f
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 density = LocalDensity.current.density
                 PlayingContent(
                     model = playingModel(undoEnabled = true),
@@ -383,7 +383,7 @@ class TwentyFortyEightScreenTest {
         val viewport = mutableStateOf(DpSize(599.dp, 800.dp))
         var restartRequests = 0
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = model,
                     onDirection = {},
@@ -411,7 +411,7 @@ class TwentyFortyEightScreenTest {
         runComposeUiTest {
             val directions = mutableListOf<Direction>()
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     PlayingContent(
                         model = playingModel(undoEnabled = true),
                         onDirection = directions::add,
@@ -438,7 +438,7 @@ class TwentyFortyEightScreenTest {
         runComposeUiTest {
             val directions = mutableListOf<Direction>()
             setContent {
-                LogicaTheme(darkTheme = false) {
+                FunfolioTheme(darkTheme = false) {
                     PlayingContent(
                         model = playingModel(undoEnabled = true, tutorialVisible = true),
                         onDirection = directions::add,
@@ -464,7 +464,7 @@ class TwentyFortyEightScreenTest {
     fun `disabled viewport does not emit swipe moves`() = runComposeUiTest {
         val directions = mutableListOf<Direction>()
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = playingModel(undoEnabled = false, gesturesEnabled = false),
                     onDirection = directions::add,
@@ -484,7 +484,7 @@ class TwentyFortyEightScreenTest {
     fun `short deliberate swipe moves from the whole gameplay viewport`() = runComposeUiTest {
         val directions = mutableListOf<Direction>()
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = playingModel(undoEnabled = true),
                     onDirection = directions::add,
@@ -511,7 +511,7 @@ class TwentyFortyEightScreenTest {
         val directions = mutableListOf<Direction>()
         var restartRequests = 0
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = playingModel(undoEnabled = true),
                     onDirection = directions::add,
@@ -544,7 +544,7 @@ class TwentyFortyEightScreenTest {
     fun `mouse drag follows the same viewport-wide swipe path`() = runComposeUiTest {
         val directions = mutableListOf<Direction>()
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 PlayingContent(
                     model = playingModel(undoEnabled = true),
                     onDirection = directions::add,
@@ -569,7 +569,7 @@ class TwentyFortyEightScreenTest {
     fun `detector is confined to viewport between host chrome regions`() = runComposeUiTest {
         val directions = mutableListOf<Direction>()
         setContent {
-            LogicaTheme(darkTheme = false) {
+            FunfolioTheme(darkTheme = false) {
                 Column {
                     Box(Modifier.size(400.dp, 50.dp).testTag("host_toolbar"))
                     PlayingContent(

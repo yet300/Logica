@@ -3,7 +3,7 @@
 ## Goal
 
 Localize the existing Quiet Editorial store screenshot narrative for every
-locale shipped by Logica without committing hundreds of megabytes of generated
+locale shipped by Funfolio without committing hundreds of megabytes of generated
 PNG files. Keep English and Georgian review imagery available directly in the
 README, and make every other store-ready set reproducible through CI.
 

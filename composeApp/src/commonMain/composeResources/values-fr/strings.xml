@@ -1,6 +1,6 @@
 <resources>
     <!-- Application resources -->
-    <string name="app_name">Logica</string>
+    <string name="app_name">Funfolio</string>
     <string name="play">Jouer</string>
     <string name="settings">Paramètres</string>
     <string name="sound">Son</string>
@@ -27,8 +27,8 @@
     <string name="support_game">Soutenir le jeu</string>
     <string name="support_game_subtitle">Ajoutez une étoile au projet sur GitHub ou faites un don</string>
     <string name="disable_ads">Désactiver les publicités ?</string>
-    <string name="disable_ads_title">Les publicités permettent à Logica de rester gratuit</string>
-    <string name="disable_ads_body">Les publicités nous aident à améliorer le jeu et à garder toutes les fonctionnalités gratuites. Si vous les désactivez, les résurrections resteront gratuites — et vous pourrez toujours soutenir Logica avec une étoile GitHub ou un don.</string>
+    <string name="disable_ads_title">Les publicités permettent à Funfolio de rester gratuit</string>
+    <string name="disable_ads_body">Les publicités nous aident à améliorer le jeu et à garder toutes les fonctionnalités gratuites. Si vous les désactivez, les résurrections resteront gratuites — et vous pourrez toujours soutenir Funfolio avec une étoile GitHub ou un don.</string>
     <string name="keep_ads">Garder les publicités</string>
     <string name="disable_ads_anyway">Désactiver quand même</string>
     <string name="cd_settings">Paramètres</string>
@@ -36,7 +36,7 @@
     <string name="miniapp_unavailable">%1$s n'est pas disponible</string>
     <string name="back_to_catalog">Retour au catalogue</string>
     <string name="exit">Quitter</string>
-    <string name="review_prompt_title">Vous aimez Logica ?</string>
+    <string name="review_prompt_title">Vous aimez Funfolio ?</string>
     <string name="review_prompt_body">Votre avis aide d'autres joueurs de puzzles à trouver le jeu.</string>
     <string name="review_prompt_leave_feedback">Laisser un avis</string>
     <string name="review_prompt_dont_show">Ne plus afficher</string>

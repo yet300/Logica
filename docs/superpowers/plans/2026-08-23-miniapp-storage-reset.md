@@ -337,7 +337,7 @@ flows for best score and tutorial state.
 Delete direct `multiplatform-settings` and settings-coroutines dependencies
 from `game/blockblast/build.gradle.kts`. Add a convention functional test that
 rejects direct `com.russhwolf:multiplatform-settings*` dependencies from any
-module applying `logica.miniapp`.
+module applying `funfolio.miniapp`.
 
 - [ ] **Step 5: Verify GREEN and dependency boundary**
 

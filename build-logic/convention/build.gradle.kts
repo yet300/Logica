@@ -30,15 +30,15 @@ gradlePlugin {
             implementationClass = "com.yet.plugins.ComposeMultiplatformPlugin"
         }
         register("miniAppBundle") {
-            id = "logica.miniapp.bundle"
+            id = "funfolio.miniapp.bundle"
             implementationClass = "com.yet.plugins.miniapp.MiniAppBundlePlugin"
         }
         register("miniApp") {
-            id = "logica.miniapp"
+            id = "funfolio.miniapp"
             implementationClass = "com.yet.plugins.miniapp.MiniAppConventionPlugin"
         }
         register("miniAppRoot") {
-            id = "logica.miniapp.root"
+            id = "funfolio.miniapp.root"
             implementationClass = "com.yet.plugins.miniapp.MiniAppRootPlugin"
         }
     }
