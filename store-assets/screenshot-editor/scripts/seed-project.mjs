@@ -40,7 +40,7 @@ const iphoneBase = "/screenshots/apple/iphone/en/";
 const ipadBase = "/screenshots/apple/ipad/en/";
 const state = {
   schemaVersion: 2,
-  appName: "Logica",
+  appName: "Funfolio",
   themeId: "quiet-editorial",
   connectedCanvas: true,
   locales: LOCALES,

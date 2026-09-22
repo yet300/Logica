@@ -35,7 +35,7 @@ function assert(condition, message) {
 }
 
 assert(state.schemaVersion === 2, "schemaVersion must be 2");
-assert(state.appName === "Logica", "appName must be Logica");
+assert(state.appName === "Funfolio", "appName must be Funfolio");
 assert(state.themeId === "quiet-editorial", "Quiet Editorial theme must be active");
 assert(state.connectedCanvas === true, "new decks must use connected canvas");
 assert(JSON.stringify(state.locales) === JSON.stringify(expectedLocales), "all store-supported locales must be in scope");

@@ -155,7 +155,7 @@ export function localizedLabels() {
   const labels = Array.from({ length: 7 }, () => ({}));
   for (const locale of LOCALES) {
     const { choose, growing } = COPY[locale];
-    ["LOGICA", choose, "BLOCK BLAST", "2048", "FRUIT MERGE", growing, "LOGICA"]
+    ["FUNFOLIO", choose, "BLOCK BLAST", "2048", "FRUIT MERGE", growing, "FUNFOLIO"]
       .forEach((value, index) => { labels[index][locale] = value; });
   }
   return labels;
