@@ -125,6 +125,18 @@ Do not depend on feature modules, application modules, another game/sample,
 native ad adapters, platform audio APIs or raw Multiplatform Settings. Do not
 add catalog cards, host controls, Replay actions or a second navigation host.
 
+### Original music and SFX
+
+Declare original, asset-free Music and SFX in shared Kotlin. Start with the
+[procedural audio getting-started guide](docs/miniapp/audio/getting-started.md),
+then the [Kotlin DSL reference](docs/miniapp/audio/kotlin-dsl.md),
+[shared presets](docs/miniapp/audio/instruments.md), and
+[mobile budgets](docs/miniapp/audio/performance-budgets.md). AI agents must use
+the repo-local [MiniApp procedural audio skill](.agents/skills/miniapp-procedural-audio/SKILL.md).
+Block Blast's bundled MP3 path through the app-owned legacy `AudioRepository`
+is not a contributor pattern; new MiniApps use the procedural API unless a
+separate architecture decision introduces a general asset-audio contract.
+
 ### Defer final icon work
 
 The game icon is a final-stage asset, not a scaffold prerequisite. First make
