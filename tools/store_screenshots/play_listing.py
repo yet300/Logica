@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Sequence
 
 
-TITLE = "Logica — Block Puzzle"
+TITLE = "Funfolio: Offline Games"
 
 PLAY_STORE_LOCALES: dict[str, str] = {
     "ar": "ar", "az": "az-AZ", "be": "be", "bn": "bn-BD",

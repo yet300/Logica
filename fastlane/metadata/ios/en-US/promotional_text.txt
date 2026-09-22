@@ -1,1 +1,1 @@
-A growing collection of relaxing puzzle games for focus, strategy, and fun.
+Play offline, then help build the next game. Funfolio is open source on GitHub.

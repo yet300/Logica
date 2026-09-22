@@ -126,7 +126,7 @@ jobs:
           CERTIFICATE_PATH="$RUNNER_TEMP/distribution.p12"
           PROFILE_PATH="$RUNNER_TEMP/appstore.mobileprovision"
           PROFILE_PLIST="$RUNNER_TEMP/appstore-profile.plist"
-          KEYCHAIN_PATH="$RUNNER_TEMP/logica-ci.keychain-db"
+          KEYCHAIN_PATH="$RUNNER_TEMP/funfolio-ci.keychain-db"
           echo "IOS_KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
           IOS_KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
           printf '%s' "$IOS_DIST_CERT_P12" | base64 -D > "$CERTIFICATE_PATH"
@@ -156,10 +156,10 @@ jobs:
       - name: Retain IPA and dSYM
         uses: actions/upload-artifact@v4
         with:
-          name: logica-ios-${{ needs.version.outputs.version_name }}
+          name: funfolio-ios-${{ needs.version.outputs.version_name }}
           path: |
-            build/ios/Logica.ipa
-            build/ios/Logica.app.dSYM.zip
+            build/ios/Funfolio.ipa
+            build/ios/Funfolio.app.dSYM.zip
           if-no-files-found: error
           retention-days: 14
 

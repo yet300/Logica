@@ -11,7 +11,7 @@ from typing import Sequence
 from urllib.parse import urlparse
 
 
-TITLE = "Logica — Block Puzzle"
+TITLE = "Funfolio: Offline Games"
 
 APP_STORE_LOCALES: dict[str, str] = {
     "ar": "ar-SA", "bn": "bn-BD", "da": "da", "de": "de-DE",

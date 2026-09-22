@@ -1,1 +1,1 @@
-Puzzle,Blöcke,Zahlen,Kombinieren,Logik,Strategie,offline,entspannt
+2048,gehirn,logik,entspannend,strategie,klassisch,arcade,match,herausforderung,kachel,ohne wlan

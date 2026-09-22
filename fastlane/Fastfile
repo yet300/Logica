@@ -216,8 +216,8 @@ platform :ios do
       clean: true,
       export_method: "app-store",
       output_directory: "build/ios",
-      output_name: "Logica.ipa",
-      archive_path: "build/ios/Logica.xcarchive",
+      output_name: "Funfolio.ipa",
+      archive_path: "build/ios/Funfolio.xcarchive",
       derived_data_path: "build/ios/DerivedData",
       include_symbols: true,
       xcargs: [

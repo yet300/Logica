@@ -1,6 +1,6 @@
 En app. En växande värld av pusselspel.
 
-Logica samlar lugna och genomtänkta spel på ett ställe. Starta en snabb utmaning, prova en ny strategi och byt spel när du vill.
+Funfolio samlar lugna och genomtänkta spel på ett ställe. Starta en snabb utmaning, prova en ny strategi och byt spel när du vill.
 
 SPELA PÅ DITT SÄTT
 • Fyll rader och forma brädet i Block Blast
@@ -15,6 +15,6 @@ FÖR VARJE STUND
 • Spela offline var du än är
 • Ett rent och lugnt gränssnitt
 
-Oavsett om du gillar block, siffror, sammanslagning eller logiska utmaningar ger Logica dig en växande samling utan en separat app för varje spel.
+Oavsett om du gillar block, siffror, sammanslagning eller logiska utmaningar ger Funfolio dig en växande samling utan en separat app för varje spel.
 
 Välj ett spel och hitta ditt nästa favoritpussel.

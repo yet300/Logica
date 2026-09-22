@@ -1,6 +1,6 @@
 Tek uygulama. Sürekli büyüyen bir bulmaca dünyası.
 
-Logica, sakin ve düşündüren oyunları tek yerde buluşturur. Hızlı bir mücadeleye başla, yeni stratejiler dene ve istediğin zaman oyun değiştir.
+Funfolio, sakin ve düşündüren oyunları tek yerde buluşturur. Hızlı bir mücadeleye başla, yeni stratejiler dene ve istediğin zaman oyun değiştir.
 
 KENDİ TARZINDA OYNA
 • Block Blast’ta satırları tamamla ve tahtayı şekillendir
@@ -15,6 +15,6 @@ HER ANA UYGUN
 • İstediğin yerde çevrimdışı oyna
 • Temiz ve sakin bir arayüz
 
-Blokları, sayıları, birleştirme oyunlarını veya mantık mücadelelerini seviyorsan Logica, her oyun için ayrı uygulama yüklemeden büyüyen bir koleksiyon sunar.
+Blokları, sayıları, birleştirme oyunlarını veya mantık mücadelelerini seviyorsan Funfolio, her oyun için ayrı uygulama yüklemeden büyüyen bir koleksiyon sunar.
 
 Bir oyun seç ve sıradaki favori bulmacanı bul.

@@ -1,11 +1,12 @@
-# Logica — Block Puzzle
+# Funfolio: Offline Games
 
 <img src="picture/app_icon.png" width="180" alt="App icon" />
 
-A Kotlin Multiplatform super-app for Android and iOS: one lightweight host,
-one catalog, and short local-first game sessions. The production bundle
-currently includes Block Blast, 2048, and Fruit Merge; additional games and apps are
-independent Gradle modules reviewed and allowlisted at build time.
+An open-source, offline-first game collection for Android and iOS: one
+lightweight host, one catalog, and short local-first sessions. The production
+bundle currently includes Block Blast, 2048, and Fruit Merge; contributors can
+build and propose additional games as independent Gradle modules, which ship
+only after review and allowlisting.
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue.svg)
 ![Compose](https://img.shields.io/badge/Compose-1.12.0-green.svg)
@@ -13,7 +14,7 @@ independent Gradle modules reviewed and allowlisted at build time.
 
 ## Download
 
-<a href="https://apps.apple.com/us/app/logica-block-puzzle-2027/id6765924581">
+<a href="https://apps.apple.com/us/app/id6765924581">
   <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="80"/>
 </a>
 
@@ -26,12 +27,12 @@ independent Gradle modules reviewed and allowlisted at build time.
 ### iPhone
 
 <p>
-  <img src="store-assets/exports/ka/iphone/1320x2868/01-hero.png" width="150" alt="Logica — თავსატეხების მზარდი სამყარო" />
-  <img src="store-assets/exports/ka/iphone/1320x2868/02-device-bottom.png" width="150" alt="აირჩიე შემდეგი გამოწვევა Logica-ში" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/01-hero.png" width="150" alt="Funfolio — თავსატეხების მზარდი სამყარო" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/02-device-bottom.png" width="150" alt="აირჩიე შემდეგი გამოწვევა Funfolio-ში" />
   <img src="store-assets/exports/ka/iphone/1320x2868/03-device-top.png" width="150" alt="Block Blast-ის თამაში" />
   <img src="store-assets/exports/ka/iphone/1320x2868/04-hero.png" width="150" alt="2048-ის თამაში" />
   <img src="store-assets/exports/ka/iphone/1320x2868/05-device-bottom.png" width="150" alt="Fruit Merge-ის თამაში" />
-  <img src="store-assets/exports/ka/iphone/1320x2868/06-three-devices.png" width="150" alt="Logica-ს თამაშების კოლექცია" />
+  <img src="store-assets/exports/ka/iphone/1320x2868/06-three-devices.png" width="150" alt="Funfolio-ს თამაშების კოლექცია" />
   <img src="store-assets/exports/ka/iphone/1320x2868/07-hero.png" width="150" alt="შემდეგი თავსატეხი გელოდება" />
 </p>
 
@@ -48,6 +49,7 @@ store-listing drafts, signing, artifacts, and release CI.
 - 🎉 Confetti effects on big clears
 - 🎵 Bundled and procedural game audio
 - 📴 Fully offline — no account required
+- 🛠️ Open source — build and propose the next game
 - ⭐ Shared in-app review policy
 - 📊 Firebase Analytics & Crashlytics
 - 🧱 Compile-time MiniApp plugin framework with a uniform catalog and host frame
@@ -238,9 +240,9 @@ reviewed.
 
 <a id="support-me"></a>
 
-## Sponsor Logica
+## Sponsor Funfolio
 
-Logica is looking for sponsors who want to help fund independent development.
+Funfolio is looking for sponsors who want to help fund independent development.
 Direct financial support is welcome, as are AI API credits/tokens, CI capacity,
 test devices, localization, and design support. Sponsorship does not grant
 control over the production MiniApp allowlist or project direction.

@@ -17,7 +17,7 @@ class ReadmeDocumentationContractTest(unittest.TestCase):
         self.assertIn("Compose Multiplatform** 1.12.0", readme)
         self.assertIn("ParthJadhav/app-store-screenshots", readme)
         self.assertIn('<a id="support-me"></a>', readme)
-        self.assertIn("## Sponsor Logica", readme)
+        self.assertIn("## Sponsor Funfolio", readme)
         self.assertIn("ryaeh7282@gmail.com", readme)
         for wallet in (
             "**ton**: UQCi1XMdZP2fBfTK-O6rsAX3fXEm5iBpjO1D6FDekdUDQnaw",

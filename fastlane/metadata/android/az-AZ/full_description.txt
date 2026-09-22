@@ -1,6 +1,6 @@
 Bir tətbiq. Daim böyüyən tapmaca oyunları dünyası.
 
-Logica sakit və düşünülmüş oyunları bir yerdə toplayır. Qısa sınağa başlayın, yeni strategiya qurun və istədiyiniz vaxt oyunu dəyişin.
+Funfolio sakit və düşünülmüş oyunları bir yerdə toplayır. Qısa sınağa başlayın, yeni strategiya qurun və istədiyiniz vaxt oyunu dəyişin.
 
 ÖZ ÜSULUNUZLA OYNAYIN
 • Block Blast-da xətləri tamamlayın və lövhəni formalaşdırın
@@ -15,6 +15,6 @@ HƏR AN ÜÇÜN
 • İstənilən yerdə oflayn oynayın
 • Təmiz və sakit interfeys
 
-Blokları, rəqəmləri, birləşdirməni və ya məntiq sınaqlarını sevirsinizsə, Logica hər oyun üçün ayrıca tətbiq quraşdırmadan böyüyən kolleksiya təqdim edir.
+Blokları, rəqəmləri, birləşdirməni və ya məntiq sınaqlarını sevirsinizsə, Funfolio hər oyun üçün ayrıca tətbiq quraşdırmadan böyüyən kolleksiya təqdim edir.
 
 Oyunu seçin və növbəti sevimli tapmacanızı tapın.

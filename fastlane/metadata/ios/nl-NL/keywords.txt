@@ -1,1 +1,1 @@
-puzzel,blokken,getallen,samenvoegen,logica,strategie,offline,ontspannen
+puzzel,blokken,getallen,samenvoegen,funfolio,strategie,offline,ontspannen

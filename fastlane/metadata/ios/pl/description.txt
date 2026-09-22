@@ -1,6 +1,6 @@
 Jedna aplikacja. Stale rosnący świat łamigłówek.
 
-Logica łączy spokojne, przemyślane gry w jednym miejscu. Rozpocznij krótkie wyzwanie, wypróbuj nową strategię i zmieniaj gry, kiedy chcesz.
+Funfolio łączy spokojne, przemyślane gry w jednym miejscu. Rozpocznij krótkie wyzwanie, wypróbuj nową strategię i zmieniaj gry, kiedy chcesz.
 
 GRAJ PO SWOJEMU
 • Układaj linie i kształtuj planszę w Block Blast
@@ -15,6 +15,6 @@ NA KAŻDĄ CHWILĘ
 • Gra offline w dowolnym miejscu
 • Czysty, spokojny interfejs
 
-Niezależnie od tego, czy lubisz bloki, liczby, łączenie czy wyzwania logiczne, Logica daje Ci rosnącą kolekcję bez instalowania osobnej aplikacji do każdej gry.
+Niezależnie od tego, czy lubisz bloki, liczby, łączenie czy wyzwania logiczne, Funfolio daje Ci rosnącą kolekcję bez instalowania osobnej aplikacji do każdej gry.
 
 Wybierz grę i znajdź swoją następną ulubioną łamigłówkę.

@@ -1,1 +1,1 @@
-puzzle,blocks,numbers,merge,logic,strategy,offline,casual,relaxing
+2048,brain,logic,casual,solo,travel,relaxing,classic,strategy,challenge,arcade,match,grid,tile,wifi

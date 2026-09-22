@@ -1,1 +1,1 @@
-puzles,bloques,números,fusión,lógica,estrategia,sin conexión,relajante
+2048,cerebro,lógica,casual,relajante,estrategia,clásico,arcade,desafío,cuadrícula,viaje,sin wifi

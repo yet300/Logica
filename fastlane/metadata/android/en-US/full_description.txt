@@ -1,6 +1,6 @@
 One app. A growing world of puzzle games.
 
-Logica brings relaxing, thoughtful games together in one place. Pick a quick challenge, build a new strategy, and switch games whenever you want.
+Funfolio brings relaxing, thoughtful games together in one place. Pick a quick challenge, build a new strategy, and switch games whenever you want.
 
 PLAY YOUR WAY
 • Clear lines and shape the board in Block Blast
@@ -15,6 +15,9 @@ MADE FOR EVERY MOMENT
 • Play offline wherever you are
 • A clean, calm interface that keeps the puzzle in focus
 
-Whether you enjoy block puzzles, number games, merge games, logic challenges, or casual brain teasers, Logica gives you a growing collection without filling your phone with separate apps.
+Whether you enjoy block puzzles, number games, merge games, logic challenges, or casual brain teasers, Funfolio gives you a growing collection without filling your phone with separate apps.
 
 Choose a game, settle in, and find your next favorite puzzle.
+
+OPEN SOURCE, BUILT TO GROW
+Funfolio is open source. Anyone can build and propose a new game; maintainers review every contribution before it joins the collection. Explore the project on GitHub and help shape what comes next.
