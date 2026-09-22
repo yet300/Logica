@@ -70,13 +70,13 @@ class IosReleaseWorkflowTest(unittest.TestCase):
         lockfile = Path("Gemfile.lock").read_text(encoding="utf-8")
         self.assertIn("  arm64-darwin-25", lockfile)
 
-    def test_release_version_sources_are_200_with_build_15(self):
+    def test_release_version_sources_are_210_with_build_16(self):
         gradle_properties = Path("gradle.properties").read_text(encoding="utf-8")
         config = Path("iosApp/Configuration/Config.xcconfig").read_text(encoding="utf-8")
-        self.assertIn("appVersionName=2.0.0", gradle_properties)
-        self.assertIn("appVersionCode=15", gradle_properties)
-        self.assertIn("CURRENT_PROJECT_VERSION=15", config)
-        self.assertIn("MARKETING_VERSION=2.0.0", config)
+        self.assertIn("appVersionName=2.1.0", gradle_properties)
+        self.assertIn("appVersionCode=16", gradle_properties)
+        self.assertIn("CURRENT_PROJECT_VERSION=16", config)
+        self.assertIn("MARKETING_VERSION=2.1.0", config)
 
     def test_tag_workflow_builds_and_uploads_ios_artifacts_safely(self):
         workflow = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
